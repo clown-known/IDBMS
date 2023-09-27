@@ -19,6 +19,12 @@ public class Project
     public string? Description { get; set; }
 
     [Required]
+    public bool IsDecor { get; set; }
+
+    [Required]
+    public bool IsConstruction { get; set; }
+
+    [Required]
     public DateTime CreatedDate { get; set; }
 
     [Required]
@@ -27,9 +33,9 @@ public class Project
     [Required]
     public int NoStage { get; set; }
 
-    public double EstimatedPrice { get; set; }
+    public decimal EstimatedPrice { get; set; }
 
-    public double FinalPrice { get; set; }
+    public decimal FinalPrice { get; set; }
 
     [Required]
     public int Language { get; set; }
