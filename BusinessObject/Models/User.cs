@@ -14,6 +14,7 @@ public class User
     public string Bio { get; set; } = default!;
 
     [Required]
+    [Column(TypeName = "money")]
     public decimal Balance { get; set; }
 
     [Required]
@@ -41,18 +42,18 @@ public class User
 
     public string Token { get; set; } = default!;
 
-    [InverseProperty("User")]
+    [NotMapped]
     public List<UserRole> UserRoles { get; set; } = default!;
 
-    [InverseProperty("ParticipatingUsers")]
+    [NotMapped]
     public List<Project> ParticipateProjects { get; set; } = default!;
 
-    [InverseProperty("ProjectOwner")]
+    [NotMapped]
     public List<Project> OwnedProjects { get; set; } = default!;
 
-    [InverseProperty("LeadArchitect")]
+    [NotMapped]
     public List<Project> LeadProjects { get; set; } = default!;
 
-    [InverseProperty("User")]
+    [NotMapped]
     public List<Participation> Participations { get; set; } = default!;
 }

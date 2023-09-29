@@ -34,14 +34,14 @@ public class Project
     [Required]
     public int NoStage { get; set; }
 
-    [Required]
     public Guid ProjectOwnerUserId { get; set; }
 
-    [Required]
     public Guid LeadArchitectUserId { get; set; }
 
+    [Column(TypeName = "money")]
     public decimal EstimatedPrice { get; set; }
 
+    [Column(TypeName = "money")]
     public decimal FinalPrice { get; set; }
 
     [Required]
@@ -53,15 +53,15 @@ public class Project
     [Required]
     public int Status { get; set; }
 
-    [ForeignKey("ProjectOwnedUserId")]
+    [ForeignKey("ProjectOwnerUserId")]
     public User ProjectOwner { get; set; } = default!;
 
     [ForeignKey("LeadArchitectUserId")]
     public User LeadArchitect { get; set; } = default!;
 
-    [InverseProperty("ParticipateProjects")]
+    [NotMapped]
     public List<User> ParticipatingUsers { get; set; } = default!;
 
-    [InverseProperty("Project")]
+    [NotMapped]
     public List<Participation> Participations { get; set; } = default!;
 }

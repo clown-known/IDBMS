@@ -18,8 +18,8 @@ public class Participation
     public bool IsDeleted { get; set; }
 
     [ForeignKey("UserId")]
-    public User User { get; set; } = default!;
+    public virtual User User { get; set; } = default!;
 
     [ForeignKey("ProjectId")]
-    public Project Project { get; set; } = default!;
+    public virtual Project Project { get; set; } = default!;
 }
