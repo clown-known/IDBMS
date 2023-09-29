@@ -8,12 +8,10 @@ public class UserRole
     public int Id { get; set; }
 
     [Required]
-    public int RoleId { get; set; }
+    public int Role { get; set; }
 
     [Required]
     public Guid UserId { get; set; }
-
-    public Role Role { get; set; } = default!;
 
     public User User { get; set; } = default!;
 }

@@ -42,8 +42,6 @@ public class User
 
     public List<UserRole> UserRoles { get; set; } = default!;
 
-    public List<Role> Roles { get; set; } = default!;
-
     public List<Project> ParticipateProjects { get; set; } = default!;
     public List<Project> OwnedProjects { get; set; } = default!;
     public List<Project> LeadProjects { get; set; } = default!;

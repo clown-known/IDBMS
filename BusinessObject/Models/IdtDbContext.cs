@@ -17,9 +17,10 @@ public class IdtDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>()
-            .HasMany(user => user.Roles)
-            .WithMany(role => role.Users)
-            .UsingEntity<UserRole>();
+            .HasMany(user => user.UserRoles)
+            .WithOne(userRole => userRole.User)
+            .HasForeignKey(userRole => userRole.UserId)
+            .IsRequired();
 
         modelBuilder.Entity<User>()
             .HasMany(user => user.OwnedProjects)
