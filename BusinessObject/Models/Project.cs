@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
 
@@ -52,11 +53,15 @@ public class Project
     [Required]
     public int Status { get; set; }
 
+    [ForeignKey("ProjectOwnedUserId")]
     public User ProjectOwner { get; set; } = default!;
 
+    [ForeignKey("LeadArchitectUserId")]
     public User LeadArchitect { get; set; } = default!;
 
+    [InverseProperty("ParticipateProjects")]
     public List<User> ParticipatingUsers { get; set; } = default!;
 
+    [InverseProperty("Project")]
     public List<Participation> Participations { get; set; } = default!;
 }

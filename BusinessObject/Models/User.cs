@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
 
@@ -40,11 +41,18 @@ public class User
 
     public string Token { get; set; } = default!;
 
+    [InverseProperty("User")]
     public List<UserRole> UserRoles { get; set; } = default!;
 
+    [InverseProperty("ParticipatingUsers")]
     public List<Project> ParticipateProjects { get; set; } = default!;
+
+    [InverseProperty("ProjectOwner")]
     public List<Project> OwnedProjects { get; set; } = default!;
+
+    [InverseProperty("LeadArchitect")]
     public List<Project> LeadProjects { get; set; } = default!;
 
+    [InverseProperty("User")]
     public List<Participation> Participations { get; set; } = default!;
 }
