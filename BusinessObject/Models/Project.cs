@@ -33,6 +33,12 @@ public class Project
     [Required]
     public int NoStage { get; set; }
 
+    [Required]
+    public Guid ProjectOwnerUserId { get; set; }
+
+    [Required]
+    public Guid LeadArchitectUserId { get; set; }
+
     public decimal EstimatedPrice { get; set; }
 
     public decimal FinalPrice { get; set; }
@@ -45,4 +51,8 @@ public class Project
 
     [Required]
     public int Status { get; set; }
+
+    public virtual User ProjectOwner { get; set; } = default!;
+
+    public virtual User LeadArchitect { get; set; } = default!;
 }

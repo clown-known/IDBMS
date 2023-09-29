@@ -39,4 +39,8 @@ public class User
     public string ExternalId { get; set; } = default!;
 
     public string Token { get; set; } = default!;
+
+    public List<UserRole> UserRoles { get; set; } = default!;
+
+    public List<Role> Roles { get; set; } = default!;
 }
