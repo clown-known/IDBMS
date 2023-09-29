@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
 
@@ -17,6 +18,6 @@ public class Participation
     public bool IsDeleted { get; set; }
 
     public User User { get; set; } = default!;
-    
+
     public Project Project { get; set; } = default!;
 }

@@ -10,12 +10,17 @@ public class IdtDbContext : DbContext
 
     public DbSet<Project> Projects { get; set; } = default!;
     public DbSet<User> Users { get; set; } = default!;
-    public DbSet<Role> Roles { get; set; } = default!;
+    public DbSet<RecoveryCode> RecoveryCodes { get; set; } = default!;
     public DbSet<UserRole> UserRoles { get; set; } = default!;
     public DbSet<Participation> Participations { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<RecoveryCode>()
+            .HasOne(recoveryCode => recoveryCode.User)
+            .WithMany()
+            .IsRequired();
+
         modelBuilder.Entity<User>()
             .HasMany(user => user.UserRoles)
             .WithOne(userRole => userRole.User)
