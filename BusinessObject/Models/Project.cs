@@ -52,7 +52,11 @@ public class Project
     [Required]
     public int Status { get; set; }
 
-    public virtual User ProjectOwner { get; set; } = default!;
+    public User ProjectOwner { get; set; } = default!;
 
-    public virtual User LeadArchitect { get; set; } = default!;
+    public User LeadArchitect { get; set; } = default!;
+
+    public List<User> ParticipatingUsers { get; set; } = default!;
+
+    public List<Participation> Participations { get; set; } = default!;
 }

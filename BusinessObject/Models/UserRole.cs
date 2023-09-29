@@ -13,7 +13,7 @@ public class UserRole
     [Required]
     public Guid UserId { get; set; }
 
-    public virtual Role Role { get; set; } = default!;
+    public Role Role { get; set; } = default!;
 
-    public virtual User User { get; set; } = default!;
+    public User User { get; set; } = default!;
 }

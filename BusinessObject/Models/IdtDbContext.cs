@@ -10,6 +10,32 @@ public class IdtDbContext : DbContext
 
     public DbSet<Project> Projects { get; set; } = default!;
     public DbSet<User> Users { get; set; } = default!;
-    public DbSet<UserRole> UserRoles { get; set; } = default!;
     public DbSet<Role> Roles { get; set; } = default!;
+    public DbSet<UserRole> UserRoles { get; set; } = default!;
+    public DbSet<Participation> Participations { get; set; } = default!;
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>()
+            .HasMany(user => user.Roles)
+            .WithMany(role => role.Users)
+            .UsingEntity<UserRole>();
+
+        modelBuilder.Entity<User>()
+            .HasMany(user => user.OwnedProjects)
+            .WithOne(ownedProject => ownedProject.ProjectOwner)
+            .HasForeignKey(ownedProject => ownedProject.ProjectOwnerUserId)
+            .IsRequired();
+
+        modelBuilder.Entity<User>()
+            .HasMany(user => user.LeadProjects)
+            .WithOne(leadProject => leadProject.LeadArchitect)
+            .HasForeignKey(leadProject => leadProject.LeadArchitectUserId)
+            .IsRequired();
+
+        modelBuilder.Entity<User>()
+            .HasMany(user => user.ParticipateProjects)
+            .WithMany(project => project.ParticipatingUsers)
+            .UsingEntity<Participation>();
+    }
 }
