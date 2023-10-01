@@ -11,7 +11,7 @@ public class User
     [Required]
     public string Name { get; set; } = default!;
 
-    public string Bio { get; set; } = default!;
+    public string? Bio { get; set; } = default!;
 
     [Required]
     [Column(TypeName = "money")]
@@ -27,6 +27,9 @@ public class User
     public string Phone { get; set; } = default!;
 
     [Required]
+    public string Password { get; set; } = default!;
+
+    [Required]
     public DateTime CreatedDate { get; set; }
 
     [Required]
@@ -38,22 +41,13 @@ public class User
     [Required]
     public int Status { get; set; }
 
-    public string ExternalId { get; set; } = default!;
+    public string? ExternalId { get; set; } = default!;
 
-    public string Token { get; set; } = default!;
+    public string? Token { get; set; } = default!;
 
-    [NotMapped]
-    public List<UserRole> UserRoles { get; set; } = default!;
+    public DateTime? LockedUntil { get; set; }
 
-    [NotMapped]
-    public List<Project> ParticipateProjects { get; set; } = default!;
+    public List<UserRole> UserRoles { get; set; } = new();
 
-    [NotMapped]
-    public List<Project> OwnedProjects { get; set; } = default!;
-
-    [NotMapped]
-    public List<Project> LeadProjects { get; set; } = default!;
-
-    [NotMapped]
-    public List<Participation> Participations { get; set; } = default!;
+    public List<Participation> Participations { get; set; } = new();
 }

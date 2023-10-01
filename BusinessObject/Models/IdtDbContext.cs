@@ -30,16 +30,5 @@ public class IdtDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Project>()
-            .HasOne(project => project.ProjectOwner)
-            .WithMany(projectOwner => projectOwner.OwnedProjects)
-            .HasForeignKey(project => project.ProjectOwnerUserId)
-            .IsRequired(false);
-
-        modelBuilder.Entity<Project>()
-            .HasOne(project => project.LeadArchitect)
-            .WithMany(leadArchitect => leadArchitect.LeadProjects)
-            .HasForeignKey(project => project.LeadArchitectUserId)
-            .IsRequired(false);
     }
 }

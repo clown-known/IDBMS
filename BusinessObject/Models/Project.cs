@@ -20,10 +20,7 @@ public class Project
     public string? Description { get; set; }
 
     [Required]
-    public bool IsDecor { get; set; }
-
-    [Required]
-    public bool IsConstruction { get; set; }
+    public int Type { get; set; }
 
     [Required]
     public DateTime CreatedDate { get; set; }
@@ -33,10 +30,6 @@ public class Project
 
     [Required]
     public int NoStage { get; set; }
-
-    public Guid ProjectOwnerUserId { get; set; }
-
-    public Guid LeadArchitectUserId { get; set; }
 
     [Column(TypeName = "money")]
     public decimal EstimatedPrice { get; set; }
@@ -48,20 +41,17 @@ public class Project
     public int Language { get; set; }
 
     [Required]
-    public bool IsAdvertisement { get; set; }
-
-    [Required]
     public int Status { get; set; }
 
-    [ForeignKey("ProjectOwnerUserId")]
-    public User ProjectOwner { get; set; } = default!;
+    [Required]
+    public bool IsAdvertisement { get; set; }
 
-    [ForeignKey("LeadArchitectUserId")]
-    public User LeadArchitect { get; set; } = default!;
+    public string? AdminNote { get; set; } = default!;
 
-    [NotMapped]
-    public List<User> ParticipatingUsers { get; set; } = default!;
+    public Guid? BasedOnDecorProjectId { get; set; }
 
-    [NotMapped]
+    [ForeignKey("BasedOnDecorProjectId")]
+    public Project BasedOnDecorProject { get; set; } = default!;
+
     public List<Participation> Participations { get; set; } = default!;
 }
