@@ -50,4 +50,6 @@ public class User
     public List<UserRole> UserRoles { get; set; } = new();
 
     public List<Participation> Participations { get; set; } = new();
+
+    public List<Transaction> Transactions { get; set; } = new();
 }

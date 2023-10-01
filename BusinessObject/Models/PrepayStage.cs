@@ -37,5 +37,7 @@ public class PrepayStage
     public bool IsHidden { get; set; }
 
     public Project Project { get; set; } = new();
+
+    public List<Transaction> Transactions { get; set; } = new();
 }
 
