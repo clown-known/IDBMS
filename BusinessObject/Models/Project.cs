@@ -54,4 +54,6 @@ public class Project
     public Project BasedOnDecorProject { get; set; } = default!;
 
     public List<Participation> Participations { get; set; } = default!;
+
+    public List<PrepayStage> PrepayStages { get; set; } = default!;
 }
