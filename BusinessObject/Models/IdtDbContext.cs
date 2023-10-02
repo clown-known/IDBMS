@@ -40,5 +40,9 @@ public class IdtDbContext : DbContext
         modelBuilder.Entity<Project>()
             .Property(project => project.Type)
             .HasConversion<int>();
+
+        modelBuilder.Entity<User>()
+            .Property(user => user.Status)
+            .HasConversion<int>();
     }
 }
