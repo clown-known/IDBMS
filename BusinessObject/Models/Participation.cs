@@ -9,17 +9,15 @@ public class Participation
 
     [Required]
     public Guid UserId { get; set; }
+    public User User { get; set; } = default!;
 
     [Required]
     public Guid ProjectId { get; set; }
+    public Project Project { get; set; } = default!;
 
     [Required]
     public int Role { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }
-
-    public User User { get; set; } = default!;
-
-    public Project Project { get; set; } = default!;
 }

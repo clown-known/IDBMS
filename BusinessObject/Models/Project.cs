@@ -24,6 +24,10 @@ public class Project
     public int Type { get; set; }
 
     [Required]
+    public int ProjectCategoryId { get; set; }
+    public ProjectCategory ProjectCategory { get; set; } = new();
+
+    [Required]
     public DateTime CreatedDate { get; set; }
 
     [Required]
