@@ -23,6 +23,5 @@ public class RecoveryCode
     [Required]
     public int Status { get; set; }
 
-    [ForeignKey("UserId")]
     public User User { get; set; } = default!;
 }
