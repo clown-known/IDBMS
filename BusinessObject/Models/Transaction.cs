@@ -23,9 +23,11 @@ public class Transaction
 
     [Required]
     public Guid PrepayStageId { get; set; }
+    public PrepayStage PrepayStage { get; set; } = new();
 
     [Required]
     public Guid UserId { get; set; }
+    public User User { get; set; } = new();
 
     [Required]
     public int Status { get; set; }
@@ -34,8 +36,4 @@ public class Transaction
     public string TransactionReceiptImageUrl { get; set; } = default!;
 
     public string? AdminNote { get; set; }
-
-    public User User { get; set; } = new();
-
-    public PrepayStage PrepayStage { get; set; } = new();
 }

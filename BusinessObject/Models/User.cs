@@ -3,6 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
 
+public enum UserStatus
+{
+    Active = 0,
+    Unverified = 1,
+    Suspended = 2,
+    Locked = 3
+}
+
 public class User
 {
     [Key]
@@ -39,7 +47,7 @@ public class User
     public string Language { get; set; } = default!;
 
     [Required]
-    public int Status { get; set; }
+    public UserStatus Status { get; set; }
 
     public string? ExternalId { get; set; } = default!;
 

@@ -13,6 +13,5 @@ public class UserRole
 
     [Required]
     public Guid UserId { get; set; }
-
     public User User { get; set; } = default!;
 }

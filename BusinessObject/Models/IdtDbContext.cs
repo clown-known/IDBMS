@@ -9,12 +9,15 @@ public class IdtDbContext : DbContext
     {
     }
 
-    public DbSet<Project> Projects { get; set; } = default!;
-    public DbSet<User> Users { get; set; } = default!;
-    public DbSet<RecoveryCode> RecoveryCodes { get; set; } = default!;
-    public DbSet<UserRole> UserRoles { get; set; } = default!;
     public DbSet<Participation> Participations { get; set; } = default!;
-
+    public DbSet<PrepayStage> PrepayStages { get; set; } = default!;
+    public DbSet<Project> Projects { get; set; } = default!;
+    public DbSet<ProjectCategory> ProjectCategories { get; set; } = default!;
+    public DbSet<RecoveryCode> RecoveryCodes { get; set; } = default!;
+    public DbSet<Transaction> Transactions { get; set; } = default!;
+    public DbSet<User> Users { get; set; } = default!;
+    public DbSet<UserRole> UserRoles { get; set; } = default!;
+    
     private static string? GetConnectionString()
     {
         var config = new ConfigurationBuilder()
@@ -32,6 +35,14 @@ public class IdtDbContext : DbContext
     {
         modelBuilder.Entity<Project>()
             .Property(project => project.Status)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<Project>()
+            .Property(project => project.Type)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<User>()
+            .Property(user => user.Status)
             .HasConversion<int>();
     }
 }
