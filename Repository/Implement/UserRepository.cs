@@ -27,7 +27,8 @@ namespace Repository.Implement
 
     public User? GetByEmailAndPassword(string email, string password)
     {
-        return context.Users.FirstOrDefault(d => d.Email == email && d.Password == password);
+        byte[] hashPass = new byte[];
+        return context.Users.FirstOrDefault(d => d.Email == email && d.Password == hashPass);
     }
 
     public User? Save(User user)

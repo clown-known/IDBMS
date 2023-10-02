@@ -27,7 +27,7 @@ public class User
     public string Phone { get; set; } = default!;
 
     [Required]
-    public string Password { get; set; } = default!;
+    public byte[] Password { get; set; } = default!;
 
     [Required]
     public DateTime CreatedDate { get; set; }

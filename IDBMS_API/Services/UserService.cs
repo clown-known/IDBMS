@@ -64,7 +64,7 @@ namespace API.Services
                 Id = Guid.NewGuid(),
                 Email = request.Email,
                 Name = request.Name,
-                Password = request.Password,
+                //Password = request.Password,
                 Phone = request.Phone,
                 ExternalId = request.ExternalId ?? request.ExternalId
             };
@@ -104,7 +104,7 @@ namespace API.Services
             user.Language = request.Language;
             user.Email = request.Email;
             user.Name = request.Name;
-            user.Password = request.Password;
+            //user.Password = request.Password;
             user.Phone = request.Phone;
 
             userRepository.Update(user);
