@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
@@ -41,7 +42,7 @@ public class Project
     public int Language { get; set; }
 
     [Required]
-    public int Status { get; set; }
+    public ProjectStatus Status { get; set; }
 
     [Required]
     public bool IsAdvertisement { get; set; }

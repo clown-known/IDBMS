@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
 
@@ -11,6 +12,7 @@ public class Transaction
     public int Category { get; set; }
 
     [Required]
+    [Column(TypeName = "money")]
     public decimal Amount { get; set; }
 
     [Required]

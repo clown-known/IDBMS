@@ -30,5 +30,8 @@ public class IdtDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Project>()
+            .Property(project => project.Status)
+            .HasConversion<int>();
     }
 }
