@@ -14,6 +14,7 @@ public class Comment
     public ConstructionTask ConstructionTask { get; set; } = new();
 
     public Guid? DecorProgressReportId { get; set; }
+    public DecorProgressReport DecorProgressReport { get; set; } = new();
 
     [Required]
     public DateTime CreatedDate { get; set; }

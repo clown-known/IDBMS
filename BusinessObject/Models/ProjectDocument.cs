@@ -28,4 +28,5 @@ public class ProjectDocument
     public Guid? ConstructionTaskReportId { get; set; }
 
     public Guid? DecorProgressReportId { get; set; }
+    public DecorProgressReport DecorProgressReport { get; set; } = new();
 }
