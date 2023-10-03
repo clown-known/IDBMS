@@ -9,10 +9,13 @@ public class IdtDbContext : DbContext
     {
     }
 
+    public DbSet<ConstructionTask> ConstructionTasks { get; set; } = default!;
+    public DbSet<ConstructionTaskCategory> ConstructionTaskCategories { get; set; } = default!;
     public DbSet<Participation> Participations { get; set; } = default!;
     public DbSet<PrepayStage> PrepayStages { get; set; } = default!;
     public DbSet<Project> Projects { get; set; } = default!;
     public DbSet<ProjectCategory> ProjectCategories { get; set; } = default!;
+    public DbSet<ProjectDocument> ProjectDocuments { get; set; } = default!;
     public DbSet<RecoveryCode> RecoveryCodes { get; set; } = default!;
     public DbSet<Transaction> Transactions { get; set; } = default!;
     public DbSet<User> Users { get; set; } = default!;

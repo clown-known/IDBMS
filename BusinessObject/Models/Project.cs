@@ -79,4 +79,6 @@ public class Project
     public List<PrepayStage> PrepayStages { get; set; } = default!;
 
     public List<ConstructionTask> ConstructionTasks { get; set; } = default!;
+
+    public List<ProjectDocument> ProjectDocuments { get; set; } = default!;
 }
