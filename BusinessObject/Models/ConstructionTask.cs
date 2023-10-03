@@ -49,9 +49,8 @@ public class ConstructionTask
     public int ConstructionTaskCategoryId { get; set; }
     public ConstructionTaskCategory ConstructionTaskCategory { get; set; } = new();
 
-    [Required]
-    public Guid ProjectId { get; set; }
-    public Project Project { get; set; } = new();
+    public Guid? ProjectId { get; set; }
+    public Project? Project { get; set; } = new();
 
     [Required]
     public Guid PrepayStageId { get; set; }
