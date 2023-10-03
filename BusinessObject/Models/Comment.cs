@@ -11,10 +11,10 @@ public class Comment
     public string Content { get; set; } = default!;
 
     public Guid? ConstructionTaskId { get; set; }
-    public ConstructionTask ConstructionTask { get; set; } = new();
+    public ConstructionTask? ConstructionTask { get; set; }
 
     public Guid? DecorProgressReportId { get; set; }
-    public DecorProgressReport DecorProgressReport { get; set; } = new();
+    public DecorProgressReport? DecorProgressReport { get; set; }
 
     [Required]
     public DateTime CreatedDate { get; set; }

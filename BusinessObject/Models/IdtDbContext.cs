@@ -9,8 +9,10 @@ public class IdtDbContext : DbContext
     {
     }
 
+    public DbSet<Comment> Comments { get; set; } = default!;
     public DbSet<ConstructionTask> ConstructionTasks { get; set; } = default!;
     public DbSet<ConstructionTaskCategory> ConstructionTaskCategories { get; set; } = default!;
+    public DbSet<ConstructionTaskReport> ConstructionTaskReports { get; set; } = default!;
     public DbSet<DecorProgressReport> DecorProgressReports { get; set; } = default!;
     public DbSet<Participation> Participations { get; set; } = default!;
     public DbSet<PrepayStage> PrepayStages { get; set; } = default!;

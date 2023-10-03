@@ -68,14 +68,13 @@ public class Project
     [Required]
     public bool IsAdvertisement { get; set; }
 
-    public string? AdminNote { get; set; } = default!;
+    public string? AdminNote { get; set; }
 
     public Guid? BasedOnDecorProjectId { get; set; }
-    [ForeignKey("BasedOnDecorProjectId")]
-    public Project BasedOnDecorProject { get; set; } = default!;
+    public Project? BasedOnDecorProject { get; set; }
 
-    public List<ConstructionTask> ConstructionTasks { get; set; } = default!;
-    public List<Participation> Participations { get; set; } = default!;
-    public List<PrepayStage> PrepayStages { get; set; } = default!;
-    public List<ProjectDocument> ProjectDocuments { get; set; } = default!;
+    public List<ConstructionTask> ConstructionTasks { get; set; } = new();
+    public List<Participation> Participations { get; set; } = new();
+    public List<PrepayStage> PrepayStages { get; set; } = new();
+    public List<ProjectDocument> ProjectDocuments { get; set; } = new();
 }
