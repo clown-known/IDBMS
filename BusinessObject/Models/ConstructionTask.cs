@@ -61,4 +61,6 @@ public class ConstructionTask
 
     [Required]
     public int Status { get; set; }
+
+    public List<Comment> Comments { get; set; } = new();
 }

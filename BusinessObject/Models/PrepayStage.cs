@@ -37,8 +37,7 @@ public class PrepayStage
     [Required]
     public bool IsHidden { get; set; }
 
-    public List<Transaction> Transactions { get; set; } = new();
-
     public List<ConstructionTask> ConstructionTasks { get; set; } = new();
+    public List<Transaction> Transactions { get; set; } = new();
 }
 

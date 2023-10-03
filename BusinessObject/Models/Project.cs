@@ -74,11 +74,8 @@ public class Project
     [ForeignKey("BasedOnDecorProjectId")]
     public Project BasedOnDecorProject { get; set; } = default!;
 
-    public List<Participation> Participations { get; set; } = default!;
-
-    public List<PrepayStage> PrepayStages { get; set; } = default!;
-
     public List<ConstructionTask> ConstructionTasks { get; set; } = default!;
-
+    public List<Participation> Participations { get; set; } = default!;
+    public List<PrepayStage> PrepayStages { get; set; } = default!;
     public List<ProjectDocument> ProjectDocuments { get; set; } = default!;
 }
