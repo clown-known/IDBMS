@@ -14,12 +14,16 @@ public class IdtDbContext : DbContext
     public DbSet<ConstructionTaskCategory> ConstructionTaskCategories { get; set; } = default!;
     public DbSet<ConstructionTaskReport> ConstructionTaskReports { get; set; } = default!;
     public DbSet<DecorProgressReport> DecorProgressReports { get; set; } = default!;
+    public DbSet<Floor> Floors { get; set; } = default!;
+    public DbSet<Notification> Notifications { get; set; } = default!;
     public DbSet<Participation> Participations { get; set; } = default!;
     public DbSet<PrepayStage> PrepayStages { get; set; } = default!;
     public DbSet<Project> Projects { get; set; } = default!;
     public DbSet<ProjectCategory> ProjectCategories { get; set; } = default!;
     public DbSet<ProjectDocument> ProjectDocuments { get; set; } = default!;
     public DbSet<RecoveryCode> RecoveryCodes { get; set; } = default!;
+    public DbSet<Room> Rooms { get; set; } = default!;
+    public DbSet<RoomType> RoomTypes { get; set; } = default!;
     public DbSet<Transaction> Transactions { get; set; } = default!;
     public DbSet<User> Users { get; set; } = default!;
     public DbSet<UserRole> UserRoles { get; set; } = default!;
