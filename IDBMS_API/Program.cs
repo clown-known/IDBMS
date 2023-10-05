@@ -3,6 +3,9 @@ using API.Supporters.JwtAuthSupport;
 using BLL.Services;
 using Repository.Implement;
 using Repository;
+//using IDBMS_API.Supporters.JwtAuthSupport;
+using BusinessObject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +22,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<FirebaseService, FirebaseService>();
 builder.Services.AddScoped<JwtTokenSupporter, JwtTokenSupporter>();
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,7 +37,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseMiddleware<JWTAuthenticationMiddleware>();
+app.UseMiddleware<JWTMiddleware>();
 
 app.MapControllers();
 

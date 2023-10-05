@@ -25,13 +25,14 @@ namespace API.Supporters.JwtAuthSupport
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
 
-        public User? ValidateToken(string token)
+        public string? ValidateToken(string token)
         {
             try
             {
@@ -50,20 +51,20 @@ namespace API.Supporters.JwtAuthSupport
                  var userId = jwtToken.Claims.First(claim => claim.Type == "id").Value;
 
                 var user = userRepository.GetById(userId);
-                return userRepository.GetById(userId);
+                return userId;
             } catch (Exception)
             {
                 return null;
             }
         }
-        public User? ExtractUserFromRequestToken(HttpContext context)
-        {
-            var token = context.Request.Headers.Authorization.ToString().Split(" ").Last();
-            if (token == null)
-            {
-                return null;
-            }
-            return ValidateToken(token);
-        }
+        //public User? ExtractUserFromRequestToken(HttpContext context)
+        //{
+        //    var token = context.Request.Headers.Authorization.ToString().Split(" ").Last();
+        //    if (token == null)
+        //    {
+        //        return null;
+        //    }
+        //    return ValidateToken(token);
+        //}
     }
 }
