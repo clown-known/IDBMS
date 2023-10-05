@@ -16,6 +16,7 @@ public class IdtDbContext : DbContext
     public DbSet<ConstructionTaskDesign> ConstructionTaskDesigns { get; set; } = default!;
     public DbSet<ConstructionTaskReport> ConstructionTaskReports { get; set; } = default!;
     public DbSet<DecorProgressReport> DecorProgressReports { get; set; } = default!;
+    public DbSet<DecorProjectDesign> DecorProjectDesigns { get; set; } = default!;
     public DbSet<Floor> Floors { get; set; } = default!;
     public DbSet<InteriorItem> InteriorItems { get; set; } = default!;
     public DbSet<InteriorItemBookmark> InteriorItemBookmarks { get; set; } = default!;
@@ -24,6 +25,7 @@ public class IdtDbContext : DbContext
     public DbSet<Notification> Notifications { get; set; } = default!;
     public DbSet<Participation> Participations { get; set; } = default!;
     public DbSet<PrepayStage> PrepayStages { get; set; } = default!;
+    public DbSet<PrepayStageDesign> PrepayStageDesigns { get; set; } = default!;
     public DbSet<Project> Projects { get; set; } = default!;
     public DbSet<ProjectCategory> ProjectCategories { get; set; } = default!;
     public DbSet<ProjectDocument> ProjectDocuments { get; set; } = default!;

@@ -73,6 +73,10 @@ public class Project
     public Guid? BasedOnDecorProjectId { get; set; }
     public Project? BasedOnDecorProject { get; set; }
 
+    [Required]
+    public int DecorProjectDesignId { get; set; }
+    public DecorProjectDesign DecorProjectDesign { get; set; } = new();
+
     public List<ConstructionTask> ConstructionTasks { get; set; } = new();
     public List<Floor> Floors { get; set; } = new();
     public List<Participation> Participations { get; set; } = new();
