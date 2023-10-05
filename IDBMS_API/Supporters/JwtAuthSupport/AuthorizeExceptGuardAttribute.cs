@@ -11,10 +11,10 @@ namespace API.Supporters.JwtAuthSupport
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var user = (User?) context.HttpContext.Items["User"];
-            //if(user == null || user.RoleId == RoleConstant.GUARD)
-            //{
-            //    context.Result = new JsonResult(new { Message = "Unauthorized!" }) { StatusCode = StatusCodes.Status403Forbidden };
-            //}
+            if (user == null)
+            {
+                context.Result = new JsonResult(new { Message = "Unauthorized!" }) { StatusCode = StatusCodes.Status403Forbidden };
+            }
             // cai nay la check role cua tung project
         }
     }

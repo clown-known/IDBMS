@@ -7,6 +7,7 @@ namespace API.Supporters.JwtAuthSupport
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class AuthorizeAttribute : Attribute, IAuthorizationFilter
     {
+
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var user = (User?)context.HttpContext.Items["User"];

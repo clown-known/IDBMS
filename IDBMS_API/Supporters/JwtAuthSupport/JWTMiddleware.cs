@@ -1,16 +1,17 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using BusinessObject.Models;
+using Microsoft.IdentityModel.Tokens;
 using Repository;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace API.Supporters
 {
-    public class JWTAuthenticationMiddleware
+    public class JWTMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly IConfiguration configuration;
 
-        public JWTAuthenticationMiddleware(RequestDelegate next, IConfiguration config)
+        public JWTMiddleware(RequestDelegate next, IConfiguration config)
         {
             _next = next;
             configuration = config;
@@ -45,9 +46,10 @@ namespace API.Supporters
                 var jwtToken = (JwtSecurityToken) validatedToken;
                 var userId = jwtToken.Claims.First(claim => claim.Type == "id").Value;
 
-                var user = userRepository.GetById(userId);
+                //var user = userRepository.GetById(userId);
+                var user = new User();
                 context.Items["User"] = user;
-                //context.Items["Role"] = user!.RoleId;
+                //context.Items["Role"] = 1;
             }
             catch (Exception)
             {
