@@ -51,6 +51,7 @@ public class InteriorItem
     public Guid? ParentItemId { get; set; }
     public InteriorItem? ParentItem { get; set; }
 
+    public List<ApplianceSuggestion> ApplianceSuggestions { get; set; } = new();
     public List<ConstructionTask> ConstructionTasks { get; set; } = new();
     public List<InteriorItemBookmark> InteriorItemBookmarks { get; set; } = new();
 }

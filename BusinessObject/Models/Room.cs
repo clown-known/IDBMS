@@ -33,4 +33,6 @@ public class Room
 
     public Guid? ProjectId { get; set; }
     public Project? Project { get; set; } = new();
+
+    public List<ApplianceSuggestion> ApplianceSuggestions { get; set; } = new();
 }
