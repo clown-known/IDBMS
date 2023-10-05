@@ -16,4 +16,5 @@ public class ConstructionTaskCategory
     public bool IsDeleted { get; set; }
 
     public List<ConstructionTask> ConstructionTasks { get; set; } = new();
+    public List<ConstructionTaskDesign> ConstructionTasksDesigns { get; set; } = new();
 }

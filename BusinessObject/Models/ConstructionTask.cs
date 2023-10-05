@@ -45,9 +45,8 @@ public class ConstructionTask
     [Required]
     public int NoDate { get; set; }
 
-    [Required]
-    public int ConstructionTaskCategoryId { get; set; }
-    public ConstructionTaskCategory ConstructionTaskCategory { get; set; } = new();
+    public int? ConstructionTaskCategoryId { get; set; }
+    public ConstructionTaskCategory? ConstructionTaskCategory { get; set; } = new();
 
     public Guid? ProjectId { get; set; }
     public Project? Project { get; set; } = new();
@@ -59,7 +58,12 @@ public class ConstructionTask
     public Guid? InteriorItemId { get; set; }
 
     [Required]
+    public int ConstructionTaskDesignId { get; set; }
+    public ConstructionTaskDesign ConstructionTaskDesign { get; set; } = new();
+
+    [Required]
     public int Status { get; set; }
 
     public List<Comment> Comments { get; set; } = new();
+    public List<ConstructionTaskReport> ConstructionTaskReports { get; set; } = new();
 }
