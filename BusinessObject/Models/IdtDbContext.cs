@@ -9,6 +9,7 @@ public class IdtDbContext : DbContext
     {
     }
 
+    public DbSet<AuthenticationCode> AuthenticationCodes { get; set; } = default!;
     public DbSet<Comment> Comments { get; set; } = default!;
     public DbSet<ConstructionTask> ConstructionTasks { get; set; } = default!;
     public DbSet<ConstructionTaskCategory> ConstructionTaskCategories { get; set; } = default!;
@@ -23,7 +24,6 @@ public class IdtDbContext : DbContext
     public DbSet<Project> Projects { get; set; } = default!;
     public DbSet<ProjectCategory> ProjectCategories { get; set; } = default!;
     public DbSet<ProjectDocument> ProjectDocuments { get; set; } = default!;
-    public DbSet<RecoveryCode> RecoveryCodes { get; set; } = default!;
     public DbSet<Room> Rooms { get; set; } = default!;
     public DbSet<RoomType> RoomTypes { get; set; } = default!;
     public DbSet<Transaction> Transactions { get; set; } = default!;

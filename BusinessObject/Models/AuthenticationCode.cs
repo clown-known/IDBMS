@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
 
-public class RecoveryCode
+public class AuthenticationCode
 {
     [Key]
     public Guid Id { get; set; }
@@ -19,9 +18,8 @@ public class RecoveryCode
 
     [Required]
     public Guid UserId { get; set; }
+    public User User { get; set; } = new();
 
     [Required]
     public int Status { get; set; }
-
-    public User User { get; set; } = default!;
 }
