@@ -56,6 +56,7 @@ public class ConstructionTask
     public PrepayStage PrepayStage { get; set; } = new();
 
     public Guid? InteriorItemId { get; set; }
+    public InteriorItem? InteriorItem { get; set; }
 
     [Required]
     public int ConstructionTaskDesignId { get; set; }
