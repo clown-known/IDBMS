@@ -9,6 +9,7 @@ public class IdtDbContext : DbContext
     {
     }
 
+    public DbSet<Admin> Admins { get; set; } = default!;
     public DbSet<ApplianceSuggestion> ApplianceSuggestions { get; set; } = default!;
     public DbSet<AuthenticationCode> AuthenticationCodes { get; set; } = default!;
     public DbSet<Comment> Comments { get; set; } = default!;
