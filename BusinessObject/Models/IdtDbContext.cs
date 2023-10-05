@@ -18,6 +18,7 @@ public class IdtDbContext : DbContext
     public DbSet<DecorProgressReport> DecorProgressReports { get; set; } = default!;
     public DbSet<Floor> Floors { get; set; } = default!;
     public DbSet<InteriorItem> InteriorItems { get; set; } = default!;
+    public DbSet<InteriorItemBookmark> InteriorItemBookmarks { get; set; } = default!;
     public DbSet<InteriorItemCategory> InteriorItemsCategories { get; set; } = default!;
     public DbSet<InteriorItemColor> InteriorItemColors { get; set; } = default!;
     public DbSet<Notification> Notifications { get; set; } = default!;

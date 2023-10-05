@@ -52,4 +52,5 @@ public class InteriorItem
     public InteriorItem? ParentItem { get; set; }
 
     public List<ConstructionTask> ConstructionTasks { get; set; } = new();
+    public List<InteriorItemBookmark> InteriorItemBookmarks { get; set; } = new();
 }
