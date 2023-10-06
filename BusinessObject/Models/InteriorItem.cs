@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
@@ -49,7 +50,7 @@ public class InteriorItem
     public InteriorItemCategory InteriorItemCategory { get; set; } = new();
 
     [Required]
-    public int Status { get; set; }
+    public InteriorItemStatus Status { get; set; }
 
     public Guid? ParentItemId { get; set; }
     public InteriorItem? ParentItem { get; set; }

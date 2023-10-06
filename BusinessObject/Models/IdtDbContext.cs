@@ -52,6 +52,10 @@ public class IdtDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<InteriorItem>()
+            .Property(interiorItem => interiorItem.Status)
+            .HasConversion<int>();
+
         modelBuilder.Entity<Participation>()
             .Property(participation => participation.Role)
             .HasConversion<int>();
