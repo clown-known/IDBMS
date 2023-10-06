@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace IDBMS_API.Controllers
+namespace IDBMS_API.Controllers.IDBMSControllers
 {
     public class ProjectCategoryController : Controller
     {
