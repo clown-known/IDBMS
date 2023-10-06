@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObject.Models;
 
@@ -16,7 +17,7 @@ public class Participation
     public Project Project { get; set; } = default!;
 
     [Required]
-    public int Role { get; set; }
+    public ParticipationRole Role { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }

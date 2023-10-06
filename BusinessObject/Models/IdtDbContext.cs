@@ -52,6 +52,10 @@ public class IdtDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Participation>()
+            .Property(participation => participation.Role)
+            .HasConversion<int>();
+
         modelBuilder.Entity<Project>()
             .Property(project => project.Status)
             .HasConversion<int>();
@@ -62,6 +66,10 @@ public class IdtDbContext : DbContext
 
         modelBuilder.Entity<User>()
             .Property(user => user.Status)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<UserRole>()
+            .Property(userRole => userRole.Role)
             .HasConversion<int>();
     }
 }

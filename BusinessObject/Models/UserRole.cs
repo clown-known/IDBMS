@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObject.Models;
 
@@ -9,7 +9,7 @@ public class UserRole
     public int Id { get; set; }
 
     [Required]
-    public int Role { get; set; }
+    public Role Role { get; set; }
 
     [Required]
     public Guid UserId { get; set; }
