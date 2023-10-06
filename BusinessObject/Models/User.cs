@@ -1,15 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
-
-public enum UserStatus
-{
-    Active = 0,
-    Unverified = 1,
-    Suspended = 2,
-    Locked = 3
-}
 
 public class User
 {

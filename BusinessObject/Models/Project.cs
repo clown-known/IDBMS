@@ -1,25 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
-
-public enum ProjectStatus
-{
-    Draft = 0,
-    PendingConfirmation = 1,
-    Negotiating = 2,
-    PendingDeposit = 3,
-    Ongoing = 4,
-    Suspended = 5,
-    Canceled = 6,
-    Done = 7
-}
-
-public enum ProjectType
-{
-    Decor = 0,
-    Construction = 1,
-}
 
 public class Project
 {
