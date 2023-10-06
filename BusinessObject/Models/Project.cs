@@ -36,11 +36,12 @@ public class Project
     [Required]
     public int NoStage { get; set; }
 
+    [Required]
     [Column(TypeName = "money")]
     public decimal EstimatedPrice { get; set; }
 
     [Column(TypeName = "money")]
-    public decimal FinalPrice { get; set; }
+    public decimal? FinalPrice { get; set; }
 
     [Required]
     public Guid CurrentStageId { get; set; }

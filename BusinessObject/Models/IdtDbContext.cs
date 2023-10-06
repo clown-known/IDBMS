@@ -31,6 +31,7 @@ public class IdtDbContext : DbContext
     public DbSet<Project> Projects { get; set; } = default!;
     public DbSet<ProjectCategory> ProjectCategories { get; set; } = default!;
     public DbSet<ProjectDocument> ProjectDocuments { get; set; } = default!;
+    public DbSet<ProjectDocumentTemplate> ProjectDocumentTemplates { get; set; } = default!;
     public DbSet<Room> Rooms { get; set; } = default!;
     public DbSet<RoomType> RoomTypes { get; set; } = default!;
     public DbSet<Transaction> Transactions { get; set; } = default!;

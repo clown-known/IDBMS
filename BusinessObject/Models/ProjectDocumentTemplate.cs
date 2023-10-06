@@ -1,15 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace BusinessObject.Models
+namespace BusinessObject.Models;
+
+public class ProjectDocumentTemplate
 {
-    public class ProjectDocumentTemplate
-    {
-        [Key]
-        public Guid Id { get; set; }
-    }
+    [Key]
+    public int Id { get; set; }
+
+    [Required]
+    public string Name { get; set; } = default!;
+
+    [Required]
+    public string Language { get; set; } = default!;
+
+    [Required]
+    public DateTime CreatedDate { get; set; }
+
+    [Required]
+    public DateTime UpdatedDate { get; set; }
+
+    [Required]
+    public string CompanyName { get; set; } = default!;
+
+    [Required]
+    public string CompanyAddress { get; set; } = default!;
+
+    [Required]
+    public string CompanyPhone { get; set; } = default!;
+
+    [Required]
+    public string CompanyFax { get; set; } = default!;
+
+    [Required]
+    public string TaxCode { get; set; } = default!;
+
+    [Required]
+    public string AccountNo { get; set; } = default!;
+
+    [Required]
+    public string AccountName { get; set; } = default!;
+
+    [Required]
+    public string BankBranchName { get; set; } = default!;
+
+    [Required]
+    public string BankBranchAddress { get; set; } = default!;
+
+    [Required]
+    public string SwiftCode { get; set; } = default!;
+
+    [Required]
+    public string RepresentedBy { get; set; } = default!;
+
+    public List<ProjectDocument> ProjectDocuments { get; set; } = new();
 }
