@@ -23,5 +23,8 @@ public class RoomType
     [Required]
     public double IsHidden { get; set; }
 
+    [Required]
+    public string IconImageUrl { get; set; } = default!;
+
     public List<Room> Rooms { get; set; } = new();
 }

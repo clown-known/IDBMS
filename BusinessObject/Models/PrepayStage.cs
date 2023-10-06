@@ -38,6 +38,7 @@ public class PrepayStage
     public bool IsHidden { get; set; }
 
     public List<ConstructionTask> ConstructionTasks { get; set; } = new();
+    public List<DecorProgressReport> DecorProgressReports { get; set; } = new();
     public List<Transaction> Transactions { get; set; } = new();
 }
 

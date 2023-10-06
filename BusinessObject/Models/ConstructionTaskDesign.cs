@@ -21,9 +21,10 @@ public class ConstructionTaskDesign
 
     [Required]
     [Column(TypeName = "money")]
-    public decimal PricePerUnit { get; set; }
+    public decimal EstimatePricePerUnit { get; set; }
 
     public int? InteriorItemCategoryId { get; set; }
+    public InteriorItemCategory? InteriorItemCategory { get; set; } = new();
 
     [Required]
     public int ConstructionTaskCategoryId { get; set; }
