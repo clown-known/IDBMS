@@ -32,7 +32,7 @@ public class ProjectDocument
     public DecorProgressReport? DecorProgressReport { get; set; }
 
     [Required]
-    public Guid ProjectDocumentTemplateId { get; set; }
+    public int ProjectDocumentTemplateId { get; set; }
     public ProjectDocumentTemplate ProjectDocumentTemplate { get; set; } = new();
 
     [Required]

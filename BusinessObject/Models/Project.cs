@@ -45,7 +45,6 @@ public class Project
 
     [Required]
     public Guid CurrentStageId { get; set; }
-    public PrepayStage CurrentStage { get; set; } = new();
 
     [Required]
     public int Language { get; set; }

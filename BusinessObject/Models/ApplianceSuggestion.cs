@@ -20,4 +20,7 @@ public class ApplianceSuggestion
     [Required]
     public Guid RoomId { get; set; }
     public Room Room { get; set; } = new();
+
+    public Guid? ProjectId { get; set; }
+    public Project? Project { get; set; }
 }
