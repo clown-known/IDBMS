@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.Implement
+namespace Repository.Implements
 {
     public class UserRepository : IUserRepository
     { 
