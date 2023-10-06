@@ -16,9 +16,6 @@ public class InteriorItemCategory
     public string BannerImageUrl { get; set; } = default!;
 
     [Required]
-    public string SketchImageUrl { get; set; } = default!;
-
-    [Required]
     public string IconImageUrl { get; set; } = default!;
 
     [Required]

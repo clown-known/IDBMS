@@ -27,4 +27,5 @@ public class DecorProgressReport
     public bool IsDeleted { get; set; }
 
     public List<Comment> Comments { get; set; } = new();
+    public List<ProjectDocument> ProjectDocuments { get; set; } = new();
 }

@@ -31,4 +31,6 @@ public class ConstructionTaskReport
 
     [Required]
     public bool IsDeleted { get; set; }
+
+    public List<ProjectDocument> ProjectDocuments { get; set; } = new();
 }

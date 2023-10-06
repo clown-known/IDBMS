@@ -60,6 +60,10 @@ public class Project
     public decimal FinalPrice { get; set; }
 
     [Required]
+    public Guid CurrentStageId { get; set; }
+    public PrepayStage CurrentStage { get; set; } = new();
+
+    [Required]
     public int Language { get; set; }
 
     [Required]

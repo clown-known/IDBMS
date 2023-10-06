@@ -12,7 +12,7 @@ public class ApplianceSuggestion
 
     public string? Description { get; set; }
 
-    public string? SketchImageUrl { get; set; }
+    public string? ImageUrl { get; set; }
 
     public Guid? InteriorItemId { get; set; }
     public InteriorItem? InteriorItem { get; set; }

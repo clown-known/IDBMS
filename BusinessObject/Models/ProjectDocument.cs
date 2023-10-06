@@ -26,7 +26,15 @@ public class ProjectDocument
     public Project Project { get; set; } = new();
 
     public Guid? ConstructionTaskReportId { get; set; }
+    public ConstructionTaskReport? ConstructionTaskReport { get; set; }
 
     public Guid? DecorProgressReportId { get; set; }
-    public DecorProgressReport DecorProgressReport { get; set; } = new();
+    public DecorProgressReport? DecorProgressReport { get; set; }
+
+    [Required]
+    public Guid ProjectDocumentTemplateId { get; set; }
+    public ProjectDocumentTemplate ProjectDocumentTemplate { get; set; } = new();
+
+    [Required]
+    public bool IsDeleted { get; set; }
 }

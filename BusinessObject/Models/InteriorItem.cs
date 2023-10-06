@@ -38,6 +38,9 @@ public class InteriorItem
     [Column(TypeName = "money")]
     public decimal EstimatePrice { get; set; }
 
+    [Required]
+    public double LaborCost { get; set; }
+
     public int? InteriorItemColorId { get; set; }
     public InteriorItemColor? InteriorItemColor { get; set; }
     

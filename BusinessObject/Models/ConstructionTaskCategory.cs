@@ -13,6 +13,9 @@ public class ConstructionTaskCategory
     public string? Description { get; set; }
 
     [Required]
+    public string IconImageUrl { get; set; } = default!;
+
+    [Required]
     public bool IsDeleted { get; set; }
 
     public List<ConstructionTask> ConstructionTasks { get; set; } = new();
