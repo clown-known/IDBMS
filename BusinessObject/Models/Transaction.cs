@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
@@ -30,7 +31,7 @@ public class Transaction
     public User User { get; set; } = new();
 
     [Required]
-    public int Status { get; set; }
+    public TransactionStatus Status { get; set; }
 
     [Required]
     public string TransactionReceiptImageUrl { get; set; } = default!;
