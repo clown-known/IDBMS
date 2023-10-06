@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
@@ -63,7 +64,7 @@ public class ConstructionTask
     public ConstructionTaskDesign ConstructionTaskDesign { get; set; } = new();
 
     [Required]
-    public int Status { get; set; }
+    public ConstructionTaskStatus Status { get; set; }
 
     public List<Comment> Comments { get; set; } = new();
     public List<ConstructionTaskReport> ConstructionTaskReports { get; set; } = new();
