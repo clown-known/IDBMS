@@ -65,6 +65,10 @@ public class IdtDbContext : DbContext
             .Property(interiorItem => interiorItem.Status)
             .HasConversion<int>();
 
+        modelBuilder.Entity<Notification>()
+            .Property(notification => notification.Category)
+            .HasConversion<int>();
+
         modelBuilder.Entity<Participation>()
             .Property(participation => participation.Role)
             .HasConversion<int>();

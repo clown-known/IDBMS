@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObject.Models;
 
@@ -8,7 +9,7 @@ public class Notification
     public Guid Id { get; set; }
 
     [Required]
-    public int Category { get; set; }
+    public NotificationCategory Category { get; set; }
 
     [Required]
     public string Content { get; set; } = default!;
