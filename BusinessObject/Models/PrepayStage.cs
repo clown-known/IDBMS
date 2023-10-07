@@ -25,6 +25,12 @@ public class PrepayStage
     public decimal TotalPaid { get; set; }
 
     [Required]
+    public bool IsPrepaid { get; set; }
+
+    [Required]
+    public double PricePercentage { get; set; }
+
+    [Required]
     public DateTime StartedDate { get; set; }
 
     [Required]

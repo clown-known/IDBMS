@@ -11,6 +11,9 @@ public class PrepayStageDesign
     public double PricePercentage { get; set; }
 
     [Required]
+    public bool IsPrepaid { get; set; }
+
+    [Required]
     public int StageNo { get; set; }
 
     [Required]
