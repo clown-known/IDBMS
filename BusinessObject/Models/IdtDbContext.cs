@@ -53,6 +53,10 @@ public class IdtDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AuthenticationCode>()
+            .Property(authenticationCode => authenticationCode.Status)
+            .HasConversion<int>();
+
         modelBuilder.Entity<ConstructionTask>()
             .Property(constructionTask => constructionTask.Status)
             .HasConversion<int>();

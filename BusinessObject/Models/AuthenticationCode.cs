@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObject.Models;
 
@@ -21,5 +22,5 @@ public class AuthenticationCode
     public User User { get; set; } = new();
 
     [Required]
-    public int Status { get; set; }
+    public AuthenticationCodeStatus Status { get; set; }
 }
