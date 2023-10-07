@@ -4,7 +4,7 @@ using BLL.Services;
 using BusinessObject.Models;
 using IDBMS_API.Constants;
 using IDBMS_API.DTOs.Request;
-using Repository;
+using Repository.Interfaces;
 using System.Net;
 using System.Numerics;
 using System.Text.RegularExpressions;

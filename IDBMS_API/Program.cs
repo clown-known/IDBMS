@@ -1,11 +1,8 @@
 using API.Supporters;
 using API.Supporters.JwtAuthSupport;
 using BLL.Services;
-using Repository.Implement;
-using Repository;
-//using IDBMS_API.Supporters.JwtAuthSupport;
-using BusinessObject.Models;
-using Microsoft.AspNetCore.Authorization;
+using Repository.Implements;
+using Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IParticipationRepository, ParticipationRepository>();
 
 
 builder.Services.AddScoped<FirebaseService, FirebaseService>();
