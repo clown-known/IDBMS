@@ -10,7 +10,7 @@ public class Transaction
     public Guid Id { get; set; }
 
     [Required]
-    public int Category { get; set; }
+    public TransactionType Type { get; set; }
 
     [Required]
     [Column(TypeName = "money")]

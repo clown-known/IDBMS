@@ -89,6 +89,10 @@ public class IdtDbContext : DbContext
             .Property(transaction => transaction.Status)
             .HasConversion<int>();
 
+        modelBuilder.Entity<Transaction>()
+            .Property(transaction => transaction.Type)
+            .HasConversion<int>();
+
         modelBuilder.Entity<User>()
             .Property(user => user.Status)
             .HasConversion<int>();
