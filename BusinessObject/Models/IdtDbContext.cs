@@ -81,6 +81,10 @@ public class IdtDbContext : DbContext
             .Property(project => project.Type)
             .HasConversion<int>();
 
+        modelBuilder.Entity<ProjectDocument>()
+            .Property(projectDocument => projectDocument.Category)
+            .HasConversion<int>();
+
         modelBuilder.Entity<Transaction>()
             .Property(transaction => transaction.Status)
             .HasConversion<int>();
