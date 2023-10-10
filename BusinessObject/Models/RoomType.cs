@@ -21,7 +21,7 @@ public class RoomType
     public decimal PricePerArea { get; set; }
 
     [Required]
-    public double IsHidden { get; set; }
+    public bool IsHidden { get; set; }
 
     [Required]
     public string IconImageUrl { get; set; } = default!;
