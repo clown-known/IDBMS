@@ -32,7 +32,8 @@ namespace BusinessObject.Enums
         Worker = 21,
         Kilometer = 22,
         Modun = 23,
-        Unclassified = 24
+        Unclassified = 24,
+        Shelf = 25
 
     }
 
