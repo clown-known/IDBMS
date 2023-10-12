@@ -37,7 +37,7 @@ public class User
     public DateTime UpdatedDate { get; set; }
 
     [Required]
-    public string Language { get; set; } = default!;
+    public Language Language { get; set; } = default!;
 
     [Required]
     public UserStatus Status { get; set; }

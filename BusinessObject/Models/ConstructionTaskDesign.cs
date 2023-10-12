@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BusinessObject.Enums;
 
 namespace BusinessObject.Models;
 
@@ -17,7 +18,7 @@ public class ConstructionTaskDesign
     public string? Description { get; set; }
 
     [Required]
-    public int CalculationUnit { get; set; }
+    public CalculationUnit CalculationUnit { get; set; }
 
     [Required]
     [Column(TypeName = "money")]

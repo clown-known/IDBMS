@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObject.Models;
 
@@ -11,7 +12,7 @@ public class InteriorItemColor
     public string Name { get; set; } = default!;
 
     [Required]
-    public int Type { get; set; }
+    public ColorType Type { get; set; }
 
     [Required]
     public string PrimaryColor { get; set; } = default!;

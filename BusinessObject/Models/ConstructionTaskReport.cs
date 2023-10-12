@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BusinessObject.Enums;
 
 namespace BusinessObject.Models;
 
@@ -11,7 +12,7 @@ public class ConstructionTaskReport
     public string Name { get; set; } = default!;
 
     [Required]
-    public int CalculationUnit { get; set; }
+    public CalculationUnit CalculationUnit { get; set; }
 
     [Required]
     public double UnitUsed { get; set; }

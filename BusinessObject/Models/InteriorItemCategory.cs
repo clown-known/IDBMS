@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BusinessObject.Enums;
 
 namespace BusinessObject.Models;
 
@@ -19,7 +20,7 @@ public class InteriorItemCategory
     public string IconImageUrl { get; set; } = default!;
 
     [Required]
-    public int InteriorItemType { get; set; }
+    public InteriorItemType InteriorItemType { get; set; }
 
     public int? ParentCategoryId { get; set; }
     public InteriorItemCategory? ParentCategory { get; set; }

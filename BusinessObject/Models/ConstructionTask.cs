@@ -22,7 +22,7 @@ public class ConstructionTask
     public decimal Percentage { get; set; }
 
     [Required]
-    public int CalculationUnit { get; set; }
+    public CalculationUnit CalculationUnit { get; set; }
 
     [Required]
     [Column(TypeName = "money")]
@@ -35,7 +35,7 @@ public class ConstructionTask
     public double UnitUsed { get; set; }
 
     [Required]
-    public int IsExceed { get; set; }
+    public bool IsExceed { get; set; }
 
     [Required]
     public DateTime StartedDate { get; set; }

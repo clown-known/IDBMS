@@ -25,7 +25,7 @@ public class InteriorItem
     public double Height { get; set; }
 
     [Required]
-    public int CalculationUnit { get; set; }
+    public CalculationUnit CalculationUnit { get; set; }
 
     [Required]
     public string Material { get; set; } = default!;

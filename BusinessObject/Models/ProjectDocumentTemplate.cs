@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BusinessObject.Enums;
 
 namespace BusinessObject.Models;
 
@@ -11,7 +12,10 @@ public class ProjectDocumentTemplate
     public string Name { get; set; } = default!;
 
     [Required]
-    public string Language { get; set; } = default!;
+    public DocumentTemplateType Type { get; set; } = default!;
+
+    [Required]
+    public Language Language { get; set; } = default!;
 
     [Required]
     public DateTime CreatedDate { get; set; }
