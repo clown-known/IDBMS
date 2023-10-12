@@ -33,8 +33,7 @@ public class Project
     [Required]
     public DateTime UpdatedDate { get; set; }
 
-    [Required]
-    public int NoStage { get; set; }
+    public int? NoStage { get; set; }
 
     [Required]
     [Column(TypeName = "money")]
@@ -43,8 +42,7 @@ public class Project
     [Column(TypeName = "money")]
     public decimal? FinalPrice { get; set; }
 
-    [Required]
-    public Guid CurrentStageId { get; set; }
+    public Guid? CurrentStageId { get; set; }
 
     [Required]
     public int Language { get; set; }
@@ -60,9 +58,8 @@ public class Project
     public Guid? BasedOnDecorProjectId { get; set; }
     public Project? BasedOnDecorProject { get; set; }
 
-    [Required]
-    public int DecorProjectDesignId { get; set; }
-    public DecorProjectDesign DecorProjectDesign { get; set; } = new();
+    public int? DecorProjectDesignId { get; set; }
+    public DecorProjectDesign? DecorProjectDesign { get; set; } = new();
 
     public List<ConstructionTask> ConstructionTasks { get; set; } = new();
     public List<Floor> Floors { get; set; } = new();
