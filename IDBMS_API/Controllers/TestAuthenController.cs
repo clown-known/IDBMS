@@ -43,8 +43,8 @@ namespace IDBMS_API.Controllers
             return Ok("success");
         }
         [HttpGet("case2")]
-        //[Authorize(Policy = "ParticipationAccess")]
-        public IActionResult Case2() { 
+        [Authorize( Policy = "ParticipationAccess")]
+        public IActionResult Case2(string? id) { 
             return Ok("success");
         }
     }

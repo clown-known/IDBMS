@@ -3,7 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using BusinessObject.Models;
-using Repository;
+using Repository.Interfaces;
 
 namespace API.Supporters.JwtAuthSupport
 {
