@@ -32,8 +32,7 @@ public class InteriorItem
 
     public string? Description { get; set; }
 
-    [Required]
-    public string Origin { get; set; } = default!;
+    public string? Origin { get; set; } = default!;
 
     [Required]
     [Column(TypeName = "money")]
