@@ -40,11 +40,9 @@ public class ConstructionTask
     [Required]
     public DateTime StartedDate { get; set; }
 
-    [Required]
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
-    [Required]
-    public int NoDate { get; set; }
+    public int? NoDate { get; set; }
 
     public int? ConstructionTaskCategoryId { get; set; }
     public ConstructionTaskCategory? ConstructionTaskCategory { get; set; } = new();
