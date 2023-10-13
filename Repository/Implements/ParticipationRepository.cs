@@ -1,58 +1,65 @@
 ﻿using BusinessObject.Models;
 using Repository.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Repository.Implements
+namespace Repository.Implements;
+
+public class ParticipationRepository : IParticipationRepository
 {
-    public class ParticipationRepository : IParticipationRepository
+    public void DeleteById(string id)
     {
-        private readonly IdtDbContext context = new();
-        public void Dispose()
-        {
-            context?.Dispose();
-        }
+        throw new NotImplementedException();
+    }
 
-        public void DeleteById(string id)
-        {
-            throw new NotImplementedException();
-        }
+    public IEnumerable<Participation> GetAll()
+    {
+        throw new NotImplementedException();
+    }
 
-        public IEnumerable<Participation> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+    public Participation? GetById(string id)
+    {
+        throw new NotImplementedException();
+    }
 
-        public Participation? GetById(string id)
+    public void Save(Participation participationEntity)
+    {
+        try
         {
-            throw new NotImplementedException();
-        }
-
-        public Participation? Save(Participation entity)
-        {
-            var participationAdded = context.Participations.Add(entity);
-            context.SaveChanges();
-            return participationAdded.Entity;
-        }
-
-        public void Update(Participation entity)
-        {
-            context.Entry<Participation>(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            using var context = new IdtDbContext();
+            context.Participations.Add(participationEntity);
             context.SaveChanges();
         }
-
-        public IEnumerable<Guid> getAllParticipationByProjectID(Guid projectID)
+        catch
         {
-            var result = context.Participations.Where(u => u.ProjectId.Equals(projectID)&&u.IsDeleted!=false).Select(p => p.UserId);
-            return result;
+            throw;
         }
+    }
 
-        public bool isPariticipation(Guid userid, Guid projectid)
+    public void Update(Participation entity)
+    {
+        try
         {
-            return context.Participations.Where(p => p.UserId.Equals(userid) && p.ProjectId.Equals(projectid) && p.IsDeleted != false).FirstOrDefault()!=null;
+            using var context = new IdtDbContext();
+            context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.SaveChanges();
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
+    public IEnumerable<Participation> GetAllParticipationByProjectID(Guid projectID)
+    {
+        try
+        {
+            using var context = new IdtDbContext();
+            return context.Participations
+                .Where(u => u.ProjectId.Equals(projectID) && u.IsDeleted != false)
+                .ToList();
+        }
+        catch
+        {
+            throw;
         }
     }
 }
