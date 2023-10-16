@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    internal class IPrepayStageRepository
+    public interface IPrepayStageRepository : ICrudBaseRepository<PrepayStage, Guid>
     {
     }
 }

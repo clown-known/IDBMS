@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    internal class IRoomTypeRepository
+    public interface IRoomTypeRepository : ICrudBaseRepository<RoomType, int>
     {
     }
 }

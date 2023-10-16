@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    internal class ICommentRepository
+    public interface ICommentRepository : ICrudBaseRepository<Comment, Guid>
     {
     }
 }

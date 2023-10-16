@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    internal class IAuthenticationCodeRepository
+    public interface IAuthenticationCodeRepository : ICrudBaseRepository<AuthenticationCode, Guid>
     {
     }
 }

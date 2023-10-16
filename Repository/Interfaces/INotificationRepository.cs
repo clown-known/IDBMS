@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    internal class INotificationRepository
+    public interface INotificationRepository : ICrudBaseRepository<Notification, Guid>
     {
     }
 }

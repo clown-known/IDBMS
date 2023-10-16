@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    internal class IInteriorItemColorRepository
+    public interface IInteriorItemColorRepository : ICrudBaseRepository<InteriorItemColor, int>
     {
     }
 }

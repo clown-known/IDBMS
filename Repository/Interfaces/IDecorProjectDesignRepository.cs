@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    internal class IDecorProjectDesignRepository
+    public interface IDecorProjectDesignRepository : ICrudBaseRepository<DecorProjectDesign, int>
     {
     }
 }

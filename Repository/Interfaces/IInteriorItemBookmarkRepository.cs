@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    internal class IInteriorItemBookmarkRepository
+    public interface IInteriorItemBookmarkRepository : ICrudBaseRepository<InteriorItemBookmark, Guid>
     {
     }
 }

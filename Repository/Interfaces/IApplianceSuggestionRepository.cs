@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    internal class IApplianceSuggestionRepository
+    public interface IApplianceSuggestionRepository : ICrudBaseRepository<ApplianceSuggestion, Guid>
     {
     }
 }
