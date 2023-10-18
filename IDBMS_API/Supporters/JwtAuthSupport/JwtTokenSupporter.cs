@@ -32,39 +32,41 @@ namespace API.Supporters.JwtAuthSupport
             return tokenHandler.WriteToken(token);
         }
 
-        public string? ValidateToken(string token)
+        public User? ValidateToken(string token)
         {
             try
             {
-                 var tokenHandler = new JwtSecurityTokenHandler();
-                 var key = Encoding.ASCII.GetBytes(config["jwt:Key"]);
-                 tokenHandler.ValidateToken(token, new TokenValidationParameters
-                 {
-                     ValidateIssuerSigningKey = true,
-                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                     ValidateIssuer = false,
-                     ValidateAudience = false,
-                     ValidateLifetime = false
-                 }, out SecurityToken validatedToken);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(config["jwt:Key"]);
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = false
+                }, out SecurityToken validatedToken);
 
-                 var jwtToken = (JwtSecurityToken)validatedToken;
-                 var userId = jwtToken.Claims.First(claim => claim.Type == "id").Value;
-
-                var user = userRepository.GetById(userId);
-                return userId;
-            } catch (Exception)
+                var jwtToken = (JwtSecurityToken)validatedToken;
+                var userId = jwtToken.Claims.First(claim => claim.Type == "id").Value;
+                var id = Guid.Parse(userId);
+                var user = userRepository.GetById(id);
+                return user;
+            }
+            catch (Exception)
             {
                 return null;
             }
         }
-        //public User? ExtractUserFromRequestToken(HttpContext context)
-        //{
-        //    var token = context.Request.Headers.Authorization.ToString().Split(" ").Last();
-        //    if (token == null)
-        //    {
-        //        return null;
-        //    }
-        //    return ValidateToken(token);
-        //}
+        public User? ExtractUserFromRequestToken(HttpContext context)
+        {
+            var token = context.Request.Headers.Authorization.ToString().Split(" ").Last();
+            if (token == null)
+            {
+                return null;
+            }
+            return ValidateToken(token);
+        }
+
     }
 }

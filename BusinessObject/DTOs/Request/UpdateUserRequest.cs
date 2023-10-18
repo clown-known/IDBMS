@@ -13,7 +13,7 @@
 
         public string Phone { get; set; } = default!;
 
-        public string Language { get; set; } = default!;
+        public BusinessObject.Enums.Language Language { get; set; } = default!;
         
         public int Status { get; set; }
         public int RoleId { get; set; }

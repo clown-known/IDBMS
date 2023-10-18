@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    public interface IUserRoleRepository : ICrudBaseRepository<UserRole, int>
+    public interface IUserRoleRepository : ICrudBaseRepository<BusinessObject.Models.UserRole, int>
     {
     }
 }

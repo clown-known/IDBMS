@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    public interface IInteriorItemColorRepository : ICrudBaseRepository<InteriorItemColor, int>
+    public interface IInteriorItemColorRepository : ICrudBaseRepository<BusinessObject.Models.InteriorItemColor, int>
     {
     }
 }

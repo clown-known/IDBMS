@@ -10,6 +10,11 @@ public class ProjectRepository : IProjectRepository
         throw new NotImplementedException();
     }
 
+    public void DeleteById(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
     public IEnumerable<Project> GetAll()
     {
         try
@@ -28,7 +33,12 @@ public class ProjectRepository : IProjectRepository
         throw new NotImplementedException();
     }
 
-    public void Save(Project entity)
+    public Project? GetById(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Project Save(Project entity)
     {
         throw new NotImplementedException();
     }
@@ -37,4 +47,5 @@ public class ProjectRepository : IProjectRepository
     {
         throw new NotImplementedException();
     }
+
 }

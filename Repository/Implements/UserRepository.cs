@@ -44,13 +44,14 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public void Save(User user)
+    public User? Save(User user)
     {
         try
         {
             using var context = new IdtDbContext();
-            context.Users.Add(user);
+            var userAdded = context.Users.Add(user);
             context.SaveChanges();
+            return userAdded.Entity;
         }
         catch
         {

@@ -24,7 +24,7 @@ namespace API.Services
             this.firebaseService = firebaseService;
             this.configuration = configuration;
         }
-        public User? GetById(string id)
+        public User? GetById(Guid id)
         {
             return userRepository.GetById(id);
         }
@@ -96,7 +96,9 @@ namespace API.Services
         }
         public async Task UpdateUser(string userId, UpdateUserRequest request)
         {
-            var user = userRepository.GetById(userId) ?? throw new Exception("User not existed");
+            Guid id;
+            Guid.TryParse(userId,out id);
+            var user = userRepository.GetById(id) ?? throw new Exception("User not existed");
 
             user.Address = request.Address;
             user.Balance = 0;

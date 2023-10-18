@@ -20,13 +20,14 @@ public class ParticipationRepository : IParticipationRepository
         throw new NotImplementedException();
     }
 
-    public void Save(Participation participationEntity)
+    public Participation? Save(Participation participationEntity)
     {
         try
         {
             using var context = new IdtDbContext();
-            context.Participations.Add(participationEntity);
+            var partiAdded = context.Participations.Add(participationEntity);
             context.SaveChanges();
+            return partiAdded.Entity;
         }
         catch
         {
@@ -61,5 +62,15 @@ public class ParticipationRepository : IParticipationRepository
         {
             throw;
         }
+    }
+
+    public Participation? GetById(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DeleteById(Guid id)
+    {
+        throw new NotImplementedException();
     }
 }
