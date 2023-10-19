@@ -30,13 +30,12 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public User? GetByEmailAndPassword(string email, string password)
+    public User? GetByEmail(string email)
     {
         try
         {
             using var context = new IdtDbContext();
-            byte[] hashPass = new byte[2];
-            return context.Users.FirstOrDefault(d => d.Email == email && d.Password == hashPass);
+            return context.Users.FirstOrDefault(d => d.Email == email );
         }
         catch
         {

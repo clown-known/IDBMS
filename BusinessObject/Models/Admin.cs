@@ -17,7 +17,9 @@ public class Admin
     public string Email { get; set; } = default!;
 
     [Required]
-    public byte[] Password { get; set; } = default!;
+    public byte[] PasswordHash { get; set; } = default!;
+    [Required]
+    public byte[] PasswordSalt { get; set; } = default!;
 
     public string? AuthenticationCode { get; set; }
 

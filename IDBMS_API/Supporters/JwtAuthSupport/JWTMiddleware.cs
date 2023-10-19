@@ -49,7 +49,7 @@ namespace API.Supporters
                 //var user = userRepository.GetById(userId);
                 var user = new User();
                 context.Items["User"] = user;
-                //context.Items["Role"] = 1;
+                context.Items["Role"] = user.UserRoles;
             }
             catch (Exception)
             {

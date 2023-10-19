@@ -11,8 +11,7 @@ namespace API.Supporters.JwtAuthSupport
     {
         public string Policy { get; set; }
         private ParticipationRepository _participationRepository;
-        public AuthorizeAttribute() { }
-        public AuthorizeAttribute(Guid projectid)
+        public AuthorizeAttribute()
         {
             _participationRepository = new ParticipationRepository();
         }
@@ -32,12 +31,21 @@ namespace API.Supporters.JwtAuthSupport
                 {
 
                     var id = context.HttpContext.Request.Query["id"].ToString();
-                    if (id != null)
+                    Guid.TryParse(id, out Guid pid);
+                    bool accepted = _participationRepository
+                        .GetAllParticipationByProjectID(pid)
+                        .Where(p => p.UserId.Equals(user.Id)).Count() != 0;
+                    if (!accepted)
                         context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
 
                 }
                 //context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
             } 
+            if(Policy != null && Policy == "Manager")
+            {
+                var role = user.UserRoles;
+
+            }
         }
     }
 }

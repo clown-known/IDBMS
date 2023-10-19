@@ -4,6 +4,7 @@ using BLL.Services;
 using BusinessObject.Models;
 using IDBMS_API.Constants;
 using IDBMS_API.DTOs.Request;
+using IDBMS_API.Supporters.Utils;
 using Repository.Interfaces;
 using System.Net;
 using System.Numerics;
@@ -15,13 +16,11 @@ namespace API.Services
     {
         private readonly IUserRepository userRepository;
         private readonly JwtTokenSupporter jwtTokenSupporter;
-        private readonly FirebaseService firebaseService;
         private readonly IConfiguration configuration;
-        public UserService(IUserRepository userRepository, JwtTokenSupporter jwtTokenSupporter, FirebaseService firebaseService, IConfiguration configuration)
+        public UserService(IUserRepository userRepository, JwtTokenSupporter jwtTokenSupporter, IConfiguration configuration)
         {
             this.userRepository = userRepository;
             this.jwtTokenSupporter = jwtTokenSupporter;
-            this.firebaseService = firebaseService;
             this.configuration = configuration;
         }
         public User? GetById(Guid id)
@@ -31,17 +30,20 @@ namespace API.Services
 
         public (string? token, User? user) Login(string email, string password)
         {
-            var user = userRepository.GetByEmailAndPassword(email, password);
+            var user = userRepository.GetByEmail(email);
             if (user != null)
             {
-                if (user.Token != null)
+                if (PasswordUtils.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 {
-                    return (user.Token, user);
-                }
+                    if (user.Token != null)
+                    {
+                        return (user.Token, user);
+                    }
 
-                var token = jwtTokenSupporter.CreateToken(user);
-                UpdateTokenForUser(user, token);
-                return (token, user);
+                    var token = jwtTokenSupporter.CreateToken(user);
+                    UpdateTokenForUser(user, token);
+                    return (token, user);
+                }
             }
             return (null, null);
         }
@@ -54,7 +56,7 @@ namespace API.Services
         public async Task<User?> CreateUser(CreateAccountRequest request)
         {
             TryValidateRegisterRequest(request);
-
+            PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
             var user = new User()
             {
                 Address = request.Address,
@@ -64,7 +66,8 @@ namespace API.Services
                 Id = Guid.NewGuid(),
                 Email = request.Email,
                 Name = request.Name,
-                //Password = request.Password,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
                 Phone = request.Phone,
                 ExternalId = request.ExternalId ?? request.ExternalId
             };
@@ -96,17 +99,17 @@ namespace API.Services
         }
         public async Task UpdateUser(string userId, UpdateUserRequest request)
         {
-            Guid id;
-            Guid.TryParse(userId,out id);
+            Guid.TryParse(userId,out Guid id);
             var user = userRepository.GetById(id) ?? throw new Exception("User not existed");
-
+            PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
             user.Address = request.Address;
             user.Balance = 0;
             user.UpdatedDate = DateTime.UtcNow;
             user.Language = request.Language;
             user.Email = request.Email;
             user.Name = request.Name;
-            //user.Password = request.Password;
+            user.PasswordSalt = passwordSalt;
+            user.PasswordHash = passwordHash;
             user.Phone = request.Phone;
 
             userRepository.Update(user);
