@@ -1,0 +1,50 @@
+﻿using BusinessObject.Models;
+using Repository.Interfaces;
+
+namespace IDBMS_API.Services
+{
+    public class RoomTypeService
+    {
+        private readonly IRoomTypeRepository roomTypeRepository;
+        public RoomTypeService(IRoomTypeRepository roomTypeRepository)
+        {
+            this.roomTypeRepository = roomTypeRepository;
+        }   
+        public RoomType? GetRoomById(int id)
+        {
+            return roomTypeRepository.GetById(id);
+        }
+        public IEnumerable<RoomType> GetAll()
+        {
+            return roomTypeRepository.GetAll();
+        }
+        public async Task<RoomType> CreateRoomType(RoomType roomType)
+        {
+            var rt = new RoomType
+            {
+                Name = roomType.Name,
+                ImageUrl = roomType.ImageUrl,
+                Description = roomType.Description,
+                PricePerArea = roomType.PricePerArea,
+                IsHidden = roomType.IsHidden,
+                IconImageUrl = roomType.IconImageUrl,
+            };
+            var roomTypeCreated = roomTypeRepository.Save(rt);
+            return roomTypeCreated;
+        }
+        public async Task UpdateRoomType(RoomType roomType, int id)
+        {
+            var rtCheck = roomTypeRepository.GetById(id) ?? throw new Exception("This Room Type not existed");
+            var rt = new RoomType
+            {
+                Name = roomType.Name,
+                ImageUrl = roomType.ImageUrl,
+                Description = roomType.Description,
+                PricePerArea = roomType.PricePerArea,
+                IsHidden = roomType.IsHidden,
+                IconImageUrl = roomType.IconImageUrl,
+            };
+            roomTypeRepository.Update(rt);
+        }
+    }
+}

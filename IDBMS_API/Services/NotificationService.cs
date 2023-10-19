@@ -17,7 +17,7 @@ namespace IDBMS_API.Services
             _notificationRepository = notificationRepository;
             _userRepository = userRepository;
         }
-        public Notification GetById(Guid id)
+        public Notification? GetById(Guid id)
         {
             return _notificationRepository.GetById(id);
         }
@@ -34,6 +34,7 @@ namespace IDBMS_API.Services
             var user = _userRepository.GetById(userId) ?? throw new Exception("User not existed");
             var notification = new Notification
             {
+                Id = new Guid(),
                 UserId = userId,
                 Category = noti.Category,
                 Content = noti.Content,
@@ -43,7 +44,7 @@ namespace IDBMS_API.Services
             var notiCreated = _notificationRepository.Save(notification);
             return notiCreated;
         }
-        public async Task<Notification?> CreateNotificaton(NotificationRequest noti)
+        public async Task<Notification?> CreateNotificatonForAll(NotificationRequest noti)
         {
             var allUser = _userRepository.GetAll();
             var allUserId = allUser.Select(n => n.Id).ToList();
@@ -51,6 +52,7 @@ namespace IDBMS_API.Services
             foreach (var userId in allUserId) {
                 var notification = new Notification
                 {
+                    Id = new Guid(),
                     UserId = userId,
                     Category = noti.Category,
                     Content = noti.Content,
@@ -69,6 +71,7 @@ namespace IDBMS_API.Services
                 var user = _userRepository.GetById(userId) ?? throw new Exception("User not existed");
                 var notification = new Notification
                 {
+                    Id = new Guid(),
                     UserId = userId,
                     Category = noti.Category,
                     Content = noti.Content,
