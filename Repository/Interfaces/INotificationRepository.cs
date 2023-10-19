@@ -9,5 +9,6 @@ namespace Repository.Interfaces
 {
     public interface INotificationRepository : ICrudBaseRepository<Notification, Guid>
     {
+        IEnumerable<Notification> GetByUserId(Guid id);
     }
 }
