@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace Repository.Implements
 {
-    public class RoomTypeRepository : IRoomTypeRepository
+    public class ProjectCategoryRepository : IProjectCategoryRepository
     {
         public void DeleteById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<RoomType> GetAll()
+        public IEnumerable<ProjectCategory> GetAll()
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.RoomTypes.ToList();
+                return context.ProjectCategories.ToList();
             }
             catch
             {
@@ -28,12 +28,12 @@ namespace Repository.Implements
             }
         }
 
-        public RoomType? GetById(int id)
+        public ProjectCategory? GetById(int id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.RoomTypes.Where(rt => rt.Id == id).FirstOrDefault();
+                return context.ProjectCategories.Where(pc => pc.Id == id).FirstOrDefault();
             }
             catch
             {
@@ -41,14 +41,14 @@ namespace Repository.Implements
             }
         }
 
-        public RoomType? Save(RoomType entity)
+        public ProjectCategory? Save(ProjectCategory entity)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var roomType = context.RoomTypes.Add(entity);
+                var projectCategory = context.ProjectCategories.Add(entity);
                 context.SaveChanges();
-                return roomType.Entity;
+                return projectCategory.Entity;
             }
             catch
             {
@@ -56,7 +56,7 @@ namespace Repository.Implements
             }
         }
 
-        public void Update(RoomType entity)
+        public void Update(ProjectCategory entity)
         {
             try
             {

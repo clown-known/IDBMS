@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using BusinessObject.DTOs.Request;
+using BusinessObject.Models;
 using Repository.Interfaces;
 
 namespace IDBMS_API.Services
@@ -18,7 +19,7 @@ namespace IDBMS_API.Services
         {
             return roomTypeRepository.GetAll();
         }
-        public async Task<RoomType> CreateRoomType(RoomType roomType)
+        public RoomType? CreateRoomType(RoomTypeRequest roomType)
         {
             var rt = new RoomType
             {
@@ -32,7 +33,7 @@ namespace IDBMS_API.Services
             var roomTypeCreated = roomTypeRepository.Save(rt);
             return roomTypeCreated;
         }
-        public async Task UpdateRoomType(RoomType roomType, int id)
+        public void UpdateRoomType(RoomTypeRequest roomType, int id)
         {
             var rtCheck = roomTypeRepository.GetById(id) ?? throw new Exception("This Room Type not existed");
             var rt = new RoomType
