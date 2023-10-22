@@ -1,0 +1,102 @@
+﻿using BusinessObject.Models;
+using Repository.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Repository.Implements
+{
+    public class ProjectDocumentRepository : IProjectDocumentRepository
+    {
+        public void DeleteById(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                var pd = context.ProjectDocuments.Where(ctc => ctc.Id == id).FirstOrDefault();
+                context.ProjectDocuments.Remove(pd);
+                context.SaveChanges();
+            }
+            catch
+            {
+                throw;
+            }
+
+        }
+
+        public IEnumerable<ProjectDocument> GetAll()
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.ProjectDocuments.ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<ProjectDocument> GetByFilter(Guid? projectId, Guid? constructionTaskReportId, Guid? decorProgressReportId, int? documentTemplateId)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.ProjectDocuments
+                    .Where(pd =>
+                        (projectId == null || pd.ProjectId == projectId) &&
+                        (constructionTaskReportId == null || pd.ConstructionTaskReportId == constructionTaskReportId) &&
+                        (decorProgressReportId == null || pd.DecorProgressReportId == decorProgressReportId) &&
+                        (documentTemplateId == null || pd.ProjectDocumentTemplateId == documentTemplateId))
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public ProjectDocument? GetById(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.ProjectDocuments.Where(pd => pd.Id == id).FirstOrDefault();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public ProjectDocument? Save(ProjectDocument entity)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                var pd = context.ProjectDocuments.Add(entity);
+                return pd.Entity;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void Update(ProjectDocument entity)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                context.SaveChanges();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+    }
+}

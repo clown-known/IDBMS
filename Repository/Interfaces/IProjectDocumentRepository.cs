@@ -9,5 +9,6 @@ namespace Repository.Interfaces
 {
     public interface IProjectDocumentRepository : ICrudBaseRepository<ProjectDocument, Guid>
     {
+        IEnumerable<ProjectDocument> GetByFilter(Guid? projectId, Guid? constructionTaskReportId, Guid? decorProgressReportId, int? documentTemplateId);
     }
 }
