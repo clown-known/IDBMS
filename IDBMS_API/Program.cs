@@ -19,6 +19,8 @@ builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
 builder.Services.AddScoped<IProjectCategoryRepository, ProjectCategoryRepository>();
 builder.Services.AddScoped<IConstructionTaskCategoryRepository, ConstructionTaskCategoryRepository>();
+builder.Services.AddScoped<IProjectDocumentRepository, ProjectDocumentRepository>();
+builder.Services.AddScoped<IProjectDocumentTemplateRepository, DocumentTemplateRepository>();
 
 builder.Services.AddScoped<FirebaseService, FirebaseService>();
 builder.Services.AddScoped<JwtTokenSupporter, JwtTokenSupporter>();
