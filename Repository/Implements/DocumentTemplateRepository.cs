@@ -57,6 +57,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 var dt = context.ProjectDocumentTemplates.Add(entity);
+                context.SaveChanges();
                 return dt.Entity;
             }
             catch

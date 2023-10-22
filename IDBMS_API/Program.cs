@@ -22,6 +22,7 @@ builder.Services.AddScoped<IConstructionTaskCategoryRepository, ConstructionTask
 builder.Services.AddScoped<IProjectDocumentRepository, ProjectDocumentRepository>();
 builder.Services.AddScoped<IProjectDocumentTemplateRepository, DocumentTemplateRepository>();
 builder.Services.AddScoped<IDecorProjectDesignRepository, DecorProjectDesignRepository>();
+builder.Services.AddScoped<IPrepayStageDesignRepository, PrepayStageDesignRepository>();
 
 builder.Services.AddScoped<FirebaseService, FirebaseService>();
 builder.Services.AddScoped<JwtTokenSupporter, JwtTokenSupporter>();

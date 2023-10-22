@@ -8,30 +8,29 @@ using System.Threading.Tasks;
 
 namespace Repository.Implements
 {
-    public class ProjectDocumentRepository : IProjectDocumentRepository
+    public class PrepayStageDesignRepository : IPrepayStageDesignRepository
     {
-        public void DeleteById(Guid id)
+        public void DeleteById(int id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var pd = context.ProjectDocuments.Where(ctc => ctc.Id == id).FirstOrDefault();
-                context.ProjectDocuments.Remove(pd);
+                var psd = context.PrepayStageDesigns.Where(psd => psd.Id == id).FirstOrDefault();
+                context.PrepayStageDesigns.Remove(psd);
                 context.SaveChanges();
             }
             catch
             {
                 throw;
             }
-
         }
 
-        public IEnumerable<ProjectDocument> GetAll()
+        public IEnumerable<PrepayStageDesign> GetAll()
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectDocuments.ToList();
+                return context.PrepayStageDesigns.ToList();
             }
             catch
             {
@@ -39,18 +38,13 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<ProjectDocument> GetByFilter(Guid? projectId, Guid? constructionTaskReportId, Guid? decorProgressReportId, int? documentTemplateId)
+        public IEnumerable<PrepayStageDesign> GetByDecorProjectDesignId(int designId)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectDocuments
-                    .Where(pd =>
-                        (projectId == null || pd.ProjectId == projectId) &&
-                        (constructionTaskReportId == null || pd.ConstructionTaskReportId == constructionTaskReportId) &&
-                        (decorProgressReportId == null || pd.DecorProgressReportId == decorProgressReportId) &&
-                        (documentTemplateId == null || pd.ProjectDocumentTemplateId == documentTemplateId))
-                    .ToList();
+                return context.PrepayStageDesigns
+                    .Where(psd => psd.DecorProjectDesignId == designId).ToList();
             }
             catch
             {
@@ -58,12 +52,12 @@ namespace Repository.Implements
             }
         }
 
-        public ProjectDocument? GetById(Guid id)
+        public PrepayStageDesign? GetById(int id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectDocuments.Where(pd => pd.Id == id).FirstOrDefault();
+                return context.PrepayStageDesigns.Where(psd => psd.Id == id).FirstOrDefault();
             }
             catch
             {
@@ -71,14 +65,14 @@ namespace Repository.Implements
             }
         }
 
-        public ProjectDocument? Save(ProjectDocument entity)
+        public PrepayStageDesign? Save(PrepayStageDesign entity)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var pd = context.ProjectDocuments.Add(entity);
+                var psd = context.PrepayStageDesigns.Add(entity);
                 context.SaveChanges();
-                return pd.Entity;
+                return psd.Entity;
             }
             catch
             {
@@ -86,7 +80,7 @@ namespace Repository.Implements
             }
         }
 
-        public void Update(ProjectDocument entity)
+        public void Update(PrepayStageDesign entity)
         {
             try
             {

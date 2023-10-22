@@ -48,6 +48,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 var dpd = context.DecorProjectDesigns.Add(entity);
+                context.SaveChanges();
                 return dpd.Entity;
             }
             catch
