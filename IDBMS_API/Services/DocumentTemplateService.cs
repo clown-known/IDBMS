@@ -1,4 +1,4 @@
-﻿using BusinessObject.DTOs.Request;
+﻿using BusinessObject.DTOs.Request.CreateRequests;
 using BusinessObject.Models;
 using Repository.Interfaces;
 
@@ -15,11 +15,11 @@ namespace IDBMS_API.Services
         {
             return repository.GetAll();
         }
-        public ProjectDocumentTemplate GetByID(int id)
+        public ProjectDocumentTemplate? GetByID(int id)
         {
             return repository.GetById(id);
         }
-        public async Task<ProjectDocumentTemplate> CreateDocumentTemplate(ProjectDocumentTemplateRequest request)
+        public async Task<ProjectDocumentTemplate?> CreateDocumentTemplate(ProjectDocumentTemplateRequest request)
         {
             var dt = new ProjectDocumentTemplate
             {

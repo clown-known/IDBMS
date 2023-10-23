@@ -1,4 +1,4 @@
-﻿using BusinessObject.DTOs.Request;
+﻿using BusinessObject.DTOs.Request.CreateRequests;
 using BusinessObject.Models;
 using Repository.Interfaces;
 
@@ -23,7 +23,7 @@ namespace IDBMS_API.Services
         {
             return projectDocumentRepository.GetByFilter(projectId, constructionTaskReportId, decorProgressReportId, documentTemplateId);
         }
-        public async Task<ProjectDocument> CreateProjectDocument(ProjectDocumentRequest request)
+        public async Task<ProjectDocument?> CreateProjectDocument(ProjectDocumentRequest request)
         {
             var pd = new ProjectDocument
             {

@@ -7,18 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.DTOs.Request
+namespace BusinessObject.DTOs.Request.CreateRequests
 {
     public class NotificationRequest
     {
+        [Required]
         public NotificationCategory Category { get; set; }
-
+        [Required]
         public string Content { get; set; } = default!;
-
+        [Required]
         public Guid UserId { get; set; }
-
         public string? Link { get; set; } = default!;
-
+        [Required]
         public bool IsSeen { get; set; }
     }
 }

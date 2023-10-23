@@ -6,18 +6,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.DTOs.Request
+namespace BusinessObject.DTOs.Request.CreateRequests
 {
     public class DecorProjectDesignRequest
     {
+        [Required]
+        [Column(TypeName = "money")]
         public decimal MinBudget { get; set; }
 
+        [Required]
+        [Column(TypeName = "money")]
         public decimal MaxBudget { get; set; }
 
+        [Required]
         public string Name { get; set; } = default!;
 
         public string? Description { get; set; }
-
+        [Required]
         public bool IsDeleted { get; set; }
     }
 }
