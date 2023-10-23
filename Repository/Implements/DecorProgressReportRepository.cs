@@ -6,14 +6,14 @@ using System.Linq;
 
 namespace Repository.Implements
 {
-    public class ProjectRepository : IProjectRepository
+    public class DecorProgressReportRepository : IDecorProgressReportRepository
     {
-        public IEnumerable<Project> GetAll()
+        public IEnumerable<DecorProgressReport> GetAll()
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.ToList();
+                return context.DecorProgressReports.ToList();
             }
             catch
             {
@@ -21,12 +21,12 @@ namespace Repository.Implements
             }
         }
 
-        public Project? GetById(Guid id)
+        public DecorProgressReport? GetById(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.FirstOrDefault(project => project.Id == id);
+                return context.DecorProgressReports.FirstOrDefault(report => report.Id == id);
             }
             catch
             {
@@ -34,14 +34,14 @@ namespace Repository.Implements
             }
         }
 
-        public Project Save(Project entity)
+        public DecorProgressReport Save(DecorProgressReport entity)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var project = context.Projects.Add(entity);
+                var report = context.DecorProgressReports.Add(entity);
                 context.SaveChanges();
-                return project.Entity;
+                return report.Entity;
             }
             catch
             {
@@ -49,7 +49,7 @@ namespace Repository.Implements
             }
         }
 
-        public void Update(Project entity)
+        public void Update(DecorProgressReport entity)
         {
             try
             {
@@ -68,10 +68,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                var project = context.Projects.FirstOrDefault(project => project.Id == id);
-                if (project != null)
+                var report = context.DecorProgressReports.FirstOrDefault(report => report.Id == id);
+                if (report != null)
                 {
-                    context.Projects.Remove(project);
+                    context.DecorProgressReports.Remove(report);
                     context.SaveChanges();
                 }
             }

@@ -6,14 +6,14 @@ using System.Linq;
 
 namespace Repository.Implements
 {
-    public class ProjectRepository : IProjectRepository
+    public class PrepayStageRepository : IPrepayStageRepository
     {
-        public IEnumerable<Project> GetAll()
+        public IEnumerable<PrepayStage> GetAll()
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.ToList();
+                return context.PrepayStages.ToList();
             }
             catch
             {
@@ -21,12 +21,12 @@ namespace Repository.Implements
             }
         }
 
-        public Project? GetById(Guid id)
+        public PrepayStage? GetById(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.FirstOrDefault(project => project.Id == id);
+                return context.PrepayStages.FirstOrDefault(stage => stage.Id == id);
             }
             catch
             {
@@ -34,14 +34,14 @@ namespace Repository.Implements
             }
         }
 
-        public Project Save(Project entity)
+        public PrepayStage Save(PrepayStage entity)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var project = context.Projects.Add(entity);
+                var stage = context.PrepayStages.Add(entity);
                 context.SaveChanges();
-                return project.Entity;
+                return stage.Entity;
             }
             catch
             {
@@ -49,7 +49,7 @@ namespace Repository.Implements
             }
         }
 
-        public void Update(Project entity)
+        public void Update(PrepayStage entity)
         {
             try
             {
@@ -68,10 +68,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                var project = context.Projects.FirstOrDefault(project => project.Id == id);
-                if (project != null)
+                var stage = context.PrepayStages.FirstOrDefault(stage => stage.Id == id);
+                if (stage != null)
                 {
-                    context.Projects.Remove(project);
+                    context.PrepayStages.Remove(stage);
                     context.SaveChanges();
                 }
             }

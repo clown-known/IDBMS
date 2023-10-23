@@ -6,14 +6,14 @@ using System.Linq;
 
 namespace Repository.Implements
 {
-    public class ProjectRepository : IProjectRepository
+    public class RoomRepository : IRoomRepository
     {
-        public IEnumerable<Project> GetAll()
+        public IEnumerable<Room> GetAll()
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.ToList();
+                return context.Rooms.ToList();
             }
             catch
             {
@@ -21,12 +21,12 @@ namespace Repository.Implements
             }
         }
 
-        public Project? GetById(Guid id)
+        public Room? GetById(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.FirstOrDefault(project => project.Id == id);
+                return context.Rooms.FirstOrDefault(room => room.Id == id);
             }
             catch
             {
@@ -34,14 +34,14 @@ namespace Repository.Implements
             }
         }
 
-        public Project Save(Project entity)
+        public Room Save(Room entity)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var project = context.Projects.Add(entity);
+                var room = context.Rooms.Add(entity);
                 context.SaveChanges();
-                return project.Entity;
+                return room.Entity;
             }
             catch
             {
@@ -49,7 +49,7 @@ namespace Repository.Implements
             }
         }
 
-        public void Update(Project entity)
+        public void Update(Room entity)
         {
             try
             {
@@ -68,10 +68,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                var project = context.Projects.FirstOrDefault(project => project.Id == id);
-                if (project != null)
+                var room = context.Rooms.FirstOrDefault(room => room.Id == id);
+                if (room != null)
                 {
-                    context.Projects.Remove(project);
+                    context.Rooms.Remove(room);
                     context.SaveChanges();
                 }
             }

@@ -6,14 +6,14 @@ using System.Linq;
 
 namespace Repository.Implements
 {
-    public class ProjectRepository : IProjectRepository
+    public class ConstructionTaskRepository : IConstructionTaskRepository
     {
-        public IEnumerable<Project> GetAll()
+        public IEnumerable<ConstructionTask> GetAll()
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.ToList();
+                return context.ConstructionTasks.ToList();
             }
             catch
             {
@@ -21,12 +21,12 @@ namespace Repository.Implements
             }
         }
 
-        public Project? GetById(Guid id)
+        public ConstructionTask? GetById(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.FirstOrDefault(project => project.Id == id);
+                return context.ConstructionTasks.FirstOrDefault(task => task.Id == id);
             }
             catch
             {
@@ -34,14 +34,14 @@ namespace Repository.Implements
             }
         }
 
-        public Project Save(Project entity)
+        public ConstructionTask Save(ConstructionTask entity)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var project = context.Projects.Add(entity);
+                var task = context.ConstructionTasks.Add(entity);
                 context.SaveChanges();
-                return project.Entity;
+                return task.Entity;
             }
             catch
             {
@@ -49,7 +49,7 @@ namespace Repository.Implements
             }
         }
 
-        public void Update(Project entity)
+        public void Update(ConstructionTask entity)
         {
             try
             {
@@ -68,10 +68,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                var project = context.Projects.FirstOrDefault(project => project.Id == id);
-                if (project != null)
+                var task = context.ConstructionTasks.FirstOrDefault(task => task.Id == id);
+                if (task != null)
                 {
-                    context.Projects.Remove(project);
+                    context.ConstructionTasks.Remove(task);
                     context.SaveChanges();
                 }
             }

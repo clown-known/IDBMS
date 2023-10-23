@@ -6,14 +6,14 @@ using System.Linq;
 
 namespace Repository.Implements
 {
-    public class ProjectRepository : IProjectRepository
+    public class CommentRepository : ICommentRepository
     {
-        public IEnumerable<Project> GetAll()
+        public IEnumerable<Comment> GetAll()
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.ToList();
+                return context.Comments.ToList();
             }
             catch
             {
@@ -21,12 +21,12 @@ namespace Repository.Implements
             }
         }
 
-        public Project? GetById(Guid id)
+        public Comment? GetById(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.FirstOrDefault(project => project.Id == id);
+                return context.Comments.FirstOrDefault(comment => comment.Id == id);
             }
             catch
             {
@@ -34,14 +34,14 @@ namespace Repository.Implements
             }
         }
 
-        public Project Save(Project entity)
+        public Comment Save(Comment entity)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var project = context.Projects.Add(entity);
+                var comment = context.Comments.Add(entity);
                 context.SaveChanges();
-                return project.Entity;
+                return comment.Entity;
             }
             catch
             {
@@ -49,7 +49,7 @@ namespace Repository.Implements
             }
         }
 
-        public void Update(Project entity)
+        public void Update(Comment entity)
         {
             try
             {
@@ -68,10 +68,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                var project = context.Projects.FirstOrDefault(project => project.Id == id);
-                if (project != null)
+                var comment = context.Comments.FirstOrDefault(comment => comment.Id == id);
+                if (comment != null)
                 {
-                    context.Projects.Remove(project);
+                    context.Comments.Remove(comment);
                     context.SaveChanges();
                 }
             }

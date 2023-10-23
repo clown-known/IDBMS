@@ -6,14 +6,14 @@ using System.Linq;
 
 namespace Repository.Implements
 {
-    public class ProjectRepository : IProjectRepository
+    public class ConstructionTaskReportRepository : IConstructionTaskReportRepository
     {
-        public IEnumerable<Project> GetAll()
+        public IEnumerable<ConstructionTaskReport> GetAll()
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.ToList();
+                return context.ConstructionTaskReports.ToList();
             }
             catch
             {
@@ -21,12 +21,12 @@ namespace Repository.Implements
             }
         }
 
-        public Project? GetById(Guid id)
+        public ConstructionTaskReport? GetById(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.FirstOrDefault(project => project.Id == id);
+                return context.ConstructionTaskReports.FirstOrDefault(report => report.Id == id);
             }
             catch
             {
@@ -34,14 +34,14 @@ namespace Repository.Implements
             }
         }
 
-        public Project Save(Project entity)
+        public ConstructionTaskReport Save(ConstructionTaskReport entity)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var project = context.Projects.Add(entity);
+                var report = context.ConstructionTaskReports.Add(entity);
                 context.SaveChanges();
-                return project.Entity;
+                return report.Entity;
             }
             catch
             {
@@ -49,7 +49,7 @@ namespace Repository.Implements
             }
         }
 
-        public void Update(Project entity)
+        public void Update(ConstructionTaskReport entity)
         {
             try
             {
@@ -68,10 +68,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                var project = context.Projects.FirstOrDefault(project => project.Id == id);
-                if (project != null)
+                var report = context.ConstructionTaskReports.FirstOrDefault(report => report.Id == id);
+                if (report != null)
                 {
-                    context.Projects.Remove(project);
+                    context.ConstructionTaskReports.Remove(report);
                     context.SaveChanges();
                 }
             }
