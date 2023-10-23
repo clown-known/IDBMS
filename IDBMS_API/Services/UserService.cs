@@ -7,6 +7,7 @@ using IDBMS_API.DTOs.Request;
 using IDBMS_API.Supporters.Utils;
 using Repository.Interfaces;
 using System.Net;
+using System.Net.Mail;
 using System.Numerics;
 using System.Text.RegularExpressions;
 
@@ -114,5 +115,6 @@ namespace API.Services
 
             userRepository.Update(user);
         }
+        
     }
 }

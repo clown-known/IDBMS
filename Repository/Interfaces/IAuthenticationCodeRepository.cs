@@ -9,5 +9,6 @@ namespace Repository.Interfaces
 {
     public interface IAuthenticationCodeRepository : ICrudBaseRepository<AuthenticationCode, Guid>
     {
+        public void EnableCodeOfUser(Guid userId);
     }
 }

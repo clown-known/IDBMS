@@ -15,6 +15,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IParticipationRepository, ParticipationRepository>();
+builder.Services.AddScoped<IAuthenticationCodeRepository, AuthenticationCodeRepository>();
 
 
 builder.Services.AddScoped<FirebaseService, FirebaseService>();
