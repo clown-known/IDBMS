@@ -1,6 +1,10 @@
-﻿namespace IDBMS_API.DTOs.Request
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace BusinessObject.DTOs.Request.CreateRequests
 {
-    public class UpdateUserRequest
+    public class CreateAccountRequest
     {
         public string Name { get; set; } = default!;
 
@@ -13,9 +17,10 @@
 
         public string Phone { get; set; } = default!;
 
-        public BusinessObject.Enums.Language Language { get; set; } = default!;
-        
+        public Enums.Language Language { get; set; } = default!;
+
         public int Status { get; set; }
-        public int RoleId { get; set; }
+        public string ExternalId { get; set; } = default!;
+
     }
 }
