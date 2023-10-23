@@ -19,11 +19,11 @@ namespace IDBMS_API.Services
         {
             return repository.GetByDecorProjectDesignId(designId);
         }
-        public PrepayStageDesign GetById(int id)
+        public PrepayStageDesign? GetById(int id)
         {
             return repository.GetById(id);
         }
-        public PrepayStageDesign CreatePrepayStageDesign(PrepayStageDesignRequest request)
+        public PrepayStageDesign? CreatePrepayStageDesign(PrepayStageDesignRequest request)
         {
             var psd = new PrepayStageDesign
             {
