@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObject.Models;
 
@@ -31,5 +32,5 @@ public class Comment
     public DateTime? LastModifiedTime { get; set; }
 
     [Required]
-    public bool IsDeleted { get; set; }
+    public CommentStatus Status { get; set; }
 }
