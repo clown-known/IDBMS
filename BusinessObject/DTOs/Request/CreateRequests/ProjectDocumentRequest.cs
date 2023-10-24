@@ -7,28 +7,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.DTOs.Request
+namespace BusinessObject.DTOs.Request.CreateRequests
 {
     public class ProjectDocumentRequest
     {
+        [Required]
         public string Name { get; set; } = default!;
 
         public string? Description { get; set; }
 
+        [Required]
         public string Url { get; set; } = default!;
 
+        [Required]
         public DateTime CreatedDate { get; set; }
 
+        [Required]
         public ProjectDocumentCategory Category { get; set; }
 
+        [Required]
         public Guid ProjectId { get; set; }
 
         public Guid? ConstructionTaskReportId { get; set; }
 
         public Guid? DecorProgressReportId { get; set; }
 
+        [Required]
         public int ProjectDocumentTemplateId { get; set; }
 
+        [Required]
         public bool IsDeleted { get; set; }
     }
 }

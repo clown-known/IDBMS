@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interfaces;
 using IDBMS_API.DTOs.Request;
-using BusinessObject.DTOs.Request;
 using Repository.Implements;
 using Firebase.Auth;
+using BusinessObject.DTOs.Request.CreateRequests;
 
 namespace IDBMS_API.Services
 {
@@ -65,7 +65,7 @@ namespace IDBMS_API.Services
         }
         public async Task<Notification?> CreateNotificatonByListUserId(NotificationRequest noti, List<Guid> listUserId)
         {
-            Notification notiCreated = null;
+            Notification? notiCreated = null;
             foreach (var userId in listUserId)
             {
                 var user = _userRepository.GetById(userId) ?? throw new Exception("User not existed");
