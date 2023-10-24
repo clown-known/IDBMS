@@ -19,7 +19,7 @@ namespace IDBMS_API.Services
         {
             return _prepayStageRepository.GetById(id);
         }
-        public async Task<PrepayStage?> CreatePrepayStage(PrepayStageRequest request)
+        public PrepayStage? CreatePrepayStage(PrepayStageRequest request)
         {
             var ps = new PrepayStage
             {
@@ -38,7 +38,7 @@ namespace IDBMS_API.Services
             var psCreated = _prepayStageRepository.Save(ps);
             return psCreated;
         }
-        public async Task UpdatePrepayStage(PrepayStageRequest request)
+        public void UpdatePrepayStage(PrepayStageRequest request)
         {
             var ps = new PrepayStage
             {
@@ -56,7 +56,7 @@ namespace IDBMS_API.Services
             };
             _prepayStageRepository.Update(ps);
         }
-        public async Task DeletePrepayStage(Guid id)
+        public void DeletePrepayStage(Guid id)
         {
             _prepayStageRepository.DeleteById(id);
         }

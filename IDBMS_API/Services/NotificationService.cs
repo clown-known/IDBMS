@@ -29,7 +29,7 @@ namespace IDBMS_API.Services
         {
             return _notificationRepository.GetAll();
         }
-        public async Task<Notification?> CreateNotificatonByUserId(NotificationRequest noti, Guid userId)
+        public Notification? CreateNotificatonByUserId(NotificationRequest noti, Guid userId)
         {
             var user = _userRepository.GetById(userId) ?? throw new Exception("User not existed");
             var notification = new Notification
@@ -44,7 +44,7 @@ namespace IDBMS_API.Services
             var notiCreated = _notificationRepository.Save(notification);
             return notiCreated;
         }
-        public async Task<Notification?> CreateNotificatonForAll(NotificationRequest noti)
+        public Notification? CreateNotificatonForAll(NotificationRequest noti)
         {
             var allUser = _userRepository.GetAll();
             var allUserId = allUser.Select(n => n.Id).ToList();
@@ -63,7 +63,7 @@ namespace IDBMS_API.Services
             }
             return notiCreated;
         }
-        public async Task<Notification?> CreateNotificatonByListUserId(NotificationRequest noti, List<Guid> listUserId)
+        public Notification? CreateNotificatonByListUserId(NotificationRequest noti, List<Guid> listUserId)
         {
             Notification? notiCreated = null;
             foreach (var userId in listUserId)
@@ -82,7 +82,7 @@ namespace IDBMS_API.Services
             }
             return notiCreated;
         }
-        public async Task UpdateIsSeenById(Guid id)
+        public void UpdateIsSeenById(Guid id)
         {
             var noti = _notificationRepository.GetById(id) ?? throw new Exception("This notification not exist");
             var notification = new Notification
@@ -95,7 +95,7 @@ namespace IDBMS_API.Services
             };
             _notificationRepository.Update(notification);
         }
-        public async Task UpdateIsSeenByUserId(Guid userId)
+        public void UpdateIsSeenByUserId(Guid userId)
         {
             var allNotiByUserId = _notificationRepository.GetByUserId(userId);
             foreach (var noti in allNotiByUserId)

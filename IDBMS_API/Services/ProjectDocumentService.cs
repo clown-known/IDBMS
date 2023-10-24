@@ -23,7 +23,7 @@ namespace IDBMS_API.Services
         {
             return projectDocumentRepository.GetByFilter(projectId, constructionTaskReportId, decorProgressReportId, documentTemplateId);
         }
-        public async Task<ProjectDocument?> CreateProjectDocument(ProjectDocumentRequest request)
+        public ProjectDocument? CreateProjectDocument(ProjectDocumentRequest request)
         {
             var pd = new ProjectDocument
             {
@@ -41,7 +41,7 @@ namespace IDBMS_API.Services
             var pdCreated = projectDocumentRepository.Save(pd);
             return pdCreated;
         }
-        public async Task UpdateProjectDocument(ProjectDocumentRequest request)
+        public void UpdateProjectDocument(ProjectDocumentRequest request)
         {
             var pd = new ProjectDocument
             {
@@ -58,7 +58,7 @@ namespace IDBMS_API.Services
             };
             projectDocumentRepository.Update(pd);
         }
-        public async Task DeleteProjectDocument(Guid id)
+        public void DeleteProjectDocument(Guid id)
         {
             projectDocumentRepository.DeleteById(id);
         }

@@ -11,7 +11,7 @@ namespace IDBMS_API.Services
         {
             this.roomTypeRepository = roomTypeRepository;
         }   
-        public RoomType? GetRoomById(int id)
+        public RoomType? GetById(int id)
         {
             return roomTypeRepository.GetById(id);
         }

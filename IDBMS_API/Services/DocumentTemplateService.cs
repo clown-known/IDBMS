@@ -19,7 +19,7 @@ namespace IDBMS_API.Services
         {
             return repository.GetById(id);
         }
-        public async Task<ProjectDocumentTemplate?> CreateDocumentTemplate(ProjectDocumentTemplateRequest request)
+        public ProjectDocumentTemplate? CreateDocumentTemplate(ProjectDocumentTemplateRequest request)
         {
             var dt = new ProjectDocumentTemplate
             {
@@ -43,7 +43,7 @@ namespace IDBMS_API.Services
             var dtCreated = repository.Save(dt);
             return dtCreated;
         }
-        public async Task UpdateDocumentTemplate(ProjectDocumentTemplateRequest request)
+        public void UpdateDocumentTemplate(ProjectDocumentTemplateRequest request)
         {
             var dt = new ProjectDocumentTemplate
             {
@@ -66,7 +66,7 @@ namespace IDBMS_API.Services
             };
             repository.Update(dt);
         }
-        public async Task DeleteDocumentTemplate(int id)
+        public void DeleteDocumentTemplate(int id)
         {
             repository.DeleteById(id);
         }

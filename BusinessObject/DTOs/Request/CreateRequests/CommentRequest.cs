@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using BusinessObject.Enums;
+using BusinessObject.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,6 +32,6 @@ namespace BusinessObject.DTOs.Request.CreateRequests
         public DateTime? LastModifiedTime { get; set; }
 
         [Required]
-        public bool IsDeleted { get; set; }
+        public CommentStatus Status { get; set; }
     }
 }

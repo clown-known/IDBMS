@@ -20,7 +20,7 @@ namespace IDBMS_API.Services
         {
             return repository.GetById(id);
         }
-        public async Task<Transaction?> CreateTransaction(TransactionRequest request)
+        public Transaction? CreateTransaction(TransactionRequest request)
         {
             var trans = new Transaction
             {
@@ -37,7 +37,7 @@ namespace IDBMS_API.Services
             var transCreated = repository.Save(trans);
             return transCreated;
         }
-        public async Task UpdateTransaction(TransactionRequest request)
+        public void UpdateTransaction(TransactionRequest request)
         {
             var trans = new Transaction
             {
@@ -53,7 +53,7 @@ namespace IDBMS_API.Services
             };
             repository.Update(trans);
         }
-        public async Task DeleteTransaction(Guid id)
+        public void DeleteTransaction(Guid id)
         {
             repository.DeleteById(id);
         }

@@ -19,7 +19,7 @@ namespace IDBMS_API.Services
         {
             return repository.GetById(id);
         }
-        public async Task<Comment?> CreateComment(CommentRequest comment)
+        public Comment? CreateComment(CommentRequest comment)
         {
             var cmt = new Comment
             {
@@ -31,12 +31,12 @@ namespace IDBMS_API.Services
                 FileUrl = comment.FileUrl,
                 CreatedTime = comment.CreatedTime,
                 LastModifiedTime = comment.LastModifiedTime,
-                IsDeleted = comment.IsDeleted,
+                Status = comment.Status,
             };
             var cmtCreated = repository.Save(cmt);
             return cmtCreated;
         }
-        public async Task UpdateComment(CommentRequest comment)
+        public void UpdateComment(CommentRequest comment)
         {
             var cmt = new Comment
             {
@@ -48,7 +48,7 @@ namespace IDBMS_API.Services
                 FileUrl = comment.FileUrl,
                 CreatedTime = comment.CreatedTime,
                 LastModifiedTime = comment.LastModifiedTime,
-                IsDeleted = comment.IsDeleted,
+                Status = comment.Status,
             };
             repository.Update(cmt);
         }
