@@ -1,5 +1,6 @@
 ﻿using BusinessObject.DTOs.Request.CreateRequests;
 using BusinessObject.DTOs.Request.UpdateRequests;
+using BusinessObject.Enums;
 using BusinessObject.Models;
 using Repository.Interfaces;
 
@@ -17,12 +18,18 @@ public class ProjectService
         return projectRepository.GetAll();
     }
 
-    public Project? GetProjectById(Guid id)
+    public Project? GetById(Guid id)
     {
         return projectRepository.GetById(id);
     }
 
-    public async Task<Project?> CreateProject(CreateProjectRequest request)
+    public IEnumerable<Project> GetByUserId(Guid id)
+    {
+
+        return null;
+    }
+
+    public Project? CreateProject(CreateProjectRequest request)
     {
         var project = new Project
         {
@@ -50,7 +57,7 @@ public class ProjectService
         return createdProject;
     }
 
-    public async Task UpdateProject(UpdateProjectRequest request)
+    public void UpdateProject(UpdateProjectRequest request)
     {
         var project = new Project
         {
@@ -78,8 +85,8 @@ public class ProjectService
         projectRepository.Update(project);
     }
 
-    public async Task DeleteProject(Guid id)
+    public void UpdateProjectStatus(Guid id, ProjectStatus status)
     {
-        projectRepository.DeleteById(id);
+        
     }
 }

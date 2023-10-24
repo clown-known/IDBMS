@@ -54,7 +54,7 @@ namespace API.Services
             user.Token = token;
             userRepository.Update(user);
         }
-        public async Task<User?> CreateUser(CreateAccountRequest request)
+        public User? CreateUser(CreateAccountRequest request)
         {
             TryValidateRegisterRequest(request);
             PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -98,7 +98,7 @@ namespace API.Services
             }
 
         }
-        public async Task UpdateUser(string userId, UpdateUserRequest request)
+        public void UpdateUser(string userId, UpdateUserRequest request)
         {
             Guid.TryParse(userId,out Guid id);
             var user = userRepository.GetById(id) ?? throw new Exception("User not existed");
