@@ -15,7 +15,7 @@ namespace IDBMS_API.Services
         {
             return _repository.GetAll();
         }
-        public Admin? Get(Guid id)
+        public Admin? GetById(Guid id)
         {
             return _repository.GetById(id);
         }
