@@ -33,7 +33,8 @@ namespace API.Supporters.JwtAuthSupport
                     var id = context.HttpContext.Request.Query["id"].ToString();
                     Guid.TryParse(id, out Guid pid);
                     bool accepted = _participationRepository
-                        .GetAllParticipationByProjectID(pid)
+                        //.GetAllParticipationByProjectID(pid)
+                        .GetByProjectId(pid)
                         .Where(p => p.UserId.Equals(user.Id)).Count() != 0;
                     if (!accepted)
                         context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
