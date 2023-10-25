@@ -2,7 +2,7 @@
 IDT Decor Booking Management System API
 
 Add New Migration:
-dotnet ef migrations add [Name]
+dotnet ef migrations add IDBMS
 
 Update Database:
 dotnet ef database update
