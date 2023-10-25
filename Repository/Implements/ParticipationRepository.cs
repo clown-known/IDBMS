@@ -49,13 +49,27 @@ public class ParticipationRepository : IParticipationRepository
         }
     }
 
-    public IEnumerable<Participation> GetAllParticipationByProjectID(Guid projectID)
+    public IEnumerable<Participation> GetByProjectId(Guid projectID)
     {
         try
         {
             using var context = new IdtDbContext();
             return context.Participations
                 .Where(u => u.ProjectId.Equals(projectID) && u.IsDeleted != false)
+                .ToList();
+        }
+        catch
+        {
+            throw;
+        }
+    }
+    public IEnumerable<Participation> GetByUserId(Guid userId)
+    {
+        try
+        {
+            using var context = new IdtDbContext();
+            return context.Participations
+                .Where(u => u.UserId.Equals(userId) && u.IsDeleted != false)
                 .ToList();
         }
         catch

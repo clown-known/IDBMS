@@ -47,6 +47,8 @@ namespace BusinessObject.DTOs.Request.CreateRequests
 
         public int? NoDate { get; set; }
 
+        public Guid? ParentTaskId { get; set; }
+
         public int? ConstructionTaskCategoryId { get; set; }
 
         public Guid? ProjectId { get; set; }

@@ -6,27 +6,32 @@ using Repository.Interfaces;
 
 public class ProjectService
 {
-    private readonly IProjectRepository projectRepository;
+    private readonly IProjectRepository projectRepo;
+    private readonly IParticipationRepository participationRepo;
 
-    public ProjectService(IProjectRepository projectRepository)
+    public ProjectService(IProjectRepository projectRepo, IParticipationRepository participationRepo)
     {
-        this.projectRepository = projectRepository;
+        this.projectRepo = projectRepo;
+        this.participationRepo = participationRepo;
     }
 
     public IEnumerable<Project> GetAllProjects()
     {
-        return projectRepository.GetAll();
+        return projectRepo.GetAll();
     }
 
     public Project? GetById(Guid id)
     {
-        return projectRepository.GetById(id);
+        return projectRepo.GetById(id);
     }
 
-    public IEnumerable<Project> GetByUserId(Guid id)
+    public IEnumerable<Participation> GetByUserId(Guid id)
     {
-
-        return null;
+        return participationRepo.GetByUserId(id);
+    }
+    public IEnumerable<Participation> GetByProjectId(Guid id)
+    {
+        return participationRepo.GetByProjectId(id);
     }
 
     public Project? CreateProject(CreateProjectRequest request)
@@ -53,7 +58,7 @@ public class ProjectService
             DecorProjectDesignId = request.DecorProjectDesignId
         };
 
-        var createdProject = projectRepository.Save(project);
+        var createdProject = projectRepo.Save(project);
         return createdProject;
     }
 
@@ -82,11 +87,13 @@ public class ProjectService
             DecorProjectDesignId = request.DecorProjectDesignId
         };
 
-        projectRepository.Update(project);
+        projectRepo.Update(project);
     }
 
     public void UpdateProjectStatus(Guid id, ProjectStatus status)
     {
-        
+        var project = projectRepo.GetById(id) ?? throw new Exception("Not existed");
+        project.Status = status;
+        projectRepo.Update(project);
     }
 }

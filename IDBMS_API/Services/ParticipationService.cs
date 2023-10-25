@@ -19,6 +19,10 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id);
         }
+        public IEnumerable<Participation> GetByUserId(Guid id)
+        {
+            return _repository.GetByUserId(id);
+        }
         public Participation? CreateParticipation(ParticipationRequest request)
         {
             var p = new Participation
