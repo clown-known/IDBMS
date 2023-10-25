@@ -44,6 +44,9 @@ public class ConstructionTask
 
     public int? NoDate { get; set; }
 
+    public Guid? ParentTaskId { get; set; }
+    public ConstructionTask? ParentTask { get; set; }
+
     public int? ConstructionTaskCategoryId { get; set; }
     public ConstructionTaskCategory? ConstructionTaskCategory { get; set; } = new();
 
