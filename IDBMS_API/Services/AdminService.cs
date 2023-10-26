@@ -35,8 +35,9 @@ namespace IDBMS_API.Services
             var adminCreated = _repository.Save(admin);
             return adminCreated;
         }
-        public void UpdateAdmin(AdminRequest request)
+        public void UpdateAdmin(Guid id, AdminRequest request)
         {
+            var validEntity = _repository.GetById(id) ?? throw new Exception("Admin not existed");
             var admin = new Admin
             {
                 Name = request.Name,
@@ -48,6 +49,12 @@ namespace IDBMS_API.Services
                 IsDeleted = request.IsDeleted,
                 CreatorId = request.CreatorId,
             };
+            _repository.Update(admin);
+        }
+        public void UpdateAdminStatus(Guid id, bool IsDeleted)
+        {
+            var admin = _repository.GetById(id) ?? throw new Exception("Admin not existed");
+            admin.IsDeleted = IsDeleted;
             _repository.Update(admin);
         }
         public void DeleteAdmin(Guid id)

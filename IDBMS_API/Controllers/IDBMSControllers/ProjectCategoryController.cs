@@ -10,12 +10,10 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class ProjectCategoryController : ODataController
     {
         private readonly ProjectCategoryService _service;
-        private readonly IProjectCategoryRepository _repository;
 
-        public ProjectCategoryController(ProjectCategoryService service, IProjectCategoryRepository repository)
+        public ProjectCategoryController(ProjectCategoryService service)
         {
             _service = service;
-            _repository = repository;
         }
 
         [EnableQuery]
@@ -50,9 +48,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var result = _service.GetById(id);
-                if (result == null) return NotFound();
-                _service.UpdateProjectCategory(request);
+                _service.UpdateProjectCategory(id, request);
             }
             catch (Exception ex)
             {
@@ -66,10 +62,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var result = _service.GetById(id);
-                if (result == null) return NotFound();
-                result.IsHidden = isHidden;
-                _repository.Update(result);
+                _service.UpdateProjectCategoryStatus(id, isHidden);
             }
             catch (Exception ex)
             {

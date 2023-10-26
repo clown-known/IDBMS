@@ -1,5 +1,6 @@
 ﻿using BusinessObject.DTOs.Request.CreateRequests;
 using BusinessObject.Models;
+using Repository.Implements;
 using Repository.Interfaces;
 
 namespace IDBMS_API.Services
@@ -31,14 +32,27 @@ namespace IDBMS_API.Services
             var ctcCreated =_constructionTaskCategoryRepository.Save(ctc);
             return ctcCreated; 
         }
-        public void UpdateConstructionTaskCategory(ConstructionTaskCategoryRequest request)
+        public void UpdateConstructionTaskCategory(int id, ConstructionTaskCategoryRequest request)
         {
+            var ctcCheck = _constructionTaskCategoryRepository.GetById(id) ?? throw new Exception("This Construction Task Category not existed");
             var ctc = new ConstructionTaskCategory
             {
                 Name = request.Name,
                 Description = request.Description,
                 IconImageUrl = request.IconImageUrl,
                 IsDeleted = request.IsDeleted,
+            };
+            _constructionTaskCategoryRepository.Update(ctc);
+        }
+        public void UpdateConstructionTaskCategoryStatus(int id, bool isDeleted)
+        {
+            var request = _constructionTaskCategoryRepository.GetById(id) ?? throw new Exception("This Construction Task Category not existed");
+            var ctc = new ConstructionTaskCategory
+            {
+                Name = request.Name,
+                Description = request.Description,
+                IconImageUrl = request.IconImageUrl,
+                IsDeleted = isDeleted,
             };
             _constructionTaskCategoryRepository.Update(ctc);
         }

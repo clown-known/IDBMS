@@ -11,12 +11,10 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class RoomTypeController : ODataController
     {
         private readonly RoomTypeService _service;
-        private readonly IRoomTypeRepository _repository;
 
-        public RoomTypeController(RoomTypeService service, IRoomTypeRepository repository)
+        public RoomTypeController(RoomTypeService service)
         {
             _service = service;
-            _repository = repository;
         }
 
         [EnableQuery]
@@ -45,7 +43,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                _service.UpdateRoomType(request, id);
+                _service.UpdateRoomType(id, request);
             }
             catch (Exception ex)
             {
@@ -59,10 +57,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var result = _service.GetById(id);
-                if (result == null) return NotFound();
-                result.IsHidden = isHidden;
-                _repository.Update(result);
+                _service.UpdateRoomTypeStatus(id, isHidden);
             }
             catch (Exception ex)
             {

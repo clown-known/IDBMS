@@ -30,13 +30,25 @@ namespace IDBMS_API.Services
             var pcCreated = projectCategoryRepository.Save(pc);
             return pcCreated;
         }
-        public void UpdateProjectCategory(ProjectCategoryRequest projectCategory)
+        public void UpdateProjectCategory(int id, ProjectCategoryRequest projectCategory)
         {
+            var rtCheck = projectCategoryRepository.GetById(id) ?? throw new Exception("This Project Category not existed");
             var pc = new ProjectCategory
             {
                 Name = projectCategory.Name,
                 IconImageUrl = projectCategory.IconImageUrl,
                 IsHidden = projectCategory.IsHidden,
+            };
+            projectCategoryRepository.Update(pc);
+        }
+        public void UpdateProjectCategoryStatus(int id, bool isHidden)
+        {
+            var projectCategory = projectCategoryRepository.GetById(id) ?? throw new Exception("This Project Category not existed");
+            var pc = new ProjectCategory
+            {
+                Name = projectCategory.Name,
+                IconImageUrl = projectCategory.IconImageUrl,
+                IsHidden = isHidden,
             };
             projectCategoryRepository.Update(pc);
         }
