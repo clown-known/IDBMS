@@ -40,12 +40,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateParticipation(Guid id, ParticipationRequest request)
         {
-            if (id != request.Id)
-            {
-                throw new Exception("Id in Object and Param are not match!");
-            }
-
-            var p = _repository.GetById(id) ?? throw new Exception("This Object not existed");
+            var p = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             p.UserId = request.UserId;
             p.ProjectId = request.ProjectId;
             p.Role = request.Role;
@@ -55,7 +50,7 @@ namespace IDBMS_API.Services
         public void DeleteParticipation(Guid id)
         {
 
-            var p = _repository.GetById(id) ?? throw new Exception("This Object not existed");
+            var p = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             p.IsDeleted = true;
             _repository.Update(p);
         }

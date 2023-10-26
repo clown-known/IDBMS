@@ -38,7 +38,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateAdmin(Guid id, AdminRequest request)
         {
-            var admin = _repository.GetById(id) ?? throw new Exception("This Object not existed");
+            var admin = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             admin.Name = request.Name;
             admin.Username = request.Username;
@@ -53,7 +53,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateAdminStatus(Guid id, bool IsDeleted)
         {
-            var admin = _repository.GetById(id) ?? throw new Exception("This Object not existed");
+            var admin = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             admin.IsDeleted = IsDeleted;
             _repository.Update(admin);
         }

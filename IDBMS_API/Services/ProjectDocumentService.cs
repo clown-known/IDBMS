@@ -1,5 +1,6 @@
 ﻿using BusinessObject.DTOs.Request;
 using BusinessObject.Models;
+using Repository.Implements;
 using Repository.Interfaces;
 
 namespace IDBMS_API.Services
@@ -27,6 +28,7 @@ namespace IDBMS_API.Services
         {
             var pd = new ProjectDocument
             {
+                Id = Guid.NewGuid(),
                 Name = request.Name,
                 Description = request.Description,
                 Url = request.Url,
@@ -41,21 +43,27 @@ namespace IDBMS_API.Services
             var pdCreated = projectDocumentRepository.Save(pd);
             return pdCreated;
         }
-        public void UpdateProjectDocument(ProjectDocumentRequest request)
+        public void UpdateProjectDocument(Guid id, ProjectDocumentRequest request)
         {
-            var pd = new ProjectDocument
-            {
-                Name = request.Name,
-                Description = request.Description,
-                Url = request.Url,
-                CreatedDate = request.CreatedDate,
-                Category = request.Category,
-                ProjectId = request.ProjectId,
-                ConstructionTaskReportId = request.ConstructionTaskReportId,
-                DecorProgressReportId = request.DecorProgressReportId,
-                ProjectDocumentTemplateId = request.ProjectDocumentTemplateId,
-                IsDeleted = request.IsDeleted,
-            };
+            var pd = projectDocumentRepository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            pd.Name = request.Name;
+            pd.Description = request.Description;
+            pd.Url = request.Url;
+            pd.CreatedDate = request.CreatedDate;
+            pd.Category = request.Category;
+            pd.ProjectId = request.ProjectId;
+            pd.ConstructionTaskReportId = request.ConstructionTaskReportId;
+            pd.DecorProgressReportId = request.DecorProgressReportId;
+            pd.ProjectDocumentTemplateId = request.ProjectDocumentTemplateId;
+            pd.IsDeleted = request.IsDeleted;
+            
+            projectDocumentRepository.Update(pd);
+        }
+        public void UpdateProjectDocumentStatus(Guid id, bool isDeleted)
+        {
+            var pd = projectDocumentRepository.GetById(id) ?? throw new Exception("This object is not existed!");
+            pd.IsDeleted = isDeleted;
             projectDocumentRepository.Update(pd);
         }
         public void DeleteProjectDocument(Guid id)

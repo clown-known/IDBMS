@@ -35,7 +35,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateConstructionTaskCategory(int id, ConstructionTaskCategoryRequest request)
         {
-            var ctc = _constructionTaskCategoryRepository.GetById(id) ?? throw new Exception("This Construction Task Category not existed");
+            var ctc = _constructionTaskCategoryRepository.GetById(id) ?? throw new Exception("This object is not existed!");
             ctc.Name = request.Name;
             ctc.Description = request.Description;
             ctc.IconImageUrl = request.IconImageUrl;
@@ -44,7 +44,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateConstructionTaskCategoryStatus(int id, bool isDeleted)
         {
-            var ctc = _constructionTaskCategoryRepository.GetById(id) ?? throw new Exception("This Construction Task Category not existed");
+            var ctc = _constructionTaskCategoryRepository.GetById(id) ?? throw new Exception("This object is not existed!");
             ctc.IsDeleted = isDeleted;
             _constructionTaskCategoryRepository.Update(ctc);
         }

@@ -30,7 +30,7 @@ namespace IDBMS_API.Services
         }
         public Notification? CreateNotificatonByUserId(NotificationRequest noti, Guid userId)
         {
-            var user = _userRepository.GetById(userId) ?? throw new Exception("User not existed");
+            var user = _userRepository.GetById(userId) ?? throw new Exception("This object is not existed!");
             var notification = new Notification
             {
                 Id = new Guid(),
@@ -67,7 +67,7 @@ namespace IDBMS_API.Services
             Notification? notiCreated = null;
             foreach (var userId in listUserId)
             {
-                var user = _userRepository.GetById(userId) ?? throw new Exception("User not existed");
+                var user = _userRepository.GetById(userId) ?? throw new Exception("This object is not existed!");
                 var notification = new Notification
                 {
                     Id = new Guid(),
@@ -83,13 +83,13 @@ namespace IDBMS_API.Services
         }
         public void UpdateIsSeenById(Guid id)
         {
-            var noti = _notificationRepository.GetById(id) ?? throw new Exception("This Object not existed");
+            var noti = _notificationRepository.GetById(id) ?? throw new Exception("This object is not existed!");
             noti.IsSeen = true;
             _notificationRepository.Update(noti);
         }
         public void UpdateIsSeenByUserId(Guid userId)
         {
-            var allNotiByUserId = _notificationRepository.GetByUserId(userId) ?? throw new Exception("This Object not existed");
+            var allNotiByUserId = _notificationRepository.GetByUserId(userId) ?? throw new Exception("This object is not existed!");
             foreach (var noti in allNotiByUserId)
             {
                 noti.IsSeen = true;

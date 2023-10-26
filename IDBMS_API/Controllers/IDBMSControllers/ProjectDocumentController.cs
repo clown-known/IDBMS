@@ -1,12 +1,68 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessObject.DTOs.Request;
+using IDBMS_API.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
-    public class ProjectDocumentController : Controller
+    public class ProjectDocumentController : ODataController
     {
-        public IActionResult Index()
+        private readonly ProjectDocumentService _service;
+
+        public ProjectDocumentController(ProjectDocumentService service)
         {
-            return View();
+            _service = service;
+        }
+
+        [EnableQuery]
+        [HttpGet]
+        public IActionResult GetProjectDocument()
+        {
+            return Ok(_service.GetAll());
+        }
+
+        [HttpPost]
+        public IActionResult CreateProjectDocument([FromBody] ProjectDocumentRequest request)
+        {
+            try
+            {
+                _service.CreateProjectDocument(request);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateProjectDocument(Guid id, [FromBody] ProjectDocumentRequest request)
+        {
+            try
+            {
+                _service.UpdateProjectDocument(id, request);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return Ok();
+        }
+
+        [HttpPut("{id}/isDeleted")]
+        public IActionResult UpdateProjectDocumentStatus(Guid id, bool isDeleted)
+        {
+            try
+            {
+                _service.UpdateProjectDocumentStatus(id, isDeleted);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return Ok();
         }
     }
+
 }

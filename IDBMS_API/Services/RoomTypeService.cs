@@ -35,7 +35,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateRoomType(int id, RoomTypeRequest roomType)
         {
-            var rt = roomTypeRepository.GetById(id) ?? throw new Exception("This Object not existed");
+            var rt = roomTypeRepository.GetById(id) ?? throw new Exception("This object is not existed!");
             rt.Name = roomType.Name;
             rt.ImageUrl = roomType.ImageUrl;
             rt.Description = roomType.Description;
@@ -47,7 +47,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateRoomTypeStatus(int id, bool isHidden)
         {
-            var rt = roomTypeRepository.GetById(id) ?? throw new Exception("This Object not existed");
+            var rt = roomTypeRepository.GetById(id) ?? throw new Exception("This object is not existed!");
             rt.IsHidden = isHidden;
 
             roomTypeRepository.Update(rt);

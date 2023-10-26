@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using BusinessObject.DTOs.Request;
 using BusinessObject.Models;
+using Repository.Implements;
 using Repository.Interfaces;
 
 namespace IDBMS_API.Services
@@ -33,30 +34,22 @@ namespace IDBMS_API.Services
             var dpdCreated = repository.Save(dpd);
             return dpdCreated;
         }
-        public void UpdateDecorProjectDesign(DecorProjectDesignRequest request)
+        public void UpdateDecorProjectDesign(int id, DecorProjectDesignRequest request)
         {
-            var dpd = new DecorProjectDesign
-            {
-                MinBudget = request.MinBudget,
-                MaxBudget = request.MaxBudget,
-                Name = request.Name,
-                Description = request.Description,
-                IsDeleted = request.IsDeleted,
-            };
+            var dpd = repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            dpd.MinBudget = request.MinBudget;
+            dpd.MaxBudget = request.MaxBudget; 
+            dpd.Name = request.Name;
+            dpd.Description = request.Description;
+            dpd.IsDeleted = request.IsDeleted;
+            
             repository.Update(dpd);
         }
-        public void UpdateIsDeleted(int id)
+        public void UpdateDecorProjectDesignStatus(int id, bool isDeleted)
         {
-            var dpd = repository.GetById(id);
-            var dpdDeleted = new DecorProjectDesign
-            {
-                MinBudget = dpd.MinBudget,
-                MaxBudget = dpd.MaxBudget,
-                Name = dpd.Name,
-                Description = dpd.Description,
-                IsDeleted = true,
-            };
-            repository.Update(dpdDeleted);
+            var dpd = repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            dpd.IsDeleted = isDeleted;
+            repository.Update(dpd);
         }
     }
 }

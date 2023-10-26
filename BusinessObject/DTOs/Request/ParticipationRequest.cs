@@ -11,8 +11,6 @@ namespace BusinessObject.DTOs.Request
 {
     public class ParticipationRequest
     {
-        public Guid Id { get; set; }
-
         [Required]
         public Guid UserId { get; set; }
 

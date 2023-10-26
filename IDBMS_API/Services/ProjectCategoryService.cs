@@ -32,7 +32,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateProjectCategory(int id, ProjectCategoryRequest projectCategory)
         {
-            var pc = projectCategoryRepository.GetById(id) ?? throw new Exception("This Object not existed");
+            var pc = projectCategoryRepository.GetById(id) ?? throw new Exception("This object is not existed!");
             pc.Name = projectCategory.Name;
             pc.IconImageUrl = projectCategory.IconImageUrl;
             pc.IsHidden = projectCategory.IsHidden;
@@ -41,7 +41,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateProjectCategoryStatus(int id, bool isHidden)
         {
-            var pc = projectCategoryRepository.GetById(id) ?? throw new Exception("This Object not existed");
+            var pc = projectCategoryRepository.GetById(id) ?? throw new Exception("This object is not existed!");
             pc.IsHidden = isHidden;
             projectCategoryRepository.Update(pc);
         }
