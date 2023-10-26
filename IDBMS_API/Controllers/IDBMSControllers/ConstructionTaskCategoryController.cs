@@ -52,12 +52,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok();
         }
 
-        [HttpPut("{id}/{IsDeleted}")]
-        public IActionResult UpdateConstructionTaskCategoryStatus(int id, bool IsDeleted)
+        [HttpPut("{id}/isDeleted")]
+        public IActionResult UpdateConstructionTaskCategoryStatus(int id, bool isDeleted)
         {
             try
             {
-                _service.UpdateConstructionTaskCategoryStatus(id, IsDeleted);
+                _service.UpdateConstructionTaskCategoryStatus(id, isDeleted);
             }
             catch (Exception ex)
             {

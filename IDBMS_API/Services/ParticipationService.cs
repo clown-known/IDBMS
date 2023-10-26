@@ -29,10 +29,11 @@ namespace IDBMS_API.Services
         {
             var p = new Participation
             {
+                Id = Guid.NewGuid(),
                 UserId = request.UserId,
                 ProjectId = request.ProjectId,
                 Role = request.Role,
-                IsDeleted = request.IsDeleted,
+                IsDeleted = false,
             };
             var pCreated = _repository.Save(p);
             return pCreated;
@@ -45,7 +46,6 @@ namespace IDBMS_API.Services
             }
 
             var p = _repository.GetById(id) ?? throw new Exception("This Object not existed");
-            p.Id = id;
             p.UserId = request.UserId;
             p.ProjectId = request.ProjectId;
             p.Role = request.Role;

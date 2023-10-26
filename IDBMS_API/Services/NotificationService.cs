@@ -47,11 +47,11 @@ namespace IDBMS_API.Services
         {
             var allUser = _userRepository.GetAll();
             var allUserId = allUser.Select(n => n.Id).ToList();
-            Notification notiCreated = null;
+            Notification? notiCreated = null;
             foreach (var userId in allUserId) {
                 var notification = new Notification
                 {
-                    Id = new Guid(),
+                    Id = Guid.NewGuid(),
                     UserId = userId,
                     Category = noti.Category,
                     Content = noti.Content,
@@ -83,31 +83,17 @@ namespace IDBMS_API.Services
         }
         public void UpdateIsSeenById(Guid id)
         {
-            var noti = _notificationRepository.GetById(id) ?? throw new Exception("This notification not exist");
-            var notification = new Notification
-            {
-                UserId = noti.UserId,
-                Category = noti.Category,
-                Content = noti.Content,
-                Link = noti.Link,
-                IsSeen = true,
-            };
-            _notificationRepository.Update(notification);
+            var noti = _notificationRepository.GetById(id) ?? throw new Exception("This Object not existed");
+            noti.IsSeen = true;
+            _notificationRepository.Update(noti);
         }
         public void UpdateIsSeenByUserId(Guid userId)
         {
-            var allNotiByUserId = _notificationRepository.GetByUserId(userId) ?? throw new Exception("This notification not exist");
+            var allNotiByUserId = _notificationRepository.GetByUserId(userId) ?? throw new Exception("This Object not existed");
             foreach (var noti in allNotiByUserId)
             {
-                var notification = new Notification
-                {
-                    UserId = noti.UserId,
-                    Category = noti.Category,
-                    Content = noti.Content,
-                    Link = noti.Link,
-                    IsSeen = true,
-                };
-                _notificationRepository.Update(notification);
+                noti.IsSeen = true;
+                _notificationRepository.Update(noti);
             }
         }
     }

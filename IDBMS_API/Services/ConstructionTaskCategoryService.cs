@@ -1,4 +1,5 @@
-﻿using BusinessObject.DTOs.Request;
+﻿using Azure.Core;
+using BusinessObject.DTOs.Request;
 using BusinessObject.Models;
 using Repository.Implements;
 using Repository.Interfaces;
@@ -34,26 +35,17 @@ namespace IDBMS_API.Services
         }
         public void UpdateConstructionTaskCategory(int id, ConstructionTaskCategoryRequest request)
         {
-            var ctcCheck = _constructionTaskCategoryRepository.GetById(id) ?? throw new Exception("This Construction Task Category not existed");
-            var ctc = new ConstructionTaskCategory
-            {
-                Name = request.Name,
-                Description = request.Description,
-                IconImageUrl = request.IconImageUrl,
-                IsDeleted = request.IsDeleted,
-            };
+            var ctc = _constructionTaskCategoryRepository.GetById(id) ?? throw new Exception("This Construction Task Category not existed");
+            ctc.Name = request.Name;
+            ctc.Description = request.Description;
+            ctc.IconImageUrl = request.IconImageUrl;
+            ctc.IsDeleted = request.IsDeleted;
             _constructionTaskCategoryRepository.Update(ctc);
         }
         public void UpdateConstructionTaskCategoryStatus(int id, bool isDeleted)
         {
-            var request = _constructionTaskCategoryRepository.GetById(id) ?? throw new Exception("This Construction Task Category not existed");
-            var ctc = new ConstructionTaskCategory
-            {
-                Name = request.Name,
-                Description = request.Description,
-                IconImageUrl = request.IconImageUrl,
-                IsDeleted = isDeleted,
-            };
+            var ctc = _constructionTaskCategoryRepository.GetById(id) ?? throw new Exception("This Construction Task Category not existed");
+            ctc.IsDeleted = isDeleted;
             _constructionTaskCategoryRepository.Update(ctc);
         }
     }
