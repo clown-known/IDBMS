@@ -23,6 +23,7 @@ namespace IDBMS_API.Services
         {
             var applianceSuggestion = new ApplianceSuggestion
             {
+                Id = Guid.NewGuid(),
                 Name = request.Name,
                 Description = request.Description,
                 ImageUrl = request.ImageUrl,
@@ -32,17 +33,22 @@ namespace IDBMS_API.Services
             var asCreated = _repository.Save(applianceSuggestion);
             return asCreated;
         }
-        public void UpdateApplianceSuggestion(ApplianceSuggestionRequest request)
+        public void UpdateApplianceSuggestion(Guid id, ApplianceSuggestionRequest request)
         {
-            var applianceSuggestion = new ApplianceSuggestion
-            {
-                Name = request.Name,
-                Description = request.Description,
-                ImageUrl = request.ImageUrl,
-                InteriorItemId = request.InteriorItemId,
-                RoomId = request.RoomId,
-            };
+            var applianceSuggestion = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            applianceSuggestion.Name = request.Name;
+            applianceSuggestion.Description = request.Description;
+            applianceSuggestion.ImageUrl = request.ImageUrl;
+            applianceSuggestion.InteriorItemId = request.InteriorItemId;
+            applianceSuggestion.RoomId = request.RoomId;
+
+
             _repository.Update(applianceSuggestion);
+        }
+        public void DeleteApplianceSuggestion(Guid id)
+        {
+            var applianceSuggestion = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            _repository.DeleteById(id);
         }
     }
 }

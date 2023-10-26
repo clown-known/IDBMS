@@ -1,5 +1,6 @@
 ﻿using BusinessObject.DTOs.Request;
 using BusinessObject.Models;
+using Repository.Implements;
 using Repository.Interfaces;
 
 namespace IDBMS_API.Services
@@ -31,19 +32,19 @@ namespace IDBMS_API.Services
             var iicCreated = _repository.Save(iic);
             return iicCreated;
         }
-        public void UpdateInteriorItemColor(InteriorItemColorRequest request)
+        public void UpdateInteriorItemColor(int id, InteriorItemColorRequest request)
         {
-            var iic = new InteriorItemColor
-            {
-                Name = request.Name,
-                Type = request.Type,
-                PrimaryColor = request.PrimaryColor,
-                SecondaryColor = request.SecondaryColor,
-            };
+            var iic = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            iic.Name = request.Name;
+            iic.Type = request.Type;
+            iic.PrimaryColor = request.PrimaryColor;
+            iic.SecondaryColor = request.SecondaryColor;
+
            _repository.Update(iic);
         }
         public void DeleteInteriorItemColor(int id)
         {
+            var iic = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             _repository.DeleteById(id);
         }
     }
