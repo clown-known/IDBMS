@@ -10,12 +10,10 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class ConstructionTaskCategoryController : ODataController
     {
         private readonly ConstructionTaskCategoryService _service;
-        private readonly IConstructionTaskCategoryRepository _repository;
 
-        public ConstructionTaskCategoryController(ConstructionTaskCategoryService service, IConstructionTaskCategoryRepository repository)
+        public ConstructionTaskCategoryController(ConstructionTaskCategoryService service)
         {
             _service = service;
-            _repository = repository;
         }
 
         [EnableQuery]
@@ -44,9 +42,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var result = _service.GetById(id);
-                if (result == null) return NotFound();
-                _service.UpdateConstructionTaskCategory(request);
+
+                _service.UpdateConstructionTaskCategory(id, request);
             }
             catch (Exception ex)
             {
@@ -60,25 +57,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var result = _service.GetById(id);
-                if (result == null) return NotFound();
-                result.IsDeleted = IsDeleted;
-                _repository.Update(result);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            return Ok();
-        }
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConstructionTaskCategory(int id)
-        {
-            try
-            {
-                var result = _service.GetById(id);
-                if (result == null) return NotFound();
-                _repository.DeleteById(id);
+                _service.UpdateConstructionTaskCategoryStatus(id, IsDeleted);
             }
             catch (Exception ex)
             {

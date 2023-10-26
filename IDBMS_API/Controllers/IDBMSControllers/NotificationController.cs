@@ -10,12 +10,10 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class NotificationController : ODataController
     {
         private readonly NotificationService _service;
-        private readonly INotificationRepository _repository;
 
-        public NotificationController(NotificationService service, INotificationRepository repository)
+        public NotificationController(NotificationService service)
         {
             _service = service;
-            _repository = repository;
         }
 
         [EnableQuery]
@@ -74,8 +72,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var notification = _service.GetById(id);
-                if (notification == null) return NotFound();
                 _service.UpdateIsSeenById(id);
             }
             catch (Exception ex)
@@ -90,8 +86,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var notification = _service.GetByUserId(userId);
-                if (notification == null) return NotFound();
                 _service.UpdateIsSeenByUserId(userId);
             }
             catch (Exception ex)

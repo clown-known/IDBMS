@@ -11,11 +11,9 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class AdminController : ODataController
     {
         private readonly AdminService _service;
-        private readonly IAdminRepository _repository;
-        public AdminController(AdminService service, IAdminRepository repository)
+        public AdminController(AdminService service)
         {
             _service = service;
-            _repository = repository;
         }
         [EnableQuery]
         [HttpGet]
@@ -39,18 +37,27 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpPut("{id}")]
         public IActionResult UpdateAdmin(Guid id, [FromBody] AdminRequest request)
         {
-            var admin = _service.GetById(id);
-            if (admin == null) return NotFound();
-            _service.UpdateAdmin(request);
+            try
+            {
+                _service.UpdateAdmin(id, request);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return Ok();
         }
         [HttpPut("{id}/isDeleted")]
         public IActionResult UpdateAdminStatus(Guid id, bool isDeleted)
         {
-            var admin = _service.GetById(id);
-            if (admin == null) return NotFound();
-            admin.IsDeleted = isDeleted;
-            _repository.Update(admin);  
+            try
+            {
+                _service.UpdateAdminStatus(id, isDeleted);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return Ok();
         }
 

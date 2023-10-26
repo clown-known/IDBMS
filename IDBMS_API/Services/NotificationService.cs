@@ -58,7 +58,7 @@ namespace IDBMS_API.Services
                     Link = noti.Link,
                     IsSeen = noti.IsSeen,
                 };
-                notiCreated = _notificationRepository.Save(notification);
+                if (notification != null) notiCreated = _notificationRepository.Save(notification);
             }
             return notiCreated;
         }
@@ -96,7 +96,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateIsSeenByUserId(Guid userId)
         {
-            var allNotiByUserId = _notificationRepository.GetByUserId(userId);
+            var allNotiByUserId = _notificationRepository.GetByUserId(userId) ?? throw new Exception("This notification not exist");
             foreach (var noti in allNotiByUserId)
             {
                 var notification = new Notification
