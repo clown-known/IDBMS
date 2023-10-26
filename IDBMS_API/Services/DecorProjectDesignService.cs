@@ -1,5 +1,5 @@
 ﻿using Azure.Core;
-using BusinessObject.DTOs.Request.CreateRequests;
+using BusinessObject.DTOs.Request;
 using BusinessObject.Models;
 using Repository.Interfaces;
 

@@ -1,4 +1,6 @@
-﻿namespace BusinessObject.DTOs.Request.UpdateRequests
+﻿using BusinessObject.Enums;
+
+namespace BusinessObject.DTOs.Request.AccountRequest
 {
     public class UpdateUserRequest
     {
@@ -13,9 +15,9 @@
 
         public string Phone { get; set; } = default!;
 
-        public Enums.Language Language { get; set; } = default!;
+        public Language Language { get; set; } = default!;
 
-        public int Status { get; set; }
+        public UserStatus Status { get; set; }
         public int RoleId { get; set; }
     }
 }

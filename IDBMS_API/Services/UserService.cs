@@ -1,8 +1,8 @@
 ﻿
 using API.Supporters.JwtAuthSupport;
 using BLL.Services;
-using BusinessObject.DTOs.Request.CreateRequests;
-using BusinessObject.DTOs.Request.UpdateRequests;
+using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Request.AccountRequest;
 using BusinessObject.Models;
 using IDBMS_API.Constants;
 using IDBMS_API.Supporters.Utils;
@@ -55,7 +55,7 @@ namespace API.Services
             user.Token = token;
             userRepository.Update(user);
         }
-        public User? CreateUser(CreateAccountRequest request)
+        public User? CreateUser(CreateUserRequest request)
         {
             TryValidateRegisterRequest(request);
             PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -78,7 +78,7 @@ namespace API.Services
             return userCreated;
         }
         
-        private void TryValidateRegisterRequest(CreateAccountRequest request)
+        private void TryValidateRegisterRequest(CreateUserRequest request)
         {
             if (new Regex(RegexCollector.PhoneRegex).IsMatch(request.Phone) == false)
             {

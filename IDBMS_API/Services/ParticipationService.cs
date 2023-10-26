@@ -1,6 +1,8 @@
-﻿using BusinessObject.DTOs.Request.CreateRequests;
+﻿using BusinessObject.DTOs.Request;
 using BusinessObject.Models;
+using IDBMS_API.Constants;
 using Repository.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace IDBMS_API.Services
 {
@@ -10,7 +12,7 @@ namespace IDBMS_API.Services
         public ParticipationService(IParticipationRepository repository)
         {
             _repository = repository;
-        }   
+        }
         public IEnumerable<Participation> GetAll()
         {
             return _repository.GetAll();
@@ -35,15 +37,26 @@ namespace IDBMS_API.Services
             var pCreated = _repository.Save(p);
             return pCreated;
         }
-        public void UpdateParticipation(ParticipationRequest request)
+        public void UpdateParticipation(Guid id, ParticipationRequest request)
         {
-            var p = new Participation
+            if (id != request.Id)
             {
-                UserId = request.UserId,
-                ProjectId = request.ProjectId,
-                Role = request.Role,
-                IsDeleted = request.IsDeleted,
-            };
+                throw new Exception("Id in Object and Param are not match!");
+            }
+
+            var p = _repository.GetById(id) ?? throw new Exception("This Object not existed");
+            p.Id = id;
+            p.UserId = request.UserId;
+            p.ProjectId = request.ProjectId;
+            p.Role = request.Role;
+            p.IsDeleted = request.IsDeleted;
+            _repository.Update(p);
+        }
+        public void DeleteParticipation(Guid id)
+        {
+
+            var p = _repository.GetById(id) ?? throw new Exception("This Object not existed");
+            p.IsDeleted = true;
             _repository.Update(p);
         }
     }

@@ -8,30 +8,28 @@ using Repository.Interfaces;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
-    public class RoomTypeController : ODataController
+    public class ParticipationController : ODataController
     {
-        private readonly RoomTypeService _service;
-        private readonly IRoomTypeRepository _repository;
+        private readonly ParticipationService _service;
 
-        public RoomTypeController(RoomTypeService service, IRoomTypeRepository repository)
+        public ParticipationController(ParticipationService service)
         {
             _service = service;
-            _repository = repository;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetRoomType()
+        public IActionResult GetParticipation()
         {
             return Ok(_service.GetAll());
         }
 
         [HttpPost]
-        public IActionResult CreateRoomType([FromBody] RoomTypeRequest request)
+        public IActionResult CreateParticipation([FromBody] ParticipationRequest request)
         {
             try
             {
-                _service.CreateRoomType(request);
+                _service.CreateParticipation(request);
             }
             catch (Exception ex)
             {
@@ -41,11 +39,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateRoomType(int id, [FromBody] RoomTypeRequest request)
+        public IActionResult UpdateParticipation(Guid id, [FromBody] ParticipationRequest request)
         {
             try
             {
-                _service.UpdateRoomType(request, id);
+                _service.UpdateParticipation(id, request);
             }
             catch (Exception ex)
             {
@@ -54,15 +52,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok();
         }
 
-        [HttpPut("{id}/isHidden")]
-        public IActionResult UpdateRoomTypeStatus(int id, bool isHidden)
+        [HttpDelete("{id}")]
+        public IActionResult DeleteParticipation(Guid id)
         {
             try
             {
-                var result = _service.GetById(id);
-                if (result == null) return NotFound();
-                result.IsHidden = isHidden;
-                _repository.Update(result);
+                _service.DeleteParticipation(id);
             }
             catch (Exception ex)
             {
@@ -71,5 +66,4 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok();
         }
     }
-
 }

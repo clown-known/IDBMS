@@ -5,17 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.DTOs.Request.CreateRequests
+namespace BusinessObject.DTOs.Request
 {
-    public class ProjectCategoryRequest
+    public class ConstructionTaskCategoryRequest
     {
-        [Required]
         public string Name { get; set; } = default!;
 
-        [Required]
+        public string? Description { get; set; }
+
         public string IconImageUrl { get; set; } = default!;
 
-        [Required]
-        public bool IsHidden { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

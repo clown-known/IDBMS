@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.DTOs.Request.CreateRequests
+namespace BusinessObject.DTOs.Request
 {
     public class NotificationRequest
     {

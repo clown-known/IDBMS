@@ -1,5 +1,4 @@
-﻿using BusinessObject.DTOs.Request.CreateRequests;
-using BusinessObject.DTOs.Request.UpdateRequests;
+﻿using BusinessObject.DTOs.Request;
 using BusinessObject.Enums;
 using BusinessObject.Models;
 using Repository.Interfaces;
@@ -34,7 +33,7 @@ public class ProjectService
         return participationRepo.GetByProjectId(id);
     }
 
-    public Project? CreateProject(CreateProjectRequest request)
+    public Project? CreateProject(ProjectRequest request)
     {
         var project = new Project
         {
@@ -62,7 +61,7 @@ public class ProjectService
         return createdProject;
     }
 
-    public void UpdateProject(UpdateProjectRequest request)
+    public void UpdateProject(ProjectRequest request)
     {
         var project = new Project
         {

@@ -1,10 +1,9 @@
 ﻿using BusinessObject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interfaces;
-using IDBMS_API.DTOs.Request;
 using Repository.Implements;
 using Firebase.Auth;
-using BusinessObject.DTOs.Request.CreateRequests;
+using BusinessObject.DTOs.Request;
 
 namespace IDBMS_API.Services
 {

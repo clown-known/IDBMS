@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace BusinessObject.DTOs.Request.CreateRequests
+namespace BusinessObject.DTOs.Request.AccountRequest
 {
-    public class CreateAccountRequest
+    public class CreateUserRequest
     {
         public string Name { get; set; } = default!;
 

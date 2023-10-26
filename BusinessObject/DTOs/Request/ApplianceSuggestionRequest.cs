@@ -6,25 +6,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.DTOs.Request.CreateRequests
+namespace BusinessObject.DTOs.Request
 {
-    public class DecorProgressReportRequest
+    public class ApplianceSuggestionRequest
     {
         [Required]
         public string Name { get; set; } = default!;
 
         public string? Description { get; set; }
 
-        [Required]
-        public Guid AuthorId { get; set; }
+        public string? ImageUrl { get; set; }
+
+        public Guid? InteriorItemId { get; set; }
+        public InteriorItem? InteriorItem { get; set; }
 
         [Required]
-        public DateTime CreatedDate { get; set; }
+        public Guid RoomId { get; set; }
 
-        [Required]
-        public Guid PrepayStageId { get; set; }
-
-        [Required]
-        public bool IsDeleted { get; set; }
+        public Guid? ProjectId { get; set; }
     }
 }

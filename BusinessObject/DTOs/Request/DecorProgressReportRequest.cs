@@ -1,4 +1,4 @@
-﻿using BusinessObject.Enums;
+﻿using BusinessObject.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.DTOs.Request.CreateRequests
+namespace BusinessObject.DTOs.Request
 {
-    public class InteriorItemCategoryRequest
+    public class DecorProgressReportRequest
     {
         [Required]
         public string Name { get; set; } = default!;
@@ -16,15 +16,13 @@ namespace BusinessObject.DTOs.Request.CreateRequests
         public string? Description { get; set; }
 
         [Required]
-        public string BannerImageUrl { get; set; } = default!;
+        public Guid AuthorId { get; set; }
 
         [Required]
-        public string IconImageUrl { get; set; } = default!;
+        public DateTime CreatedDate { get; set; }
 
         [Required]
-        public InteriorItemType InteriorItemType { get; set; }
-
-        public int? ParentCategoryId { get; set; }
+        public Guid PrepayStageId { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; }

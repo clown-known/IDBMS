@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDBMS_API.DTOs.Request
+namespace BusinessObject.DTOs.Request.AccountRequest
 {
     public class LoginRequest
     {

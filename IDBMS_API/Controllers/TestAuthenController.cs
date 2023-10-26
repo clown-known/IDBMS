@@ -1,5 +1,6 @@
 ﻿using API.Supporters.JwtAuthSupport;
-using BusinessObject.DTOs.Request.CreateRequests;
+using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Request.AccountRequest;
 using BusinessObject.Models;
 using IDBMS_API.Supporters.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ namespace IDBMS_API.Controllers
             return Ok(token);
         }
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(CreateAccountRequest request)
+        public async Task<ActionResult<User>> Register(CreateUserRequest request)
         {
             PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
             var user = new User();

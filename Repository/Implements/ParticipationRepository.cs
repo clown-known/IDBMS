@@ -5,17 +5,13 @@ namespace Repository.Implements;
 
 public class ParticipationRepository : IParticipationRepository
 {
-    public void DeleteById(string id)
-    {
-        throw new NotImplementedException();
-    }
 
     public IEnumerable<Participation> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public Participation? GetById(string id)
+    public Participation? GetById(Guid id)
     {
         throw new NotImplementedException();
     }
@@ -76,11 +72,6 @@ public class ParticipationRepository : IParticipationRepository
         {
             throw;
         }
-    }
-
-    public Participation? GetById(Guid id)
-    {
-        throw new NotImplementedException();
     }
 
     public void DeleteById(Guid id)
