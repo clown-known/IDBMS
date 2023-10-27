@@ -17,7 +17,15 @@ namespace Repository.Implements
 
         public IEnumerable<Notification> GetAll()
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Notifications.ToList();
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public Notification? GetById(Guid id)

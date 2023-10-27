@@ -1,3 +1,4 @@
+using API.Services;
 using API.Supporters;
 using API.Supporters.JwtAuthSupport;
 using BLL.Services;
@@ -46,7 +47,32 @@ builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddScoped<AdminService, AdminService>();
+builder.Services.AddScoped<AuthenticationCodeService, AuthenticationCodeService>();
+builder.Services.AddScoped<ApplianceSuggestionService, ApplianceSuggestionService>();
+builder.Services.AddScoped<CommentService, CommentService>();
+builder.Services.AddScoped<ConstructionTaskCategoryService, ConstructionTaskCategoryService>();
+builder.Services.AddScoped<ConstructionTaskService, ConstructionTaskService>();
+builder.Services.AddScoped<ConstructionTaskDesignService, ConstructionTaskDesignService>();
+builder.Services.AddScoped<DecorProgressReportService, DecorProgressReportService>();
+builder.Services.AddScoped<DecorProjectDesignService, DecorProjectDesignService>();
+builder.Services.AddScoped<FloorService, FloorService>();
+builder.Services.AddScoped<InteriorItemBookmarkService, InteriorItemBookmarkService>();
+builder.Services.AddScoped<InteriorItemCategoryService, InteriorItemCategoryService>();
+builder.Services.AddScoped<InteriorItemColorService, InteriorItemColorService>();
+builder.Services.AddScoped<InteriorItemService, InteriorItemService>();
+builder.Services.AddScoped<NotificationService, NotificationService>();
 builder.Services.AddScoped<ParticipationService, ParticipationService>();
+builder.Services.AddScoped<PrepayStageService, PrepayStageService>();
+builder.Services.AddScoped<PrepayStageDesignService, PrepayStageDesignService>();
+builder.Services.AddScoped<ProjectCategoryService, ProjectCategoryService>();
+builder.Services.AddScoped<ProjectService, ProjectService>();
+builder.Services.AddScoped<ProjectDocumentService, ProjectDocumentService>();
+builder.Services.AddScoped<DocumentTemplateService, DocumentTemplateService>();
+builder.Services.AddScoped<RoomService, RoomService>();
+builder.Services.AddScoped<RoomTypeService, RoomTypeService>();
+builder.Services.AddScoped<TransactionService, TransactionService>();
+builder.Services.AddScoped<UserService, UserService>();
 
 builder.Services.AddScoped<FirebaseService, FirebaseService>();
 builder.Services.AddScoped<JwtTokenSupporter, JwtTokenSupporter>();

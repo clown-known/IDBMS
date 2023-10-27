@@ -1,4 +1,4 @@
-﻿/*using BusinessObject.DTOs.Request;
+﻿using BusinessObject.DTOs.Request;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -25,17 +25,17 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         //permission
         [EnableQuery]
-        [HttpGet("construction-task/{ctId}")]
-        public IActionResult GetCommentsConstructionTaskId(Guid ctId)
+        [HttpGet("construction-task/{id}")]
+        public IActionResult GetCommentsConstructionTaskId(Guid id)
         {
-            return Ok(_service.GetByConstructionTaskId(ctId));
+            return Ok(_service.GetByConstructionTaskId(id));
         }
         //permission
         [EnableQuery]
-        [HttpGet("decor-progress-report/{dprId}")]
-        public IActionResult GetCommentsDecorProgressReportId(Guid dprId)
+        [HttpGet("decor-progress-report/{id}")]
+        public IActionResult GetCommentsDecorProgressReportId(Guid id)
         {
-            return Ok(_service.GetByDecorProgressReportId(dprId));
+            return Ok(_service.GetByDecorProgressReportId(id));
         }
         [HttpPost]
         public IActionResult CreateComment([FromBody] CommentRequest request)
@@ -81,4 +81,3 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     }
 
 }
-*/
