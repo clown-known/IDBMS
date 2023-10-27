@@ -17,7 +17,7 @@ namespace IDBMS_API.Services
         }
         public ApplianceSuggestion? GetById(Guid id)
         {
-            return _repository.GetById(id);
+            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public ApplianceSuggestion? CreateApplianceSuggestion(ApplianceSuggestionRequest request)
         {

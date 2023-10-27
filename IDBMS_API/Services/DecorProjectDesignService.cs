@@ -8,18 +8,18 @@ namespace IDBMS_API.Services
 {
     public class DecorProjectDesignService
     {
-        private readonly IDecorProjectDesignRepository repository;
+        private readonly IDecorProjectDesignRepository _repository;
         public DecorProjectDesignService(IDecorProjectDesignRepository repository)
         {
-            this.repository = repository;
+            _repository = repository;
         }
         public IEnumerable<DecorProjectDesign> GetAll()
         {
-            return repository.GetAll();
+            return _repository.GetAll();
         }
         public DecorProjectDesign? GetById(int id)
         {
-            return repository.GetById(id);
+            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public DecorProjectDesign? CreateDecorProjectDesign(DecorProjectDesignRequest request)
         {
@@ -31,25 +31,25 @@ namespace IDBMS_API.Services
                 Description = request.Description,
                 IsDeleted = request.IsDeleted,
             };
-            var dpdCreated = repository.Save(dpd);
+            var dpdCreated = _repository.Save(dpd);
             return dpdCreated;
         }
         public void UpdateDecorProjectDesign(int id, DecorProjectDesignRequest request)
         {
-            var dpd = repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var dpd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             dpd.MinBudget = request.MinBudget;
             dpd.MaxBudget = request.MaxBudget; 
             dpd.Name = request.Name;
             dpd.Description = request.Description;
             dpd.IsDeleted = request.IsDeleted;
             
-            repository.Update(dpd);
+            _repository.Update(dpd);
         }
         public void UpdateDecorProjectDesignStatus(int id, bool isDeleted)
         {
-            var dpd = repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var dpd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             dpd.IsDeleted = isDeleted;
-            repository.Update(dpd);
+            _repository.Update(dpd);
         }
     }
 }

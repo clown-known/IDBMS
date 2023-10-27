@@ -18,11 +18,11 @@ namespace IDBMS_API.Services
         }
         public Notification? GetById(Guid id)
         {
-            return _notificationRepository.GetById(id);
+            return _notificationRepository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public IEnumerable<Notification> GetByUserId (Guid userId)
         {
-            return _notificationRepository.GetByUserId(userId);
+            return _notificationRepository.GetByUserId(userId) ?? throw new Exception("This object is not existed!");
         }
         public IEnumerable<Notification> GetAll()
         {

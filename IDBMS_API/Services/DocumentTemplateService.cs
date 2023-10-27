@@ -7,18 +7,18 @@ namespace IDBMS_API.Services
 {
     public class DocumentTemplateService
     {
-        private readonly IProjectDocumentTemplateRepository repository;
+        private readonly IProjectDocumentTemplateRepository _repository;
         public DocumentTemplateService(IProjectDocumentTemplateRepository repository)
         {
-            this.repository = repository;
+            _repository = repository;
         }
         public IEnumerable<ProjectDocumentTemplate> GetAll()
         {
-            return repository.GetAll();
+            return _repository.GetAll();
         }
-        public ProjectDocumentTemplate? GetByID(int id)
+        public ProjectDocumentTemplate? GetById(int id)
         {
-            return repository.GetById(id);
+            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public ProjectDocumentTemplate? CreateDocumentTemplate(ProjectDocumentTemplateRequest request)
         {
@@ -41,12 +41,12 @@ namespace IDBMS_API.Services
                 SwiftCode = request.SwiftCode,
                 RepresentedBy = request.RepresentedBy,
             };
-            var dtCreated = repository.Save(dt);
+            var dtCreated = _repository.Save(dt);
             return dtCreated;
         }
         public void UpdateDocumentTemplate(int id, ProjectDocumentTemplateRequest request)
         {
-            var dt = repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var dt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             dt.Name = request.Name;
             dt.Type = request.Type;
             dt.Language = request.Language;
@@ -64,11 +64,11 @@ namespace IDBMS_API.Services
             dt.SwiftCode = request.SwiftCode;
             dt.RepresentedBy = request.RepresentedBy;
 
-            repository.Update(dt);
+            _repository.Update(dt);
         }
         public void DeleteDocumentTemplate(int id)
         {
-            repository.DeleteById(id);
+            _repository.DeleteById(id);
         }
     }
 }

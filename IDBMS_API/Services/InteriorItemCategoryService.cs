@@ -18,7 +18,7 @@ namespace IDBMS_API.Services
         }
         public InteriorItemCategory? GetById(int id)
         {
-            return _repository.GetById(id);
+            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public InteriorItemCategory? CreateInteriorItemCategory(InteriorItemCategoryRequest request)
         {

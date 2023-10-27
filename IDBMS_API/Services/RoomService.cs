@@ -6,18 +6,18 @@ namespace IDBMS_API.Services
 {
     public class RoomService
     {
-        private readonly IRoomRepository roomRepository;
-        public RoomService(IRoomRepository roomRepository)
+        private readonly IRoomRepository _repository;
+        public RoomService(IRoomRepository repository)
         {
-            this.roomRepository = roomRepository;
+            _repository = repository;
         }
         public IEnumerable<Room> GetAll()
         {
-            return roomRepository.GetAll();
+            return _repository.GetAll();
         }
         public Room? GetById(Guid id)
         {
-            return roomRepository.GetById(id);
+            return _repository.GetById(id);
         }
         public Room? CreateRoom(RoomRequest request)
         {
@@ -31,7 +31,7 @@ namespace IDBMS_API.Services
                 PricePerArea = request.PricePerArea,
                 RoomTypeId = request.RoomTypeId,
             };
-            var roomCreated = roomRepository.Save(room);
+            var roomCreated = _repository.Save(room);
             return roomCreated;
         }
         public void UpdateRoom(RoomRequest request)
@@ -46,11 +46,11 @@ namespace IDBMS_API.Services
                 PricePerArea = request.PricePerArea,
                 RoomTypeId = request.RoomTypeId,
             };
-            roomRepository.Update(room);
+            _repository.Update(room);
         }
         public void DeleteRoom(Guid id)
         {
-            roomRepository.DeleteById(id);
+            _repository.DeleteById(id);
         }
     }
 }

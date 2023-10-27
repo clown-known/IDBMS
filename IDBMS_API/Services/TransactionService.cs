@@ -7,18 +7,18 @@ namespace IDBMS_API.Services
 {
     public class TransactionService
     {
-        private readonly ITransactionRepository repository;
+        private readonly ITransactionRepository _repository;
         public TransactionService(ITransactionRepository repository)
         {
-            this.repository = repository;
+            _repository = repository;
         }   
         public IEnumerable<Transaction> GetAll()
         {
-            return repository.GetAll();
+            return _repository.GetAll();
         }
         public Transaction? GetById(Guid id)
         {
-            return repository.GetById(id);
+            return _repository.GetById(id);
         }
         public Transaction? CreateTransaction(TransactionRequest request)
         {
@@ -34,7 +34,7 @@ namespace IDBMS_API.Services
                 TransactionReceiptImageUrl = request.TransactionReceiptImageUrl,
                 AdminNote = request.AdminNote,
             };
-            var transCreated = repository.Save(trans);
+            var transCreated = _repository.Save(trans);
             return transCreated;
         }
         public void UpdateTransaction(TransactionRequest request)
@@ -51,11 +51,11 @@ namespace IDBMS_API.Services
                 TransactionReceiptImageUrl = request.TransactionReceiptImageUrl,
                 AdminNote = request.AdminNote,
             };
-            repository.Update(trans);
+            _repository.Update(trans);
         }
         public void DeleteTransaction(Guid id)
         {
-            repository.DeleteById(id);
+            _repository.DeleteById(id);
         }
     }
 }
