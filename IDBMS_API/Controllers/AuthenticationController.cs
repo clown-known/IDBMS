@@ -3,7 +3,7 @@ using API.Services;
 using API.Supporters.JwtAuthSupport;
 using BusinessObject.DTOs.Request.AccountRequest;
 using BusinessObject.Models;
-using IDBMS_API.DTOs.Response;
+using BusinessObject.DTOs.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
