@@ -8,11 +8,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TransactionController : ODataController
+    public class TransactionsController : ODataController
     {
         private readonly TransactionService _service;
 
-        public TransactionController(TransactionService service)
+        public TransactionsController(TransactionService service)
         {
             _service = service;
         }
@@ -25,17 +25,18 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         //admin, owner
         [EnableQuery]
-        [HttpGet("transactions/{id}")]
+        [HttpGet("{id}")]
         public IActionResult GetTransactionsById(Guid id)
         {
             return Ok(_service.GetById(id));
         }
         //cus
         [EnableQuery]
-        [HttpGet("transactions/{id}")]
-        public IActionResult GetTransactionsByUserId(Guid userId)
+        [HttpGet]
+        [Route("user/{id}")]
+        public IActionResult GetTransactionsByUserId(Guid id)
         {
-            return Ok(_service.GetByUserId(userId));
+            return Ok(_service.GetByUserId(id));
         }
         [HttpPost]
         public IActionResult CreateTransaction([FromBody] TransactionRequest request)
@@ -65,7 +66,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok();
         }
 
-        [HttpPut("{id}/status")]
+        [HttpPut]
+        [Route("{id}/status")]
         public IActionResult UpdateTransactionStatus(Guid id, int status)
         {
             try
