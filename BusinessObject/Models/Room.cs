@@ -34,5 +34,8 @@ public class Room
     public Guid? ProjectId { get; set; }
     public Project? Project { get; set; } = new();
 
+    [Required]
+    public bool IsHidden { get; set; }
+
     public List<ApplianceSuggestion> ApplianceSuggestions { get; set; } = new();
 }

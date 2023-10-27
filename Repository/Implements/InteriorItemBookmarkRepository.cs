@@ -36,7 +36,7 @@ namespace Repository.Implements
             }
         }
 
-        IEnumerable<InteriorItemBookmark> GetByUserId(Guid userId)
+        public IEnumerable<InteriorItemBookmark> GetByUserId(Guid userId)
         {
             try
             {
