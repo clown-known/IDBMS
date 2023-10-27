@@ -17,7 +17,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetConstructionTaskDesign()
+        public IActionResult GetConstructionTaskDesigns()
         {
             return Ok(_service.GetAll());
         }

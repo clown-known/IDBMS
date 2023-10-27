@@ -17,7 +17,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetDocumentTemplate()
+        public IActionResult GetDocumentTemplates()
         {
             return Ok(_service.GetAll());
         }

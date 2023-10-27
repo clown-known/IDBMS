@@ -17,7 +17,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetInteriorItem()
+        public IActionResult GetInteriorItems()
         {
             return Ok(_service.GetAll());
         }

@@ -21,6 +21,14 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
+        public IEnumerable<Comment?> GetByConstructionTaskId(Guid ctId)
+        {
+            return _repository.GetByConstructionTaskId(ctId) ?? throw new Exception("This object is not existed!");
+        }
+        public IEnumerable<Comment?> GetByDecorProgressReportId(Guid dprId)
+        {
+            return _repository.GetByDecorProgressReportId(dprId) ?? throw new Exception("This object is not existed!");
+        }
         public Comment? CreateComment(CommentRequest comment)
         {
             var cmt = new Comment

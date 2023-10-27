@@ -17,7 +17,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetApplianceSuggestion()
+        public IActionResult GetApplianceSuggestions()
         {
             return Ok(_service.GetAll());
         }

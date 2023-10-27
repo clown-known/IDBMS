@@ -23,7 +23,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateDecorProjectDesign([FromBody] DecorProjectDesignRequest request)
+        public IActionResult CreateDecorProjectDesigns([FromBody] DecorProjectDesignRequest request)
         {
             try
             {

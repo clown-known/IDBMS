@@ -17,11 +17,24 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetComment()
+        public IActionResult GetComments()
         {
             return Ok(_service.GetAll());
         }
-
+        //permission
+        [EnableQuery]
+        [HttpGet("construction-task/{ctId}")]
+        public IActionResult GetCommentsConstructionTaskId(Guid ctId)
+        {
+            return Ok(_service.GetByConstructionTaskId(ctId));
+        }
+        //permission
+        [EnableQuery]
+        [HttpGet("decor-progress-report/{dprId}")]
+        public IActionResult GetCommentsDecorProgressReportId(Guid dprId)
+        {
+            return Ok(_service.GetByDecorProgressReportId(dprId));
+        }
         [HttpPost]
         public IActionResult CreateComment([FromBody] CommentRequest request)
         {

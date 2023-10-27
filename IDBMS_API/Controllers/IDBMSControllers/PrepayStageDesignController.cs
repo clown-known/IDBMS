@@ -17,7 +17,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetPrepayStageDesign()
+        public IActionResult GetPrepayStageDesigns()
         {
             return Ok(_service.GetAll());
         }

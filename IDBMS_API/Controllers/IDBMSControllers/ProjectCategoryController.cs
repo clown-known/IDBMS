@@ -18,7 +18,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetProjectCategory()
+        public IActionResult GetProjectCategories()
         {
             return Ok(_service.GetAll());
         }

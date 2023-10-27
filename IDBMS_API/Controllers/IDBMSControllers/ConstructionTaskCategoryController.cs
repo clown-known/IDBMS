@@ -18,7 +18,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetConstructionTaskCategory()
+        public IActionResult GetConstructionTaskCategories()
         {
             return Ok(_service.GetAll());
         }

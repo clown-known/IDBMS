@@ -3,17 +3,20 @@ using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Repository.Implements
 {
-    public class PrepayStageRepository : IPrepayStageRepository
+    public class TransactionRepository : ITransactionRepository
     {
-        public IEnumerable<PrepayStage> GetAll()
+        public IEnumerable<Transaction> GetAll()
         {
+
             try
             {
                 using var context = new IdtDbContext();
-                return context.PrepayStages.ToList();
+                return context.Transactions.ToList();
             }
             catch
             {
@@ -21,38 +24,53 @@ namespace Repository.Implements
             }
         }
 
-        public PrepayStage? GetById(Guid id)
+        public Transaction? GetById(Guid id)
         {
+
             try
             {
                 using var context = new IdtDbContext();
-                return context.PrepayStages.FirstOrDefault(stage => stage.Id == id);
+                return context.Transactions.Where(trans => trans.Id == id).FirstOrDefault();
             }
             catch
             {
                 throw;
             }
         }
-        public IEnumerable<PrepayStage?> GetByProjectId(Guid projectId)
+        public IEnumerable<Transaction?> GetByPrepayStageId(Guid psId)
         {
+
             try
             {
                 using var context = new IdtDbContext();
-                return context.PrepayStages.Where(stage => stage.ProjectId == projectId).ToList();
+                return context.Transactions.Where(trans => trans.PrepayStageId == psId).ToList();
             }
             catch
             {
                 throw;
             }
         }
-        public PrepayStage Save(PrepayStage entity)
+        public IEnumerable<Transaction?> GetByUserId(Guid userId)
+        {
+
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Transactions.Where(trans => trans.UserId == userId).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        public Transaction? Save(Transaction entity)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var stage = context.PrepayStages.Add(entity);
+                var transaction = context.Transactions.Add(entity);
                 context.SaveChanges();
-                return stage.Entity;
+                return transaction.Entity;
             }
             catch
             {
@@ -60,7 +78,7 @@ namespace Repository.Implements
             }
         }
 
-        public void Update(PrepayStage entity)
+        public void Update(Transaction entity)
         {
             try
             {
@@ -72,17 +90,17 @@ namespace Repository.Implements
             {
                 throw;
             }
+            
         }
-
         public void DeleteById(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var stage = context.PrepayStages.FirstOrDefault(stage => stage.Id == id);
-                if (stage != null)
+                var transaction = context.Transactions.Where(trans => trans.Id == id).FirstOrDefault();
+                if (transaction != null)
                 {
-                    context.PrepayStages.Remove(stage);
+                    context.Transactions.Remove(transaction);
                     context.SaveChanges();
                 }
             }
