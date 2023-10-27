@@ -21,6 +21,6 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public bool IsSeen { get; set; }
 
-        public List<Guid> listUserId { get; set; }
+        public List<Guid>? listUserId { get; set; }
     }
 }
