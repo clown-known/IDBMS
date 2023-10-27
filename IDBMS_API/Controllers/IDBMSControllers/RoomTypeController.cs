@@ -29,13 +29,17 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                _service.CreateRoomType(request);
+                var res = _service.CreateRoomType(request);
+                if (res == null)
+                {
+                    return BadRequest("Failed to create object");
+                }
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest($"Error: {ex.Message}");
             }
-            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -44,12 +48,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateRoomType(id, request);
+                return Ok();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest($"Error: {ex.Message}");
             }
-            return Ok();
         }
 
         [HttpPut("{id}/isHidden")]
@@ -58,12 +62,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateRoomTypeStatus(id, isHidden);
+                return Ok();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest($"Error: {ex.Message}");
             }
-            return Ok();
         }
     }
 

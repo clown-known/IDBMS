@@ -43,13 +43,17 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                _service.CreateParticipation(request);
+                var res = _service.CreateParticipation(request);
+                if (res == null)
+                {
+                    return BadRequest("Failed to create object");
+                }
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest($"Error: {ex.Message}");
             }
-            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -58,12 +62,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateParticipation(id, request);
+                return Ok();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest($"Error: {ex.Message}");
             }
-            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -72,12 +76,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.DeleteParticipation(id);
+                return Ok();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest($"Error: {ex.Message}");
             }
-            return Ok();
         }
     }
 }

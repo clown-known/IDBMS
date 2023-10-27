@@ -59,7 +59,9 @@ namespace IDBMS_API.Services
         {
 
             var p = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
             p.IsDeleted = true;
+
             _repository.Update(p);
         }
     }
