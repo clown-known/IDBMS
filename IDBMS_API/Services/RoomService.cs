@@ -10,10 +10,7 @@ namespace IDBMS_API.Services
     public class RoomService
     {
         private readonly IRoomRepository _repository;
-<<<<<<< HEAD
-=======
 
->>>>>>> a1244e10b9284a0873e7e9033552e66e43c15959
         public RoomService(IRoomRepository repository)
         {
             _repository = repository;
@@ -26,11 +23,7 @@ namespace IDBMS_API.Services
 
         public Room? GetById(Guid id)
         {
-<<<<<<< HEAD
-            return _repository.GetById(id);
-=======
             return _repository.GetById(id) ?? throw new Exception("This object is not found!");
->>>>>>> a1244e10b9284a0873e7e9033552e66e43c15959
         }
 
         public IEnumerable<Room> GetByProjectId(Guid projectId)
@@ -64,18 +57,6 @@ namespace IDBMS_API.Services
 
         public void UpdateRoom(Guid id, RoomRequest request)
         {
-<<<<<<< HEAD
-            var room = new Room
-            {
-                FloorId = request.FloorId,
-                Description = request.Description,
-                RoomNo = request.RoomNo,
-                UsePurpose = request.UsePurpose,
-                Area = request.Area,
-                PricePerArea = request.PricePerArea,
-                RoomTypeId = request.RoomTypeId,
-            };
-=======
             var room = _repository.GetById(id) ?? throw new Exception("This object is not found!");
 
             room.FloorId = request.FloorId;
@@ -87,7 +68,6 @@ namespace IDBMS_API.Services
             room.RoomTypeId = request.RoomTypeId;
             room.ProjectId = request.ProjectId;
 
->>>>>>> a1244e10b9284a0873e7e9033552e66e43c15959
             _repository.Update(room);
         }
 
@@ -102,11 +82,7 @@ namespace IDBMS_API.Services
 
         public void DeleteRoom(Guid id)
         {
-<<<<<<< HEAD
-=======
             var room = _repository.GetById(id) ?? throw new Exception("This object is not found!");
-
->>>>>>> a1244e10b9284a0873e7e9033552e66e43c15959
             _repository.DeleteById(id);
         }
     }
