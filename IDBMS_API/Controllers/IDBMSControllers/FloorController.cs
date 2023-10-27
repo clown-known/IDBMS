@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/*using Microsoft.AspNetCore.Mvc;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -12,3 +12,4 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
     }
 }
+*/
