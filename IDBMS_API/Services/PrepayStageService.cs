@@ -6,23 +6,28 @@ namespace IDBMS_API.Services
 {
     public class PrepayStageService
     {
-        private readonly IPrepayStageRepository _prepayStageRepository;
-        public PrepayStageService(IPrepayStageRepository prepayStageRepository)
+        private readonly IPrepayStageRepository _repository;
+        public PrepayStageService(IPrepayStageRepository repository)
         {
-            _prepayStageRepository = prepayStageRepository;
+            _repository = repository;
         }
         public IEnumerable<PrepayStage> GetAll()
         {
-            return _prepayStageRepository.GetAll();
+            return _repository.GetAll();
         }
         public PrepayStage? GetById(Guid id)
         {
-            return _prepayStageRepository.GetById(id);
+            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+        }
+        public IEnumerable<PrepayStage?> GetByProjectId(Guid projectId)
+        {
+            return _repository.GetByProjectId(projectId) ?? throw new Exception("This object is not existed!");
         }
         public PrepayStage? CreatePrepayStage(PrepayStageRequest request)
         {
             var ps = new PrepayStage
             {
+                Id = Guid.NewGuid(),
                 StageNo = request.StageNo,
                 Name = request.Name,
                 Description = request.Description,
@@ -35,30 +40,38 @@ namespace IDBMS_API.Services
                 ProjectId = request.ProjectId,
                 IsHidden = request.IsHidden,
             };
-            var psCreated = _prepayStageRepository.Save(ps);
+            var psCreated = _repository.Save(ps);
             return psCreated;
         }
-        public void UpdatePrepayStage(PrepayStageRequest request)
+        public void UpdatePrepayStage(Guid id, PrepayStageRequest request)
         {
-            var ps = new PrepayStage
-            {
-                StageNo = request.StageNo,
-                Name = request.Name,
-                Description = request.Description,
-                IsPaid = request.IsPaid,
-                TotalPaid = request.TotalPaid,
-                IsPrepaid = request.IsPrepaid,
-                PricePercentage = request.PricePercentage,
-                StartedDate = request.StartedDate,
-                EndDate = request.EndDate,
-                ProjectId = request.ProjectId,
-                IsHidden = request.IsHidden,
-            };
-            _prepayStageRepository.Update(ps);
+            var ps = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            ps.StageNo = request.StageNo;
+            ps.Name = request.Name;
+            ps.Description = request.Description;
+            ps.IsPaid = request.IsPaid;
+            ps.TotalPaid = request.TotalPaid;
+            ps.IsPrepaid = request.IsPrepaid;
+            ps.PricePercentage = request.PricePercentage;
+            ps.StartedDate = request.StartedDate;
+            ps.EndDate = request.EndDate;
+            ps.ProjectId = request.ProjectId;
+            ps.IsHidden = request.IsHidden;
+            
+            _repository.Update(ps);
+        }
+        public void UpdatePrepayStageStatus(Guid id, bool isHidden)
+        {
+            var ps = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            ps.IsHidden = isHidden;
+
+            _repository.Update(ps);
         }
         public void DeletePrepayStage(Guid id)
         {
-            _prepayStageRepository.DeleteById(id);
+            _repository.DeleteById(id);
         }
     }
 }

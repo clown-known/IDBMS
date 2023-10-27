@@ -33,6 +33,30 @@ namespace Repository.Implements
                 throw;
             }
         }
+        public IEnumerable<Comment?> GetByConstructionTaskId(Guid ctId)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Comments.Where(comment => comment.ConstructionTaskId == ctId).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        public IEnumerable<Comment?> GetByDecorProgressReportId(Guid dprId)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Comments.Where(comment => comment.DecorProgressReportId == dprId).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
         public Comment Save(Comment entity)
         {

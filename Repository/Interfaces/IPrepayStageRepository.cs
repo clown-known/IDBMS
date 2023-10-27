@@ -9,5 +9,6 @@ namespace Repository.Interfaces
 {
     public interface IPrepayStageRepository : ICrudBaseRepository<PrepayStage, Guid>
     {
+        IEnumerable<PrepayStage?> GetByProjectId(Guid projectId);
     }
 }

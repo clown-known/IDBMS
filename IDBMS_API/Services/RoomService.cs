@@ -83,7 +83,6 @@ namespace IDBMS_API.Services
         public void DeleteRoom(Guid id)
         {
             var room = _repository.GetById(id) ?? throw new Exception("This object is not found!");
-
             _repository.DeleteById(id);
         }
     }

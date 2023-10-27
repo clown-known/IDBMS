@@ -20,7 +20,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetNotification()
+        public IActionResult GetNotifications()
         {
             return Ok(_service.GetAll());
         }

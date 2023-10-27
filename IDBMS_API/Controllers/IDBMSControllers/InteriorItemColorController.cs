@@ -19,7 +19,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetInteriorItemColor()
+        public IActionResult GetInteriorItemColors()
         {
             return Ok(_service.GetAll());
         }

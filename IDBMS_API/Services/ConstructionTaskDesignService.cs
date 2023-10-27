@@ -7,18 +7,18 @@ namespace IDBMS_API.Services
 {
     public class ConstructionTaskDesignService
     {
-        private readonly IConstructionTaskDesignRepository repository;
+        private readonly IConstructionTaskDesignRepository _repository;
         public ConstructionTaskDesignService(IConstructionTaskDesignRepository repository)
         {
-            this.repository = repository;
+            _repository = repository;
         }
         public IEnumerable<ConstructionTaskDesign> GetAll()
         {
-            return repository.GetAll();
+            return _repository.GetAll();
         }
         public ConstructionTaskDesign? GetById(int id)
         {
-            return repository.GetById(id);
+            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public ConstructionTaskDesign? CreateConstructionTaskDesign (ConstructionTaskDesignRequest request)
         {
@@ -32,12 +32,12 @@ namespace IDBMS_API.Services
                 InteriorItemCategoryId = request.InteriorItemCategoryId,
                 ConstructionTaskCategoryId = request.ConstructionTaskCategoryId,
             };
-            var ctdCreated = repository.Save(ctd);
+            var ctdCreated = _repository.Save(ctd);
             return ctdCreated;
         }
         public void UpdateConstructionTaskDesign(int id, ConstructionTaskDesignRequest request)
         {
-            var ctd = repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ctd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             ctd.Code = request.Code;
             ctd.Name = request.Name;
             ctd.Description = request.Description;
@@ -46,11 +46,11 @@ namespace IDBMS_API.Services
             ctd.InteriorItemCategoryId = request.InteriorItemCategoryId;
             ctd.ConstructionTaskCategoryId = request.ConstructionTaskCategoryId;
             
-            repository.Update(ctd);
+            _repository.Update(ctd);
         }
         public void DeleteConstructionTaskDesign(int id)
         {
-            repository.DeleteById(id);  
+            _repository.DeleteById(id);  
         }
     }
 }

@@ -17,7 +17,7 @@ namespace IDBMS_API.Services
         }
         public Admin? GetById(Guid id)
         {
-            return _repository.GetById(id);
+            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public Admin? CreateAdmin(AdminRequest request)
         {

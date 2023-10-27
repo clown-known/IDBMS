@@ -19,7 +19,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetAdmin()
+        public IActionResult GetAdmins()
         {
             return Ok(_service.GetAll());
         }

@@ -8,18 +8,26 @@ namespace IDBMS_API.Services
 {
     public class CommentService
     {
-        private readonly ICommentRepository repository;
+        private readonly ICommentRepository _repository;
         public CommentService(ICommentRepository repository)
         {
-            this.repository = repository;
+            _repository = repository;
         }   
         public IEnumerable<Comment> GetAll()
         {
-            return repository.GetAll();
+            return _repository.GetAll();
         }
         public Comment? GetById(Guid id)
         {
-            return repository.GetById(id);
+            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+        }
+        public IEnumerable<Comment?> GetByConstructionTaskId(Guid ctId)
+        {
+            return _repository.GetByConstructionTaskId(ctId) ?? throw new Exception("This object is not existed!");
+        }
+        public IEnumerable<Comment?> GetByDecorProgressReportId(Guid dprId)
+        {
+            return _repository.GetByDecorProgressReportId(dprId) ?? throw new Exception("This object is not existed!");
         }
         public Comment? CreateComment(CommentRequest comment)
         {
@@ -36,12 +44,12 @@ namespace IDBMS_API.Services
                 LastModifiedTime = comment.LastModifiedTime,
                 Status = comment.Status,
             };
-            var cmtCreated = repository.Save(cmt);
+            var cmtCreated = _repository.Save(cmt);
             return cmtCreated;
         }
         public void UpdateComment(Guid id, CommentRequest comment)
         {
-            var cmt = repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var cmt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             cmt.Content = comment.Content;
             cmt.ConstructionTaskId = comment.ConstructionTaskId;
@@ -53,16 +61,16 @@ namespace IDBMS_API.Services
             cmt.LastModifiedTime = comment.LastModifiedTime;
             cmt.Status = comment.Status;
             
-            repository.Update(cmt);
+            _repository.Update(cmt);
         }
         public void UpdateCommentStatus(Guid id, int status)
         {
-            var cmt = repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var cmt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             bool isValueDefined = Enum.IsDefined(typeof(CommentStatus), status);
             if (isValueDefined)
             {
                 cmt.Status = (CommentStatus)status;
-                repository.Update(cmt);
+                _repository.Update(cmt);
             }
             else throw new Exception("The input is invalid!");
         }

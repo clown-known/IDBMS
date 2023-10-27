@@ -19,7 +19,7 @@ namespace IDBMS_API.Services
 
         public IEnumerable<InteriorItemBookmark> GetByUserId(Guid userId)
         {
-            return _repository.GetByUserId(userId);
+            return _repository.GetByUserId(userId) ?? throw new Exception("This object is not existed!");
         }
 
         public InteriorItemBookmark? CreateInteriorItemBookmark(InteriorItemBookmarkRequest request)

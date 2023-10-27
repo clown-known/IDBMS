@@ -19,7 +19,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetProjectDocument()
+        public IActionResult GetProjectDocuments()
         {
             return Ok(_service.GetAll());
         }

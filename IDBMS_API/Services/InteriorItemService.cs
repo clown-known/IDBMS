@@ -8,18 +8,18 @@ namespace IDBMS_API.Services
 {
     public class InteriorItemService
     {
-        private readonly IInteriorItemRepository _interiorItemRepository;
-        public InteriorItemService(IInteriorItemRepository interiorItemRepository)
+        private readonly IInteriorItemRepository _repository;
+        public InteriorItemService(IInteriorItemRepository repository)
         {
-            _interiorItemRepository = interiorItemRepository;
+            _repository = repository;
         }
         public IEnumerable<InteriorItem> GetAll()
         {
-            return _interiorItemRepository.GetAll();
+            return _repository.GetAll();
         }
         public InteriorItem? GetById(Guid id)
         {
-            return _interiorItemRepository.GetById(id);
+            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public InteriorItem? CreateInteriorItem(InteriorItemRequest request)
         {
@@ -42,12 +42,12 @@ namespace IDBMS_API.Services
                 Status = request.Status,
                 ParentItemId = request.ParentItemId,
             };
-            var iiCreated = _interiorItemRepository.Save(ii);
+            var iiCreated = _repository.Save(ii);
             return iiCreated;
         }
         public void UpdateInteriorItem(Guid id, InteriorItemRequest request)
         {
-            var ii = _interiorItemRepository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ii = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ii.Code = request.Code;
             ii.Name = request.Name;
@@ -65,16 +65,16 @@ namespace IDBMS_API.Services
             ii.Status = request.Status;
             ii.ParentItemId = request.ParentItemId;
             
-            _interiorItemRepository.Update(ii);
+            _repository.Update(ii);
         }
         public void UpdateInteriorItemStatus(Guid id, int status)
         {
-            var ii = _interiorItemRepository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ii = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             bool isValueDefined = Enum.IsDefined(typeof(InteriorItemStatus), status);
             if (isValueDefined)
             {
                 ii.Status = (InteriorItemStatus)status;
-                _interiorItemRepository.Update(ii);
+                _repository.Update(ii);
             }
             else throw new Exception("The input is invalid!");
         }

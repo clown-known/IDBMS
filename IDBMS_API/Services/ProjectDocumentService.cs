@@ -7,22 +7,22 @@ namespace IDBMS_API.Services
 {
     public class ProjectDocumentService
     {
-        private readonly IProjectDocumentRepository projectDocumentRepository;
-        public ProjectDocumentService(IProjectDocumentRepository projectDocumentRepository)
+        private readonly IProjectDocumentRepository _repository;
+        public ProjectDocumentService(IProjectDocumentRepository repository)
         {
-            this.projectDocumentRepository = projectDocumentRepository;
+            _repository = repository;
         }
         public IEnumerable<ProjectDocument> GetAll()
         {
-            return projectDocumentRepository.GetAll();
+            return _repository.GetAll();
         }
         public ProjectDocument? GetById(Guid id)
         {
-            return projectDocumentRepository.GetById(id);
+            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public IEnumerable<ProjectDocument?> GetByFilter(Guid? projectId, Guid? constructionTaskReportId, Guid? decorProgressReportId, int? documentTemplateId)
         {
-            return projectDocumentRepository.GetByFilter(projectId, constructionTaskReportId, decorProgressReportId, documentTemplateId);
+            return _repository.GetByFilter(projectId, constructionTaskReportId, decorProgressReportId, documentTemplateId) ?? throw new Exception("This object is not existed!");
         }
         public ProjectDocument? CreateProjectDocument(ProjectDocumentRequest request)
         {
@@ -40,12 +40,12 @@ namespace IDBMS_API.Services
                 ProjectDocumentTemplateId = request.ProjectDocumentTemplateId,
                 IsDeleted = request.IsDeleted,
             };
-            var pdCreated = projectDocumentRepository.Save(pd);
+            var pdCreated = _repository.Save(pd);
             return pdCreated;
         }
         public void UpdateProjectDocument(Guid id, ProjectDocumentRequest request)
         {
-            var pd = projectDocumentRepository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var pd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             pd.Name = request.Name;
             pd.Description = request.Description;
@@ -58,17 +58,17 @@ namespace IDBMS_API.Services
             pd.ProjectDocumentTemplateId = request.ProjectDocumentTemplateId;
             pd.IsDeleted = request.IsDeleted;
             
-            projectDocumentRepository.Update(pd);
+            _repository.Update(pd);
         }
         public void UpdateProjectDocumentStatus(Guid id, bool isDeleted)
         {
-            var pd = projectDocumentRepository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var pd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             pd.IsDeleted = isDeleted;
-            projectDocumentRepository.Update(pd);
+            _repository.Update(pd);
         }
         public void DeleteProjectDocument(Guid id)
         {
-            projectDocumentRepository.DeleteById(id);
+            _repository.DeleteById(id);
         }
     }
 }
