@@ -19,7 +19,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetRoomType()
+        public IActionResult GetRoomTypes()
         {
             return Ok(_service.GetAll());
         }

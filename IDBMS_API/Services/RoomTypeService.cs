@@ -6,18 +6,18 @@ namespace IDBMS_API.Services
 {
     public class RoomTypeService
     {
-        private readonly IRoomTypeRepository roomTypeRepository;
-        public RoomTypeService(IRoomTypeRepository roomTypeRepository)
+        private readonly IRoomTypeRepository _repository;
+        public RoomTypeService(IRoomTypeRepository _repository)
         {
-            this.roomTypeRepository = roomTypeRepository;
+            this._repository = _repository;
         }   
         public RoomType? GetById(int id)
         {
-            return roomTypeRepository.GetById(id);
+            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public IEnumerable<RoomType> GetAll()
         {
-            return roomTypeRepository.GetAll();
+            return _repository.GetAll();
         }
         public RoomType? CreateRoomType(RoomTypeRequest roomType)
         {
@@ -30,12 +30,14 @@ namespace IDBMS_API.Services
                 IsHidden = roomType.IsHidden,
                 IconImageUrl = roomType.IconImageUrl,
             };
-            var roomTypeCreated = roomTypeRepository.Save(rt);
+
+            var roomTypeCreated = _repository.Save(rt);
             return roomTypeCreated;
         }
         public void UpdateRoomType(int id, RoomTypeRequest roomType)
         {
-            var rt = roomTypeRepository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var rt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
             rt.Name = roomType.Name;
             rt.ImageUrl = roomType.ImageUrl;
             rt.Description = roomType.Description;
@@ -43,14 +45,15 @@ namespace IDBMS_API.Services
             rt.IsHidden = roomType.IsHidden;
             rt.IconImageUrl = roomType.IconImageUrl;
 
-            roomTypeRepository.Update(rt);
+            _repository.Update(rt);
         }
         public void UpdateRoomTypeStatus(int id, bool isHidden)
         {
-            var rt = roomTypeRepository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var rt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
             rt.IsHidden = isHidden;
 
-            roomTypeRepository.Update(rt);
+            _repository.Update(rt);
         }
     }
 }
