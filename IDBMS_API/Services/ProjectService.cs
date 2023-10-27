@@ -19,7 +19,7 @@ public class ProjectService
 
     public Project? GetById(Guid id)
     {
-        return _repository.GetById(id);
+        return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
     }
 
     public Project? CreateProject(ProjectRequest request)

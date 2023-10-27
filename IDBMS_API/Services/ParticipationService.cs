@@ -13,22 +13,22 @@ namespace IDBMS_API.Services
         {
             _repository = repository;
         }
+
         public IEnumerable<Participation> GetAll()
         {
             return _repository.GetAll();
         }
-        public Participation? GetById(Guid id)
-        {
-            return _repository.GetById(id);
-        }
+
         public IEnumerable<Participation> GetByUserId(Guid id)
         {
             return _repository.GetByUserId(id);
         }
+
         public IEnumerable<Participation> GetByProjectId(Guid id)
         {
             return _repository.GetByProjectId(id);
         }
+
         public Participation? CreateParticipation(ParticipationRequest request)
         {
             var p = new Participation
@@ -42,6 +42,7 @@ namespace IDBMS_API.Services
             var pCreated = _repository.Save(p);
             return pCreated;
         }
+
         public void UpdateParticipation(Guid id, ParticipationRequest request)
         {
             var p = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
@@ -53,6 +54,7 @@ namespace IDBMS_API.Services
 
             _repository.Update(p);
         }
+
         public void DeleteParticipation(Guid id)
         {
 
