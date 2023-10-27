@@ -15,27 +15,28 @@ namespace IDBMS_API.Services
         {
             return _repository.GetAll();
         }
-        public InteriorItemBookmark? GetById(Guid id)
+        public IEnumerable<InteriorItemBookmark> GetByUserId(Guid userId)
         {
-            return _repository.GetById(id);
+            return _repository.GetByUserId(userId);
         }
         public InteriorItemBookmark? CreateInteriorItemBookmark(InteriorItemBookmarkRequest request)
         {
             var iib = new InteriorItemBookmark
             {
+                Id = Guid.NewGuid(),
                 UserId = request.UserId,
                 InteriorItemId = request.InteriorItemId,
             };
             var iibCreated = _repository.Save(iib);
             return iibCreated;
         }
-        public void UpdateInteriorItemBookmark(InteriorItemBookmarkRequest request)
+        public void UpdateInteriorItemBookmark(Guid id, InteriorItemBookmarkRequest request)
         {
-            var iib = new InteriorItemBookmark
-            {
-                UserId = request.UserId,
-                InteriorItemId = request.InteriorItemId,
-            };
+            var iib = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            iib.UserId = request.UserId;
+            iib.InteriorItemId = request.InteriorItemId;
+
             _repository.Update(iib);
         }
         public void DeleteInteriorItemBookmark(Guid id)

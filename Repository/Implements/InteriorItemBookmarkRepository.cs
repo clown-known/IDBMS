@@ -36,6 +36,21 @@ namespace Repository.Implements
             }
         }
 
+        IEnumerable<InteriorItemBookmark> GetByUserId(Guid userId)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.InteriorItemBookmarks
+                    .Where(iib => iib.UserId.Equals(userId))
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public InteriorItemBookmark? Save(InteriorItemBookmark entity)
         {
             try

@@ -6,8 +6,6 @@ namespace BusinessObject.DTOs.Request
 {
     public class ProjectRequest
     {
-        public Guid Id { get; set; }
-
         [Required]
         public string Name { get; set; } = default!;
 

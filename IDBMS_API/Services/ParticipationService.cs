@@ -25,6 +25,10 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByUserId(id);
         }
+        public IEnumerable<Participation> GetByProjectId(Guid id)
+        {
+            return _repository.GetByProjectId(id);
+        }
         public Participation? CreateParticipation(ParticipationRequest request)
         {
             var p = new Participation
@@ -41,10 +45,12 @@ namespace IDBMS_API.Services
         public void UpdateParticipation(Guid id, ParticipationRequest request)
         {
             var p = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
             p.UserId = request.UserId;
             p.ProjectId = request.ProjectId;
             p.Role = request.Role;
             p.IsDeleted = request.IsDeleted;
+
             _repository.Update(p);
         }
         public void DeleteParticipation(Guid id)

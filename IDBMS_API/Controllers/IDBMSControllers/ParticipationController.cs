@@ -19,9 +19,23 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetParticipation()
+        public IActionResult GetParticipations()
         {
             return Ok(_service.GetAll());
+        }
+
+        [EnableQuery]
+        [HttpGet("user/{id}")]
+        public IActionResult GetParticipationsByUserId(Guid id)
+        {
+            return Ok(_service.GetByUserId(id));
+        }
+
+        [EnableQuery]
+        [HttpGet("project/{id}")]
+        public IActionResult GetParticipationsByProjectId(Guid id)
+        {
+            return Ok(_service.GetByProjectId(id));
         }
 
         [HttpPost]

@@ -9,5 +9,6 @@ namespace Repository.Interfaces
 {
     public interface IInteriorItemBookmarkRepository : ICrudBaseRepository<InteriorItemBookmark, Guid>
     {
+        IEnumerable<InteriorItemBookmark> GetByUserId(Guid userId);
     }
 }
