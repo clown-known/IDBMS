@@ -9,6 +9,8 @@ using System;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class RoomController : ODataController
     {
         private readonly RoomService _service;

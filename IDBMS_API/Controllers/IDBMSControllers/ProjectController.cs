@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Response;
 using BusinessObject.Enums;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,8 @@ using System;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ProjectController : ODataController
     {
         private readonly ProjectService _service;
@@ -39,10 +42,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 var res = _service.CreateProject(request);
+
                 if (res == null)
                 {
                     return BadRequest("Failed to create object");
                 }
+
                 return Ok(res);
             }
             catch (Exception ex)

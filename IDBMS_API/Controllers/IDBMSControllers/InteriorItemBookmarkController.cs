@@ -9,6 +9,8 @@ using Repository.Interfaces;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class InteriorItemBookmarkController : ODataController
     {
         private readonly InteriorItemBookmarkService _service;

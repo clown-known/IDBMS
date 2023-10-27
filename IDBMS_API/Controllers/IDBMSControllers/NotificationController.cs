@@ -7,6 +7,8 @@ using Repository.Interfaces;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class NotificationController : ODataController
     {
         private readonly NotificationService _service;
@@ -55,11 +57,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok();
         }
         [HttpPost("users")]
-        public IActionResult CreateNotificationForListUser(List<Guid> listUserId, [FromBody] NotificationRequest request)
+        public IActionResult CreateNotificationForListUser([FromBody] NotificationRequest request)
         {
             try
             {
-                _service.CreateNotificatonByListUserId(request, listUserId);
+                _service.CreateNotificatonByListUserId(request, request.listUserId);
             }
             catch (Exception ex)
             {

@@ -7,6 +7,8 @@ using Repository.Interfaces;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ProjectCategoryController : ODataController
     {
         private readonly ProjectCategoryService _service;
@@ -16,18 +18,18 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             _service = service;
         }
 
-        [EnableQuery]
-        [HttpGet]
-        public IActionResult GetProjectCategory()
-        {
-            return Ok(_service.GetAll());
-        }
-        [EnableQuery]
-        [HttpGet("{id}")]
-        public IActionResult GetProjectCategoryById(int id)
-        {
-            return Ok(_service.GetById(id));
-        }
+            [EnableQuery]
+            [HttpGet]
+            public IActionResult GetProjectCategory()
+            {
+                return Ok(_service.GetAll());
+            }
+            [EnableQuery]
+            [HttpGet("{id}")]
+            public IActionResult GetProjectCategoryById(int id)
+            {
+                return Ok(_service.GetById(id));
+            }
 
         [HttpPost]
         public IActionResult CreateProjectCategory([FromBody] ProjectCategoryRequest request)

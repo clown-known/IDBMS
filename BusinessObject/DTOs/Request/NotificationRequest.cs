@@ -20,5 +20,7 @@ namespace BusinessObject.DTOs.Request
         public string? Link { get; set; } = default!;
         [Required]
         public bool IsSeen { get; set; }
+
+        public List<Guid> listUserId { get; set; }
     }
 }

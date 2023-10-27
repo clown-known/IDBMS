@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BusinessObject.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDBMS_API.DTOs.Response
+namespace BusinessObject.DTOs.Response
 {
     public class ResponseMessage
     {

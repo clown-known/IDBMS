@@ -2,6 +2,8 @@
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class TransactionController : Controller
     {
         public IActionResult Index()

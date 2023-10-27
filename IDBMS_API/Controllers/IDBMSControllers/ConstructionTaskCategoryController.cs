@@ -7,6 +7,8 @@ using Repository.Interfaces;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ConstructionTaskCategoryController : ODataController
     {
         private readonly ConstructionTaskCategoryService _service;

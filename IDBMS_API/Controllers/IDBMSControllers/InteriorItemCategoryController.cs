@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class InteriorItemCategoryController : ODataController
     {
         private readonly InteriorItemCategoryService _service;

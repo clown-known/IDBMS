@@ -8,6 +8,8 @@ using Repository.Interfaces;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class RoomTypeController : ODataController
     {
         private readonly RoomTypeService _service;

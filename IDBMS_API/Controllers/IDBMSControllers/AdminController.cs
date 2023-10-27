@@ -8,6 +8,8 @@ using Repository.Interfaces;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AdminController : ODataController
     {
         private readonly AdminService _service;

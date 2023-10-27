@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class DecorProjectDesignController : ODataController
     {
         private readonly DecorProjectDesignService _service;

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class DocumentTemplateController : ODataController
     {
         private readonly DocumentTemplateService _service;

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ApplianceSuggestionController : ODataController
     {
         private readonly ApplianceSuggestionService _service;
