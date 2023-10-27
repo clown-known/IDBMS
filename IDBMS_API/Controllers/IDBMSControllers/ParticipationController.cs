@@ -1,4 +1,4 @@
-﻿/*using Azure.Core;
+﻿using Azure.Core;
 using BusinessObject.DTOs.Request;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +10,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ParticipationController : ODataController
+    public class ParticipationsController : ODataController
     {
         private readonly ParticipationService _service;
 
-        public ParticipationController(ParticipationService service)
+        public ParticipationsController(ParticipationService service)
         {
             _service = service;
         }
@@ -27,14 +27,16 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [EnableQuery]
-        [HttpGet("user/{id}")]
+        [HttpGet]
+        [Route("user/{id}")]
         public IActionResult GetParticipationsByUserId(Guid id)
         {
             return Ok(_service.GetByUserId(id));
         }
 
         [EnableQuery]
-        [HttpGet("project/{id}")]
+        [HttpGet]
+        [Route("project/{id}")]
         public IActionResult GetParticipationsByProjectId(Guid id)
         {
             return Ok(_service.GetByProjectId(id));
@@ -87,4 +89,3 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
     }
 }
-*/

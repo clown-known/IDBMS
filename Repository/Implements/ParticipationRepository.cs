@@ -8,7 +8,15 @@ public class ParticipationRepository : IParticipationRepository
 
     public IEnumerable<Participation> GetAll()
     {
-        throw new NotImplementedException();
+        try
+        {
+            using var context = new IdtDbContext();
+            return context.Participations.ToList();
+        }
+        catch
+        {
+            throw;
+        }
     }
 
     public Participation? GetById(Guid id)

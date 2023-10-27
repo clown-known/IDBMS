@@ -2,6 +2,7 @@ using API.Supporters;
 using API.Supporters.JwtAuthSupport;
 using BLL.Services;
 using BusinessObject.Models;
+using IDBMS_API.Services;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
@@ -44,6 +45,8 @@ builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<ParticipationService, ParticipationService>();
 
 builder.Services.AddScoped<FirebaseService, FirebaseService>();
 builder.Services.AddScoped<JwtTokenSupporter, JwtTokenSupporter>();
