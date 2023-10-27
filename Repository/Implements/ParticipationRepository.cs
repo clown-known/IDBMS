@@ -51,7 +51,7 @@ public class ParticipationRepository : IParticipationRepository
         {
             using var context = new IdtDbContext();
             return context.Participations
-                .Where(u => u.ProjectId.Equals(projectID) && u.IsDeleted != false)
+                .Where(u => u.ProjectId.Equals(projectID) && u.IsDeleted == false)
                 .ToList();
         }
         catch
@@ -65,7 +65,7 @@ public class ParticipationRepository : IParticipationRepository
         {
             using var context = new IdtDbContext();
             return context.Participations
-                .Where(u => u.UserId.Equals(userId) && u.IsDeleted != false)
+                .Where(u => u.UserId.Equals(userId) && u.IsDeleted == false)
                 .ToList();
         }
         catch

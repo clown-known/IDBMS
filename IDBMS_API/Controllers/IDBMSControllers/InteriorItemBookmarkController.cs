@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using BusinessObject.DTOs.Request;
+using BusinessObject.Models;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -36,13 +37,17 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                _service.CreateInteriorItemBookmark(request);
+                var res = _service.CreateInteriorItemBookmark(request);
+                if (res == null)
+                {
+                    return BadRequest("Failed to create object");
+                }
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest($"Error: {ex.Message}");
             }
-            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -51,12 +56,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.DeleteInteriorItemBookmark(id);
+                return Ok();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest($"Error: {ex.Message}");
             }
-            return Ok();
         }
     }
 }

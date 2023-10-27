@@ -38,13 +38,17 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                _service.CreateProject(request);
+                var res = _service.CreateProject(request);
+                if (res == null)
+                {
+                    return BadRequest("Failed to create object");
+                }
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest($"Error: {ex.Message}");
             }
-            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -53,12 +57,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateProject(id, request);
+                return Ok();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest($"Error: {ex.Message}");
             }
-            return Ok();
         }
 
         [HttpPut("{id}/status")]
@@ -67,12 +71,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateProjectStatus(id, status);
+                return Ok();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest($"Error: {ex.Message}");
             }
-            return Ok();
         }
     }
 }

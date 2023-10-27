@@ -34,6 +34,37 @@ namespace Repository.Implements
             }
         }
 
+        public IEnumerable<Room> GetByProjectId(Guid projectId)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Rooms
+                    .Where(room => room.ProjectId == projectId && room.IsHidden == false)
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<Room> GetByFloorId(Guid floorId)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Rooms
+                    .Where(room => room.FloorId == floorId && room.IsHidden == false)
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+
         public Room Save(Room entity)
         {
             try
