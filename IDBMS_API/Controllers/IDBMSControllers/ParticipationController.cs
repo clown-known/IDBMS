@@ -1,5 +1,7 @@
-﻿using Azure.Core;
+﻿using Azure;
+using Azure.Core;
 using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Response;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -23,23 +25,36 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetParticipations()
         {
-            return Ok(_service.GetAll());
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetAll()
+            };
+            return Ok(response);
         }
 
         [EnableQuery]
-        [HttpGet]
-        [Route("user/{id}")]
+        [HttpGet("user/{id}")]
         public IActionResult GetParticipationsByUserId(Guid id)
         {
-            return Ok(_service.GetByUserId(id));
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetByUserId(id)
+            };
+            return Ok(response);
         }
 
         [EnableQuery]
-        [HttpGet]
-        [Route("project/{id}")]
+        [HttpGet("project/{id}")]
         public IActionResult GetParticipationsByProjectId(Guid id)
         {
-            return Ok(_service.GetByProjectId(id));
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetByProjectId(id)
+            };
+            return Ok(response);
         }
 
         [HttpPost]
@@ -47,16 +62,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var res = _service.CreateParticipation(request);
-                if (res == null)
+                var result = _service.CreateParticipation(request);
+                var response = new ResponseMessage()
                 {
-                    return BadRequest("Failed to create object");
-                }
-                return Ok(res);
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error: {ex.Message}");
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
         }
 
@@ -66,11 +86,19 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateParticipation(id, request);
-                return Ok();
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error: {ex.Message}");
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
         }
 
@@ -80,11 +108,19 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.DeleteParticipation(id);
-                return Ok();
+                var response = new ResponseMessage()
+                {
+                    Message = "Delete successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error: {ex.Message}");
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
         }
     }

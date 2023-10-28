@@ -32,8 +32,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         //cus
         [EnableQuery]
-        [HttpGet]
-        [Route("user/{id}")]
+        [HttpGet("user/{id}")]
         public IActionResult GetTransactionsByUserId(Guid id)
         {
             return Ok(_service.GetByUserId(id));
@@ -66,8 +65,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok();
         }
 
-        [HttpPut]
-        [Route("{id}/status")]
+        [HttpPut("{id}/status")]
         public IActionResult UpdateTransactionStatus(Guid id, int status)
         {
             try
