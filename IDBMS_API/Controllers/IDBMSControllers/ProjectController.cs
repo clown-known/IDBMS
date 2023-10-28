@@ -26,14 +26,24 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetProjects()
         {
-            return Ok(_service.GetAll());
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetAll()
+            };
+            return Ok(response);
         }
 
         [EnableQuery]
         [HttpGet("{id}")]
         public IActionResult GetProjectById(Guid id)
         {
-            return Ok(_service.GetById(id));
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetById(id)
+            };
+            return Ok(response);
         }
 
         [HttpPost]
@@ -41,18 +51,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var res = _service.CreateProject(request);
-
-                if (res == null)
+                var result = _service.CreateProject(request);
+                var response = new ResponseMessage()
                 {
-                    return BadRequest("Failed to create object");
-                }
-
-                return Ok(res);
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error: {ex.Message}");
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
         }
 
@@ -62,25 +75,41 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateProject(id, request);
-                return Ok();
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error: {ex.Message}");
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
         }
 
         [HttpPut("{id}/status")]
-        public IActionResult DeleteProject(Guid id, ProjectStatus status)
+        public IActionResult UpdateProjectStatus(Guid id, ProjectStatus status)
         {
             try
             {
                 _service.UpdateProjectStatus(id, status);
-                return Ok();
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error: {ex.Message}");
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
         }
     }

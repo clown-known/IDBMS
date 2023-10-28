@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Response;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -11,11 +12,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RoomController : ODataController
+    public class RoomsController : ODataController
     {
         private readonly RoomService _service;
 
-        public RoomController(RoomService service)
+        public RoomsController(RoomService service)
         {
             _service = service;
         }
@@ -24,21 +25,36 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetRooms()
         {
-            return Ok(_service.GetAll());
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetAll()
+            };
+            return Ok(response);
         }
 
         [EnableQuery]
         [HttpGet("project/{id}")]
         public IActionResult GetRoomsByProjectId([FromQuery] Guid id)
         {
-            return Ok(_service.GetByProjectId(id));
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetByProjectId(id)
+            };
+            return Ok(response);
         }
 
         [EnableQuery]
         [HttpGet("floor/{id}")]
         public IActionResult GetRoomsByFloorId([FromQuery] Guid id)
         {
-            return Ok(_service.GetByFloorId(id));
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetByFloorId(id)
+            };
+            return Ok(response);
         }
 
         [HttpPost]
@@ -46,16 +62,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var res = _service.CreateRoom(request);
-                if (res == null)
+                var result = _service.CreateRoom(request);
+                var response = new ResponseMessage()
                 {
-                    return BadRequest("Failed to create object");
-                }
-                return Ok(res);
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error: {ex.Message}");
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
         }
 
@@ -65,11 +86,19 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateRoom(id, request);
-                return Ok();
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error: {ex.Message}");
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
         }
 
@@ -79,11 +108,19 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateRoomStatus(id, isHidden);
-                return Ok();
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error: {ex.Message}");
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
         }
 
@@ -93,11 +130,19 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.DeleteRoom(id);
-                return Ok();
+                var response = new ResponseMessage()
+                {
+                    Message = "Delete successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error: {ex.Message}");
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
         }
     }

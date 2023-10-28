@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Response;
 using BusinessObject.Models;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +12,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InteriorItemBookmarkController : ODataController
+    public class InteriorItemBookmarksController : ODataController
     {
         private readonly InteriorItemBookmarkService _service;
 
-        public InteriorItemBookmarkController(InteriorItemBookmarkService service)
+        public InteriorItemBookmarksController(InteriorItemBookmarkService service)
         {
             _service = service;
         }
@@ -24,14 +25,24 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetInteriorItemBookmarks()
         {
-            return Ok(_service.GetAll());
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetAll()
+            };
+            return Ok(response);
         }
 
         [EnableQuery]
         [HttpGet("user/{id}")]
         public IActionResult GetInteriorItemBookmarksByUserId(Guid id)
         {
-            return Ok(_service.GetByUserId(id));
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetByUserId(id)
+            };
+            return Ok(response);
         }
 
         [HttpPost]
@@ -39,16 +50,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var res = _service.CreateInteriorItemBookmark(request);
-                if (res == null)
+                var result = _service.CreateInteriorItemBookmark(request);
+                var response = new ResponseMessage()
                 {
-                    return BadRequest("Failed to create object");
-                }
-                return Ok(res);
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error: {ex.Message}");
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
         }
 
@@ -58,11 +74,19 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.DeleteInteriorItemBookmark(id);
-                return Ok();
+                var response = new ResponseMessage()
+                {
+                    Message = "Delete successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error: {ex.Message}");
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
         }
     }
