@@ -1,4 +1,6 @@
-﻿using BusinessObject.DTOs.Request;
+﻿using Azure.Core;
+using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Response;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -9,11 +11,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NotificationController : ODataController
+    public class NotificationsController : ODataController
     {
         private readonly NotificationService _service;
 
-        public NotificationController(NotificationService service)
+        public NotificationsController(NotificationService service)
         {
             _service = service;
         }
@@ -22,52 +24,89 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetNotifications()
         {
-            return Ok(_service.GetAll());
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetAll()
+            };
+            return Ok(response);
         }
         [EnableQuery]
         [HttpGet("user/{userId}")]
         public IActionResult GetByUserId(Guid userId)
         {
-            return Ok(_service.GetByUserId(userId));
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetByUserId(userId)
+            };
+            return Ok(response);
         }
         [HttpPost]
         public IActionResult CreateNotificationForAllUsers([FromBody] NotificationRequest request)
         {
             try
             {
-                _service.CreateNotificatonForAll(request);
+                var result = _service.CreateNotificatonForAll(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
         [HttpPost("user/{userId}")]
         public IActionResult CreateNotificationForUser(Guid userId, [FromBody] NotificationRequest request)
         {
             try
             {
-                _service.CreateNotificatonByUserId(request, userId);
+                var result = _service.CreateNotificatonByUserId(request, userId);
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
         [HttpPost("users")]
-        public IActionResult CreateNotificationForListUser([FromBody] NotificationRequest request)
+        public IActionResult CreateNotificationForUsers([FromBody] NotificationRequest request)
         {
             try
             {
-                _service.CreateNotificatonByListUserId(request, request.listUserId);
+                var result = _service.CreateNotificatonForUsers(request, request.listUserId);
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
         [HttpPut("{id}/is-seen")]
         public IActionResult UpdateIsSeen(Guid id)
@@ -75,12 +114,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateIsSeenById(id);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
         [HttpPut("is-seen/user/{id}")]
@@ -89,12 +136,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateIsSeenByUserId(userId);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
     }
 

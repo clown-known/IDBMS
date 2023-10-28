@@ -1,4 +1,5 @@
 ﻿using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Response;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -8,34 +9,48 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DecorProjectDesignController : ODataController
+    public class DecorProjectDesignsController : ODataController
     {
         private readonly DecorProjectDesignService _service;
 
-        public DecorProjectDesignController(DecorProjectDesignService service)
+        public DecorProjectDesignsController(DecorProjectDesignService service)
         {
             _service = service;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetDecorProjectDesign()
+        public IActionResult GetDecorProjectDesigns()
         {
-            return Ok(_service.GetAll());
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetAll()
+            };
+            return Ok(response);
         }
 
         [HttpPost]
-        public IActionResult CreateDecorProjectDesigns([FromBody] DecorProjectDesignRequest request)
+        public IActionResult CreateDecorProjectDesign([FromBody] DecorProjectDesignRequest request)
         {
             try
             {
-                _service.CreateDecorProjectDesign(request);
+                var result = _service.CreateDecorProjectDesign(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -44,12 +59,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateDecorProjectDesign(id, request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
         [HttpPut("{id}/isDeleted")]
@@ -58,12 +81,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateDecorProjectDesignStatus(id, isDeleted);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
     }
 

@@ -1,4 +1,6 @@
-﻿using BusinessObject.DTOs.Request;
+﻿using Azure.Core;
+using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Response;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -9,11 +11,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ConstructionTaskCategoryController : ODataController
+    public class ConstructionTaskCategoriesController : ODataController
     {
         private readonly ConstructionTaskCategoryService _service;
 
-        public ConstructionTaskCategoryController(ConstructionTaskCategoryService service)
+        public ConstructionTaskCategoriesController(ConstructionTaskCategoryService service)
         {
             _service = service;
         }
@@ -22,7 +24,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetConstructionTaskCategories()
         {
-            return Ok(_service.GetAll());
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetAll()
+            };
+            return Ok(response);
         }
 
         [HttpPost]
@@ -30,13 +37,22 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                _service.CreateConstructionTaskCategory(request);
+                var result = _service.CreateConstructionTaskCategory(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -44,14 +60,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-
                 _service.UpdateConstructionTaskCategory(id, request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
         [HttpPut("{id}/isDeleted")]
@@ -60,12 +83,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateConstructionTaskCategoryStatus(id, isDeleted);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
     }
 

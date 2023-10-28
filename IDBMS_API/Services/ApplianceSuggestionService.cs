@@ -28,6 +28,7 @@ namespace IDBMS_API.Services
                 Description = request.Description,
                 ImageUrl = request.ImageUrl,
                 InteriorItemId = request.InteriorItemId,
+                CreatedDate = DateTime.Now,
                 RoomId = request.RoomId,
             };
             var asCreated = _repository.Save(applianceSuggestion);
@@ -39,6 +40,7 @@ namespace IDBMS_API.Services
             applianceSuggestion.Name = request.Name;
             applianceSuggestion.Description = request.Description;
             applianceSuggestion.ImageUrl = request.ImageUrl;
+            applianceSuggestion.UpdatedDate = DateTime.Now;
             applianceSuggestion.InteriorItemId = request.InteriorItemId;
             applianceSuggestion.RoomId = request.RoomId;
 

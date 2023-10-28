@@ -1,4 +1,6 @@
-﻿using BusinessObject.DTOs.Request;
+﻿using Azure.Core;
+using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Response;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -8,11 +10,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InteriorItemController : ODataController
+    public class InteriorItemsController : ODataController
     {
         private readonly InteriorItemService _service;
 
-        public InteriorItemController(InteriorItemService service)
+        public InteriorItemsController(InteriorItemService service)
         {
             _service = service;
         }
@@ -21,7 +23,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetInteriorItems()
         {
-            return Ok(_service.GetAll());
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetAll()
+            };
+            return Ok(response);
         }
 
         [HttpPost]
@@ -29,13 +36,22 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                _service.CreateInteriorItem(request);
+                var result = _service.CreateInteriorItem(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -44,12 +60,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateInteriorItem(id, request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
         [HttpPut("{id}/status")]
@@ -58,12 +82,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateInteriorItemStatus(id, status);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
     }
 

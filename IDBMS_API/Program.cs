@@ -114,7 +114,7 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<AuthenticationCode>("AuthenticationCodes");
     builder.EntitySet<Comment>("Comments"); 
     builder.EntitySet<ConstructionTask>("ConstructionTasks");
-    builder.EntitySet<ConstructionTaskCategory>("ConstructionTaskCategorys"); 
+    builder.EntitySet<ConstructionTaskCategory>("ConstructionTaskCategories"); 
     builder.EntitySet<ConstructionTaskDesign>("ConstructionTaskDesigns");
     builder.EntitySet<ConstructionTaskReport>("ConstructionTaskReports"); 
     builder.EntitySet<DecorProgressReport>("DecorProgressReports");
@@ -122,16 +122,16 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<Floor>("Floors");
     builder.EntitySet<InteriorItem>("InteriorItems");
     builder.EntitySet<InteriorItemBookmark>("InteriorItemBookmarks");
-    builder.EntitySet<InteriorItemCategory>("InteriorItemCategorys");
+    builder.EntitySet<InteriorItemCategory>("InteriorItemCategories");
     builder.EntitySet<InteriorItemColor>("InteriorItemColors");
     builder.EntitySet<Notification>("Notifications");
     builder.EntitySet<Participation>("Participations");
     builder.EntitySet<PrepayStage>("PrepayStages");
     builder.EntitySet<PrepayStageDesign>("PrepayStageDesigns");
     builder.EntitySet<Project>("Projects");
-    builder.EntitySet<ProjectCategory>("ProjectCategorys");
+    builder.EntitySet<ProjectCategory>("ProjectCategories");
     builder.EntitySet<ProjectDocument>("ProjectDocuments");
-    builder.EntitySet<ProjectDocumentTemplate>("ProjectDocumentTemplates");
+    builder.EntitySet<ProjectDocumentTemplate>("DocumentTemplates");
     builder.EntitySet<Room>("Rooms");
     builder.EntitySet<RoomType>("RoomTypes");
     builder.EntitySet<Transaction>("Transactions");

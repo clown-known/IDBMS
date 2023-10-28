@@ -1,4 +1,6 @@
-﻿using BusinessObject.DTOs.Request;
+﻿using Azure.Core;
+using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Response;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -21,34 +23,58 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetTransactions()
         {
-            return Ok(_service.GetAll());
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetAll()
+            };
+            return Ok(response);
         }
         //admin, owner
         [EnableQuery]
         [HttpGet("{id}")]
         public IActionResult GetTransactionsById(Guid id)
         {
-            return Ok(_service.GetById(id));
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetById(id)
+            };
+            return Ok(response);
         }
         //cus
         [EnableQuery]
         [HttpGet("user/{id}")]
         public IActionResult GetTransactionsByUserId(Guid id)
         {
-            return Ok(_service.GetByUserId(id));
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetByUserId(id)
+            };
+            return Ok(response);
         }
         [HttpPost]
         public IActionResult CreateTransaction([FromBody] TransactionRequest request)
         {
             try
             {
-                _service.CreateTransaction(request);
+                var result = _service.CreateTransaction(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -57,12 +83,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateTransaction(id, request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
         [HttpPut("{id}/status")]
@@ -71,12 +105,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateTransactionStatus(id, status);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
         [HttpDelete("{id}")]
         public IActionResult DeleteTransaction(Guid id)
@@ -84,12 +126,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.DeleteTransaction(id);
+                var response = new ResponseMessage()
+                {
+                    Message = "Delete successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
     }
 

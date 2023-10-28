@@ -62,9 +62,10 @@ namespace IDBMS_API.Services
             }
             return notiCreated;
         }
-        public Notification? CreateNotificatonByListUserId(NotificationRequest noti, List<Guid> listUserId)
+        public Notification? CreateNotificatonForUsers(NotificationRequest noti, List<Guid> listUserId)
         {
             Notification? notiCreated = null;
+            if (listUserId == null) throw new Exception("This object is not existed!");
             foreach (var userId in listUserId)
             {
                 var user = _userRepository.GetById(userId) ?? throw new Exception("This object is not existed!");

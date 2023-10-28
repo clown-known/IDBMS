@@ -1,4 +1,4 @@
-﻿/*using BusinessObject.DTOs.Request;
+﻿using BusinessObject.DTOs.Request;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -8,11 +8,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PrepayStageDesignController : ODataController
+    public class PrepayStageDesignsController : ODataController
     {
         private readonly PrepayStageDesignService _service;
 
-        public PrepayStageDesignController(PrepayStageDesignService service)
+        public PrepayStageDesignsController(PrepayStageDesignService service)
         {
             _service = service;
         }
@@ -68,4 +68,3 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     }
 
 }
-*/

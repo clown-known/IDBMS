@@ -1,4 +1,5 @@
 ﻿using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Response;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -8,11 +9,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InteriorItemColorController : ODataController
+    public class InteriorItemColorsController : ODataController
     {
         private readonly InteriorItemColorService _service;
 
-        public InteriorItemColorController(InteriorItemColorService service)
+        public InteriorItemColorsController(InteriorItemColorService service)
         {
             _service = service;
         }
@@ -21,7 +22,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetInteriorItemColors()
         {
-            return Ok(_service.GetAll());
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetAll()
+            };
+            return Ok(response);
         }
 
         [HttpPost]
@@ -29,13 +35,29 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                _service.CreateInteriorItemColor(request);
+                try
+                {
+                    var result = _service.CreateInteriorItemColor(request);
+                    var response = new ResponseMessage()
+                    {
+                        Message = "Create successfully!",
+                        Data = result
+                    };
+                    return Ok(response);
+                }
+                catch (Exception ex)
+                {
+                    var response = new ResponseMessage()
+                    {
+                        Message = $"Error: {ex.Message}"
+                    };
+                    return BadRequest(response);
+                }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -44,12 +66,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateInteriorItemColor(id, request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -58,12 +88,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.DeleteInteriorItemColor(id);
+                var response = new ResponseMessage()
+                {
+                    Message = "Delete successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
     }
 

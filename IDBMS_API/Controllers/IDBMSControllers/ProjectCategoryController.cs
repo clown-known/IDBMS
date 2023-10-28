@@ -1,4 +1,6 @@
-﻿using BusinessObject.DTOs.Request;
+﻿using Azure.Core;
+using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Response;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -9,11 +11,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProjectCategoryController : ODataController
+    public class ProjectCategoriesController : ODataController
     {
         private readonly ProjectCategoryService _service;
 
-        public ProjectCategoryController(ProjectCategoryService service)
+        public ProjectCategoriesController(ProjectCategoryService service)
         {
             _service = service;
         }
@@ -22,13 +24,23 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetProjectCategories()
         {
-            return Ok(_service.GetAll());
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetAll()
+            };
+            return Ok(response);
         }
         [EnableQuery]
         [HttpGet("{id}")]
         public IActionResult GetProjectCategoryById(int id)
         {
-            return Ok(_service.GetById(id));
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetById(id)
+            };
+            return Ok(response);
         }
 
         [HttpPost]
@@ -36,13 +48,22 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                _service.CreateProjectCategory(request);
+                var result = _service.CreateProjectCategory(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -51,26 +72,42 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateProjectCategory(id, request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
-        [HttpPut("{id}/{isHidden}")]
+        [HttpPut("{id}/isHidden")]
         public IActionResult UpdateProjectCategoryStatus(int id, bool isHidden)
         {
             try
             {
                 _service.UpdateProjectCategoryStatus(id, isHidden);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
     }
 

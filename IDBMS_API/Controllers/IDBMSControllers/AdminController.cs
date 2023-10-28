@@ -1,4 +1,6 @@
-﻿using BusinessObject.DTOs.Request;
+﻿using Azure.Core;
+using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Response;
 using BusinessObject.Models;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +12,10 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdminController : ODataController
+    public class AdminsController : ODataController
     {
         private readonly AdminService _service;
-        public AdminController(AdminService service)
+        public AdminsController(AdminService service)
         {
             _service = service;
         }
@@ -21,20 +23,34 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetAdmins()
         {
-            return Ok(_service.GetAll());
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetAll()
+            };
+            return Ok(response);
         }
         [HttpPost]
         public IActionResult RegisterAdmin([FromBody] AdminRequest request)
         {
             try
             {
-                _service.CreateAdmin(request);
+                var result = _service.CreateAdmin(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);  
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
         [HttpPut("{id}")]
         public IActionResult UpdateAdmin(Guid id, [FromBody] AdminRequest request)
@@ -42,12 +58,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateAdmin(id, request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);               
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
         [HttpPut("{id}/isDeleted")]
         public IActionResult UpdateAdminStatus(Guid id, bool isDeleted)
@@ -55,12 +79,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateAdminStatus(id, isDeleted);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
     }

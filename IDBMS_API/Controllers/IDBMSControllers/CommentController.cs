@@ -1,4 +1,6 @@
-﻿using BusinessObject.DTOs.Request;
+﻿using Azure.Core;
+using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Response;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -8,11 +10,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CommentController : ODataController
+    public class CommentsController : ODataController
     {
         private readonly CommentService _service;
 
-        public CommentController(CommentService service)
+        public CommentsController(CommentService service)
         {
             _service = service;
         }
@@ -21,34 +23,58 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetComments()
         {
-            return Ok(_service.GetAll());
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetAll()
+            };
+            return Ok(response);
         }
         //permission
         [EnableQuery]
         [HttpGet("construction-task/{id}")]
         public IActionResult GetCommentsConstructionTaskId(Guid id)
         {
-            return Ok(_service.GetByConstructionTaskId(id));
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetByConstructionTaskId(id)
+            };
+            return Ok(response);
         }
         //permission
         [EnableQuery]
         [HttpGet("decor-progress-report/{id}")]
         public IActionResult GetCommentsDecorProgressReportId(Guid id)
         {
-            return Ok(_service.GetByDecorProgressReportId(id));
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetByDecorProgressReportId(id)
+            };
+            return Ok(response);
         }
         [HttpPost]
         public IActionResult CreateComment([FromBody] CommentRequest request)
         {
             try
             {
-                _service.CreateComment(request);
+                var result = _service.CreateComment(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -57,12 +83,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateComment(id, request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
 
         [HttpPut("{id}/status")]
@@ -71,12 +105,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateCommentStatus(id, status);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
             }
-            return Ok();
         }
     }
 
