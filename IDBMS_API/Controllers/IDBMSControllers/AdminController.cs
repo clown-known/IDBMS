@@ -73,15 +73,15 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
-        [HttpPut("{id}/isDeleted")]
-        public IActionResult UpdateAdminStatus(Guid id, bool isDeleted)
+        [HttpDelete("{id}")]
+        public IActionResult DeleteAdmin(Guid id)
         {
             try
             {
-                _service.UpdateAdminStatus(id, isDeleted);
+                _service.DeleteAdmin(id);
                 var response = new ResponseMessage()
                 {
-                    Message = "Update successfully!",
+                    Message = "Delete successfully!",
                 };
                 return Ok(response);
             }

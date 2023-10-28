@@ -25,9 +25,6 @@ namespace BusinessObject.DTOs.Request
 
         public string? AuthenticationCode { get; set; }
 
-        [Required]
-        public bool IsDeleted { get; set; }
-
         public Guid? CreatorId { get; set; }
     }
 }

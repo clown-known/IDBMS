@@ -30,7 +30,7 @@ namespace IDBMS_API.Services
                 PasswordHash = request.PasswordHash,
                 PasswordSalt = request.PasswordSalt,
                 AuthenticationCode = request.AuthenticationCode,
-                IsDeleted = request.IsDeleted,
+                IsDeleted = false,
                 CreatorId = request.CreatorId,
             };
             var adminCreated = _repository.Save(admin);
@@ -46,20 +46,17 @@ namespace IDBMS_API.Services
             admin.PasswordHash = request.PasswordHash;
             admin.PasswordSalt = request.PasswordSalt;
             admin.AuthenticationCode = request.AuthenticationCode;
-            admin.IsDeleted = request.IsDeleted;
             admin.CreatorId = request.CreatorId;
 
             _repository.Update(admin);
         }
-        public void UpdateAdminStatus(Guid id, bool IsDeleted)
-        {
-            var admin = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            admin.IsDeleted = IsDeleted;
-            _repository.Update(admin);
-        }
         public void DeleteAdmin(Guid id)
         {
-            _repository.DeleteById(id);
+            var admin = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            admin.IsDeleted = true;
+
+            _repository.Update(admin);
         }
     }
 }

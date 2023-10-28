@@ -47,10 +47,15 @@ namespace IDBMS_API.Services
 
             _repository.Update(applianceSuggestion);
         }
+
         public void DeleteApplianceSuggestion(Guid id)
         {
             var applianceSuggestion = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            _repository.DeleteById(id);
+
+            applianceSuggestion.IsDeleted= true;
+            applianceSuggestion.UpdatedDate = DateTime.Now;
+
+            _repository.Update(applianceSuggestion);
         }
     }
 }
