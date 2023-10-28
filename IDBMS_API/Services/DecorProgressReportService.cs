@@ -15,35 +15,46 @@ namespace IDBMS_API.Services
         {
             return _repository.GetAll();
         }
-        public DecorProgressReport? Get(Guid id)
+        public DecorProgressReport? GetById(Guid id)
         {
-            return _repository.GetById(id);
+            return _repository.GetById(id) ?? throw new Exception("This object is not existed!"); 
+        }
+        public IEnumerable<DecorProgressReport?> GetByPrepayStageId(Guid id)
+        {
+            return _repository.GetByPrepayStageId(id) ?? throw new Exception("This object is not existed!"); 
         }
         public DecorProgressReport? CreateDecorProgressReport(DecorProgressReportRequest request)
         {
             var dpr = new DecorProgressReport
             {
+                Id = Guid.NewGuid(),
                 Name = request.Name,
                 Description = request.Description,
                 AuthorId = request.AuthorId,
-                CreatedDate = request.CreatedDate,
+                CreatedDate = DateTime.Now,
                 PrepayStageId = request.PrepayStageId,
-                IsDeleted = request.IsDeleted,
+                IsDeleted = false,
             };
             var dprCreated = _repository.Save(dpr);
             return dprCreated;
         }
-        public void UpdateDecorProgressReport(DecorProgressReportRequest request)
+        public void UpdateDecorProgressReport(Guid id, DecorProgressReportRequest request)
         {
-            var dpr = new DecorProgressReport
-            {
-                Name = request.Name,
-                Description = request.Description,
-                AuthorId = request.AuthorId,
-                CreatedDate = request.CreatedDate,
-                PrepayStageId = request.PrepayStageId,
-                IsDeleted = request.IsDeleted,
-            };
+            var dpr = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            dpr.Name = request.Name;
+            dpr.Description = request.Description;
+            dpr.AuthorId = request.AuthorId;
+            dpr.PrepayStageId = request.PrepayStageId;
+            
+            _repository.Update(dpr);
+        }
+        public void DeleteDecorProgressReport(Guid id)
+        {
+            var dpr = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            dpr.IsDeleted = true;
+
             _repository.Update(dpr);
         }
     }
