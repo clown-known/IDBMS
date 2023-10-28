@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using BusinessObject.DTOs.Request;
 using BusinessObject.DTOs.Response;
+using BusinessObject.Enums;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -77,7 +78,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/status")]
-        public IActionResult UpdateInteriorItemStatus(Guid id, int status)
+        public IActionResult UpdateInteriorItemStatus(Guid id, InteriorItemStatus status)
         {
             try
             {
@@ -85,6 +86,28 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteInteriorItem(Guid id)
+        {
+            try
+            {
+                _service.DeleteInteriorItem(id);
+                var response = new ResponseMessage()
+                {
+                    Message = "Delete successfully!",
                 };
                 return Ok(response);
             }

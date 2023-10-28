@@ -27,8 +27,7 @@ namespace IDBMS_API.Services
                 Name = request.Name,
                 Type = request.Type,
                 Language = request.Language,
-                CreatedDate = request.CreatedDate,
-                UpdatedDate = request.UpdatedDate,
+                CreatedDate = DateTime.Now,
                 CompanyName = request.CompanyName,
                 CompanyAddress = request.CompanyAddress,
                 CompanyPhone = request.CompanyPhone,
@@ -40,6 +39,7 @@ namespace IDBMS_API.Services
                 BankBranchAddress = request.BankBranchAddress,
                 SwiftCode = request.SwiftCode,
                 RepresentedBy = request.RepresentedBy,
+                IsDeleted = false
             };
             var dtCreated = _repository.Save(dt);
             return dtCreated;
@@ -50,8 +50,7 @@ namespace IDBMS_API.Services
             dt.Name = request.Name;
             dt.Type = request.Type;
             dt.Language = request.Language;
-            dt.CreatedDate = request.CreatedDate;
-            dt.UpdatedDate = request.UpdatedDate;
+            dt.UpdatedDate = DateTime.Now;
             dt.CompanyName = request.CompanyName;
             dt.CompanyAddress = request.CompanyAddress;
             dt.CompanyPhone = request.CompanyPhone;
@@ -68,7 +67,11 @@ namespace IDBMS_API.Services
         }
         public void DeleteDocumentTemplate(int id)
         {
-            _repository.DeleteById(id);
+            var dt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            dt.IsDeleted = true;
+
+            _repository.Update(dt);
         }
     }
 }

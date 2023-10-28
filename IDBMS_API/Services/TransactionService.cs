@@ -12,7 +12,7 @@ namespace IDBMS_API.Services
         public TransactionService(ITransactionRepository repository)
         {
             _repository = repository;
-        }   
+        }
         public IEnumerable<Transaction> GetAll()
         {
             return _repository.GetAll();
@@ -37,10 +37,10 @@ namespace IDBMS_API.Services
                 Type = request.Type,
                 Amount = request.Amount,
                 Note = request.Note,
-                CreatedDate = request.CreatedDate,
+                CreatedDate = DateTime.Now,
                 PrepayStageId = request.PrepayStageId,
                 UserId = request.UserId,
-                Status = request.Status,
+                Status = TransactionStatus.Pending,
                 TransactionReceiptImageUrl = request.TransactionReceiptImageUrl,
                 AdminNote = request.AdminNote,
             };
@@ -54,29 +54,20 @@ namespace IDBMS_API.Services
             trans.Type = request.Type;
             trans.Amount = request.Amount;
             trans.Note = request.Note;
-            trans.CreatedDate = request.CreatedDate;
             trans.PrepayStageId = request.PrepayStageId;
             trans.UserId = request.UserId;
-            trans.Status = request.Status;
             trans.TransactionReceiptImageUrl = request.TransactionReceiptImageUrl;
             trans.AdminNote = request.AdminNote;
-            
+
             _repository.Update(trans);
         }
-        public void UpdateTransactionStatus(Guid id, int status)
+        public void UpdateTransactionStatus(Guid id, TransactionStatus status)
         {
             var trans = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            bool isValueDefined = Enum.IsDefined(typeof(TransactionStatus), status);
-            if (isValueDefined)
-            {
-                trans.Status = (TransactionStatus)status;
-                _repository.Update(trans);
-            }
-            else throw new Exception("The input is invalid!");
-        }
-        public void DeleteTransaction(Guid id)
-        {
-            _repository.DeleteById(id);
+
+            trans.Status = status;
+
+            _repository.Update(trans);
         }
     }
 }

@@ -18,9 +18,6 @@ public class Comment
     public DecorProgressReport? DecorProgressReport { get; set; }
 
     [Required]
-    public DateTime CreatedDate { get; set; }
-
-    [Required]
     public Guid UserId { get; set; }
     public User User { get; set; } = new();
 

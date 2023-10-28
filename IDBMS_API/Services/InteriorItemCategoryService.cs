@@ -30,8 +30,9 @@ namespace IDBMS_API.Services
                 IconImageUrl = request.IconImageUrl,
                 InteriorItemType = request.InteriorItemType,
                 ParentCategoryId = request.ParentCategoryId,
-                IsDeleted = request.IsDeleted,
+                IsDeleted = false,
             };
+
             var iicCreated = _repository.Save(iic);
             return iicCreated;
         }
@@ -44,14 +45,15 @@ namespace IDBMS_API.Services
             iic.IconImageUrl = request.IconImageUrl; 
             iic.InteriorItemType = request.InteriorItemType; 
             iic.ParentCategoryId = request.ParentCategoryId;
-            iic.IsDeleted = request.IsDeleted;
 
             _repository.Update(iic);
         }
-        public void UdpateInteriorItemCategoryStatus(int id, bool isDeleted)
+        public void DeleteInteriorItemCategory(int id)
         {
             var iic = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            iic.IsDeleted = isDeleted;
+
+            iic.IsDeleted = true;
+            //interior item
 
             _repository.Update(iic);
         }

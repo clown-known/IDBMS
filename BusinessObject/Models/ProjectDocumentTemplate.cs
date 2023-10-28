@@ -20,8 +20,7 @@ public class ProjectDocumentTemplate
     [Required]
     public DateTime CreatedDate { get; set; }
 
-    [Required]
-    public DateTime UpdatedDate { get; set; }
+    public DateTime? UpdatedDate { get; set; }
 
     [Required]
     public string CompanyName { get; set; } = default!;
@@ -55,6 +54,9 @@ public class ProjectDocumentTemplate
 
     [Required]
     public string RepresentedBy { get; set; } = default!;
+
+    [Required]
+    public bool IsDeleted { get; set; }
 
     public List<ProjectDocument> ProjectDocuments { get; set; } = new();
 }

@@ -1,4 +1,5 @@
 ﻿using BusinessObject.DTOs.Request;
+using BusinessObject.Enums;
 using BusinessObject.Models;
 using Repository.Implements;
 using Repository.Interfaces;
@@ -29,9 +30,11 @@ namespace IDBMS_API.Services
                 Description = request.Description,
                 CalculationUnit = request.CalculationUnit,
                 EstimatePricePerUnit = request.EstimatePricePerUnit,
+                IsDeleted = false,
                 InteriorItemCategoryId = request.InteriorItemCategoryId,
                 ConstructionTaskCategoryId = request.ConstructionTaskCategoryId,
             };
+
             var ctdCreated = _repository.Save(ctd);
             return ctdCreated;
         }
@@ -50,7 +53,11 @@ namespace IDBMS_API.Services
         }
         public void DeleteConstructionTaskDesign(int id)
         {
-            _repository.DeleteById(id);  
+            var ctd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            ctd.IsDeleted= true;
+
+            _repository.Update(ctd);  
         }
     }
 }

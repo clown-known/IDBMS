@@ -26,7 +26,5 @@ namespace BusinessObject.DTOs.Request
 
         public int? ParentCategoryId { get; set; }
 
-        [Required]
-        public bool IsDeleted { get; set; }
     }
 }

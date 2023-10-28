@@ -30,8 +30,7 @@ public class Project
     [Required]
     public DateTime CreatedDate { get; set; }
 
-    [Required]
-    public DateTime UpdatedDate { get; set; }
+    public DateTime? UpdatedDate { get; set; }
 
     public int? NoStage { get; set; }
 

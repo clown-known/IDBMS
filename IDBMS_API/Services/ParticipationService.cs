@@ -39,6 +39,7 @@ namespace IDBMS_API.Services
                 Role = request.Role,
                 IsDeleted = false,
             };
+
             var pCreated = _repository.Save(p);
             return pCreated;
         }
@@ -50,7 +51,6 @@ namespace IDBMS_API.Services
             p.UserId = request.UserId;
             p.ProjectId = request.ProjectId;
             p.Role = request.Role;
-            p.IsDeleted = request.IsDeleted;
 
             _repository.Update(p);
         }

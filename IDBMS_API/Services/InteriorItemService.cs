@@ -42,6 +42,7 @@ namespace IDBMS_API.Services
                 Status = request.Status,
                 ParentItemId = request.ParentItemId,
             };
+
             var iiCreated = _repository.Save(ii);
             return iiCreated;
         }
@@ -64,19 +65,26 @@ namespace IDBMS_API.Services
             ii.InteriorItemCategoryId = request.InteriorItemCategoryId;
             ii.Status = request.Status;
             ii.ParentItemId = request.ParentItemId;
-            
+
             _repository.Update(ii);
         }
-        public void UpdateInteriorItemStatus(Guid id, int status)
+
+        public void UpdateInteriorItemStatus(Guid id, InteriorItemStatus status)
         {
             var ii = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            bool isValueDefined = Enum.IsDefined(typeof(InteriorItemStatus), status);
-            if (isValueDefined)
-            {
-                ii.Status = (InteriorItemStatus)status;
-                _repository.Update(ii);
-            }
-            else throw new Exception("The input is invalid!");
+
+            ii.Status = status;
+
+            _repository.Update(ii);
+        }
+
+        public void DeleteInteriorItem(Guid id)
+        {
+            var ii = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            ii.Status = InteriorItemStatus.Deleted;
+
+            _repository.Update(ii);
         }
     }
 }

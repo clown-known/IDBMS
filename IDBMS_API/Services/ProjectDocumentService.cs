@@ -38,8 +38,9 @@ namespace IDBMS_API.Services
                 ConstructionTaskReportId = request.ConstructionTaskReportId,
                 DecorProgressReportId = request.DecorProgressReportId,
                 ProjectDocumentTemplateId = request.ProjectDocumentTemplateId,
-                IsDeleted = request.IsDeleted,
+                IsDeleted = false,
             };
+
             var pdCreated = _repository.Save(pd);
             return pdCreated;
         }
@@ -56,19 +57,16 @@ namespace IDBMS_API.Services
             pd.ConstructionTaskReportId = request.ConstructionTaskReportId;
             pd.DecorProgressReportId = request.DecorProgressReportId;
             pd.ProjectDocumentTemplateId = request.ProjectDocumentTemplateId;
-            pd.IsDeleted = request.IsDeleted;
             
-            _repository.Update(pd);
-        }
-        public void UpdateProjectDocumentStatus(Guid id, bool isDeleted)
-        {
-            var pd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            pd.IsDeleted = isDeleted;
             _repository.Update(pd);
         }
         public void DeleteProjectDocument(Guid id)
         {
-            _repository.DeleteById(id);
+            var pd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            pd.IsDeleted = true;
+
+            _repository.Update(pd);
         }
     }
 }

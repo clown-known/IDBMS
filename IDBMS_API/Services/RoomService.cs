@@ -51,6 +51,7 @@ namespace IDBMS_API.Services
                 ProjectId = request.ProjectId,
                 IsHidden = false,
             };
+
             var roomCreated = _repository.Save(room);
             return roomCreated;
         }
@@ -83,6 +84,7 @@ namespace IDBMS_API.Services
         public void DeleteRoom(Guid id)
         {
             var room = _repository.GetById(id) ?? throw new Exception("This object is not found!");
+
             _repository.DeleteById(id);
         }
     }

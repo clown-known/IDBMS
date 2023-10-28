@@ -35,7 +35,5 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public int ProjectDocumentTemplateId { get; set; }
 
-        [Required]
-        public bool IsDeleted { get; set; }
     }
 }

@@ -24,16 +24,10 @@ namespace BusinessObject.DTOs.Request
         public string? Note { get; set; }
 
         [Required]
-        public DateTime CreatedDate { get; set; }
-
-        [Required]
         public Guid PrepayStageId { get; set; }
 
         [Required]
         public Guid UserId { get; set; }
-
-        [Required]
-        public TransactionStatus Status { get; set; }
 
         [Required]
         public string TransactionReceiptImageUrl { get; set; } = default!;

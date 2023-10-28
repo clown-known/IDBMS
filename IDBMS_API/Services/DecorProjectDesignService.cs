@@ -29,7 +29,7 @@ namespace IDBMS_API.Services
                 MaxBudget = request.MaxBudget,
                 Name = request.Name,    
                 Description = request.Description,
-                IsDeleted = request.IsDeleted,
+                IsDeleted = false,
             };
             var dpdCreated = _repository.Save(dpd);
             return dpdCreated;
@@ -37,18 +37,20 @@ namespace IDBMS_API.Services
         public void UpdateDecorProjectDesign(int id, DecorProjectDesignRequest request)
         {
             var dpd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
             dpd.MinBudget = request.MinBudget;
             dpd.MaxBudget = request.MaxBudget; 
             dpd.Name = request.Name;
             dpd.Description = request.Description;
-            dpd.IsDeleted = request.IsDeleted;
             
             _repository.Update(dpd);
         }
-        public void UpdateDecorProjectDesignStatus(int id, bool isDeleted)
+        public void DeleteDecorProjectDesign(int id)
         {
             var dpd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            dpd.IsDeleted = isDeleted;
+
+            dpd.IsDeleted = true;
+
             _repository.Update(dpd);
         }
     }

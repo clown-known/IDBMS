@@ -38,8 +38,9 @@ namespace IDBMS_API.Services
                 StartedDate = request.StartedDate,
                 EndDate = request.EndDate,
                 ProjectId = request.ProjectId,
-                IsHidden = request.IsHidden,
+                IsHidden = false,
             };
+
             var psCreated = _repository.Save(ps);
             return psCreated;
         }
@@ -57,7 +58,6 @@ namespace IDBMS_API.Services
             ps.StartedDate = request.StartedDate;
             ps.EndDate = request.EndDate;
             ps.ProjectId = request.ProjectId;
-            ps.IsHidden = request.IsHidden;
             
             _repository.Update(ps);
         }
@@ -68,10 +68,6 @@ namespace IDBMS_API.Services
             ps.IsHidden = isHidden;
 
             _repository.Update(ps);
-        }
-        public void DeletePrepayStage(Guid id)
-        {
-            _repository.DeleteById(id);
         }
     }
 }

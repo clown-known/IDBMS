@@ -15,7 +15,5 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public string IconImageUrl { get; set; } = default!;
 
-        [Required]
-        public bool IsHidden { get; set; }
     }
 }

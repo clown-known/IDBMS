@@ -21,12 +21,6 @@ namespace BusinessObject.DTOs.Request
         public Language Language { get; set; } = default!;
 
         [Required]
-        public DateTime CreatedDate { get; set; }
-
-        [Required]
-        public DateTime UpdatedDate { get; set; }
-
-        [Required]
         public string CompanyName { get; set; } = default!;
 
         [Required]

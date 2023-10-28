@@ -30,6 +30,7 @@ namespace IDBMS_API.Services
                 UserId = request.UserId,
                 InteriorItemId = request.InteriorItemId,
             };
+
             var iibCreated = _repository.Save(iib);
             return iibCreated;
         }

@@ -20,7 +20,6 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public ParticipationRole Role { get; set; }
 
-        [Required]
-        public bool IsDeleted { get; set; }
+
     }
 }

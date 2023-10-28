@@ -76,15 +76,15 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpPut("{id}/isDeleted")]
-        public IActionResult UpdateProjectDocumentStatus(Guid id, bool isDeleted)
+        [HttpDelete("{id}")]
+        public IActionResult UpdateProjectDocumentStatus(Guid id)
         {
             try
             {
-                _service.UpdateProjectDocumentStatus(id, isDeleted);
+                _service.DeleteProjectDocument(id);
                 var response = new ResponseMessage()
                 {
-                    Message = "Update successfully!",
+                    Message = "Delete successfully!",
                 };
                 return Ok(response);
             }

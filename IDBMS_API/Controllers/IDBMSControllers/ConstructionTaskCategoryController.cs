@@ -77,15 +77,15 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpPut("{id}/isDeleted")]
-        public IActionResult UpdateConstructionTaskCategoryStatus(int id, bool isDeleted)
+        [HttpDelete("{id}")]
+        public IActionResult UpdateConstructionTaskCategoryStatus(int id)
         {
             try
             {
-                _service.UpdateConstructionTaskCategoryStatus(id, isDeleted);
+                _service.DeleteConstructionTaskCategory(id);
                 var response = new ResponseMessage()
                 {
-                    Message = "Update successfully!",
+                    Message = "Delete successfully!",
                 };
                 return Ok(response);
             }

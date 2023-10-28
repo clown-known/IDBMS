@@ -42,7 +42,5 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public Guid ProjectId { get; set; }
 
-        [Required]
-        public bool IsHidden { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace IDBMS_API.Services
                 ImageUrl = roomType.ImageUrl,
                 Description = roomType.Description,
                 PricePerArea = roomType.PricePerArea,
-                IsHidden = roomType.IsHidden,
+                IsHidden = false,
                 IconImageUrl = roomType.IconImageUrl,
             };
 
@@ -42,7 +42,6 @@ namespace IDBMS_API.Services
             rt.ImageUrl = roomType.ImageUrl;
             rt.Description = roomType.Description;
             rt.PricePerArea = roomType.PricePerArea;
-            rt.IsHidden = roomType.IsHidden;
             rt.IconImageUrl = roomType.IconImageUrl;
 
             _repository.Update(rt);

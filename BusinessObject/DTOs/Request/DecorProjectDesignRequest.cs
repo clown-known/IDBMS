@@ -22,7 +22,6 @@ namespace BusinessObject.DTOs.Request
         public string Name { get; set; } = default!;
 
         public string? Description { get; set; }
-        [Required]
-        public bool IsDeleted { get; set; }
+
     }
 }

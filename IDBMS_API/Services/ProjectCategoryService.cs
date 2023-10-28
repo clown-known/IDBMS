@@ -25,8 +25,9 @@ namespace IDBMS_API.Services
             {
                 Name = projectCategory.Name,
                 IconImageUrl = projectCategory.IconImageUrl,
-                IsHidden = projectCategory.IsHidden,
+                IsHidden = false,
             };
+
             var pcCreated = projectCategoryRepository.Save(pc);
             return pcCreated;
         }
@@ -35,14 +36,15 @@ namespace IDBMS_API.Services
             var pc = projectCategoryRepository.GetById(id) ?? throw new Exception("This object is not existed!");
             pc.Name = projectCategory.Name;
             pc.IconImageUrl = projectCategory.IconImageUrl;
-            pc.IsHidden = projectCategory.IsHidden;
             
             projectCategoryRepository.Update(pc);
         }
         public void UpdateProjectCategoryStatus(int id, bool isHidden)
         {
             var pc = projectCategoryRepository.GetById(id) ?? throw new Exception("This object is not existed!");
+
             pc.IsHidden = isHidden;
+
             projectCategoryRepository.Update(pc);
         }
     }

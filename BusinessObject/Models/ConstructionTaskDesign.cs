@@ -24,6 +24,9 @@ public class ConstructionTaskDesign
     [Column(TypeName = "money")]
     public decimal EstimatePricePerUnit { get; set; }
 
+    [Required]
+    public bool IsDeleted { get; set; }
+
     public int? InteriorItemCategoryId { get; set; }
     public InteriorItemCategory? InteriorItemCategory { get; set; } = new();
 

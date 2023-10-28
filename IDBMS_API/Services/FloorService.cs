@@ -42,6 +42,7 @@ namespace IDBMS_API.Services
                 UsePurpose = request.UsePurpose,
                 IsDeleted = false,
             };
+
             var floorCreated = _repository.Save(floor);
             return floorCreated;
         }

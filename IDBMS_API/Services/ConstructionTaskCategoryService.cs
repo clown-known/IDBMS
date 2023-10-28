@@ -28,7 +28,7 @@ namespace IDBMS_API.Services
                 Name = request.Name,
                 Description = request.Description,
                 IconImageUrl = request.IconImageUrl,
-                IsDeleted = request.IsDeleted,
+                IsDeleted = false,
             };
             var ctcCreated =_repository.Save(ctc);
             return ctcCreated; 
@@ -39,13 +39,15 @@ namespace IDBMS_API.Services
             ctc.Name = request.Name;
             ctc.Description = request.Description;
             ctc.IconImageUrl = request.IconImageUrl;
-            ctc.IsDeleted = request.IsDeleted;
             _repository.Update(ctc);
         }
-        public void UpdateConstructionTaskCategoryStatus(int id, bool isDeleted)
+        public void DeleteConstructionTaskCategory(int id)
         {
             var ctc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            ctc.IsDeleted = isDeleted;
+
+            ctc.IsDeleted = true;
+            //cons task design
+
             _repository.Update(ctc);
         }
     }

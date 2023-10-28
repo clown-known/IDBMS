@@ -15,6 +15,5 @@ namespace BusinessObject.DTOs.Request
 
         public string IconImageUrl { get; set; } = default!;
 
-        public bool IsDeleted { get; set; }
     }
 }

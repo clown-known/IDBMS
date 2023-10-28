@@ -29,6 +29,7 @@ namespace IDBMS_API.Services
                 PrimaryColor = request.PrimaryColor,
                 SecondaryColor = request.SecondaryColor,
             };
+
             var iicCreated = _repository.Save(iic);
             return iicCreated;
         }
@@ -45,6 +46,9 @@ namespace IDBMS_API.Services
         public void DeleteInteriorItemColor(int id)
         {
             var iic = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            //interior item
+
             _repository.DeleteById(id);
         }
     }

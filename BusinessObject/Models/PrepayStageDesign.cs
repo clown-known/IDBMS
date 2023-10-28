@@ -22,6 +22,9 @@ public class PrepayStageDesign
     public string? Description { get; set; }
 
     [Required]
+    public bool IsDeleted { get; set; }
+
+    [Required]
     public int DecorProjectDesignId { get; set; }
     public DecorProjectDesign DecorProjectDesign { get; set; } = new();
 }

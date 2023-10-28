@@ -43,15 +43,15 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(response);
         }
         [HttpPost]
-        public IActionResult CreateNotificationForAllUsers([FromBody] NotificationRequest request)
+        public IActionResult CreateNotificationsForAllUsers([FromBody] NotificationRequest request)
         {
             try
             {
-                var result = _service.CreateNotificatonForAll(request);
+                _service.CreateNotificatonsForAllUsers(request);
+
                 var response = new ResponseMessage()
                 {
-                    Message = "Create successfully!",
-                    Data = result
+                    Message = "Create successfully!"
                 };
                 return Ok(response);
             }
@@ -91,11 +91,10 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var result = _service.CreateNotificatonForUsers(request, request.listUserId);
+                _service.CreateNotificatonForUsers(request, request.listUserId);
                 var response = new ResponseMessage()
                 {
-                    Message = "Create successfully!",
-                    Data = result
+                    Message = "Create successfully!"
                 };
                 return Ok(response);
             }

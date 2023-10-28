@@ -23,12 +23,6 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public int ProjectCategoryId { get; set; }
 
-        [Required]
-        public DateTime CreatedDate { get; set; }
-
-        [Required]
-        public DateTime UpdatedDate { get; set; }
-
         public int? NoStage { get; set; }
 
         [Required]
@@ -45,9 +39,6 @@ namespace BusinessObject.DTOs.Request
 
         [Required]
         public ProjectStatus Status { get; set; }
-
-        [Required]
-        public bool IsAdvertisement { get; set; }
 
         public string? AdminNote { get; set; }
 

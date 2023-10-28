@@ -75,15 +75,15 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpPut("{id}/isDeleted")]
-        public IActionResult UpdateInteriorItemCategoryStatus(int id, bool isDeleted)
+        [HttpDelete("{id}")]
+        public IActionResult UpdateInteriorItemCategoryStatus(int id)
         {
             try
             {
-                _service.UdpateInteriorItemCategoryStatus(id, isDeleted);
+                _service.DeleteInteriorItemCategory(id);
                 var response = new ResponseMessage()
                 {
-                    Message = "Update successfully!",
+                    Message = "Delete successfully!",
                 };
                 return Ok(response);
             }

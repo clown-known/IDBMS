@@ -34,7 +34,9 @@ namespace IDBMS_API.Services
                 Name = request.Name,
                 Description = request.Description,
                 DecorProjectDesignId = request.DecorProjectDesignId,
+                IsDeleted = false
             };
+
             var psdCreated = _repository.Save(psd);
             return psdCreated;
         }
@@ -53,7 +55,10 @@ namespace IDBMS_API.Services
         public void DeletePrepayStageDesign(int id)
         {
             var psd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            _repository.DeleteById(id);
+
+            psd.IsDeleted= true;
+
+            _repository.Save(psd);
         }
     }
 }
