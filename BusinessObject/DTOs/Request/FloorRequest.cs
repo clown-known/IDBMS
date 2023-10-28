@@ -27,7 +27,5 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public Guid ProjectId { get; set; }
 
-        [Required]
-        public bool IsDeleted { get; set; }
     }
 }

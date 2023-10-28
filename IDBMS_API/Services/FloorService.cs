@@ -1,53 +1,77 @@
 ﻿using BusinessObject.DTOs.Request;
 using BusinessObject.Models;
 using Repository.Interfaces;
+using System;
+using System.Collections.Generic;
 
 namespace IDBMS_API.Services
 {
     public class FloorService
     {
-        private readonly IFloorRepository _floorRepository;
-        public FloorService(IFloorRepository floorRepository)
+        private readonly IFloorRepository _repository;
+
+        public FloorService(IFloorRepository repository)
         {
-            _floorRepository = floorRepository;
+            _repository = repository;
         }
+
         public IEnumerable<Floor> GetAll()
         {
-            return _floorRepository.GetAll();
+            return _repository.GetAll();
         }
+
         public Floor? GetById(Guid id)
         {
-            return _floorRepository.GetById(id);
+            return _repository.GetById(id) ?? throw new Exception("This object is not found!");
         }
+
+        public IEnumerable<Floor> GetByProjectId(Guid projectId)
+        {
+            return _repository.GetByProjectId(projectId);
+        }
+
         public Floor? CreateFloor(FloorRequest request)
         {
             var floor = new Floor
             {
-                Name = request.Name,
+                Id = Guid.NewGuid(),
+                ProjectId = request.ProjectId,
                 Description = request.Description,
-                UsePurpose = request.UsePurpose,
                 FloorNo = request.FloorNo,
                 Area = request.Area,
-                ProjectId = request.ProjectId,
-                IsDeleted = request.IsDeleted,
+                UsePurpose = request.UsePurpose,
+                IsDeleted = false,
             };
-            var floorCreated = _floorRepository.Save(floor);
+            var floorCreated = _repository.Save(floor);
             return floorCreated;
         }
-        public void UpdateFloor(FloorRequest request)
+
+        public void UpdateFloor(Guid id, FloorRequest request)
         {
-            var floor = new Floor
-            {
-                Name = request.Name,
-                Description = request.Description,
-                UsePurpose = request.UsePurpose,
-                FloorNo = request.FloorNo,
-                Area = request.Area,
-                ProjectId = request.ProjectId,
-                IsDeleted = request.IsDeleted,
-            };
-            _floorRepository.Update(floor);
+            var floor = _repository.GetById(id) ?? throw new Exception("This object is not found!");
+
+            floor.ProjectId = request.ProjectId;
+            floor.Description = request.Description;
+            floor.FloorNo = request.FloorNo;
+            floor.Area = request.Area;
+            floor.UsePurpose = request.UsePurpose;
+
+            _repository.Update(floor);
         }
 
+        public void UpdateFloorStatus(Guid id, bool isDeleted)
+        {
+            var floor = _repository.GetById(id) ?? throw new Exception("This object is not found!");
+
+            floor.IsDeleted = isDeleted;
+
+            _repository.Update(floor);
+        }
+
+        public void DeleteFloor(Guid id)
+        {
+            var floor = _repository.GetById(id) ?? throw new Exception("This object is not found!");
+            _repository.DeleteById(id);
+        }
     }
 }
