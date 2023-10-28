@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObject.Models;
 
@@ -13,6 +14,14 @@ public class ApplianceSuggestion
     public string? Description { get; set; }
 
     public string? ImageUrl { get; set; }
+
+    [Required]
+    public DateTime CreatedDate { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
+    [Required]
+    public bool IsDeleted { get; set; }
 
     public Guid? InteriorItemId { get; set; }
     public InteriorItem? InteriorItem { get; set; }
