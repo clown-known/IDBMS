@@ -33,7 +33,18 @@ namespace Repository.Implements
                 throw;
             }
         }
-
+        public IEnumerable<DecorProgressReport?> GetByPrepayStageId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.DecorProgressReports.Where(report => report.PrepayStageId == id).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
         public DecorProgressReport Save(DecorProgressReport entity)
         {
             try

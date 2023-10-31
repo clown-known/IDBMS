@@ -36,9 +36,11 @@ namespace IDBMS_API.Services
         public void UpdateConstructionTaskCategory(int id, ConstructionTaskCategoryRequest request)
         {
             var ctc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
             ctc.Name = request.Name;
             ctc.Description = request.Description;
             ctc.IconImageUrl = request.IconImageUrl;
+
             _repository.Update(ctc);
         }
         public void DeleteConstructionTaskCategory(int id)

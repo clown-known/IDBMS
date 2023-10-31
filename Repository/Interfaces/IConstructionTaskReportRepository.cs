@@ -9,5 +9,6 @@ namespace Repository.Interfaces
 {
     public interface IConstructionTaskReportRepository : ICrudBaseRepository<ConstructionTaskReport, Guid>
     {
+        IEnumerable<ConstructionTaskReport?> GetByConstructionTaskId(Guid id);
     }
 }

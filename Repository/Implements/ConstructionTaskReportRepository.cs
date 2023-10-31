@@ -33,6 +33,18 @@ namespace Repository.Implements
                 throw;
             }
         }
+        public IEnumerable<ConstructionTaskReport?> GetByConstructionTaskId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.ConstructionTaskReports.Where(report => report.ConstructionTaskId == id).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
         public ConstructionTaskReport Save(ConstructionTaskReport entity)
         {

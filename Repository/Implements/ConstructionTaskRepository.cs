@@ -34,6 +34,19 @@ namespace Repository.Implements
             }
         }
 
+        public IEnumerable<ConstructionTask?> GetByProjectId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.ConstructionTasks.Where(task => task.ProjectId == id).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public ConstructionTask Save(ConstructionTask entity)
         {
             try
