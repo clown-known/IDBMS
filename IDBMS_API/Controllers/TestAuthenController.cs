@@ -1,4 +1,4 @@
-﻿using API.Supporters.JwtAuthSupport;
+﻿/*using API.Supporters.JwtAuthSupport;
 using BusinessObject.DTOs.Request;
 using BusinessObject.DTOs.Request.AccountRequest;
 using BusinessObject.Models;
@@ -44,9 +44,11 @@ namespace IDBMS_API.Controllers
             return Ok("success");
         }
         [HttpGet("case2")]
-        [Authorize( Policy = "ParticipationAccess")]
-        public IActionResult Case2(string? id) { 
+        [Authorize(Policy = "ParticipationAccess")]
+        public IActionResult Case2(string? id)
+        {
             return Ok("success");
         }
     }
 }
+*/
