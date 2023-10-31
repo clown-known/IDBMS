@@ -33,12 +33,12 @@ namespace Repository.Implements
                 throw;
             }
         }
-        public IEnumerable<DecorProgressReport?> GetByPrepayStageId(Guid id)
+        public IEnumerable<DecorProgressReport?> GetByPaymentStageId(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.DecorProgressReports.Where(report => report.PrepayStageId == id).ToList();
+                return context.DecorProgressReports.Where(report => report.PaymentStageId == id).ToList();
             }
             catch
             {

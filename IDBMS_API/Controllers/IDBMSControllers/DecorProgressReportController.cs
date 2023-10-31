@@ -30,13 +30,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(response);
         }
         [EnableQuery]
-        [HttpGet("prepay-stage/{id}")]
-        public IActionResult GetDecorProgressReportsByPrepayStageId(Guid id)
+        [HttpGet("payment-stage/{id}")]
+        public IActionResult GetDecorProgressReportsByPaymentStageId(Guid id)
         {
             var response = new ResponseMessage()
             {
                 Message = "Get successfully!",
-                Data = _service.GetByPrepayStageId(id)
+                Data = _service.GetByPaymentStageId(id)
             };
             return Ok(response);
         }

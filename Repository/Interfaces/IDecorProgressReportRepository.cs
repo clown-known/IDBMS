@@ -9,6 +9,6 @@ namespace Repository.Interfaces
 {
     public interface IDecorProgressReportRepository : ICrudBaseRepository<DecorProgressReport, Guid>
     {
-        IEnumerable<DecorProgressReport?> GetByPrepayStageId(Guid id);
+        IEnumerable<DecorProgressReport?> GetByPaymentStageId(Guid id);
     }
 }

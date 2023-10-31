@@ -19,9 +19,9 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!"); 
         }
-        public IEnumerable<DecorProgressReport?> GetByPrepayStageId(Guid id)
+        public IEnumerable<DecorProgressReport?> GetByPaymentStageId(Guid id)
         {
-            return _repository.GetByPrepayStageId(id) ?? throw new Exception("This object is not existed!"); 
+            return _repository.GetByPaymentStageId(id) ?? throw new Exception("This object is not existed!"); 
         }
         public DecorProgressReport? CreateDecorProgressReport(DecorProgressReportRequest request)
         {
@@ -45,7 +45,7 @@ namespace IDBMS_API.Services
             dpr.Name = request.Name;
             dpr.Description = request.Description;
             dpr.AuthorId = request.AuthorId;
-            dpr.PrepayStageId = request.PrepayStageId;
+            dpr.PaymentStageId = request.PaymentStageId;
             
             _repository.Update(dpr);
         }

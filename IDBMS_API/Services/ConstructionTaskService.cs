@@ -70,7 +70,7 @@ namespace IDBMS_API.Services
             ct.ParentTaskId = request.ParentTaskId;
             ct.ConstructionTaskCategoryId = request.ConstructionTaskCategoryId;
             ct.ProjectId = request.ProjectId;
-            ct.PrepayStageId = request.PrepayStageId;
+            ct.PaymentStageId = request.PaymentStageId;
             ct.InteriorItemId = request.InteriorItemId;
             ct.ConstructionTaskDesignId = request.ConstructionTaskDesignId;
             ct.Status = request.Status;
