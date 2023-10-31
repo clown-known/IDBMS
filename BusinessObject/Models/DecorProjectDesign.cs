@@ -24,6 +24,6 @@ public class DecorProjectDesign
     [Required]
     public bool IsDeleted { get; set; }
 
-    public List<PrepayStageDesign> PrepayStageDesigns { get; set; } = new();
+    public List<PaymentStageDesign> PaymentStageDesigns { get; set; } = new();
     public List<Project> Projects { get; set; } = new();
 }

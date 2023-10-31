@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.DTOs.Request
 {
-    public class PrepayStageDesignRequest
+    public class PaymentStageDesignRequest
     {
         [Required]
         public double PricePercentage { get; set; }

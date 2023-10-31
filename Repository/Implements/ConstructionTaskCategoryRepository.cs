@@ -16,8 +16,11 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 var ctc = context.ConstructionTaskCategories.Where(ctc => ctc.Id == id).FirstOrDefault();
-                context.ConstructionTaskCategories.Remove(ctc);
-                context.SaveChanges();
+                if (ctc != null)
+                {
+                    context.ConstructionTaskCategories.Remove(ctc);
+                    context.SaveChanges();
+                }
             }
             catch
             {

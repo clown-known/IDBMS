@@ -16,8 +16,11 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 var dt = context.ProjectDocumentTemplates.Where(dt => dt.Id == id).FirstOrDefault();
-                context.ProjectDocumentTemplates.Remove(dt);
-                context.SaveChanges();
+                if (dt != null)
+                {
+                    context.ProjectDocumentTemplates.Remove(dt);
+                    context.SaveChanges();
+                }
             }
             catch
             {

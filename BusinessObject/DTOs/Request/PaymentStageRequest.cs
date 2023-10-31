@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.DTOs.Request
 {
-    public class PrepayStageRequest
+    public class PaymentStageRequest
     {
         [Required]
         public int StageNo { get; set; }

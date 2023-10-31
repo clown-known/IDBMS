@@ -10,18 +10,18 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PrepayStagesController : ODataController
+    public class PaymentStagesController : ODataController
     {
-        private readonly PrepayStageService _service;
+        private readonly PaymentStageService _service;
 
-        public PrepayStagesController(PrepayStageService service)
+        public PaymentStagesController(PaymentStageService service)
         {
             _service = service;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetPrepayStages()
+        public IActionResult GetPaymentStages()
         {
             var response = new ResponseMessage()
             {
@@ -33,7 +33,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //all
         [EnableQuery]
         [HttpGet("project/{projectId}")]
-        public IActionResult GetPrepayStagesByProjectId(Guid projectId)
+        public IActionResult GetPaymentStagesByProjectId(Guid projectId)
         {
             var response = new ResponseMessage()
             {
@@ -45,7 +45,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //permission
         [EnableQuery]
         [HttpGet("{id}")]
-        public IActionResult GetPrepayStagesById(Guid id)
+        public IActionResult GetPaymentStagesById(Guid id)
         {
             var response = new ResponseMessage()
             {
@@ -55,11 +55,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(response);
         }
         [HttpPost]
-        public IActionResult CreatePrepayStage([FromBody] PrepayStageRequest request)
+        public IActionResult CreatePaymentStage([FromBody] PaymentStageRequest request)
         {
             try
             {
-                var result = _service.CreatePrepayStage(request);
+                var result = _service.CreatePaymentStage(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",
@@ -78,11 +78,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdatePrepayStage(Guid id, [FromBody] PrepayStageRequest request)
+        public IActionResult UpdatePaymentStage(Guid id, [FromBody] PaymentStageRequest request)
         {
             try
             {
-                _service.UpdatePrepayStage(id, request);
+                _service.UpdatePaymentStage(id, request);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
@@ -100,11 +100,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/isHidden")]
-        public IActionResult UpdatePrepayStageStatus(Guid id, bool isHidden)
+        public IActionResult UpdatePaymentStageStatus(Guid id, bool isHidden)
         {
             try
             {
-                _service.UpdatePrepayStageStatus(id, isHidden);
+                _service.UpdatePaymentStageStatus(id, isHidden);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",

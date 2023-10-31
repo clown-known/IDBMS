@@ -27,7 +27,7 @@ namespace IDBMS_API.Services
                 Description = request.Description,
                 AuthorId = request.AuthorId,
                 CreatedDate = request.CreatedDate,
-                PrepayStageId = request.PrepayStageId,
+                PaymentStageId = request.PaymentStageId,
                 IsDeleted = request.IsDeleted,
             };
             var dprCreated = _repository.Save(dpr);
@@ -41,7 +41,7 @@ namespace IDBMS_API.Services
                 Description = request.Description,
                 AuthorId = request.AuthorId,
                 CreatedDate = request.CreatedDate,
-                PrepayStageId = request.PrepayStageId,
+                PaymentStageId = request.PaymentStageId,
                 IsDeleted = request.IsDeleted,
             };
             _repository.Update(dpr);

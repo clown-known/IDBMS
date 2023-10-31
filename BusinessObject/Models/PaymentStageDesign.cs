@@ -2,7 +2,7 @@
 
 namespace BusinessObject.Models;
 
-public class PrepayStageDesign
+public class PaymentStageDesign
 {
     [Key]
     public int Id { get; set; }

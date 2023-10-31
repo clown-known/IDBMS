@@ -36,8 +36,8 @@ builder.Services.AddScoped<IInteriorItemColorRepository, InteriorItemColorReposi
 builder.Services.AddScoped<IInteriorItemRepository, InteriorItemRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IParticipationRepository, ParticipationRepository>();
-builder.Services.AddScoped<IPrepayStageRepository, PrepayStageRepository>();
-builder.Services.AddScoped<IPrepayStageDesignRepository, PrepayStageDesignRepository>();
+builder.Services.AddScoped<IPaymentStageRepository, PaymentStageRepository>();
+builder.Services.AddScoped<IPaymentStageDesignRepository, PaymentStageDesignRepository>();
 builder.Services.AddScoped<IProjectCategoryRepository, ProjectCategoryRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IProjectDocumentRepository, ProjectDocumentRepository>();
@@ -63,8 +63,8 @@ builder.Services.AddScoped<InteriorItemColorService, InteriorItemColorService>()
 builder.Services.AddScoped<InteriorItemService, InteriorItemService>();
 builder.Services.AddScoped<NotificationService, NotificationService>();
 builder.Services.AddScoped<ParticipationService, ParticipationService>();
-builder.Services.AddScoped<PrepayStageService, PrepayStageService>();
-builder.Services.AddScoped<PrepayStageDesignService, PrepayStageDesignService>();
+builder.Services.AddScoped<PaymentStageService, PaymentStageService>();
+builder.Services.AddScoped<PaymentStageDesignService, PaymentStageDesignService>();
 builder.Services.AddScoped<ProjectCategoryService, ProjectCategoryService>();
 builder.Services.AddScoped<ProjectService, ProjectService>();
 builder.Services.AddScoped<ProjectDocumentService, ProjectDocumentService>();
@@ -126,8 +126,8 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<InteriorItemColor>("InteriorItemColors");
     builder.EntitySet<Notification>("Notifications");
     builder.EntitySet<Participation>("Participations");
-    builder.EntitySet<PrepayStage>("PrepayStages");
-    builder.EntitySet<PrepayStageDesign>("PrepayStageDesigns");
+    builder.EntitySet<PaymentStage>("PaymentStages");
+    builder.EntitySet<PaymentStageDesign>("PaymentStageDesigns");
     builder.EntitySet<Project>("Projects");
     builder.EntitySet<ProjectCategory>("ProjectCategories");
     builder.EntitySet<ProjectDocument>("ProjectDocuments");

@@ -8,28 +8,28 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PrepayStageDesignsController : ODataController
+    public class PaymentStageDesignsController : ODataController
     {
-        private readonly PrepayStageDesignService _service;
+        private readonly PaymentStageDesignService _service;
 
-        public PrepayStageDesignsController(PrepayStageDesignService service)
+        public PaymentStageDesignsController(PaymentStageDesignService service)
         {
             _service = service;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetPrepayStageDesigns()
+        public IActionResult GetPaymentStageDesigns()
         {
             return Ok(_service.GetAll());
         }
 
         [HttpPost]
-        public IActionResult CreatePrepayStageDesign([FromBody] PrepayStageDesignRequest request)
+        public IActionResult CreatePaymentStageDesign([FromBody] PaymentStageDesignRequest request)
         {
             try
             {
-                _service.CreatePrepayStageDesign(request);
+                _service.CreatePaymentStageDesign(request);
             }
             catch (Exception ex)
             {
@@ -39,11 +39,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdatePrepayStageDesign(int id, [FromBody] PrepayStageDesignRequest request)
+        public IActionResult UpdatePaymentStageDesign(int id, [FromBody] PaymentStageDesignRequest request)
         {
             try
             {
-                _service.UpdatePrepayStageDesign(id, request);
+                _service.UpdatePaymentStageDesign(id, request);
             }
             catch (Exception ex)
             {
@@ -53,11 +53,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult UpdatePrepayStageDesignStatus(int id)
+        public IActionResult DeletePaymentStageDesign(int id)
         {
             try
             {
-                _service.DeletePrepayStageDesign(id);
+                _service.DeletePaymentStageDesign(id);
             }
             catch (Exception ex)
             {

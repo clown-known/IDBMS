@@ -8,16 +8,19 @@ using System.Threading.Tasks;
 
 namespace Repository.Implements
 {
-    public class PrepayStageDesignRepository : IPrepayStageDesignRepository
+    public class PaymentStageDesignRepository : IPaymentStageDesignRepository
     {
         public void DeleteById(int id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var psd = context.PrepayStageDesigns.Where(psd => psd.Id == id).FirstOrDefault();
-                context.PrepayStageDesigns.Remove(psd);
-                context.SaveChanges();
+                var psd = context.PaymentStageDesigns.Where(psd => psd.Id == id).FirstOrDefault();
+                if (psd != null)
+                {
+                    context.PaymentStageDesigns.Remove(psd);
+                    context.SaveChanges();
+                }
             }
             catch
             {
@@ -25,12 +28,12 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<PrepayStageDesign> GetAll()
+        public IEnumerable<PaymentStageDesign> GetAll()
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.PrepayStageDesigns.ToList();
+                return context.PaymentStageDesigns.ToList();
             }
             catch
             {
@@ -38,12 +41,12 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<PrepayStageDesign> GetByDecorProjectDesignId(int designId)
+        public IEnumerable<PaymentStageDesign> GetByDecorProjectDesignId(int designId)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.PrepayStageDesigns
+                return context.PaymentStageDesigns
                     .Where(psd => psd.DecorProjectDesignId == designId).ToList();
             }
             catch
@@ -52,12 +55,12 @@ namespace Repository.Implements
             }
         }
 
-        public PrepayStageDesign? GetById(int id)
+        public PaymentStageDesign? GetById(int id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.PrepayStageDesigns.Where(psd => psd.Id == id).FirstOrDefault();
+                return context.PaymentStageDesigns.Where(psd => psd.Id == id).FirstOrDefault();
             }
             catch
             {
@@ -65,12 +68,12 @@ namespace Repository.Implements
             }
         }
 
-        public PrepayStageDesign? Save(PrepayStageDesign entity)
+        public PaymentStageDesign? Save(PaymentStageDesign entity)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var psd = context.PrepayStageDesigns.Add(entity);
+                var psd = context.PaymentStageDesigns.Add(entity);
                 context.SaveChanges();
                 return psd.Entity;
             }
@@ -80,7 +83,7 @@ namespace Repository.Implements
             }
         }
 
-        public void Update(PrepayStageDesign entity)
+        public void Update(PaymentStageDesign entity)
         {
             try
             {

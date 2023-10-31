@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    public interface IPrepayStageRepository : ICrudBaseRepository<PrepayStage, Guid>
+    public interface IPaymentStageRepository : ICrudBaseRepository<PaymentStage, Guid>
     {
-        IEnumerable<PrepayStage?> GetByProjectId(Guid projectId);
+        IEnumerable<PaymentStage?> GetByProjectId(Guid projectId);
     }
 }

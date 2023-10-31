@@ -63,7 +63,7 @@ public class Project
     public List<ConstructionTask> ConstructionTasks { get; set; } = new();
     public List<Floor> Floors { get; set; } = new();
     public List<Participation> Participations { get; set; } = new();
-    public List<PrepayStage> PrepayStages { get; set; } = new();
+    public List<PaymentStage> PaymentStages { get; set; } = new();
     public List<ProjectDocument> ProjectDocuments { get; set; } = new();
     public List<Room> Rooms { get; set; } = new();
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
 
-public class PrepayStage
+public class PaymentStage
 {
     [Key]
     public Guid Id { get; set; }

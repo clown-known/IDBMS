@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BusinessObject.Enums;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace BusinessObject.Models;
@@ -26,8 +27,8 @@ public class IdtDbContext : DbContext
     public DbSet<InteriorItemColor> InteriorItemColors { get; set; } = default!;
     public DbSet<Notification> Notifications { get; set; } = default!;
     public DbSet<Participation> Participations { get; set; } = default!;
-    public DbSet<PrepayStage> PrepayStages { get; set; } = default!;
-    public DbSet<PrepayStageDesign> PrepayStageDesigns { get; set; } = default!;
+    public DbSet<PaymentStage> PaymentStages { get; set; } = default!;
+    public DbSet<PaymentStageDesign> PaymentStageDesigns { get; set; } = default!;
     public DbSet<Project> Projects { get; set; } = default!;
     public DbSet<ProjectCategory> ProjectCategories { get; set; } = default!;
     public DbSet<ProjectDocument> ProjectDocuments { get; set; } = default!;
@@ -58,11 +59,55 @@ public class IdtDbContext : DbContext
             .HasConversion<int>();
 
         modelBuilder.Entity<ConstructionTask>()
+            .Property(constructionTask => constructionTask.CalculationUnit)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<ConstructionTaskReport>()
+            .Property(constructionTaskReport => constructionTaskReport.CalculationUnit)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<ConstructionTaskDesign>()
+            .Property(constructionTaskDesign => constructionTaskDesign.CalculationUnit)
+            .HasConversion<int>();            
+        
+        modelBuilder.Entity<InteriorItem>()
+            .Property(interiorItem => interiorItem.CalculationUnit)
+            .HasConversion<int>();          
+        
+        modelBuilder.Entity<InteriorItemColor>()
+            .Property(interiorItemColor => interiorItemColor.Type)
+            .HasConversion<int>();
+        
+        modelBuilder.Entity<Comment>()
+            .Property(comment => comment.Status)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<ConstructionTask>()
             .Property(constructionTask => constructionTask.Status)
+            .HasConversion<int>();  
+
+        modelBuilder.Entity<ProjectDocumentTemplate>()
+            .Property(projectDocumentTemplate => projectDocumentTemplate.Type)
             .HasConversion<int>();
 
         modelBuilder.Entity<InteriorItem>()
             .Property(interiorItem => interiorItem.Status)
+            .HasConversion<int>();        
+        
+        modelBuilder.Entity<InteriorItemCategory>()
+            .Property(interiorItemCategory => interiorItemCategory.InteriorItemType)
+            .HasConversion<int>();        
+        
+        modelBuilder.Entity<User>()
+            .Property(user => user.Language)
+            .HasConversion<int>();        
+        
+        modelBuilder.Entity<Project>()
+            .Property(project => project.Language)
+            .HasConversion<int>();        
+        
+        modelBuilder.Entity<ProjectDocumentTemplate>()
+            .Property(projectDocumentTemplate => projectDocumentTemplate.Language)
             .HasConversion<int>();
 
         modelBuilder.Entity<Notification>()
@@ -73,16 +118,16 @@ public class IdtDbContext : DbContext
             .Property(participation => participation.Role)
             .HasConversion<int>();
 
+        modelBuilder.Entity<ProjectDocument>()
+            .Property(projectDocument => projectDocument.Category)
+            .HasConversion<int>();
+
         modelBuilder.Entity<Project>()
             .Property(project => project.Status)
             .HasConversion<int>();
 
         modelBuilder.Entity<Project>()
             .Property(project => project.Type)
-            .HasConversion<int>();
-
-        modelBuilder.Entity<ProjectDocument>()
-            .Property(projectDocument => projectDocument.Category)
             .HasConversion<int>();
 
         modelBuilder.Entity<Transaction>()
@@ -93,12 +138,13 @@ public class IdtDbContext : DbContext
             .Property(transaction => transaction.Type)
             .HasConversion<int>();
 
+        modelBuilder.Entity<UserRole>()
+            .Property(userRole => userRole.Role)
+            .HasConversion<int>();
+
         modelBuilder.Entity<User>()
             .Property(user => user.Status)
             .HasConversion<int>();
 
-        modelBuilder.Entity<UserRole>()
-            .Property(userRole => userRole.Role)
-            .HasConversion<int>();
     }
 }

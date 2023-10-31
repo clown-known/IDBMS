@@ -22,7 +22,7 @@ namespace BusinessObject.DTOs.Request
         public DateTime CreatedDate { get; set; }
 
         [Required]
-        public Guid PrepayStageId { get; set; }
+        public Guid PaymentStageId { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; }

@@ -4,28 +4,28 @@ using Repository.Interfaces;
 
 namespace IDBMS_API.Services
 {
-    public class PrepayStageService
+    public class PaymentStageService
     {
-        private readonly IPrepayStageRepository _repository;
-        public PrepayStageService(IPrepayStageRepository repository)
+        private readonly IPaymentStageRepository _repository;
+        public PaymentStageService(IPaymentStageRepository repository)
         {
             _repository = repository;
         }
-        public IEnumerable<PrepayStage> GetAll()
+        public IEnumerable<PaymentStage> GetAll()
         {
             return _repository.GetAll();
         }
-        public PrepayStage? GetById(Guid id)
+        public PaymentStage? GetById(Guid id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<PrepayStage?> GetByProjectId(Guid projectId)
+        public IEnumerable<PaymentStage?> GetByProjectId(Guid projectId)
         {
             return _repository.GetByProjectId(projectId) ?? throw new Exception("This object is not existed!");
         }
-        public PrepayStage? CreatePrepayStage(PrepayStageRequest request)
+        public PaymentStage? CreatePaymentStage(PaymentStageRequest request)
         {
-            var ps = new PrepayStage
+            var ps = new PaymentStage
             {
                 Id = Guid.NewGuid(),
                 StageNo = request.StageNo,
@@ -44,7 +44,7 @@ namespace IDBMS_API.Services
             var psCreated = _repository.Save(ps);
             return psCreated;
         }
-        public void UpdatePrepayStage(Guid id, PrepayStageRequest request)
+        public void UpdatePaymentStage(Guid id, PaymentStageRequest request)
         {
             var ps = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
@@ -61,7 +61,7 @@ namespace IDBMS_API.Services
             
             _repository.Update(ps);
         }
-        public void UpdatePrepayStageStatus(Guid id, bool isHidden)
+        public void UpdatePaymentStageStatus(Guid id, bool isHidden)
         {
             var ps = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 

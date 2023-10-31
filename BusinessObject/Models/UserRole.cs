@@ -9,7 +9,7 @@ public class UserRole
     public int Id { get; set; }
 
     [Required]
-    public Role Role { get; set; }
+    public Enums.UserRole Role { get; set; }
 
     [Required]
     public Guid UserId { get; set; }

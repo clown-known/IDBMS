@@ -6,14 +6,14 @@ using System.Linq;
 
 namespace Repository.Implements
 {
-    public class PrepayStageRepository : IPrepayStageRepository
+    public class PaymentStageRepository : IPaymentStageRepository
     {
-        public IEnumerable<PrepayStage> GetAll()
+        public IEnumerable<PaymentStage> GetAll()
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.PrepayStages.ToList();
+                return context.PaymentStages.ToList();
             }
             catch
             {
@@ -21,36 +21,36 @@ namespace Repository.Implements
             }
         }
 
-        public PrepayStage? GetById(Guid id)
+        public PaymentStage? GetById(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.PrepayStages.FirstOrDefault(stage => stage.Id == id);
+                return context.PaymentStages.FirstOrDefault(stage => stage.Id == id);
             }
             catch
             {
                 throw;
             }
         }
-        public IEnumerable<PrepayStage?> GetByProjectId(Guid projectId)
+        public IEnumerable<PaymentStage?> GetByProjectId(Guid projectId)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.PrepayStages.Where(stage => stage.ProjectId == projectId).ToList();
+                return context.PaymentStages.Where(stage => stage.ProjectId == projectId).ToList();
             }
             catch
             {
                 throw;
             }
         }
-        public PrepayStage Save(PrepayStage entity)
+        public PaymentStage Save(PaymentStage entity)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var stage = context.PrepayStages.Add(entity);
+                var stage = context.PaymentStages.Add(entity);
                 context.SaveChanges();
                 return stage.Entity;
             }
@@ -60,7 +60,7 @@ namespace Repository.Implements
             }
         }
 
-        public void Update(PrepayStage entity)
+        public void Update(PaymentStage entity)
         {
             try
             {
@@ -79,10 +79,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                var stage = context.PrepayStages.FirstOrDefault(stage => stage.Id == id);
+                var stage = context.PaymentStages.FirstOrDefault(stage => stage.Id == id);
                 if (stage != null)
                 {
-                    context.PrepayStages.Remove(stage);
+                    context.PaymentStages.Remove(stage);
                     context.SaveChanges();
                 }
             }

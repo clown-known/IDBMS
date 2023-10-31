@@ -54,7 +54,7 @@ namespace BusinessObject.DTOs.Request
         public Guid? ProjectId { get; set; }
 
         [Required]
-        public Guid PrepayStageId { get; set; }
+        public Guid PaymentStageId { get; set; }
 
         public Guid? InteriorItemId { get; set; }
 

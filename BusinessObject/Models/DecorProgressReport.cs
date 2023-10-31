@@ -20,8 +20,8 @@ public class DecorProgressReport
     public DateTime CreatedDate { get; set; }
 
     [Required]
-    public Guid PrepayStageId { get; set; }
-    public PrepayStage PrepayStage { get; set; } = new();
+    public Guid PaymentStageId { get; set; }
+    public PaymentStage PaymentStage { get; set; } = new();
 
     [Required]
     public bool IsDeleted { get; set; }

@@ -5,28 +5,28 @@ using Repository.Interfaces;
 
 namespace IDBMS_API.Services
 {
-    public class PrepayStageDesignService
+    public class PaymentStageDesignService
     {
-        private readonly IPrepayStageDesignRepository _repository;
-        public PrepayStageDesignService(IPrepayStageDesignRepository repository)
+        private readonly IPaymentStageDesignRepository _repository;
+        public PaymentStageDesignService(IPaymentStageDesignRepository repository)
         {
             _repository = repository;
         }   
-        public IEnumerable<PrepayStageDesign> GetAll()
+        public IEnumerable<PaymentStageDesign> GetAll()
         {
             return _repository.GetAll();
         }
-        public IEnumerable<PrepayStageDesign> GetByDecorProjectDesignId(int designId)
+        public IEnumerable<PaymentStageDesign> GetByDecorProjectDesignId(int designId)
         {
             return _repository.GetByDecorProjectDesignId(designId) ?? throw new Exception("This object is not existed!");
         }
-        public PrepayStageDesign? GetById(int id)
+        public PaymentStageDesign? GetById(int id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public PrepayStageDesign? CreatePrepayStageDesign(PrepayStageDesignRequest request)
+        public PaymentStageDesign? CreatePaymentStageDesign(PaymentStageDesignRequest request)
         {
-            var psd = new PrepayStageDesign
+            var psd = new PaymentStageDesign
             {
                 PricePercentage = request.PricePercentage,
                 IsPrepaid = request.IsPrepaid,
@@ -40,7 +40,7 @@ namespace IDBMS_API.Services
             var psdCreated = _repository.Save(psd);
             return psdCreated;
         }
-        public void UpdatePrepayStageDesign(int id, PrepayStageDesignRequest request)
+        public void UpdatePaymentStageDesign(int id, PaymentStageDesignRequest request)
         {
             var psd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             psd.PricePercentage = request.PricePercentage;
@@ -52,7 +52,7 @@ namespace IDBMS_API.Services
 
             _repository.Update(psd);
         }
-        public void DeletePrepayStageDesign(int id)
+        public void DeletePaymentStageDesign(int id)
         {
             var psd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 

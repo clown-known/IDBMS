@@ -24,7 +24,7 @@ namespace BusinessObject.DTOs.Request
         public string? Note { get; set; }
 
         [Required]
-        public Guid PrepayStageId { get; set; }
+        public Guid PaymentStageId { get; set; }
 
         [Required]
         public Guid UserId { get; set; }

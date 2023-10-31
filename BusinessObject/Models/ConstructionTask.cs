@@ -54,8 +54,8 @@ public class ConstructionTask
     public Project? Project { get; set; } = new();
 
     [Required]
-    public Guid PrepayStageId { get; set; }
-    public PrepayStage PrepayStage { get; set; } = new();
+    public Guid PaymentStageId { get; set; }
+    public PaymentStage PaymentStage { get; set; } = new();
 
     public Guid? InteriorItemId { get; set; }
     public InteriorItem? InteriorItem { get; set; }
