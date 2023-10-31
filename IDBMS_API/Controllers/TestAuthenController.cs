@@ -1,4 +1,4 @@
-﻿/*using API.Supporters.JwtAuthSupport;
+﻿using API.Supporters.JwtAuthSupport;
 using BusinessObject.DTOs.Request;
 using BusinessObject.DTOs.Request.AccountRequest;
 using BusinessObject.Models;
@@ -51,4 +51,3 @@ namespace IDBMS_API.Controllers
         }
     }
 }
-*/

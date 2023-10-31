@@ -1,6 +1,6 @@
 ﻿namespace BusinessObject.Enums;
 
-public enum UserRole
+public enum CompanyRole
 {
     Customer = 0,
     Architect = 1,

@@ -32,7 +32,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(response);
         }
 
-/*        [HttpPost]
+        [HttpPost]
         public IActionResult CreateInteriorItem([FromBody] InteriorItemRequest request)
         {
             try
@@ -53,9 +53,9 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
-        }*/
+        }
 
-/*        [HttpPut("{id}")]
+        [HttpPut("{id}")]
         public IActionResult UpdateInteriorItem(Guid id, [FromBody] InteriorItemRequest request)
         {
             try
@@ -75,9 +75,9 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
-        }*/
+        }
 
-/*        [HttpPut("{id}/status")]
+        [HttpPut("{id}/status")]
         public IActionResult UpdateInteriorItemStatus(Guid id, InteriorItemStatus status)
         {
             try
@@ -97,9 +97,9 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
-        }*/
+        }
 
-/*        [HttpDelete("{id}")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteInteriorItem(Guid id)
         {
             try
@@ -119,7 +119,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
-        }*/
+        }
     }
 
 }

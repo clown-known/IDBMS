@@ -32,7 +32,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(response);
         }
 
-/*        [HttpPost]
+        [HttpPost]
         public IActionResult CreateApplianceSuggestion([FromBody] ApplianceSuggestionRequest request)
         {
             try
@@ -53,9 +53,9 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
-        }*/
+        }
 
-/*        [HttpPut("{id}")]
+        [HttpPut("{id}")]
         public IActionResult UpdateApplianceSuggestion(Guid id, [FromBody] ApplianceSuggestionRequest request)
         {
             try
@@ -75,7 +75,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
-        }*/
+        }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteApplianceSuggestion(Guid id)
