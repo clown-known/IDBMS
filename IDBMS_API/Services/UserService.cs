@@ -71,7 +71,7 @@ namespace API.Services
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 Phone = request.Phone,
-                ExternalId = request.ExternalId ?? request.ExternalId
+                ExternalId = request.ExternalId
             };
 
             var userCreated = userRepository.Save(user);

@@ -22,6 +22,7 @@ namespace IDBMS_API.Services
         private AuthenticationCode CreateCode(string email)
         {
             var user = userRepository.GetByEmail(email);
+            if (user == null) return null;
             // gen code, update to database
             Random random = new Random();
             string rdn = "";
@@ -30,7 +31,7 @@ namespace IDBMS_API.Services
                 rdn += (random.Next(0, 9)).ToString();
             }
             authenticationCodeRepository.EnableCodeOfUser(user.Id);
-            var code = authenticationCodeRepository.Save(new AuthenticationCode
+            var code1 = new AuthenticationCode
             {
                 Id = Guid.NewGuid(),
                 UserId = user.Id,
@@ -38,18 +39,16 @@ namespace IDBMS_API.Services
                 ExpiredTime = DateTime.Now.AddMinutes(ConstantValue.ExpiredTimeOfCode),
                 Code = rdn,
                 Status = BusinessObject.Enums.AuthenticationCodeStatus.Active
-            }) ;
+            };
+            var code = authenticationCodeRepository.Save(code1) ;
 
             return code;
         }
-        private bool SendActivationEmail(string email)
+        public bool SendActivationEmail(string email)
         {
-            if (userRepository.GetByEmail(email) != null)
-            {
-                return false;
-            }
-            var code = CreateCode(email);
 
+            var code = CreateCode(email);
+            if(code == null) return false;
             // end
             // send otp
             using (MailMessage mm = new MailMessage("efoodcompanyservice@gmail.com", email))

@@ -5,6 +5,8 @@ using BusinessObject.DTOs.Request.AccountRequest;
 using BusinessObject.Models;
 using BusinessObject.DTOs.Response;
 using Microsoft.AspNetCore.Mvc;
+using IDBMS_API.Supporters.Utils;
+using IDBMS_API.Services;
 
 namespace API.Controllers
 {
@@ -13,10 +15,12 @@ namespace API.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly UserService userService;
+        private readonly AuthenticationCodeService authenticationCodeService;
 
-        public AuthenticationController(UserService userService)
+        public AuthenticationController(UserService userService, AuthenticationCodeService authenticationCodeService )
         {
             this.userService = userService;
+            this.authenticationCodeService = authenticationCodeService;
         }
 
         [HttpPost("login")]
@@ -54,6 +58,19 @@ namespace API.Controllers
             }
             response = new ResponseMessage() { Message = "Cannot logout, user not existed" };
             return new JsonResult(response) { StatusCode = 400 };
+        }
+        [HttpPost("register")]
+        public async Task<ActionResult<User>> Register(CreateUserRequest request)
+        {
+            User user = userService.CreateUser(request);
+
+            return Ok(user);
+        }
+        [HttpPost("verify")]
+        public IActionResult Verify(string email)
+        {
+            
+            return Ok(authenticationCodeService.SendActivationEmail(email));
         }
     }
 }
