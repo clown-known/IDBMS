@@ -30,7 +30,11 @@ public class InteriorItem
     [Required]
     public string Material { get; set; } = default!;
 
+    public string? EnglishName { get; set; }
+
     public string? Description { get; set; }
+
+    public string? EnglishDescription { get; set; }
 
     public string? Origin { get; set; } = default!;
 
@@ -51,10 +55,13 @@ public class InteriorItem
     [Required]
     public InteriorItemStatus Status { get; set; }
 
+    [Required]
+    public bool IsDeleted { get; set; }
+
     public Guid? ParentItemId { get; set; }
     public InteriorItem? ParentItem { get; set; }
 
     public List<ApplianceSuggestion> ApplianceSuggestions { get; set; } = new();
-    public List<ConstructionTask> ConstructionTasks { get; set; } = new();
+    public List<Task> Tasks { get; set; } = new();
     public List<InteriorItemBookmark> InteriorItemBookmarks { get; set; } = new();
 }

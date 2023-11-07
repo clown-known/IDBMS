@@ -34,6 +34,9 @@ public class Transaction
     public TransactionStatus Status { get; set; }
 
     [Required]
+    public bool IsDeleted { get; set; }
+
+    [Required]
     public string TransactionReceiptImageUrl { get; set; } = default!;
 
     public string? AdminNote { get; set; }

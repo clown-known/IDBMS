@@ -31,11 +31,8 @@ public class Room
     public int RoomTypeId { get; set; }
     public RoomType RoomType { get; set; } = new();
 
-    public Guid? ProjectId { get; set; }
-    public Project? Project { get; set; } = new();
-
     [Required]
     public bool IsHidden { get; set; }
 
-    public List<ApplianceSuggestion> ApplianceSuggestions { get; set; } = new();
+    public List<Task> Tasks { get; set; } = new();
 }

@@ -37,14 +37,21 @@ public class PaymentStage
     public DateTime EndDate { get; set; }
 
     [Required]
+    public DateTime EndTimePayment { get; set; }
+
+    public decimal PenaltyFee { get; set; }
+
+    [Required]
+    public int EstimateBusinessDay { get; set; }
+
+    [Required]
     public Guid ProjectId { get; set; }
     public Project Project { get; set; } = new();
 
     [Required]
     public bool IsHidden { get; set; }
 
-    public List<ConstructionTask> ConstructionTasks { get; set; } = new();
-    public List<DecorProgressReport> DecorProgressReports { get; set; } = new();
+    public List<Task> Tasks { get; set; } = new();
     public List<Transaction> Transactions { get; set; } = new();
 }
 
