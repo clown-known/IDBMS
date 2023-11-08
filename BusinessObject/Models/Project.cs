@@ -12,8 +12,7 @@ public class Project
     [Required]
     public string Name { get; set; } = default!;
 
-    [Required]
-    public string CompanyName { get; set; } = default!;
+    public string? CompanyName { get; set; } = default!;
 
     [Required]
     public string Location { get; set; } = default!;
@@ -65,5 +64,5 @@ public class Project
     public List<Participation> Participations { get; set; } = new();
     public List<PaymentStage> PaymentStages { get; set; } = new();
     public List<ProjectDocument> ProjectDocuments { get; set; } = new();
-    public List<Room> Rooms { get; set; } = new();
+    public List<InteriorItem> InteriorItems { get; set; } = new();
 }

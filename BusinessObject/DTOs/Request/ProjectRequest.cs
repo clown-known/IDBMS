@@ -9,8 +9,7 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public string Name { get; set; } = default!;
 
-        [Required]
-        public string CompanyName { get; set; } = default!;
+        public string? CompanyName { get; set; } = default!;
 
         [Required]
         public string Location { get; set; } = default!;
