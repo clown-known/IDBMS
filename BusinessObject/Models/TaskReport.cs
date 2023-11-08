@@ -26,7 +26,7 @@ namespace BusinessObject.Models
 
         [Required]
         public Guid ConstructionTaskId { get; set; }
-        public Task Task { get; set; } = new();
+        public ProjectTask Task { get; set; } = new();
 
         [Required]
         public DateTime CreatedTime { get; set; }

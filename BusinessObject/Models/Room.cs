@@ -32,7 +32,11 @@ public class Room
     public RoomType RoomType { get; set; } = new();
 
     [Required]
+    public Guid ProjectId { get; set; }
+    public Project Project { get; set; } = new();
+
+    [Required]
     public bool IsHidden { get; set; }
 
-    public List<Task> Tasks { get; set; } = new();
+    public List<ProjectTask> Tasks { get; set; } = new();
 }

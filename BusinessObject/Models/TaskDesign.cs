@@ -43,6 +43,6 @@ namespace BusinessObject.Models
         public int ConstructionTaskCategoryId { get; set; }
         public TaskCategory TaskCategory { get; set; } = new();
 
-        public List<Task> Tasks { get; set; } = new();
+        public List<ProjectTask> Tasks { get; set; } = new();
     }
 }

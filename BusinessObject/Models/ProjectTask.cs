@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    public class Task
+    public class ProjectTask
     {
         [Key]
         public Guid Id { get; set; }

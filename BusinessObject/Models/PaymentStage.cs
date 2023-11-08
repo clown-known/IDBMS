@@ -51,7 +51,7 @@ public class PaymentStage
     [Required]
     public bool IsHidden { get; set; }
 
-    public List<Task> Tasks { get; set; } = new();
+    public List<ProjectTask> Tasks { get; set; } = new();
     public List<Transaction> Transactions { get; set; } = new();
 }
 

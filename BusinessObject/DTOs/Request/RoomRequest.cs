@@ -32,6 +32,6 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public int RoomTypeId { get; set; }
 
-        public Guid? ProjectId { get; set; }
+        public Guid ProjectId { get; set; }
     }
 }

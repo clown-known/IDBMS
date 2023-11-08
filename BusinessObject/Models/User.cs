@@ -54,5 +54,6 @@ public class User
     public List<InteriorItemBookmark> InteriorItemBookmarks { get; set; } = new();
     public List<Notification> Notifications { get; set; } = new();
     public List<Transaction> Transactions { get; set; } = new();
+    public List<UserRole> UserRoles { get; set; } = new();
     public List<Participation> Participations { get; set; } = new();
 }

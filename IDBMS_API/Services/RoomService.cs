@@ -67,7 +67,6 @@ namespace IDBMS_API.Services
             room.Area = request.Area;
             room.PricePerArea = request.PricePerArea;
             room.RoomTypeId = request.RoomTypeId;
-            room.ProjectId = request.ProjectId;
 
             _repository.Update(room);
         }
