@@ -26,10 +26,10 @@ namespace IDBMS_API.Services
             return _repository.GetById(id) ?? throw new Exception("This object is not found!");
         }
 
-        public IEnumerable<Room> GetByProjectId(Guid projectId)
+       /* public IEnumerable<Room> GetByProjectId(Guid projectId)
         {
             return _repository.GetByProjectId(projectId);
-        }
+        }*/
 
         public IEnumerable<Room> GetByFloorId(Guid floorId)
         {
@@ -48,7 +48,6 @@ namespace IDBMS_API.Services
                 Area = request.Area,
                 PricePerArea = request.PricePerArea,
                 RoomTypeId = request.RoomTypeId,
-                ProjectId = request.ProjectId,
                 IsHidden = false,
             };
 

@@ -34,7 +34,7 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<Room> GetByProjectId(Guid projectId)
+       /* public IEnumerable<Room> GetByProjectId(Guid projectId)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace Repository.Implements
             {
                 throw;
             }
-        }
+        }*/
 
         public IEnumerable<Room> GetByFloorId(Guid floorId)
         {
