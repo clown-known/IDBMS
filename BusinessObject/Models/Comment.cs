@@ -30,4 +30,7 @@ public class Comment
 
     [Required]
     public CommentStatus Status { get; set; }
+
+    [Required]
+    public bool IsDeleted { get; set; }
 }

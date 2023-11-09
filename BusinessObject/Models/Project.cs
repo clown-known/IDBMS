@@ -14,9 +14,6 @@ public class Project
 
     public string? CompanyName { get; set; } = default!;
 
-    [Required]
-    public string Location { get; set; } = default!;
-
     public string? Description { get; set; }
 
     [Required]
@@ -40,6 +37,9 @@ public class Project
     [Column(TypeName = "money")]
     public decimal? FinalPrice { get; set; }
 
+    [Column(TypeName = "money")]
+    public decimal? TotalWarrantyPaid { get; set; }
+
     public Guid? CurrentStageId { get; set; }
 
     [Required]
@@ -47,17 +47,20 @@ public class Project
 
     [Required]
     public ProjectStatus Status { get; set; }
-
+    //enum
     [Required]
-    public bool IsAdvertisement { get; set; }
+    public int AdvertisementStatus { get; set; }
 
     public string? AdminNote { get; set; }
 
     public Guid? BasedOnDecorProjectId { get; set; }
     public Project? BasedOnDecorProject { get; set; }
-
+    //delete
     public int? DecorProjectDesignId { get; set; }
     public DecorProjectDesign? DecorProjectDesign { get; set; } = new();
+
+    public int? ProjectDesignId { get; set; }
+    public ProjectDesign? ProjectDesign { get; set; } = new();
 
     public List<ConstructionTask> ConstructionTasks { get; set; } = new();
     public List<Floor> Floors { get; set; } = new();

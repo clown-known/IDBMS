@@ -20,10 +20,14 @@ public class Floor
 
     [Required]
     public double Area { get; set; }
-
+    //delete
     [Required]
     public Guid ProjectId { get; set; }
     public Project Project { get; set; } = new();
+
+    [Required]
+    public int SiteId { get; set; }
+    public Site ProjectCategory { get; set; } = new();
 
     [Required]
     public bool IsDeleted { get; set; }

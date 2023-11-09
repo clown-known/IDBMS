@@ -31,6 +31,9 @@ public class PaymentStage
     public double PricePercentage { get; set; }
 
     [Required]
+    public DateTime PaidDate { get; set; }
+
+    [Required]
     public DateTime StartedDate { get; set; }
 
     [Required]
@@ -39,7 +42,7 @@ public class PaymentStage
     [Required]
     public DateTime EndTimePayment { get; set; }
 
-    public decimal PenaltyFee { get; set; }
+    public decimal? PenaltyFee { get; set; }
 
     [Required]
     public int EstimateBusinessDay { get; set; }

@@ -15,6 +15,8 @@ public class InteriorItem
     [Required]
     public string Name { get; set; } = default!;
 
+    public string? EnglishName { get; set; }
+
     [Required]
     public double Length { get; set; }
 
@@ -29,8 +31,6 @@ public class InteriorItem
 
     [Required]
     public string Material { get; set; } = default!;
-
-    public string? EnglishName { get; set; }
 
     public string? Description { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Enums;
+using BusinessObject.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,13 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.Models
+namespace BusinessObject.DTOs
 {
-    public class TaskDesign
+    public class TaskDesignRequest
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public string Code { get; set; } = default!;
 
@@ -37,12 +35,8 @@ namespace BusinessObject.Models
         public bool IsDeleted { get; set; }
 
         public int? InteriorItemCategoryId { get; set; }
-        public InteriorItemCategory? InteriorItemCategory { get; set; } = new();
 
         [Required]
         public int TaskCategoryId { get; set; }
-        public TaskCategory TaskCategory { get; set; } = new();
-
-        public List<ProjectTask> Tasks { get; set; } = new();
     }
 }

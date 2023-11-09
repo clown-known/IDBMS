@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Enums;
+using BusinessObject.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,13 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.Models
+namespace BusinessObject.DTOs.Request
 {
-    public class ProjectTask
+    public class ProjectTaskRequest
     {
-        [Key]
-        public Guid Id { get; set; }
-
         [Required]
         public string Code { get; set; } = default!;
 
@@ -50,30 +48,20 @@ namespace BusinessObject.Models
         public int? NoDate { get; set; }
 
         public Guid? ParentTaskId { get; set; }
-        public ConstructionTask? ParentTask { get; set; }
 
         public int? TaskCategoryId { get; set; }
-        public TaskCategory? TaskCategory { get; set; } = new();
 
         public Guid? ProjectId { get; set; }
-        public Project? Project { get; set; } = new();
 
         [Required]
         public Guid PaymentStageId { get; set; }
-        public PaymentStage PaymentStage { get; set; } = new();
 
         public Guid? InteriorItemId { get; set; }
-        public InteriorItem? InteriorItem { get; set; }
 
         [Required]
         public int TaskDesignId { get; set; }
-        public TaskDesign TaskDesign { get; set; } = new();
 
         [Required]
         public ConstructionTaskStatus Status { get; set; }
-
-        public List<Comment> Comments { get; set; } = new();
-        public List<TaskReport> TaskReports { get; set; } = new();
     }
 }
-

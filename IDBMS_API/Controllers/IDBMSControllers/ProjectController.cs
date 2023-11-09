@@ -114,7 +114,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/isAdvertisement")]
-        public IActionResult UpdateProjectAdvertisementStatus(Guid id, bool isAdvertisement)
+        public IActionResult UpdateProjectAdvertisementStatus(Guid id, int isAdvertisement)
         {
             try
             {

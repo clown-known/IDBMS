@@ -1,17 +1,15 @@
-﻿using System;
+﻿using BusinessObject.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.Models
+namespace BusinessObject.DTOs.Request
 {
-    public class Site
+    public class SiteRequest
     {
-        [Key]
-        public Guid Id { get; set; }
-
         [Required]
         public string Name { get; set; } = default!;
 
@@ -28,11 +26,8 @@ namespace BusinessObject.Models
 
         [Required]
         public Guid ProjectId { get; set; }
-        public Project Project { get; set; } = new();
 
         [Required]
         public bool IsDeleted { get; set; }
-
-        public List<Floor> Floors { get; set; } = new();
     }
 }

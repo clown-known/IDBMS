@@ -29,7 +29,6 @@ public class ProjectService
             Id = Guid.NewGuid(),
             Name = request.Name,
             CompanyName = request.CompanyName,
-            Location = request.Location,
             Description = request.Description,
             Type = request.Type,
             ProjectCategoryId = request.ProjectCategoryId,
@@ -37,10 +36,11 @@ public class ProjectService
             NoStage = request.NoStage,
             EstimatedPrice = request.EstimatedPrice,
             FinalPrice = request.FinalPrice,
+            TotalWarrantyPaid = request.TotalWarrantyPaid,
             CurrentStageId = request.CurrentStageId,
             Language = request.Language,
             Status = request.Status,
-            IsAdvertisement = false,
+            AdvertisementStatus = request.AdvertisementStatus,
             AdminNote = request.AdminNote,
             BasedOnDecorProjectId = request.BasedOnDecorProjectId,
             DecorProjectDesignId = request.DecorProjectDesignId
@@ -56,7 +56,6 @@ public class ProjectService
 
         p.Name = request.Name;
         p.CompanyName = request.CompanyName;
-        p.Location = request.Location;
         p.Description = request.Description;
         p.Type = request.Type;
         p.ProjectCategoryId = request.ProjectCategoryId;
@@ -64,9 +63,11 @@ public class ProjectService
         p.NoStage = request.NoStage;
         p.EstimatedPrice = request.EstimatedPrice;
         p.FinalPrice = request.FinalPrice;
+        p.TotalWarrantyPaid = request.TotalWarrantyPaid;
         p.CurrentStageId = request.CurrentStageId;
         p.Language = request.Language;
         p.Status = request.Status;
+        p.AdvertisementStatus = request.AdvertisementStatus;
         p.AdminNote = request.AdminNote;
         p.BasedOnDecorProjectId = request.BasedOnDecorProjectId;
         p.DecorProjectDesignId = request.DecorProjectDesignId;
@@ -83,11 +84,11 @@ public class ProjectService
         _repository.Update(project);
     }
 
-    public void UpdateProjectAdvertisementStatus(Guid id, bool isAdvertisement)
+    public void UpdateProjectAdvertisementStatus(Guid id, int status)
     {
         var project = _repository.GetById(id) ?? throw new Exception("Not existed");
 
-        project.IsAdvertisement = isAdvertisement;
+        project.AdvertisementStatus = status;
 
         _repository.Update(project);
     }
