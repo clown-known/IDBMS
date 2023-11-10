@@ -50,7 +50,7 @@ namespace BusinessObject.Models
         public int? NoDate { get; set; }
 
         public Guid? ParentTaskId { get; set; }
-        public ConstructionTask? ParentTask { get; set; }
+        public ProjectTask? ParentTask { get; set; }
 
         public int? TaskCategoryId { get; set; }
         public TaskCategory? TaskCategory { get; set; } = new();
@@ -70,7 +70,7 @@ namespace BusinessObject.Models
         public TaskDesign TaskDesign { get; set; } = new();
 
         [Required]
-        public ConstructionTaskStatus Status { get; set; }
+        public ProjectTaskStatus Status { get; set; }
 
         public List<Comment> Comments { get; set; } = new();
         public List<TaskReport> TaskReports { get; set; } = new();

@@ -77,7 +77,7 @@ namespace IDBMS_API.Services
             
             _repository.Update(ct);
         }
-        public void UpdateConstructionTaskStatus(Guid id, ConstructionTaskStatus status)
+        public void UpdateConstructionTaskStatus(Guid id, ProjectTaskStatus status)
         {
             var ct = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 

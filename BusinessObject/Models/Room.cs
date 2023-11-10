@@ -35,6 +35,5 @@ public class Room
     public bool IsHidden { get; set; }
 
     public List<ProjectTask> Tasks { get; set; } = new();
-    public List<InteriorItem> InteriorItems { get; set; } = new();
 
 }

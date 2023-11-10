@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Enums
 {
-    public enum CommentStatus
+    public enum AdvertisementStatus
     {
-        Sent = 1,
-        Edited = 2,
+        None = 0,
+        PendingRequest = 1,
+        NotAllowed = 2,
+        Allowed = 3,
+        Public = 4,
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObject.Models;
 
-public class Participation
+public class ProjectParticipation
 {
     [Key]
     public Guid Id { get; set; }

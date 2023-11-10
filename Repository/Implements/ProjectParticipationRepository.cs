@@ -3,10 +3,10 @@ using Repository.Interfaces;
 
 namespace Repository.Implements;
 
-public class ParticipationRepository : IParticipationRepository
+public class ProjectParticipationRepository : IProjectParticipationRepository
 {
 
-    public IEnumerable<Participation> GetAll()
+    public IEnumerable<ProjectParticipation> GetAll()
     {
         try
         {
@@ -19,12 +19,12 @@ public class ParticipationRepository : IParticipationRepository
         }
     }
 
-    public Participation? GetById(Guid id)
+    public ProjectParticipation? GetById(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public Participation? Save(Participation participationEntity)
+    public ProjectParticipation? Save(ProjectParticipation participationEntity)
     {
         try
         {
@@ -39,7 +39,7 @@ public class ParticipationRepository : IParticipationRepository
         }
     }
 
-    public void Update(Participation entity)
+    public void Update(ProjectParticipation entity)
     {
         try
         {
@@ -53,7 +53,7 @@ public class ParticipationRepository : IParticipationRepository
         }
     }
 
-    public IEnumerable<Participation> GetByProjectId(Guid projectID)
+    public IEnumerable<ProjectParticipation> GetByProjectId(Guid projectID)
     {
         try
         {
@@ -67,7 +67,7 @@ public class ParticipationRepository : IParticipationRepository
             throw;
         }
     }
-    public IEnumerable<Participation> GetByUserId(Guid userId)
+    public IEnumerable<ProjectParticipation> GetByUserId(Guid userId)
     {
         try
         {

@@ -65,7 +65,7 @@ public class ConstructionTask
     public ConstructionTaskDesign ConstructionTaskDesign { get; set; } = new();
 
     [Required]
-    public ConstructionTaskStatus Status { get; set; }
+    public ProjectTaskStatus Status { get; set; }
 
     public List<Comment> Comments { get; set; } = new();
     public List<ConstructionTaskReport> ConstructionTaskReports { get; set; } = new();

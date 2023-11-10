@@ -42,6 +42,7 @@ public class PaymentStage
     [Required]
     public DateTime EndTimePayment { get; set; }
 
+    [Column(TypeName = "money")]
     public decimal? PenaltyFee { get; set; }
 
     [Required]
@@ -55,6 +56,5 @@ public class PaymentStage
     public bool IsHidden { get; set; }
 
     public List<ProjectTask> Tasks { get; set; } = new();
-    public List<Transaction> Transactions { get; set; } = new();
 }
 

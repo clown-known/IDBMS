@@ -62,6 +62,6 @@ namespace BusinessObject.DTOs.Request
         public int TaskDesignId { get; set; }
 
         [Required]
-        public ConstructionTaskStatus Status { get; set; }
+        public ProjectTaskStatus Status { get; set; }
     }
 }

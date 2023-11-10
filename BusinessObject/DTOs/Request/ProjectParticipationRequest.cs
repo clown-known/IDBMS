@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.DTOs.Request
 {
-    public class ParticipationRequest
+    public class ProjectParticipationRequest
     {
         [Required]
         public Guid UserId { get; set; }

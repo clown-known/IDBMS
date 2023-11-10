@@ -25,12 +25,9 @@ public class ProjectDocument
     [Required]
     public Guid ProjectId { get; set; }
     public Project Project { get; set; } = new();
-    //delete
-    public Guid? ConstructionTaskReportId { get; set; }
-    public ConstructionTaskReport? ConstructionTaskReport { get; set; }
-    //delete
-    public Guid? DecorProgressReportId { get; set; }
-    public DecorProgressReport? DecorProgressReport { get; set; }
+    
+    public Guid? TaskReportId { get; set; }
+    public TaskReport? TaskReport { get; set; }
 
     [Required]
     public int ProjectDocumentTemplateId { get; set; }

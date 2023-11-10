@@ -14,9 +14,9 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     [ApiController]
     public class ParticipationsController : ODataController
     {
-        private readonly ParticipationService _service;
+        private readonly ProjectParticipationService _service;
 
-        public ParticipationsController(ParticipationService service)
+        public ParticipationsController(ProjectParticipationService service)
         {
             _service = service;
         }
@@ -58,7 +58,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateParticipation([FromBody] ParticipationRequest request)
+        public IActionResult CreateParticipation([FromBody] ProjectParticipationRequest request)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateParticipation(Guid id, [FromBody] ParticipationRequest request)
+        public IActionResult UpdateParticipation(Guid id, [FromBody] ProjectParticipationRequest request)
         {
             try
             {

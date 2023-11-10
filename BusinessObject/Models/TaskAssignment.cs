@@ -19,5 +19,9 @@ namespace BusinessObject.Models
         [Required]
         public Guid ProjectTaskId { get; set; }
         public ProjectTask? ProjectTask { get; set; } = new();
+
+        [Required]
+        public Guid ProjectId { get; set; }
+        public Project? Projects { get; set; } = new();
     }
 }

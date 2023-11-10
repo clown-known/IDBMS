@@ -6,32 +6,32 @@ using System.Text.RegularExpressions;
 
 namespace IDBMS_API.Services
 {
-    public class ParticipationService
+    public class ProjectParticipationService
     {
-        private readonly IParticipationRepository _repository;
-        public ParticipationService(IParticipationRepository repository)
+        private readonly IProjectParticipationRepository _repository;
+        public ProjectParticipationService(IProjectParticipationRepository repository)
         {
             _repository = repository;
         }
 
-        public IEnumerable<Participation> GetAll()
+        public IEnumerable<ProjectParticipation> GetAll()
         {
             return _repository.GetAll();
         }
 
-        public IEnumerable<Participation> GetByUserId(Guid id)
+        public IEnumerable<ProjectParticipation> GetByUserId(Guid id)
         {
             return _repository.GetByUserId(id);
         }
 
-        public IEnumerable<Participation> GetByProjectId(Guid id)
+        public IEnumerable<ProjectParticipation> GetByProjectId(Guid id)
         {
             return _repository.GetByProjectId(id);
         }
 
-        public Participation? CreateParticipation(ParticipationRequest request)
+        public ProjectParticipation? CreateParticipation(ProjectParticipationRequest request)
         {
-            var p = new Participation
+            var p = new ProjectParticipation
             {
                 Id = Guid.NewGuid(),
                 UserId = request.UserId,
@@ -44,7 +44,7 @@ namespace IDBMS_API.Services
             return pCreated;
         }
 
-        public void UpdateParticipation(Guid id, ParticipationRequest request)
+        public void UpdateParticipation(Guid id, ProjectParticipationRequest request)
         {
             var p = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 

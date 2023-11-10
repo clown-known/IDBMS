@@ -89,7 +89,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/status")]
-        public IActionResult UpdateConstructionTaskStatus(Guid id, ConstructionTaskStatus status)
+        public IActionResult UpdateConstructionTaskStatus(Guid id, ProjectTaskStatus status)
         {
             try
             {

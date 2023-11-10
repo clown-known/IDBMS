@@ -47,25 +47,22 @@ public class Project
 
     [Required]
     public ProjectStatus Status { get; set; }
-    //enum
+    
     [Required]
-    public int AdvertisementStatus { get; set; }
+    public AdvertisementStatus AdvertisementStatus { get; set; }
 
     public string? AdminNote { get; set; }
 
     public Guid? BasedOnDecorProjectId { get; set; }
     public Project? BasedOnDecorProject { get; set; }
-    //delete
-    public int? DecorProjectDesignId { get; set; }
-    public DecorProjectDesign? DecorProjectDesign { get; set; } = new();
 
     public int? ProjectDesignId { get; set; }
     public ProjectDesign? ProjectDesign { get; set; } = new();
 
-    public List<ConstructionTask> ConstructionTasks { get; set; } = new();
-    public List<Floor> Floors { get; set; } = new();
-    public List<Participation> Participations { get; set; } = new();
+    public List<Site> Sites { get; set; } = new();
+    public List<Transaction> Transactions { get; set; } = new();
+    public List<ProjectParticipation> Participations { get; set; } = new();
     public List<PaymentStage> PaymentStages { get; set; } = new();
     public List<ProjectDocument> ProjectDocuments { get; set; } = new();
-    public List<InteriorItem> InteriorItems { get; set; } = new();
+    public List<WarrantyClaim> WarrantyClaims { get; set; } = new();
 }

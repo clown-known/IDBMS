@@ -32,6 +32,6 @@ public class PaymentStageDesign
     public bool IsDeleted { get; set; }
 
     [Required]
-    public int DecorProjectDesignId { get; set; }
-    public DecorProjectDesign DecorProjectDesign { get; set; } = new();
+    public int ProjectDesignId { get; set; }
+    public ProjectDesign ProjectDesign { get; set; } = new();
 }
