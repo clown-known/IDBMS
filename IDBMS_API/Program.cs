@@ -27,6 +27,7 @@ builder.Services.AddScoped<ITaskCategoryRepository, TaskCategoryRepository>();
 builder.Services.AddScoped<IProjectTaskRepository, ProjectTaskRepository>(); 
 builder.Services.AddScoped<ITaskDesignRepository, TaskDesignRepository>();
 builder.Services.AddScoped<ITaskReportRepository, TaskReportRepository>();
+builder.Services.AddScoped<ITaskDocumentRepository, TaskDocumentRepository>();
 builder.Services.AddScoped<IFloorRepository, FloorRepository>();
 builder.Services.AddScoped<IInteriorItemBookmarkRepository, InteriorItemBookmarkRepository>();
 builder.Services.AddScoped<IInteriorItemCategoryRepository, InteriorItemCategoryRepository>();
@@ -56,6 +57,7 @@ builder.Services.AddScoped<TaskCategoryService, TaskCategoryService>();
 builder.Services.AddScoped<ProjectTaskService, ProjectTaskService>();
 builder.Services.AddScoped<TaskDesignService, TaskDesignService>();
 builder.Services.AddScoped<TaskReportService, TaskReportService>();
+builder.Services.AddScoped<TaskDocumentService, TaskDocumentService>();
 builder.Services.AddScoped<FloorService, FloorService>();
 builder.Services.AddScoped<InteriorItemBookmarkService, InteriorItemBookmarkService>();
 builder.Services.AddScoped<InteriorItemCategoryService, InteriorItemCategoryService>();
@@ -116,7 +118,6 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<Admin>("Admins");
     builder.EntitySet<AuthenticationCode>("AuthenticationCodes");
     builder.EntitySet<Comment>("Comments"); 
-    builder.EntitySet<DecorProjectDesign>("DecorProjectDesigns"); 
     builder.EntitySet<Floor>("Floors");
     builder.EntitySet<InteriorItem>("InteriorItems");
     builder.EntitySet<InteriorItemBookmark>("InteriorItemBookmarks");
@@ -131,11 +132,19 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<ProjectCategory>("ProjectCategories");
     builder.EntitySet<ProjectDocument>("ProjectDocuments");
     builder.EntitySet<ProjectDocumentTemplate>("DocumentTemplates");
+    builder.EntitySet<ProjectTask>("ProjectTasks");
     builder.EntitySet<Room>("Rooms");
     builder.EntitySet<RoomType>("RoomTypes");
+    builder.EntitySet<Site>("Sites");
+    builder.EntitySet<TaskAssignment>("TaskAssignments");
+    builder.EntitySet<TaskCategory>("TaskCategories");
+    builder.EntitySet<TaskDesign>("TaskDesigns");
+    builder.EntitySet<TaskDocument>("TaskDocuments");
+    builder.EntitySet<TaskReport>("TaskReports");
     builder.EntitySet<Transaction>("Transactions");
     builder.EntitySet<User>("Users");
     builder.EntitySet<UserRole>("UserRoles");
+    builder.EntitySet<WarrantyClaim>("WarrantyClaims");
 
     return builder.GetEdmModel();
 }

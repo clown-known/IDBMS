@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    public class TaskReport
+    public class TaskDocument
     {
         [Key]
         public Guid Id { get; set; }
@@ -16,27 +16,15 @@ namespace BusinessObject.Models
         [Required]
         public string Name { get; set; } = default!;
 
-        [Required]
-        public CalculationUnit CalculationUnit { get; set; }
-
-        [Required]
-        public double UnitUsed { get; set; }
-
         public string? Description { get; set; }
 
-        [Required]
-        public DateTime CreatedTime { get; set; }
-
-        public DateTime UpdatedTime { get; set; }
+        public string? Document { get; set; } = default!;
 
         [Required]
-        public Guid ProjectTaskId { get; set; }
-        public ProjectTask ProjectTask { get; set; } = new();
+        public Guid TaskReportId { get; set; }
+        public TaskReport TaskReport { get; set; } = new();
 
         [Required]
         public bool IsDeleted { get; set; }
-
-        public List<TaskDocument> TaskDocuments { get; set; } = new();
-
     }
 }

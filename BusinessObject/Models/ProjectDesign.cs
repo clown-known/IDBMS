@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessObject.Enums;
 
 namespace BusinessObject.Models
 {
@@ -25,6 +26,9 @@ namespace BusinessObject.Models
         public string Name { get; set; } = default!;
 
         public string? Description { get; set; }
+
+        [Required]
+        public ProjectType Type { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; }

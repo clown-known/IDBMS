@@ -25,9 +25,6 @@ public class ProjectDocument
     [Required]
     public Guid ProjectId { get; set; }
     public Project Project { get; set; } = new();
-    
-    public Guid? TaskReportId { get; set; }
-    public TaskReport? TaskReport { get; set; }
 
     [Required]
     public int ProjectDocumentTemplateId { get; set; }

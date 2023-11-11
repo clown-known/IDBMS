@@ -17,6 +17,7 @@ public class IdtDbContext : DbContext
     public DbSet<TaskCategory> TaskCategories { get; set; } = default!;
     public DbSet<TaskDesign> TaskDesigns { get; set; } = default!;
     public DbSet<TaskReport> TaskReports { get; set; } = default!;
+    public DbSet<TaskDocument> TaskDocuments { get; set; } = default!;
     public DbSet<TaskAssignment> TaskAssignments { get; set; } = default!;
     public DbSet<Floor> Floors { get; set; } = default!;
     public DbSet<InteriorItem> InteriorItems { get; set; } = default!;
@@ -81,6 +82,10 @@ public class IdtDbContext : DbContext
         
         modelBuilder.Entity<Comment>()
             .Property(comment => comment.Status)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<ProjectDesign>()
+            .Property(projectTask => projectTask.Type)
             .HasConversion<int>();
 
         modelBuilder.Entity<ProjectTask>()
