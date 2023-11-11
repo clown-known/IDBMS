@@ -12,8 +12,13 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public string Name { get; set; } = default!;
 
+        public string? EnglishName { get; set; }
+
         [Required]
         public string IconImageUrl { get; set; } = default!;
+
+        [Required]
+        public bool IsHidden { get; set; }
 
     }
 }

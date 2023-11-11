@@ -38,9 +38,11 @@ namespace IDBMS_API.Services
                 Amount = request.Amount,
                 Note = request.Note,
                 CreatedDate = DateTime.Now,
-/*                PaymentStageId = request.PaymentStageId,*/
                 UserId = request.UserId,
+                ProjectId = request.ProjectId,
+                WarrantyClaimId = request.WarrantyClaimId,
                 Status = TransactionStatus.Pending,
+                IsDeleted = false,
                 TransactionReceiptImageUrl = request.TransactionReceiptImageUrl,
                 AdminNote = request.AdminNote,
             };
@@ -54,8 +56,9 @@ namespace IDBMS_API.Services
             trans.Type = request.Type;
             trans.Amount = request.Amount;
             trans.Note = request.Note;
-/*            trans.PaymentStageId = request.PaymentStageId;*/
             trans.UserId = request.UserId;
+            trans.ProjectId = request.ProjectId;
+            trans.WarrantyClaimId = request.WarrantyClaimId;
             trans.TransactionReceiptImageUrl = request.TransactionReceiptImageUrl;
             trans.AdminNote = request.AdminNote;
 
@@ -66,6 +69,14 @@ namespace IDBMS_API.Services
             var trans = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             trans.Status = status;
+
+            _repository.Update(trans);
+        }
+        public void DeleteTransactionStatus(Guid id)
+        {
+            var trans = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            trans.IsDeleted = true;
 
             _repository.Update(trans);
         }

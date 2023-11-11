@@ -35,8 +35,8 @@ namespace IDBMS_API.Services
             {
                 Id = Guid.NewGuid(),
                 Content = comment.Content,
-/*                ConstructionTaskId = comment.ConstructionTaskId,
-                DecorProgressReportId = comment.ConstructionTaskId,*/
+                ProjectTaskId = comment.ProjectTaskId,
+                ProjectId = comment.ProjectId,
                 UserId = comment.UserId,
                 FileUrl = comment.FileUrl,
                 CreatedTime = DateTime.Now,
@@ -50,8 +50,8 @@ namespace IDBMS_API.Services
             var cmt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             cmt.Content = comment.Content;
-/*            cmt.ConstructionTaskId = comment.ConstructionTaskId;
-            cmt.DecorProgressReportId = comment.ConstructionTaskId;*/
+            cmt.ProjectTaskId = comment.ProjectTaskId;
+            cmt.ProjectId = comment.ProjectId;
             cmt.UserId = comment.UserId;
             cmt.FileUrl = comment.FileUrl;
             cmt.LastModifiedTime = DateTime.Now;

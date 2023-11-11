@@ -28,12 +28,14 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public Guid ProjectId { get; set; }
 
-        public Guid? ConstructionTaskReportId { get; set; }
-
-        public Guid? DecorProgressReportId { get; set; }
-
         [Required]
         public int ProjectDocumentTemplateId { get; set; }
+
+        [Required]
+        public bool IsPublicAdvertisement { get; set; }
+
+        [Required]
+        public bool IsDeleted { get; set; }
 
     }
 }

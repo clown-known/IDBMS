@@ -12,6 +12,9 @@ namespace BusinessObject.DTOs.Request
     public class RoomRequest
     {
         [Required]
+        public string Name { get; set; } = default!;
+
+        [Required]
         public Guid FloorId { get; set; }
 
         public string? Description { get; set; }
@@ -32,6 +35,7 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public int RoomTypeId { get; set; }
 
-        public Guid ProjectId { get; set; }
+        [Required]
+        public bool IsHidden { get; set; }
     }
 }

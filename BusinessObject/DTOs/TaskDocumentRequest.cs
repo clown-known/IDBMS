@@ -6,23 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.DTOs.Request
+namespace BusinessObject.DTOs
 {
-    public class DecorProgressReportRequest
+    public class TaskDocumentRequest
     {
         [Required]
         public string Name { get; set; } = default!;
 
         public string? Description { get; set; }
 
-        [Required]
-        public Guid AuthorId { get; set; }
+        public string? Document { get; set; } = default!;
 
         [Required]
-        public DateTime CreatedDate { get; set; }
-
-        [Required]
-        public Guid PaymentStageId { get; set; }
+        public Guid TaskReportId { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; }

@@ -40,6 +40,7 @@ namespace IDBMS_API.Services
                 FloorNo = request.FloorNo,
                 Area = request.Area,
                 UsePurpose = request.UsePurpose,
+                SiteId = request.SiteId,    
                 IsDeleted = false,
             };
 
@@ -55,6 +56,7 @@ namespace IDBMS_API.Services
             floor.Description = request.Description;
             floor.FloorNo = request.FloorNo;
             floor.Area = request.Area;
+            floor.SiteId = request.SiteId;
             floor.UsePurpose = request.UsePurpose;
 
             _repository.Update(floor);

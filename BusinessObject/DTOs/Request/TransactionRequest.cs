@@ -24,10 +24,21 @@ namespace BusinessObject.DTOs.Request
         public string? Note { get; set; }
 
         [Required]
-        public Guid PaymentStageId { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         [Required]
         public Guid UserId { get; set; }
+
+        [Required]
+        public Guid ProjectId { get; set; }
+
+        public Guid? WarrantyClaimId { get; set; }
+
+        [Required]
+        public TransactionStatus Status { get; set; }
+
+        [Required]
+        public bool IsDeleted { get; set; }
 
         [Required]
         public string TransactionReceiptImageUrl { get; set; } = default!;
