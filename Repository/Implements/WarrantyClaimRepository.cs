@@ -10,27 +10,61 @@ namespace Repository.Implements
 {
     public class WarrantyClaimRepository : IWarrantyClaimRepository
     {
-        public void DeleteById(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<WarrantyClaim> GetAll()
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.WarrantyClaims.ToList();
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public WarrantyClaim? GetById(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.WarrantyClaims.Where(wc => wc.Id == id).FirstOrDefault();
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public WarrantyClaim? Save(WarrantyClaim entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var context = new IdtDbContext();
+                var wc = context.WarrantyClaims.Add(entity);
+                context.SaveChanges();
+                return wc.Entity;
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public void Update(WarrantyClaim entity)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                context.SaveChanges();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        public void DeleteById(Guid id)
         {
             throw new NotImplementedException();
         }

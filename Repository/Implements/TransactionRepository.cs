@@ -50,13 +50,13 @@ namespace Repository.Implements
                 throw;
             }
         }
-        public IEnumerable<Transaction?> GetByUserId(Guid userId)
+        public IEnumerable<Transaction?> GetByUserId(Guid id)
         {
 
             try
             {
                 using var context = new IdtDbContext();
-                return context.Transactions.Where(trans => trans.UserId == userId).ToList();
+                return context.Transactions.Where(trans => trans.UserId == id).ToList();
             }
             catch
             {

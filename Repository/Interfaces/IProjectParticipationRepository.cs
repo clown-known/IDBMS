@@ -5,6 +5,6 @@ namespace Repository.Interfaces;
 
 public interface IProjectParticipationRepository : ICrudBaseRepository<ProjectParticipation, Guid>
 {
-    IEnumerable<ProjectParticipation> GetByProjectId(Guid projectId);
-    IEnumerable<ProjectParticipation> GetByUserId(Guid userId);
+    IEnumerable<ProjectParticipation> GetByProjectId(Guid id);
+    IEnumerable<ProjectParticipation> GetByUserId(Guid id);
 }

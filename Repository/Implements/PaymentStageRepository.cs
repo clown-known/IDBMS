@@ -33,12 +33,12 @@ namespace Repository.Implements
                 throw;
             }
         }
-        public IEnumerable<PaymentStage?> GetByProjectId(Guid projectId)
+        public IEnumerable<PaymentStage?> GetByProjectId(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.PaymentStages.Where(stage => stage.ProjectId == projectId).ToList();
+                return context.PaymentStages.Where(stage => stage.ProjectId == id).ToList();
             }
             catch
             {

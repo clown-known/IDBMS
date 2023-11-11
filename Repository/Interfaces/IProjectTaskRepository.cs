@@ -9,7 +9,7 @@ namespace Repository.Interfaces
 {
     public interface IProjectTaskRepository : ICrudBaseRepository<ProjectTask, Guid>
     {
-        IEnumerable<ProjectTask> GetByProjectId(Guid id);
+        IEnumerable<ProjectTask?> GetByProjectId(Guid id);
 /*        IEnumerable<ProjectTask> GetByPaymentStageId(Guid id);*/
     }
 }

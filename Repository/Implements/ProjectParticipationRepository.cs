@@ -24,12 +24,12 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
         throw new NotImplementedException();
     }
 
-    public ProjectParticipation? Save(ProjectParticipation participationEntity)
+    public ProjectParticipation? Save(ProjectParticipation entity)
     {
         try
         {
             using var context = new IdtDbContext();
-            var partiAdded = context.Participations.Add(participationEntity);
+            var partiAdded = context.Participations.Add(entity);
             context.SaveChanges();
             return partiAdded.Entity;
         }
@@ -53,13 +53,13 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
         }
     }
 
-    public IEnumerable<ProjectParticipation> GetByProjectId(Guid projectID)
+    public IEnumerable<ProjectParticipation> GetByProjectId(Guid id)
     {
         try
         {
             using var context = new IdtDbContext();
             return context.Participations
-                .Where(u => u.ProjectId.Equals(projectID) && u.IsDeleted == false)
+                .Where(u => u.ProjectId.Equals(id) && u.IsDeleted == false)
                 .ToList();
         }
         catch
@@ -67,13 +67,13 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
             throw;
         }
     }
-    public IEnumerable<ProjectParticipation> GetByUserId(Guid userId)
+    public IEnumerable<ProjectParticipation> GetByUserId(Guid id)
     {
         try
         {
             using var context = new IdtDbContext();
             return context.Participations
-                .Where(u => u.UserId.Equals(userId) && u.IsDeleted == false)
+                .Where(u => u.UserId.Equals(id) && u.IsDeleted == false)
                 .ToList();
         }
         catch
