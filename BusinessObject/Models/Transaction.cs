@@ -30,8 +30,8 @@ public class Transaction
     public Guid ProjectId { get; set; }
     public Project Project { get; set; } = new();
 
-    public Guid WarrantyClaimId { get; set; }
-    public WarrantyClaim WarrantyClaim { get; set; } = new();
+    public Guid? WarrantyClaimId { get; set; }
+    public WarrantyClaim? WarrantyClaim { get; set; } = new();
 
     [Required]
     public TransactionStatus Status { get; set; }

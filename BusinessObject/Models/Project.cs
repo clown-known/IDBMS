@@ -64,5 +64,4 @@ public class Project
     public List<ProjectParticipation> Participations { get; set; } = new();
     public List<PaymentStage> PaymentStages { get; set; } = new();
     public List<ProjectDocument> ProjectDocuments { get; set; } = new();
-    public List<WarrantyClaim> WarrantyClaims { get; set; } = new();
 }

@@ -14,14 +14,13 @@ namespace BusinessObject.Models
 
         [Required]
         public Guid UserId { get; set; }
-        public User? User { get; set; }
+        public User User { get; set; } = new();
 
         [Required]
         public Guid ProjectTaskId { get; set; }
-        public ProjectTask? ProjectTask { get; set; } = new();
+        public ProjectTask ProjectTask { get; set; } = new();
 
         [Required]
         public Guid ProjectId { get; set; }
-        public Project? Projects { get; set; } = new();
     }
 }
