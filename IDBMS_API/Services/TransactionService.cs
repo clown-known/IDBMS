@@ -21,10 +21,10 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<Transaction?> GetByPaymentStageId(Guid psId)
+/*        public IEnumerable<Transaction?> GetByPaymentStageId(Guid psId)
         {
             return _repository.GetByPaymentStageId(psId) ?? throw new Exception("This object is not existed!");
-        }
+        }*/
         public IEnumerable<Transaction?> GetByUserId(Guid userId)
         {
             return _repository.GetByUserId(userId) ?? throw new Exception("This object is not existed!");
@@ -38,7 +38,7 @@ namespace IDBMS_API.Services
                 Amount = request.Amount,
                 Note = request.Note,
                 CreatedDate = DateTime.Now,
-                PaymentStageId = request.PaymentStageId,
+/*                PaymentStageId = request.PaymentStageId,*/
                 UserId = request.UserId,
                 Status = TransactionStatus.Pending,
                 TransactionReceiptImageUrl = request.TransactionReceiptImageUrl,
@@ -54,7 +54,7 @@ namespace IDBMS_API.Services
             trans.Type = request.Type;
             trans.Amount = request.Amount;
             trans.Note = request.Note;
-            trans.PaymentStageId = request.PaymentStageId;
+/*            trans.PaymentStageId = request.PaymentStageId;*/
             trans.UserId = request.UserId;
             trans.TransactionReceiptImageUrl = request.TransactionReceiptImageUrl;
             trans.AdminNote = request.AdminNote;

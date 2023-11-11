@@ -25,17 +25,17 @@ namespace IDBMS_API.Services
             return _repository.GetById(id) ?? throw new Exception("This object is not found!");
         }
 
-        public IEnumerable<Floor> GetByProjectId(Guid projectId)
+/*        public IEnumerable<Floor> GetByProjectId(Guid projectId)
         {
             return _repository.GetByProjectId(projectId);
-        }
+        }*/
 
         public Floor? CreateFloor(FloorRequest request)
         {
             var floor = new Floor
             {
                 Id = Guid.NewGuid(),
-                ProjectId = request.ProjectId,
+/*                ProjectId = request.ProjectId,*/
                 Description = request.Description,
                 FloorNo = request.FloorNo,
                 Area = request.Area,
@@ -51,7 +51,7 @@ namespace IDBMS_API.Services
         {
             var floor = _repository.GetById(id) ?? throw new Exception("This object is not found!");
 
-            floor.ProjectId = request.ProjectId;
+/*            floor.ProjectId = request.ProjectId;*/
             floor.Description = request.Description;
             floor.FloorNo = request.FloorNo;
             floor.Area = request.Area;

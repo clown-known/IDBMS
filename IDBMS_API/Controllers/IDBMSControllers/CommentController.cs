@@ -39,7 +39,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             var response = new ResponseMessage()
             {
                 Message = "Get successfully!",
-                Data = _service.GetByConstructionTaskId(id)
+/*                Data = _service.GetByConstructionTaskId(id)*/
             };
             return Ok(response);
         }
@@ -51,7 +51,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             var response = new ResponseMessage()
             {
                 Message = "Get successfully!",
-                Data = _service.GetByDecorProgressReportId(id)
+/*                Data = _service.GetByDecorProgressReportId(id)*/
             };
             return Ok(response);
         }

@@ -1,7 +1,5 @@
-﻿using Azure.Core;
-using BusinessObject.DTOs.Request;
+﻿/*using BusinessObject.DTOs.Request;
 using BusinessObject.DTOs.Response;
-using BusinessObject.Enums;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -11,18 +9,18 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApplianceSuggestionsController : ODataController
+    public class DecorProjectDesignsController : ODataController
     {
-        private readonly ApplianceSuggestionService _service;
+        private readonly DecorProjectDesignService _service;
 
-        public ApplianceSuggestionsController(ApplianceSuggestionService service)
+        public DecorProjectDesignsController(DecorProjectDesignService service)
         {
             _service = service;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetApplianceSuggestions()
+        public IActionResult GetDecorProjectDesigns()
         {
             var response = new ResponseMessage()
             {
@@ -33,11 +31,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateApplianceSuggestion([FromBody] ApplianceSuggestionRequest request)
+        public IActionResult CreateDecorProjectDesign([FromBody] DecorProjectDesignRequest request)
         {
             try
             {
-                var result = _service.CreateApplianceSuggestion(request);
+                var result = _service.CreateDecorProjectDesign(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",
@@ -56,11 +54,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateApplianceSuggestion(Guid id, [FromBody] ApplianceSuggestionRequest request)
+        public IActionResult UpdateDecorProjectDesign(int id, [FromBody] DecorProjectDesignRequest request)
         {
             try
             {
-                _service.UpdateApplianceSuggestion(id, request);
+                _service.UpdateDecorProjectDesign(id, request);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
@@ -78,11 +76,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteApplianceSuggestion(Guid id)
+        public IActionResult UpdateDecorProjectDesignStatus(int id)
         {
             try
             {
-                _service.DeleteApplianceSuggestion(id);
+                _service.DeleteDecorProjectDesign(id);
                 var response = new ResponseMessage()
                 {
                     Message = "Delete successfully!",
@@ -101,3 +99,4 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     }
 
 }
+*/

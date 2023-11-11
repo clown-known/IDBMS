@@ -41,13 +41,13 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<PaymentStageDesign> GetByDecorProjectDesignId(int designId)
+        public IEnumerable<PaymentStageDesign> GetByProjectDesignId(int designId)
         {
             try
             {
                 using var context = new IdtDbContext();
                 return context.PaymentStageDesigns
-                    .Where(psd => psd.DecorProjectDesignId == designId).ToList();
+                    .Where(psd => psd.ProjectDesignId == designId).ToList();
             }
             catch
             {

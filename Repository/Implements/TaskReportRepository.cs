@@ -10,29 +10,89 @@ namespace Repository.Implements
 {
     public class TaskReportRepository : ITaskReportRepository
     {
-        public void DeleteById(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<TaskReport> GetAll()
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.TaskReports.ToList();
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public TaskReport? GetById(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.TaskReports.FirstOrDefault(report => report.Id == id);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        public IEnumerable<TaskReport?> GetByTaskId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.TaskReports.Where(report => report.ProjectTaskId == id).ToList();
+            }
+            catch
+            {
+                throw;
+            }
         }
 
-        public TaskReport? Save(TaskReport entity)
+        public TaskReport Save(TaskReport entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var context = new IdtDbContext();
+                var report = context.TaskReports.Add(entity);
+                context.SaveChanges();
+                return report.Entity;
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public void Update(TaskReport entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var context = new IdtDbContext();
+                context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                context.SaveChanges();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void DeleteById(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                var report = context.TaskReports.FirstOrDefault(report => report.Id == id);
+                if (report != null)
+                {
+                    context.TaskReports.Remove(report);
+                    context.SaveChanges();
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

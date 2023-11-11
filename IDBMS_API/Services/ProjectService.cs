@@ -40,10 +40,10 @@ public class ProjectService
             CurrentStageId = request.CurrentStageId,
             Language = request.Language,
             Status = request.Status,
-            AdvertisementStatus = request.AdvertisementStatus,
+            AdvertisementStatus = AdvertisementStatus.None,
             AdminNote = request.AdminNote,
             BasedOnDecorProjectId = request.BasedOnDecorProjectId,
-            DecorProjectDesignId = request.DecorProjectDesignId
+/*            DecorProjectDesignId = request.DecorProjectDesignId*/
         };
 
         var createdProject = _repository.Save(project);
@@ -67,10 +67,9 @@ public class ProjectService
         p.CurrentStageId = request.CurrentStageId;
         p.Language = request.Language;
         p.Status = request.Status;
-        p.AdvertisementStatus = request.AdvertisementStatus;
         p.AdminNote = request.AdminNote;
         p.BasedOnDecorProjectId = request.BasedOnDecorProjectId;
-        p.DecorProjectDesignId = request.DecorProjectDesignId;
+/*        p.DecorProjectDesignId = request.DecorProjectDesignId;*/
 
         _repository.Update(p);
     }
@@ -88,7 +87,7 @@ public class ProjectService
     {
         var project = _repository.GetById(id) ?? throw new Exception("Not existed");
 
-        project.AdvertisementStatus = status;
+/*        project.AdvertisementStatus = status;*/
 
         _repository.Update(project);
     }

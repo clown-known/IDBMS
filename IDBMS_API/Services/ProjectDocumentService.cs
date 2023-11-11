@@ -35,8 +35,8 @@ namespace IDBMS_API.Services
                 CreatedDate = request.CreatedDate,
                 Category = request.Category,
                 ProjectId = request.ProjectId,
-                ConstructionTaskReportId = request.ConstructionTaskReportId,
-                DecorProgressReportId = request.DecorProgressReportId,
+/*                ConstructionTaskReportId = request.ConstructionTaskReportId,
+                DecorProgressReportId = request.DecorProgressReportId,*/
                 ProjectDocumentTemplateId = request.ProjectDocumentTemplateId,
                 IsDeleted = false,
             };
@@ -54,8 +54,8 @@ namespace IDBMS_API.Services
             pd.CreatedDate = request.CreatedDate;
             pd.Category = request.Category;
             pd.ProjectId = request.ProjectId;
-            pd.ConstructionTaskReportId = request.ConstructionTaskReportId;
-            pd.DecorProgressReportId = request.DecorProgressReportId;
+/*            pd.ConstructionTaskReportId = request.ConstructionTaskReportId;
+            pd.DecorProgressReportId = request.DecorProgressReportId;*/
             pd.ProjectDocumentTemplateId = request.ProjectDocumentTemplateId;
             
             _repository.Update(pd);

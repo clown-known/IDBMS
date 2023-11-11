@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace Repository.Implements
 {
-    public class DecorProjectDesignRepository : IDecorProjectDesignRepository
+    public class ProjectDesignRepository : IProjectDesignRepository
     {
         public void DeleteById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<DecorProjectDesign> GetAll()
+        public IEnumerable<ProjectDesign> GetAll()
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.DecorProjectDesigns.ToList();    
+                return context.ProjectDesigns.ToList();    
             }
             catch
             {
@@ -29,12 +29,12 @@ namespace Repository.Implements
             
         }
 
-        public DecorProjectDesign? GetById(int id)
+        public ProjectDesign? GetById(int id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.DecorProjectDesigns.Where(dpd => dpd.Id == id).FirstOrDefault();
+                return context.ProjectDesigns.Where(dpd => dpd.Id == id).FirstOrDefault();
             }
             catch
             {
@@ -42,12 +42,12 @@ namespace Repository.Implements
             }
         }
 
-        public DecorProjectDesign? Save(DecorProjectDesign entity)
+        public ProjectDesign? Save(ProjectDesign entity)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var dpd = context.DecorProjectDesigns.Add(entity);
+                var dpd = context.ProjectDesigns.Add(entity);
                 context.SaveChanges();
                 return dpd.Entity;
             }
@@ -57,7 +57,7 @@ namespace Repository.Implements
             }
         }
 
-        public void Update(DecorProjectDesign entity)
+        public void Update(ProjectDesign entity)
         {
             try
             {

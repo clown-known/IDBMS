@@ -28,6 +28,7 @@ public class IdtDbContext : DbContext
     public DbSet<PaymentStage> PaymentStages { get; set; } = default!;
     public DbSet<PaymentStageDesign> PaymentStageDesigns { get; set; } = default!;
     public DbSet<Project> Projects { get; set; } = default!;
+    public DbSet<ProjectDesign> ProjectDesigns { get; set; } = default!;
     public DbSet<ProjectCategory> ProjectCategories { get; set; } = default!;
     public DbSet<ProjectDocument> ProjectDocuments { get; set; } = default!;
     public DbSet<ProjectDocumentTemplate> ProjectDocumentTemplates { get; set; } = default!;

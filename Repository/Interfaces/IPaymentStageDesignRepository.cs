@@ -9,6 +9,6 @@ namespace Repository.Interfaces
 {
     public interface IPaymentStageDesignRepository : ICrudBaseRepository<BusinessObject.Models.PaymentStageDesign, int>
     {
-        IEnumerable<PaymentStageDesign> GetByDecorProjectDesignId(int designId);
+        IEnumerable<PaymentStageDesign> GetByProjectDesignId(int designId);
     }
 }

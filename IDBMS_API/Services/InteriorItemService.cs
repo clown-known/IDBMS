@@ -82,7 +82,7 @@ namespace IDBMS_API.Services
         {
             var ii = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
-            ii.Status = InteriorItemStatus.Deleted;
+/*            ii.Status = InteriorItemStatus.Deleted;*/
 
             _repository.Update(ii);
         }

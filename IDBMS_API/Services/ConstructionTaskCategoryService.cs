@@ -1,4 +1,4 @@
-﻿using Azure.Core;
+﻿/*using Azure.Core;
 using BusinessObject.DTOs.Request;
 using BusinessObject.Models;
 using Repository.Implements;
@@ -54,3 +54,4 @@ namespace IDBMS_API.Services
         }
     }
 }
+*/

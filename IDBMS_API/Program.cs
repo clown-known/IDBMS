@@ -22,7 +22,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IAuthenticationCodeRepository, AuthenticationCodeRepository>();
-builder.Services.AddScoped<IApplianceSuggestionRepository, ApplianceSuggestionRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ITaskCategoryRepository, TaskCategoryRepository>();
 builder.Services.AddScoped<IProjectTaskRepository, ProjectTaskRepository>(); 
@@ -39,6 +38,7 @@ builder.Services.AddScoped<IPaymentStageRepository, PaymentStageRepository>();
 builder.Services.AddScoped<IPaymentStageDesignRepository, PaymentStageDesignRepository>();
 builder.Services.AddScoped<IProjectCategoryRepository, ProjectCategoryRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectDesignRepository, ProjectDesignRepository>();
 builder.Services.AddScoped<IProjectDocumentRepository, ProjectDocumentRepository>();
 builder.Services.AddScoped<IProjectDocumentTemplateRepository, DocumentTemplateRepository>();
 builder.Services.AddScoped<ITaskAssignmentRepository, TaskAssignmentRepository>();
@@ -51,7 +51,6 @@ builder.Services.AddScoped<IWarrantyClaimRepository, WarrantyClaimRepository>();
 
 builder.Services.AddScoped<AdminService, AdminService>();
 builder.Services.AddScoped<AuthenticationCodeService, AuthenticationCodeService>();
-builder.Services.AddScoped<ApplianceSuggestionService, ApplianceSuggestionService>();
 builder.Services.AddScoped<CommentService, CommentService>();
 builder.Services.AddScoped<TaskCategoryService, TaskCategoryService>();
 builder.Services.AddScoped<ProjectTaskService, ProjectTaskService>();
@@ -68,6 +67,7 @@ builder.Services.AddScoped<PaymentStageService, PaymentStageService>();
 builder.Services.AddScoped<PaymentStageDesignService, PaymentStageDesignService>();
 builder.Services.AddScoped<ProjectCategoryService, ProjectCategoryService>();
 builder.Services.AddScoped<ProjectService, ProjectService>();
+builder.Services.AddScoped<ProjectDesignService, ProjectDesignService>();
 builder.Services.AddScoped<ProjectDocumentService, ProjectDocumentService>();
 builder.Services.AddScoped<TaskAssignmentService, TaskAssignmentService>();
 builder.Services.AddScoped<DocumentTemplateService, DocumentTemplateService>();
@@ -114,14 +114,8 @@ static IEdmModel GetEdmModel()
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
 
     builder.EntitySet<Admin>("Admins");
-    builder.EntitySet<ApplianceSuggestion>("ApplianceSuggestions");
     builder.EntitySet<AuthenticationCode>("AuthenticationCodes");
     builder.EntitySet<Comment>("Comments"); 
-    builder.EntitySet<ConstructionTask>("ConstructionTasks");
-    builder.EntitySet<ConstructionTaskCategory>("ConstructionTaskCategories"); 
-    builder.EntitySet<ConstructionTaskDesign>("ConstructionTaskDesigns");
-    builder.EntitySet<ConstructionTaskReport>("ConstructionTaskReports"); 
-    builder.EntitySet<DecorProgressReport>("DecorProgressReports");
     builder.EntitySet<DecorProjectDesign>("DecorProjectDesigns"); 
     builder.EntitySet<Floor>("Floors");
     builder.EntitySet<InteriorItem>("InteriorItems");
@@ -133,6 +127,7 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<PaymentStage>("PaymentStages");
     builder.EntitySet<PaymentStageDesign>("PaymentStageDesigns");
     builder.EntitySet<Project>("Projects");
+    builder.EntitySet<ProjectDesign>("ProjectDesigns");
     builder.EntitySet<ProjectCategory>("ProjectCategories");
     builder.EntitySet<ProjectDocument>("ProjectDocuments");
     builder.EntitySet<ProjectDocumentTemplate>("DocumentTemplates");
