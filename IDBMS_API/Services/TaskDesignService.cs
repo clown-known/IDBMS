@@ -25,7 +25,9 @@ namespace IDBMS_API.Services
             {
                 Code = request.Code,
                 Name = request.Name,
+                EnglishName = request.EnglishName,
                 Description = request.Description,
+                EnglishDescription = request.EnglishDescription,
                 CalculationUnit = request.CalculationUnit,
                 EstimatePricePerUnit = request.EstimatePricePerUnit,
                 IsDeleted = false,
@@ -41,7 +43,9 @@ namespace IDBMS_API.Services
             var ctd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             ctd.Code = request.Code;
             ctd.Name = request.Name;
+            ctd.EnglishName = request.EnglishName;
             ctd.Description = request.Description;
+            ctd.EnglishDescription = request.EnglishDescription;
             ctd.CalculationUnit = request.CalculationUnit;
             ctd.EstimatePricePerUnit = request.EstimatePricePerUnit;
             ctd.InteriorItemCategoryId = request.InteriorItemCategoryId;
