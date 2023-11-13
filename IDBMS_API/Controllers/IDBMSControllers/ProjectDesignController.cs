@@ -1,4 +1,4 @@
-﻿/*using BusinessObject.DTOs.Request;
+﻿using BusinessObject.DTOs.Request;
 using BusinessObject.DTOs.Response;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -9,18 +9,18 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DecorProjectDesignsController : ODataController
+    public class ProjectDesignsController : ODataController
     {
-        private readonly DecorProjectDesignService _service;
+        private readonly ProjectDesignService _service;
 
-        public DecorProjectDesignsController(DecorProjectDesignService service)
+        public ProjectDesignsController(ProjectDesignService service)
         {
             _service = service;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetDecorProjectDesigns()
+        public IActionResult GetProjectDesigns()
         {
             var response = new ResponseMessage()
             {
@@ -31,11 +31,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateDecorProjectDesign([FromBody] DecorProjectDesignRequest request)
+        public IActionResult CreateProjectDesign([FromBody] ProjectDesignRequest request)
         {
             try
             {
-                var result = _service.CreateDecorProjectDesign(request);
+                var result = _service.CreateProjectDesign(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",
@@ -54,11 +54,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateDecorProjectDesign(int id, [FromBody] DecorProjectDesignRequest request)
+        public IActionResult UpdateProjectDesign(int id, [FromBody] ProjectDesignRequest request)
         {
             try
             {
-                _service.UpdateDecorProjectDesign(id, request);
+                _service.UpdateProjectDesign(id, request);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
@@ -76,11 +76,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult UpdateDecorProjectDesignStatus(int id)
+        public IActionResult UpdateProjectDesignStatus(int id)
         {
             try
             {
-                _service.DeleteDecorProjectDesign(id);
+                _service.DeleteProjectDesign(id);
                 var response = new ResponseMessage()
                 {
                     Message = "Delete successfully!",
@@ -99,4 +99,3 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     }
 
 }
-*/

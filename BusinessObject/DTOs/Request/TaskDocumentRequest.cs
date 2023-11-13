@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.DTOs
+namespace BusinessObject.DTOs.Request
 {
     public class TaskDocumentRequest
     {
