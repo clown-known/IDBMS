@@ -37,8 +37,9 @@ public class Project
     [Column(TypeName = "money")]
     public decimal? FinalPrice { get; set; }
 
+    [Required]
     [Column(TypeName = "money")]
-    public decimal? TotalWarrantyPaid { get; set; }
+    public decimal TotalWarrantyPaid { get; set; }
 
     public Guid? CurrentStageId { get; set; }
 
