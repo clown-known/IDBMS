@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessObject.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,6 +18,9 @@ namespace BusinessObject.DTOs.Request
         public string? Description { get; set; }
 
         public string? EnglishDescription { get; set; }
+
+        [Required]
+        public ProjectType Type { get; set; }
 
         [Required]
         public string IconImageUrl { get; set; } = default!;
