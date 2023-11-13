@@ -10,10 +10,10 @@ namespace API.Supporters.JwtAuthSupport
     public class AuthorizeAttribute : Attribute, IAuthorizationFilter
     {
         public string Policy { get; set; }
-        private ParticipationRepository _participationRepository;
+        private ProjectParticipationRepository _participationRepository;
         public AuthorizeAttribute()
         {
-            _participationRepository = new ParticipationRepository();
+            _participationRepository = new ProjectParticipationRepository();
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)

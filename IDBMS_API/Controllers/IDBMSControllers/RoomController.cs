@@ -33,7 +33,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(response);
         }
 
-        [EnableQuery]
+        /*[EnableQuery]
         [HttpGet("project/{id}")]
         public IActionResult GetRoomsByProjectId([FromQuery] Guid id)
         {
@@ -43,7 +43,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 Data = _service.GetByProjectId(id)
             };
             return Ok(response);
-        }
+        }*/
 
         [EnableQuery]
         [HttpGet("floor/{id}")]

@@ -24,6 +24,7 @@ namespace IDBMS_API.Services
             var pc = new ProjectCategory
             {
                 Name = projectCategory.Name,
+                EnglishName = projectCategory.EnglishName,
                 IconImageUrl = projectCategory.IconImageUrl,
                 IsHidden = false,
             };
@@ -35,6 +36,7 @@ namespace IDBMS_API.Services
         {
             var pc = projectCategoryRepository.GetById(id) ?? throw new Exception("This object is not existed!");
             pc.Name = projectCategory.Name;
+            pc.EnglishName = projectCategory.EnglishName;
             pc.IconImageUrl = projectCategory.IconImageUrl;
             
             projectCategoryRepository.Update(pc);

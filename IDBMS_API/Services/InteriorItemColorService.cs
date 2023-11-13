@@ -25,6 +25,7 @@ namespace IDBMS_API.Services
             var iic = new InteriorItemColor
             {
                 Name = request.Name,
+                EnglishName = request.EnglishName,
                 Type = request.Type,
                 PrimaryColor = request.PrimaryColor,
                 SecondaryColor = request.SecondaryColor,
@@ -37,6 +38,7 @@ namespace IDBMS_API.Services
         {
             var iic = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             iic.Name = request.Name;
+            iic.EnglishName = request.EnglishName;
             iic.Type = request.Type;
             iic.PrimaryColor = request.PrimaryColor;
             iic.SecondaryColor = request.SecondaryColor;

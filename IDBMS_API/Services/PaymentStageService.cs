@@ -35,8 +35,12 @@ namespace IDBMS_API.Services
                 TotalPaid = request.TotalPaid,
                 IsPrepaid = request.IsPrepaid,
                 PricePercentage = request.PricePercentage,
+                PaidDate = request.PaidDate,
                 StartedDate = request.StartedDate,
                 EndDate = request.EndDate,
+                EndTimePayment = request.EndTimePayment,
+                PenaltyFee = request.PenaltyFee,
+                EstimateBusinessDay = request.EstimateBusinessDay,
                 ProjectId = request.ProjectId,
                 IsHidden = false,
             };
@@ -53,10 +57,14 @@ namespace IDBMS_API.Services
             ps.Description = request.Description;
             ps.IsPaid = request.IsPaid;
             ps.TotalPaid = request.TotalPaid;
+            ps.PaidDate = request.PaidDate;
             ps.IsPrepaid = request.IsPrepaid;
             ps.PricePercentage = request.PricePercentage;
             ps.StartedDate = request.StartedDate;
             ps.EndDate = request.EndDate;
+            ps.EndTimePayment = request.EndTimePayment;
+            ps.PenaltyFee = request.PenaltyFee;
+            ps.EstimateBusinessDay = request.EstimateBusinessDay;
             ps.ProjectId = request.ProjectId;
             
             _repository.Update(ps);

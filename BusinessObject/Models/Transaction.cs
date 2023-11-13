@@ -23,15 +23,21 @@ public class Transaction
     public DateTime CreatedDate { get; set; }
 
     [Required]
-    public Guid PaymentStageId { get; set; }
-    public PaymentStage PaymentStage { get; set; } = new();
-
-    [Required]
     public Guid UserId { get; set; }
     public User User { get; set; } = new();
 
     [Required]
+    public Guid ProjectId { get; set; }
+    public Project Project { get; set; } = new();
+
+    public Guid? WarrantyClaimId { get; set; }
+    public WarrantyClaim? WarrantyClaim { get; set; } = new();
+
+    [Required]
     public TransactionStatus Status { get; set; }
+
+    [Required]
+    public bool IsDeleted { get; set; }
 
     [Required]
     public string TransactionReceiptImageUrl { get; set; } = default!;

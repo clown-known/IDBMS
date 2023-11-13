@@ -11,34 +11,36 @@ public class IdtDbContext : DbContext
     }
 
     public DbSet<Admin> Admins { get; set; } = default!;
-    public DbSet<ApplianceSuggestion> ApplianceSuggestions { get; set; } = default!;
     public DbSet<AuthenticationCode> AuthenticationCodes { get; set; } = default!;
     public DbSet<Comment> Comments { get; set; } = default!;
-    public DbSet<ConstructionTask> ConstructionTasks { get; set; } = default!;
-    public DbSet<ConstructionTaskCategory> ConstructionTaskCategories { get; set; } = default!;
-    public DbSet<ConstructionTaskDesign> ConstructionTaskDesigns { get; set; } = default!;
-    public DbSet<ConstructionTaskReport> ConstructionTaskReports { get; set; } = default!;
-    public DbSet<DecorProgressReport> DecorProgressReports { get; set; } = default!;
-    public DbSet<DecorProjectDesign> DecorProjectDesigns { get; set; } = default!;
+    public DbSet<ProjectTask> ProjectTasks { get; set; } = default!;
+    public DbSet<TaskCategory> TaskCategories { get; set; } = default!;
+    public DbSet<TaskDesign> TaskDesigns { get; set; } = default!;
+    public DbSet<TaskReport> TaskReports { get; set; } = default!;
+    public DbSet<TaskDocument> TaskDocuments { get; set; } = default!;
+    public DbSet<TaskAssignment> TaskAssignments { get; set; } = default!;
     public DbSet<Floor> Floors { get; set; } = default!;
     public DbSet<InteriorItem> InteriorItems { get; set; } = default!;
     public DbSet<InteriorItemBookmark> InteriorItemBookmarks { get; set; } = default!;
     public DbSet<InteriorItemCategory> InteriorItemCategories { get; set; } = default!;
     public DbSet<InteriorItemColor> InteriorItemColors { get; set; } = default!;
     public DbSet<Notification> Notifications { get; set; } = default!;
-    public DbSet<Participation> Participations { get; set; } = default!;
+    public DbSet<ProjectParticipation> Participations { get; set; } = default!;
     public DbSet<PaymentStage> PaymentStages { get; set; } = default!;
     public DbSet<PaymentStageDesign> PaymentStageDesigns { get; set; } = default!;
     public DbSet<Project> Projects { get; set; } = default!;
+    public DbSet<ProjectDesign> ProjectDesigns { get; set; } = default!;
     public DbSet<ProjectCategory> ProjectCategories { get; set; } = default!;
     public DbSet<ProjectDocument> ProjectDocuments { get; set; } = default!;
     public DbSet<ProjectDocumentTemplate> ProjectDocumentTemplates { get; set; } = default!;
     public DbSet<Room> Rooms { get; set; } = default!;
     public DbSet<RoomType> RoomTypes { get; set; } = default!;
+    public DbSet<Site> Sites { get; set; } = default!;
     public DbSet<Transaction> Transactions { get; set; } = default!;
     public DbSet<User> Users { get; set; } = default!;
     public DbSet<UserRole> UserRoles { get; set; } = default!;
-    
+    public DbSet<WarrantyClaim> WarrantyClaims { get; set; } = default!;
+
     private static string? GetConnectionString()
     {
         var config = new ConfigurationBuilder()
@@ -58,16 +60,16 @@ public class IdtDbContext : DbContext
             .Property(authenticationCode => authenticationCode.Status)
             .HasConversion<int>();
 
-        modelBuilder.Entity<ConstructionTask>()
-            .Property(constructionTask => constructionTask.CalculationUnit)
+        modelBuilder.Entity<ProjectTask>()
+            .Property(projectTask => projectTask.CalculationUnit)
             .HasConversion<int>();
 
-        modelBuilder.Entity<ConstructionTaskReport>()
-            .Property(constructionTaskReport => constructionTaskReport.CalculationUnit)
+        modelBuilder.Entity<TaskReport>()
+            .Property(taskReport => taskReport.CalculationUnit)
             .HasConversion<int>();
 
-        modelBuilder.Entity<ConstructionTaskDesign>()
-            .Property(constructionTaskDesign => constructionTaskDesign.CalculationUnit)
+        modelBuilder.Entity<TaskDesign>()
+            .Property(taskDesign => taskDesign.CalculationUnit)
             .HasConversion<int>();            
         
         modelBuilder.Entity<InteriorItem>()
@@ -82,8 +84,12 @@ public class IdtDbContext : DbContext
             .Property(comment => comment.Status)
             .HasConversion<int>();
 
-        modelBuilder.Entity<ConstructionTask>()
-            .Property(constructionTask => constructionTask.Status)
+        modelBuilder.Entity<ProjectDesign>()
+            .Property(projectTask => projectTask.Type)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<ProjectTask>()
+            .Property(projectTask => projectTask.Status)
             .HasConversion<int>();  
 
         modelBuilder.Entity<ProjectDocumentTemplate>()
@@ -114,7 +120,7 @@ public class IdtDbContext : DbContext
             .Property(notification => notification.Category)
             .HasConversion<int>();
 
-        modelBuilder.Entity<Participation>()
+        modelBuilder.Entity<ProjectParticipation>()
             .Property(participation => participation.Role)
             .HasConversion<int>();
 
@@ -124,6 +130,10 @@ public class IdtDbContext : DbContext
 
         modelBuilder.Entity<Project>()
             .Property(project => project.Status)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<Project>()
+            .Property(project => project.AdvertisementStatus)
             .HasConversion<int>();
 
         modelBuilder.Entity<Project>()

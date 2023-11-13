@@ -26,14 +26,14 @@ namespace IDBMS_API.Services
             return _repository.GetById(id) ?? throw new Exception("This object is not found!");
         }
 
-        public IEnumerable<Room> GetByProjectId(Guid projectId)
+       /* public IEnumerable<Room> GetByProjectId(Guid projectId)
         {
             return _repository.GetByProjectId(projectId);
-        }
+        }*/
 
-        public IEnumerable<Room> GetByFloorId(Guid floorId)
+        public IEnumerable<Room> GetByFloorId(Guid id)
         {
-            return _repository.GetByFloorId(floorId);
+            return _repository.GetByFloorId(id);
         }
 
         public Room? CreateRoom(RoomRequest request)
@@ -41,6 +41,7 @@ namespace IDBMS_API.Services
             var room = new Room
             {
                 Id = Guid.NewGuid(),
+                Name = request.Name,
                 FloorId = request.FloorId,
                 Description = request.Description,
                 RoomNo = request.RoomNo,
@@ -48,7 +49,6 @@ namespace IDBMS_API.Services
                 Area = request.Area,
                 PricePerArea = request.PricePerArea,
                 RoomTypeId = request.RoomTypeId,
-                ProjectId = request.ProjectId,
                 IsHidden = false,
             };
 
@@ -61,13 +61,13 @@ namespace IDBMS_API.Services
             var room = _repository.GetById(id) ?? throw new Exception("This object is not found!");
 
             room.FloorId = request.FloorId;
+            room.Name = request.Name;
             room.Description = request.Description;
             room.RoomNo = request.RoomNo;
             room.UsePurpose = request.UsePurpose;
             room.Area = request.Area;
             room.PricePerArea = request.PricePerArea;
             room.RoomTypeId = request.RoomTypeId;
-            room.ProjectId = request.ProjectId;
 
             _repository.Update(room);
         }

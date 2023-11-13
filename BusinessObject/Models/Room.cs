@@ -9,6 +9,9 @@ public class Room
     public Guid Id { get; set; }
 
     [Required]
+    public string Name { get; set; } = default!;
+
+    [Required]
     public Guid FloorId { get; set; }
     public Floor Floor { get; set; } = new();
 
@@ -31,11 +34,9 @@ public class Room
     public int RoomTypeId { get; set; }
     public RoomType RoomType { get; set; } = new();
 
-    public Guid? ProjectId { get; set; }
-    public Project? Project { get; set; } = new();
-
     [Required]
     public bool IsHidden { get; set; }
 
-    public List<ApplianceSuggestion> ApplianceSuggestions { get; set; } = new();
+    public List<ProjectTask> Tasks { get; set; } = new();
+
 }

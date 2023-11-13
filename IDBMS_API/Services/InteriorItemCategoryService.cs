@@ -25,7 +25,9 @@ namespace IDBMS_API.Services
             var iic = new InteriorItemCategory
             {
                 Name = request.Name,
+                EnglishName = request.EnglishName,
                 Description = request.Description,
+                EnglishDescription = request.EnglishDescription,
                 BannerImageUrl = request.BannerImageUrl,
                 IconImageUrl = request.IconImageUrl,
                 InteriorItemType = request.InteriorItemType,
@@ -40,7 +42,9 @@ namespace IDBMS_API.Services
         {
             var iic = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             iic.Name = request.Name;
+            iic.EnglishName = request.EnglishName;
             iic.Description = request.Description;
+            iic.EnglishDescription = request.EnglishDescription;
             iic.BannerImageUrl = request.BannerImageUrl;
             iic.IconImageUrl = request.IconImageUrl; 
             iic.InteriorItemType = request.InteriorItemType; 

@@ -24,8 +24,10 @@ namespace IDBMS_API.Services
             var rt = new RoomType
             {
                 Name = roomType.Name,
+                EnglishName = roomType.EnglishName,
                 ImageUrl = roomType.ImageUrl,
                 Description = roomType.Description,
+                EnglishDescription = roomType.EnglishDescription,
                 PricePerArea = roomType.PricePerArea,
                 IsHidden = false,
                 IconImageUrl = roomType.IconImageUrl,
@@ -39,8 +41,10 @@ namespace IDBMS_API.Services
             var rt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             rt.Name = roomType.Name;
+            rt.EnglishName = roomType.EnglishName;
             rt.ImageUrl = roomType.ImageUrl;
             rt.Description = roomType.Description;
+            rt.EnglishDescription = roomType.EnglishDescription;
             rt.PricePerArea = roomType.PricePerArea;
             rt.IconImageUrl = roomType.IconImageUrl;
 

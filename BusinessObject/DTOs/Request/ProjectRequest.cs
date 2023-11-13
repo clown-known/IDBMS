@@ -9,11 +9,7 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public string Name { get; set; } = default!;
 
-        [Required]
-        public string CompanyName { get; set; } = default!;
-
-        [Required]
-        public string Location { get; set; } = default!;
+        public string? CompanyName { get; set; } = default!;
 
         public string? Description { get; set; }
 
@@ -32,6 +28,9 @@ namespace BusinessObject.DTOs.Request
         [DataType(DataType.Currency)]
         public decimal? FinalPrice { get; set; }
 
+        [DataType(DataType.Currency)]
+        public decimal? TotalWarrantyPaid { get; set; }
+
         public Guid? CurrentStageId { get; set; }
 
         [Required]
@@ -39,6 +38,9 @@ namespace BusinessObject.DTOs.Request
 
         [Required]
         public ProjectStatus Status { get; set; }
+
+        [Required]
+        public int AdvertisementStatus { get; set; }
 
         public string? AdminNote { get; set; }
 

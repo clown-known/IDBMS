@@ -51,11 +51,9 @@ public class User
     public DateTime? LockedUntil { get; set; }
 
     public List<Comment> Comments { get; set; } = new();
-    public List<ConstructionTaskReport> ConstructionTaskReports { get; set; } = new();
-    public List<DecorProgressReport> DecorProgressReports { get; set; } = new();
     public List<InteriorItemBookmark> InteriorItemBookmarks { get; set; } = new();
     public List<Notification> Notifications { get; set; } = new();
     public List<Transaction> Transactions { get; set; } = new();
     public List<UserRole> UserRoles { get; set; } = new();
-    public List<Participation> Participations { get; set; } = new();
+    public List<ProjectParticipation> Participations { get; set; } = new();
 }

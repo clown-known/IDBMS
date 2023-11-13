@@ -28,12 +28,14 @@ namespace IDBMS_API.Services
                 Id = Guid.NewGuid(),
                 Code = request.Code,
                 Name = request.Name,
+                EnglishName = request.EnglishName,
                 Length = request.Length,
                 Width = request.Width,
                 Height = request.Height,
                 CalculationUnit = request.CalculationUnit,
                 Material = request.Material,
                 Description = request.Description,
+                EnglishDescription = request.EnglishDescription,
                 Origin = request.Origin,
                 EstimatePrice = request.EstimatePrice,
                 LaborCost = request.LaborCost,
@@ -41,6 +43,7 @@ namespace IDBMS_API.Services
                 InteriorItemCategoryId = request.InteriorItemCategoryId,
                 Status = request.Status,
                 ParentItemId = request.ParentItemId,
+                IsDeleted = false,
             };
 
             var iiCreated = _repository.Save(ii);
@@ -52,12 +55,14 @@ namespace IDBMS_API.Services
 
             ii.Code = request.Code;
             ii.Name = request.Name;
+            ii.EnglishName = request.EnglishName;
             ii.Length = request.Length;
             ii.Width = request.Width;
             ii.Height = request.Height;
             ii.CalculationUnit = request.CalculationUnit;
             ii.Material = request.Material;
             ii.Description = request.Description;
+            ii.EnglishDescription = request.EnglishDescription;
             ii.Origin = request.Origin;
             ii.EstimatePrice = request.EstimatePrice;
             ii.LaborCost = request.LaborCost;
@@ -82,7 +87,7 @@ namespace IDBMS_API.Services
         {
             var ii = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
-            ii.Status = InteriorItemStatus.Deleted;
+            ii.IsDeleted = true;
 
             _repository.Update(ii);
         }

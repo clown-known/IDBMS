@@ -19,12 +19,19 @@ public class PaymentStageDesign
     [Required]
     public string Name { get; set; } = default!;
 
+    public string? EnglishName { get; set; }
+
     public string? Description { get; set; }
+
+    public string? EnglishDescription { get; set; }
+
+    [Required]
+    public int EstimateBusinessDay { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }
 
     [Required]
-    public int DecorProjectDesignId { get; set; }
-    public DecorProjectDesign DecorProjectDesign { get; set; } = new();
+    public int ProjectDesignId { get; set; }
+    public ProjectDesign ProjectDesign { get; set; } = new();
 }

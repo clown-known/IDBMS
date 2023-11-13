@@ -12,11 +12,7 @@ public class Project
     [Required]
     public string Name { get; set; } = default!;
 
-    [Required]
-    public string CompanyName { get; set; } = default!;
-
-    [Required]
-    public string Location { get; set; } = default!;
+    public string? CompanyName { get; set; } = default!;
 
     public string? Description { get; set; }
 
@@ -41,6 +37,9 @@ public class Project
     [Column(TypeName = "money")]
     public decimal? FinalPrice { get; set; }
 
+    [Column(TypeName = "money")]
+    public decimal? TotalWarrantyPaid { get; set; }
+
     public Guid? CurrentStageId { get; set; }
 
     [Required]
@@ -48,22 +47,21 @@ public class Project
 
     [Required]
     public ProjectStatus Status { get; set; }
-
+    
     [Required]
-    public bool IsAdvertisement { get; set; }
+    public AdvertisementStatus AdvertisementStatus { get; set; }
 
     public string? AdminNote { get; set; }
 
     public Guid? BasedOnDecorProjectId { get; set; }
     public Project? BasedOnDecorProject { get; set; }
 
-    public int? DecorProjectDesignId { get; set; }
-    public DecorProjectDesign? DecorProjectDesign { get; set; } = new();
+    public int? ProjectDesignId { get; set; }
+    public ProjectDesign? ProjectDesign { get; set; } = new();
 
-    public List<ConstructionTask> ConstructionTasks { get; set; } = new();
-    public List<Floor> Floors { get; set; } = new();
-    public List<Participation> Participations { get; set; } = new();
+    public List<Site> Sites { get; set; } = new();
+    public List<Transaction> Transactions { get; set; } = new();
+    public List<ProjectParticipation> Participations { get; set; } = new();
     public List<PaymentStage> PaymentStages { get; set; } = new();
     public List<ProjectDocument> ProjectDocuments { get; set; } = new();
-    public List<Room> Rooms { get; set; } = new();
 }

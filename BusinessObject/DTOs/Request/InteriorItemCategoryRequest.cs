@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Enums;
+using BusinessObject.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,11 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public string Name { get; set; } = default!;
 
+        public string? EnglishName { get; set; }
+
         public string? Description { get; set; }
+
+        public string? EnglishDescription { get; set; }
 
         [Required]
         public string BannerImageUrl { get; set; } = default!;
@@ -26,5 +31,7 @@ namespace BusinessObject.DTOs.Request
 
         public int? ParentCategoryId { get; set; }
 
+        [Required]
+        public bool IsDeleted { get; set; }
     }
 }

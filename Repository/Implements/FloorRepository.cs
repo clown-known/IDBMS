@@ -34,21 +34,6 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<Floor> GetByProjectId(Guid projectId)
-        {
-            try
-            {
-                using var context = new IdtDbContext();
-                return context.Floors
-                    .Where(floor => floor.ProjectId == projectId && floor.IsDeleted == false)
-                    .ToList();
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
         public Floor Save(Floor entity)
         {
             try

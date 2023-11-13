@@ -31,10 +31,22 @@ public class PaymentStage
     public double PricePercentage { get; set; }
 
     [Required]
+    public DateTime PaidDate { get; set; }
+
+    [Required]
     public DateTime StartedDate { get; set; }
 
     [Required]
     public DateTime EndDate { get; set; }
+
+    [Required]
+    public DateTime EndTimePayment { get; set; }
+
+    [Column(TypeName = "money")]
+    public decimal? PenaltyFee { get; set; }
+
+    [Required]
+    public int EstimateBusinessDay { get; set; }
 
     [Required]
     public Guid ProjectId { get; set; }
@@ -43,8 +55,6 @@ public class PaymentStage
     [Required]
     public bool IsHidden { get; set; }
 
-    public List<ConstructionTask> ConstructionTasks { get; set; } = new();
-    public List<DecorProgressReport> DecorProgressReports { get; set; } = new();
-    public List<Transaction> Transactions { get; set; } = new();
+    public List<ProjectTask> Tasks { get; set; } = new();
 }
 

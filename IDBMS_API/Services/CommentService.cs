@@ -21,22 +21,22 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<Comment?> GetByConstructionTaskId(Guid ctId)
+/*        public IEnumerable<Comment?> GetByConstructionTaskId(Guid ctId)
         {
-            return _repository.GetByConstructionTaskId(ctId) ?? throw new Exception("This object is not existed!");
-        }
-        public IEnumerable<Comment?> GetByDecorProgressReportId(Guid dprId)
+            return _repository.GetByTaskId(ctId) ?? throw new Exception("This object is not existed!");
+        }*/
+/*        public IEnumerable<Comment?> GetByDecorProgressReportId(Guid dprId)
         {
             return _repository.GetByDecorProgressReportId(dprId) ?? throw new Exception("This object is not existed!");
-        }
+        }*/
         public Comment? CreateComment(CommentRequest comment)
         {
             var cmt = new Comment
             {
                 Id = Guid.NewGuid(),
                 Content = comment.Content,
-                ConstructionTaskId = comment.ConstructionTaskId,
-                DecorProgressReportId = comment.ConstructionTaskId,
+                ProjectTaskId = comment.ProjectTaskId,
+                ProjectId = comment.ProjectId,
                 UserId = comment.UserId,
                 FileUrl = comment.FileUrl,
                 CreatedTime = DateTime.Now,
@@ -50,8 +50,8 @@ namespace IDBMS_API.Services
             var cmt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             cmt.Content = comment.Content;
-            cmt.ConstructionTaskId = comment.ConstructionTaskId;
-            cmt.DecorProgressReportId = comment.ConstructionTaskId;
+            cmt.ProjectTaskId = comment.ProjectTaskId;
+            cmt.ProjectId = comment.ProjectId;
             cmt.UserId = comment.UserId;
             cmt.FileUrl = comment.FileUrl;
             cmt.LastModifiedTime = DateTime.Now;
@@ -73,7 +73,7 @@ namespace IDBMS_API.Services
         {
             var cmt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
-            cmt.Status = CommentStatus.Deleted;
+            cmt.IsDeleted = true;
             cmt.LastModifiedTime = DateTime.Now;
 
             _repository.Update(cmt);

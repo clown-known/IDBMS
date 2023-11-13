@@ -18,6 +18,8 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public string Name { get; set; } = default!;
 
+        public string? EnglishName { get; set; }
+
         [Required]
         public double Length { get; set; }
 
@@ -34,6 +36,8 @@ namespace BusinessObject.DTOs.Request
         public string Material { get; set; } = default!;
 
         public string? Description { get; set; }
+
+        public string? EnglishDescription { get; set; }
 
         public string? Origin { get; set; } = default!;
 
@@ -52,6 +56,9 @@ namespace BusinessObject.DTOs.Request
 
         [Required]
         public InteriorItemStatus Status { get; set; }
+
+        [Required]
+        public bool IsDeleted { get; set; }
 
         public Guid? ParentItemId { get; set; }
     }

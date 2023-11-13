@@ -42,7 +42,7 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<ProjectDocument> GetByFilter(Guid? projectId, Guid? constructionTaskReportId, Guid? decorProgressReportId, int? documentTemplateId)
+        public IEnumerable<ProjectDocument> GetByFilter(Guid? projectId, int? documentTemplateId)
         {
             try
             {
@@ -50,8 +50,6 @@ namespace Repository.Implements
                 return context.ProjectDocuments
                     .Where(pd =>
                         (projectId == null || pd.ProjectId == projectId) &&
-                        (constructionTaskReportId == null || pd.ConstructionTaskReportId == constructionTaskReportId) &&
-                        (decorProgressReportId == null || pd.DecorProgressReportId == decorProgressReportId) &&
                         (documentTemplateId == null || pd.ProjectDocumentTemplateId == documentTemplateId))
                     .ToList();
             }

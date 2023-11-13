@@ -16,10 +16,10 @@ namespace IDBMS_API.Services
         {
             return _repository.GetAll();
         }
-        public IEnumerable<PaymentStageDesign> GetByDecorProjectDesignId(int designId)
+/*        public IEnumerable<PaymentStageDesign> GetByDecorProjectDesignId(int designId)
         {
             return _repository.GetByDecorProjectDesignId(designId) ?? throw new Exception("This object is not existed!");
-        }
+        }*/
         public PaymentStageDesign? GetById(int id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
@@ -33,7 +33,7 @@ namespace IDBMS_API.Services
                 StageNo = request.StageNo,
                 Name = request.Name,
                 Description = request.Description,
-                DecorProjectDesignId = request.DecorProjectDesignId,
+/*                DecorProjectDesignId = request.DecorProjectDesignId,*/
                 IsDeleted = false
             };
 
@@ -48,7 +48,7 @@ namespace IDBMS_API.Services
             psd.StageNo = request.StageNo;
             psd.Name = request.Name;
             psd.Description = request.Description;
-            psd.DecorProjectDesignId = request.DecorProjectDesignId;
+/*            psd.DecorProjectDesignId = request.DecorProjectDesignId;*/
 
             _repository.Update(psd);
         }

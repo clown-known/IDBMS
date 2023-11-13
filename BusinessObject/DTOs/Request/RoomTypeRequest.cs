@@ -14,10 +14,14 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public string Name { get; set; } = default!;
 
+        public string? EnglishName { get; set; }
+
         [Required]
         public string ImageUrl { get; set; } = default!;
 
         public string? Description { get; set; }
+
+        public string? EnglishDescription { get; set; }
 
         [Required]
         [Column(TypeName = "money")]

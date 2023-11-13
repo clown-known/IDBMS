@@ -20,9 +20,9 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<ProjectDocument?> GetByFilter(Guid? projectId, Guid? constructionTaskReportId, Guid? decorProgressReportId, int? documentTemplateId)
+        public IEnumerable<ProjectDocument?> GetByFilter(Guid? projectId, int? documentTemplateId)
         {
-            return _repository.GetByFilter(projectId, constructionTaskReportId, decorProgressReportId, documentTemplateId) ?? throw new Exception("This object is not existed!");
+            return _repository.GetByFilter(projectId, documentTemplateId) ?? throw new Exception("This object is not existed!");
         }
         public ProjectDocument? CreateProjectDocument(ProjectDocumentRequest request)
         {
@@ -32,12 +32,11 @@ namespace IDBMS_API.Services
                 Name = request.Name,
                 Description = request.Description,
                 Url = request.Url,
-                CreatedDate = request.CreatedDate,
+                CreatedDate = DateTime.Now,
                 Category = request.Category,
                 ProjectId = request.ProjectId,
-                ConstructionTaskReportId = request.ConstructionTaskReportId,
-                DecorProgressReportId = request.DecorProgressReportId,
                 ProjectDocumentTemplateId = request.ProjectDocumentTemplateId,
+                IsPublicAdvertisement = request.IsPublicAdvertisement,
                 IsDeleted = false,
             };
 
@@ -54,10 +53,9 @@ namespace IDBMS_API.Services
             pd.CreatedDate = request.CreatedDate;
             pd.Category = request.Category;
             pd.ProjectId = request.ProjectId;
-            pd.ConstructionTaskReportId = request.ConstructionTaskReportId;
-            pd.DecorProgressReportId = request.DecorProgressReportId;
             pd.ProjectDocumentTemplateId = request.ProjectDocumentTemplateId;
-            
+            pd.IsPublicAdvertisement = request.IsPublicAdvertisement;
+
             _repository.Update(pd);
         }
         public void DeleteProjectDocument(Guid id)

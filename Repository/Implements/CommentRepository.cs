@@ -33,24 +33,24 @@ namespace Repository.Implements
                 throw;
             }
         }
-        public IEnumerable<Comment?> GetByConstructionTaskId(Guid ctId)
+        public IEnumerable<Comment?> GetByTaskId(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Comments.Where(comment => comment.ConstructionTaskId == ctId).ToList();
+                return context.Comments.Where(comment => comment.ProjectTaskId == id).ToList();
             }
             catch
             {
                 throw;
             }
         }
-        public IEnumerable<Comment?> GetByDecorProgressReportId(Guid dprId)
+        public IEnumerable<Comment?> GetByProjectId(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Comments.Where(comment => comment.DecorProgressReportId == dprId).ToList();
+                return context.Comments.Where(comment => comment.ProjectId == id).ToList();
             }
             catch
             {

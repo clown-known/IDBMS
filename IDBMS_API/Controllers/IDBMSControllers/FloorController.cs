@@ -40,7 +40,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             var response = new ResponseMessage()
             {
                 Message = "Get successfully!",
-                Data = _service.GetByProjectId(id)
+/*                Data = _service.GetByProjectId(id)*/
             };
             return Ok(response);
         }
