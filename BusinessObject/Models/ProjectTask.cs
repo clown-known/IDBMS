@@ -52,11 +52,11 @@ namespace BusinessObject.Models
         public Guid? ParentTaskId { get; set; }
         public ProjectTask? ParentTask { get; set; }
 
-        public int? TaskCategoryId { get; set; }
-        public TaskCategory? TaskCategory { get; set; } = new();
+        [Required]
+        public int TaskCategoryId { get; set; }
 
-        public Guid? ProjectId { get; set; }
-        public Project? Project { get; set; } = new();
+        [Required]
+        public Guid ProjectId { get; set; }
 
         [Required]
         public Guid PaymentStageId { get; set; }

@@ -8,7 +8,7 @@ namespace BusinessObject.Enums
 {
     public enum CommentStatus
     {
-        Sent = 1,
-        Edited = 2,
+        Sent = 0,
+        Edited = 1,
     }
 }
