@@ -24,14 +24,14 @@ public class Transaction
 
     [Required]
     public Guid UserId { get; set; }
-    public User User { get; set; } = new();
+    public User User { get; set; }
 
     [Required]
     public Guid ProjectId { get; set; }
-    public Project Project { get; set; } = new();
+    public Project Project { get; set; }
 
     public Guid? WarrantyClaimId { get; set; }
-    public WarrantyClaim? WarrantyClaim { get; set; } = new();
+    public WarrantyClaim? WarrantyClaim { get; set; }
 
     [Required]
     public TransactionStatus Status { get; set; }

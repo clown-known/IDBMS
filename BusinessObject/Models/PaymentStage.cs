@@ -50,7 +50,7 @@ public class PaymentStage
 
     [Required]
     public Guid ProjectId { get; set; }
-    public Project Project { get; set; } = new();
+    public Project Project { get; set; }
 
     [Required]
     public bool IsHidden { get; set; }

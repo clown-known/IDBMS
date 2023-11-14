@@ -23,7 +23,7 @@ public class Floor
 
     [Required]
     public Guid SiteId { get; set; }
-    public Site Site { get; set; } = new();
+    public Site Site { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }

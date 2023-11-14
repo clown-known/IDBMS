@@ -59,14 +59,14 @@ namespace BusinessObject.Models
 
         [Required]
         public Guid PaymentStageId { get; set; }
-        public PaymentStage PaymentStage { get; set; } = new();
+        public PaymentStage PaymentStage { get; set; }
 
         public Guid? InteriorItemId { get; set; }
         public InteriorItem? InteriorItem { get; set; }
 
         [Required]
         public int TaskDesignId { get; set; }
-        public TaskDesign TaskDesign { get; set; } = new();
+        public TaskDesign TaskDesign { get; set; }
 
         [Required]
         public ProjectTaskStatus Status { get; set; }

@@ -9,9 +9,9 @@ public class InteriorItemBookmark
 
     [Required]
     public Guid UserId { get; set; }
-    public User User { get; set; } = new();
+    public User User { get; set; }
 
     [Required]
     public Guid InteriorItemId { get; set; }
-    public InteriorItem InteriorItem { get; set; } = new();
+    public InteriorItem InteriorItem { get; set; }
 }

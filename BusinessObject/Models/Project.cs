@@ -21,7 +21,7 @@ public class Project
 
     [Required]
     public int ProjectCategoryId { get; set; }
-    public ProjectCategory ProjectCategory { get; set; } = new();
+    public ProjectCategory ProjectCategory { get; set; }
 
     [Required]
     public DateTime CreatedDate { get; set; }
@@ -58,7 +58,7 @@ public class Project
     public Project? BasedOnDecorProject { get; set; }
 
     public int? ProjectDesignId { get; set; }
-    public ProjectDesign? ProjectDesign { get; set; } = new();
+    public ProjectDesign? ProjectDesign { get; set; }
 
     public List<Site> Sites { get; set; } = new();
     public List<Transaction> Transactions { get; set; } = new();
