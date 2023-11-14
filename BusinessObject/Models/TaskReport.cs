@@ -31,7 +31,7 @@ namespace BusinessObject.Models
 
         [Required]
         public Guid ProjectTaskId { get; set; }
-        public ProjectTask ProjectTask { get; set; } = new();
+        public ProjectTask ProjectTask { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; }

@@ -32,7 +32,5 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public bool IsHidden { get; set; }
 
-        public List<PaymentStageDesign> PaymentStageDesigns { get; set; } = new();
-        public List<Project> Projects { get; set; } = new();
     }
 }

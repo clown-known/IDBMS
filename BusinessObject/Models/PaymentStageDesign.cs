@@ -33,5 +33,5 @@ public class PaymentStageDesign
 
     [Required]
     public int ProjectDesignId { get; set; }
-    public ProjectDesign ProjectDesign { get; set; } = new();
+    public ProjectDesign ProjectDesign { get; set; }
 }

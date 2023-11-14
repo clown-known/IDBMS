@@ -37,10 +37,10 @@ namespace BusinessObject.Models
         public bool IsDeleted { get; set; }
 
         public int? InteriorItemCategoryId { get; set; }
-        public InteriorItemCategory? InteriorItemCategory { get; set; } = new();
+        public InteriorItemCategory? InteriorItemCategory { get; set; }
 
         public int? TaskCategoryId { get; set; }
-        public TaskCategory TaskCategory { get; set; } = new();
+        public TaskCategory TaskCategory { get; set; }
 
         public List<ProjectTask> Tasks { get; set; } = new();
     }

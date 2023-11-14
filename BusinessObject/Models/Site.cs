@@ -28,7 +28,7 @@ namespace BusinessObject.Models
 
         [Required]
         public Guid ProjectId { get; set; }
-        public Project Project { get; set; } = new();
+        public Project Project { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; }

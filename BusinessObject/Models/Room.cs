@@ -13,7 +13,7 @@ public class Room
 
     [Required]
     public Guid FloorId { get; set; }
-    public Floor Floor { get; set; } = new();
+    public Floor Floor { get; set; }
 
     public string? Description { get; set; }
 
@@ -32,7 +32,7 @@ public class Room
 
     [Required]
     public int RoomTypeId { get; set; }
-    public RoomType RoomType { get; set; } = new();
+    public RoomType RoomType { get; set; }
 
     [Required]
     public bool IsHidden { get; set; }

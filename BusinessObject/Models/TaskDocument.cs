@@ -22,7 +22,7 @@ namespace BusinessObject.Models
 
         [Required]
         public Guid TaskReportId { get; set; }
-        public TaskReport TaskReport { get; set; } = new();
+        public TaskReport TaskReport { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; }
