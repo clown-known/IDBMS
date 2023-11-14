@@ -39,8 +39,7 @@ namespace BusinessObject.Models
         public int? InteriorItemCategoryId { get; set; }
         public InteriorItemCategory? InteriorItemCategory { get; set; } = new();
 
-        [Required]
-        public int TaskCategoryId { get; set; }
+        public int? TaskCategoryId { get; set; }
         public TaskCategory TaskCategory { get; set; } = new();
 
         public List<ProjectTask> Tasks { get; set; } = new();

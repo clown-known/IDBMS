@@ -34,9 +34,9 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public bool IsDeleted { get; set; }
 
-        public int? InteriorItemCategoryId { get; set; }
-
         [Required]
-        public int TaskCategoryId { get; set; }
+        public int InteriorItemCategoryId { get; set; }
+
+        public int? TaskCategoryId { get; set; }
     }
 }

@@ -25,7 +25,10 @@ namespace IDBMS_API.Services
             var ctc = new TaskCategory
             {
                 Name = request.Name,
+                EnglishName = request.EnglishName,
                 Description = request.Description,
+                EnglishDescription = request.EnglishDescription,
+                ProjectType = request.ProjectType,
                 IconImageUrl = request.IconImageUrl,
                 IsDeleted = false,
             };
@@ -37,7 +40,10 @@ namespace IDBMS_API.Services
             var ctc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ctc.Name = request.Name;
+            ctc.EnglishName = request.EnglishName;
             ctc.Description = request.Description;
+            ctc.EnglishDescription = request.EnglishDescription;
+            ctc.ProjectType = request.ProjectType;
             ctc.IconImageUrl = request.IconImageUrl;
 
             _repository.Update(ctc);

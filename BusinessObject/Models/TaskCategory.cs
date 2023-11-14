@@ -23,7 +23,7 @@ namespace BusinessObject.Models
         public string? EnglishDescription { get; set; }
 
         [Required]
-        public ProjectType Type { get; set; }
+        public ProjectType ProjectType { get; set; }
 
         [Required]
         public string IconImageUrl { get; set; } = default!;

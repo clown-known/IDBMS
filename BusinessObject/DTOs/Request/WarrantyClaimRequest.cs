@@ -14,10 +14,8 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public string Name { get; set; } = default!;
 
-        [Required]
         public string? Reason { get; set; }
 
-        [Required]
         public string? Solution { get; set; }
 
         public string? Note { get; set; }
@@ -34,7 +32,6 @@ namespace BusinessObject.DTOs.Request
 
         public DateTime? EndDate { get; set; }
 
-        [Required]
         public string? ConfirmationDocument { get; set; }
         [Required]
         public Guid ProjectId { get; set; }

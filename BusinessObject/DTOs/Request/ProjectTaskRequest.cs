@@ -51,7 +51,8 @@ namespace BusinessObject.DTOs.Request
 
         public int? TaskCategoryId { get; set; }
 
-        public Guid? ProjectId { get; set; }
+        [Required]
+        public Guid ProjectId { get; set; }
 
         [Required]
         public Guid PaymentStageId { get; set; }

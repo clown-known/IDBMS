@@ -1,6 +1,7 @@
 ﻿using BusinessObject.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace BusinessObject.Models;
 
@@ -28,8 +29,11 @@ public class User
     public string Phone { get; set; } = default!;
 
     [Required]
+    [JsonIgnore]
     public byte[] PasswordHash { get; set; } = default!;
+
     [Required]
+    [JsonIgnore]
     public byte[] PasswordSalt { get; set; } = default!;
 
     [Required]
