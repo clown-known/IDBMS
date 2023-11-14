@@ -28,7 +28,7 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public DateTime CreatedTime { get; set; }
 
-        public DateTime UpdatedTime { get; set; }
+        public DateTime? UpdatedTime { get; set; }
 
         [Required]
         public Guid ProjectTaskId { get; set; }

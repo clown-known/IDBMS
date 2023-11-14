@@ -28,7 +28,7 @@ namespace IDBMS_API.Services
                 EnglishName = request.EnglishName,
                 Description = request.Description,
                 EnglishDescription = request.EnglishDescription,
-                Type = request.Type,
+                ProjectType = request.ProjectType,
                 IconImageUrl = request.IconImageUrl,
                 IsDeleted = false,
             };
@@ -43,7 +43,7 @@ namespace IDBMS_API.Services
             ctc.EnglishName = request.EnglishName;
             ctc.Description = request.Description;
             ctc.EnglishDescription = request.EnglishDescription;
-            ctc.Type = request.Type;
+            ctc.ProjectType = request.ProjectType;
             ctc.IconImageUrl = request.IconImageUrl;
 
             _repository.Update(ctc);
