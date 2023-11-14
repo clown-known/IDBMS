@@ -28,10 +28,10 @@ namespace BusinessObject.Models
         public string? Description { get; set; }
 
         [Required]
-        public ProjectType Type { get; set; }
+        public ProjectType ProjectType { get; set; }
 
         [Required]
-        public bool IsDeleted { get; set; }
+        public bool IsHidden { get; set; }
 
         public List<PaymentStageDesign> PaymentStageDesigns { get; set; } = new();
         public List<Project> Projects { get; set; } = new();

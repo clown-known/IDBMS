@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace BusinessObject.Models;
 
@@ -17,8 +18,11 @@ public class Admin
     public string Email { get; set; } = default!;
 
     [Required]
+    [JsonIgnore]
     public byte[] PasswordHash { get; set; } = default!;
+
     [Required]
+    [JsonIgnore]
     public byte[] PasswordSalt { get; set; } = default!;
 
     public string? AuthenticationCode { get; set; }

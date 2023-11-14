@@ -1,4 +1,5 @@
 ﻿using BusinessObject.DTOs.Request;
+using BusinessObject.Enums;
 using BusinessObject.Models;
 using Repository.Interfaces;
 
@@ -21,35 +22,38 @@ namespace IDBMS_API.Services
         }
         public ProjectDesign? CreateProjectDesign(ProjectDesignRequest request)
         {
-            var dpd = new ProjectDesign
+            var obj = new ProjectDesign
             {
                 MinBudget = request.MinBudget,
                 MaxBudget = request.MaxBudget,
                 Name = request.Name,
                 Description = request.Description,
-                IsDeleted = false,
+                ProjectType= request.ProjectType,
+                IsHidden = request.IsHidden,
             };
-            var dpdCreated = _repository.Save(dpd);
-            return dpdCreated;
+            var objCreated = _repository.Save(obj);
+            return objCreated;
         }
         public void UpdateProjectDesign(int id, ProjectDesignRequest request)
         {
-            var dpd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var obj = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
-            dpd.MinBudget = request.MinBudget;
-            dpd.MaxBudget = request.MaxBudget;
-            dpd.Name = request.Name;
-            dpd.Description = request.Description;
+            obj.MinBudget = request.MinBudget;
+            obj.MaxBudget = request.MaxBudget;
+            obj.Name = request.Name;
+            obj.Description = request.Description;
+            obj.ProjectType = request.ProjectType;
+            obj.IsHidden = request.IsHidden;
 
-            _repository.Update(dpd);
+            _repository.Update(obj);
         }
-        public void DeleteProjectDesign(int id)
+        public void UpdateProjectDesign(int id, bool isHidden)
         {
-            var dpd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var obj = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
-            dpd.IsDeleted = true;
+            obj.IsHidden = isHidden;
 
-            _repository.Update(dpd);
+            _repository.Update(obj);
         }
     }
 }

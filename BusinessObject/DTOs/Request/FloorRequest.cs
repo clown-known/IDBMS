@@ -25,7 +25,7 @@ namespace BusinessObject.DTOs.Request
         public double Area { get; set; }
 
         [Required]
-        public int SiteId { get; set; }
+        public Guid SiteId { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; }

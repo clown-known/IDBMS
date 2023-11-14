@@ -22,7 +22,7 @@ public class Floor
     public double Area { get; set; }
 
     [Required]
-    public int SiteId { get; set; }
+    public Guid SiteId { get; set; }
     public Site Site { get; set; } = new();
 
     [Required]

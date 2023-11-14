@@ -16,10 +16,8 @@ namespace BusinessObject.Models
         [Required]
         public string Name { get; set; } = default!;
 
-        [Required]
         public string? Reason { get; set; }
 
-        [Required]
         public string? Solution { get; set; }
 
         public string? Note { get; set; }
@@ -36,7 +34,6 @@ namespace BusinessObject.Models
 
         public DateTime? EndDate { get; set; }
 
-        [Required]
         public string? ConfirmationDocument { get; set; }
 
         [Required]

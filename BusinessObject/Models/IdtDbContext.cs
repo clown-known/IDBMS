@@ -85,7 +85,11 @@ public class IdtDbContext : DbContext
             .HasConversion<int>();
 
         modelBuilder.Entity<ProjectDesign>()
-            .Property(projectTask => projectTask.Type)
+            .Property(projectTask => projectTask.ProjectType)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<TaskCategory>()
+            .Property(taskCategory => taskCategory.ProjectType)
             .HasConversion<int>();
 
         modelBuilder.Entity<ProjectTask>()
