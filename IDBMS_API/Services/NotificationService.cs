@@ -33,8 +33,8 @@ namespace IDBMS_API.Services
             var user = _userRepository.GetById(userId) ?? throw new Exception("This object is not existed!");
             var notification = new Notification
             {
-                Id = new Guid(),
-                UserId = userId,
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
                 Category = noti.Category,
                 Content = noti.Content,
                 Link = noti.Link,
@@ -74,8 +74,8 @@ namespace IDBMS_API.Services
 
                 var notification = new Notification
                 {
-                    Id = new Guid(),
-                    UserId = userId,
+                    Id = Guid.NewGuid(),
+                    UserId = user.Id,
                     Category = noti.Category,
                     Content = noti.Content,
                     Link = noti.Link,

@@ -15,8 +15,7 @@ namespace BusinessObject.DTOs.Request
         public NotificationCategory Category { get; set; }
         [Required]
         public string Content { get; set; } = default!;
-        [Required]
-        public Guid UserId { get; set; }
+
         public string? Link { get; set; } = default!;
         [Required]
         public bool IsSeen { get; set; }
