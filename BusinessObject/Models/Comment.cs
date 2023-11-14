@@ -11,11 +11,12 @@ public class Comment
     [Required]
     public string Content { get; set; } = default!;
 
-    public Guid? ProjectTaskId { get; set; }
-    public ProjectTask? ProjectTask { get; set; }
+    [Required]
+    public Guid ProjectTaskId { get; set; }
+    public ProjectTask ProjectTask { get; set; } = new();
 
-    public Guid? ProjectId { get; set; }
-    public Project? Project { get; set; }
+    [Required]
+    public Guid ProjectId { get; set; }
 
     [Required]
     public Guid UserId { get; set; }
