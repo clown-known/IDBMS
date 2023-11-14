@@ -14,9 +14,11 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public string Content { get; set; } = default!;
 
-        public Guid? ProjectTaskId { get; set; }
+        [Required]
+        public Guid ProjectTaskId { get; set; }
 
-        public Guid? ProjectId { get; set; }
+        [Required]
+        public Guid ProjectId { get; set; }
 
         [Required]
         public Guid UserId { get; set; }
