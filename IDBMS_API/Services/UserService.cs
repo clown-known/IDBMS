@@ -16,23 +16,27 @@ namespace API.Services
 {
     public class UserService
     {
-        private readonly IUserRepository userRepository;
+        private readonly IUserRepository _repository;
         private readonly JwtTokenSupporter jwtTokenSupporter;
         private readonly IConfiguration configuration;
-        public UserService(IUserRepository userRepository, JwtTokenSupporter jwtTokenSupporter, IConfiguration configuration)
+        public UserService(IUserRepository _repository, JwtTokenSupporter jwtTokenSupporter, IConfiguration configuration)
         {
-            this.userRepository = userRepository;
+            this._repository = _repository;
             this.jwtTokenSupporter = jwtTokenSupporter;
             this.configuration = configuration;
         }
         public User? GetById(Guid id)
         {
-            return userRepository.GetById(id);
+            return _repository.GetById(id);
+        }
+        public IEnumerable<User> GetAll()
+        {
+            return _repository.GetAll();
         }
 
         public (string? token, User? user) Login(string email, string password)
         {
-            var user = userRepository.GetByEmail(email);
+            var user = _repository.GetByEmail(email);
             if (user != null)
             {
                 if (PasswordUtils.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
@@ -53,7 +57,7 @@ namespace API.Services
         private void UpdateTokenForUser(User user, string token)
         {
             user.Token = token;
-            userRepository.Update(user);
+            _repository.Update(user);
         }
         public User? CreateUser(CreateUserRequest request)
         {
@@ -74,7 +78,7 @@ namespace API.Services
                 ExternalId = request.ExternalId
             };
 
-            var userCreated = userRepository.Save(user);
+            var userCreated = _repository.Save(user);
             return userCreated;
         }
         
@@ -102,7 +106,7 @@ namespace API.Services
         public void UpdateUser(string userId, UpdateUserRequest request)
         {
             Guid.TryParse(userId,out Guid id);
-            var user = userRepository.GetById(id) ?? throw new Exception("User not existed");
+            var user = _repository.GetById(id) ?? throw new Exception("User not existed");
             PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
             user.Address = request.Address;
             user.Balance = 0;
@@ -114,7 +118,7 @@ namespace API.Services
             user.PasswordHash = passwordHash;
             user.Phone = request.Phone;
 
-            userRepository.Update(user);
+            _repository.Update(user);
         }
         
     }
