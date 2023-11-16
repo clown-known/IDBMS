@@ -41,6 +41,7 @@ namespace IDBMS_API.Services
                 StartedDate = DateTime.Now,
                 EndDate = request.EndDate,
                 NoDate = request.NoDate,
+                CreatedDate = request.CreatedDate,
                 ProjectId = request.ProjectId,
                 PaymentStageId = request.PaymentStageId,
                 InteriorItemId = request.InteriorItemId,
@@ -62,6 +63,7 @@ namespace IDBMS_API.Services
             ct.UnitInContract = request.UnitInContract;
             ct.UnitUsed = request.UnitUsed;
             ct.IsExceed = request.IsExceed;
+            ct.UpdatedDate= request.UpdatedDate;
             ct.EndDate = request.EndDate;
             ct.NoDate = request.NoDate;
             ct.ProjectId = request.ProjectId;

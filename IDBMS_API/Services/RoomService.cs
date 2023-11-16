@@ -41,7 +41,6 @@ namespace IDBMS_API.Services
             var room = new Room
             {
                 Id = Guid.NewGuid(),
-                Name = request.Name,
                 FloorId = request.FloorId,
                 Description = request.Description,
                 RoomNo = request.RoomNo,
@@ -61,7 +60,6 @@ namespace IDBMS_API.Services
             var room = _repository.GetById(id) ?? throw new Exception("This object is not found!");
 
             room.FloorId = request.FloorId;
-            room.Name = request.Name;
             room.Description = request.Description;
             room.RoomNo = request.RoomNo;
             room.UsePurpose = request.UsePurpose;
