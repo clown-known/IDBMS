@@ -9,9 +9,6 @@ public class Room
     public Guid Id { get; set; }
 
     [Required]
-    public string Name { get; set; } = default!;
-
-    [Required]
     public Guid FloorId { get; set; }
     public Floor Floor { get; set; }
 
