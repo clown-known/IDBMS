@@ -43,7 +43,6 @@ namespace IDBMS_API.Services
                 Id = Guid.NewGuid(),
                 FloorId = request.FloorId,
                 Description = request.Description,
-                RoomNo = request.RoomNo,
                 UsePurpose = request.UsePurpose,
                 Area = request.Area,
                 PricePerArea = request.PricePerArea,
@@ -61,7 +60,6 @@ namespace IDBMS_API.Services
 
             room.FloorId = request.FloorId;
             room.Description = request.Description;
-            room.RoomNo = request.RoomNo;
             room.UsePurpose = request.UsePurpose;
             room.Area = request.Area;
             room.PricePerArea = request.PricePerArea;
