@@ -25,7 +25,10 @@ namespace BusinessObject.DTOs.Request
 
         [Required]
         [Column(TypeName = "money")]
-        public decimal TotalPaid { get; set; }
+        public decimal TotalContractPaid { get; set; }
+
+        [Column(TypeName = "money")]
+        public decimal? TotalIncurringPaid { get; set; }
 
         [Required]
         public bool IsPrepaid { get; set; }
