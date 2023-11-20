@@ -25,7 +25,7 @@ public class PaymentStage
     public decimal TotalContractPaid { get; set; }
 
     [Column(TypeName = "money")]
-    public decimal? TotalIncurringPaid { get; set; }
+    public decimal? TotalIncurredPaid { get; set; }
 
     [Required]
     public bool IsPrepaid { get; set; }
