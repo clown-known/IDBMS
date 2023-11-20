@@ -32,7 +32,7 @@ namespace IDBMS_API.Services
                 Name = request.Name,
                 Description = request.Description,
                 IsPaid = request.IsPaid,
-                TotalPaid = request.TotalPaid,
+                TotalContractPaid = request.TotalContractPaid,
                 IsPrepaid = request.IsPrepaid,
                 PricePercentage = request.PricePercentage,
                 PaidDate = request.PaidDate,
@@ -56,7 +56,7 @@ namespace IDBMS_API.Services
             ps.Name = request.Name;
             ps.Description = request.Description;
             ps.IsPaid = request.IsPaid;
-            ps.TotalPaid = request.TotalPaid;
+            ps.TotalContractPaid = request.TotalContractPaid;
             ps.PaidDate = request.PaidDate;
             ps.IsPrepaid = request.IsPrepaid;
             ps.PricePercentage = request.PricePercentage;
