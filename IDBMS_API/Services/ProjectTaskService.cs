@@ -37,7 +37,7 @@ namespace IDBMS_API.Services
                 PricePerUnit = request.PricePerUnit,
                 UnitInContract = request.UnitInContract,
                 UnitUsed = request.UnitUsed,
-                IsExceed = request.IsExceed,
+                IsIncurred = request.IsIncurred,
                 StartedDate = DateTime.Now,
                 EndDate = request.EndDate,
                 NoDate = request.NoDate,
@@ -62,7 +62,7 @@ namespace IDBMS_API.Services
             ct.PricePerUnit = request.PricePerUnit;
             ct.UnitInContract = request.UnitInContract;
             ct.UnitUsed = request.UnitUsed;
-            ct.IsExceed = request.IsExceed;
+            ct.IsIncurred = request.IsIncurred;
             ct.UpdatedDate= request.UpdatedDate;
             ct.EndDate = request.EndDate;
             ct.NoDate = request.NoDate;
