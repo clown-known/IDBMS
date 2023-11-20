@@ -15,9 +15,6 @@ public class Room
     public string? Description { get; set; }
 
     [Required]
-    public int RoomNo { get; set; }
-
-    [Required]
     public string UsePurpose { get; set; } = default!;
 
     [Required]
