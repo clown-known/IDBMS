@@ -40,7 +40,7 @@ namespace BusinessObject.Models
         public double UnitUsed { get; set; }
 
         [Required]
-        public bool IsExceed { get; set; }
+        public bool IsIncurred { get; set; }
 
         [Required]
         public DateTime StartedDate { get; set; }
