@@ -25,7 +25,7 @@ public class IdtDbContext : DbContext
     public DbSet<InteriorItemCategory> InteriorItemCategories { get; set; } = default!;
     public DbSet<InteriorItemColor> InteriorItemColors { get; set; } = default!;
     public DbSet<Notification> Notifications { get; set; } = default!;
-    public DbSet<ProjectParticipation> Participations { get; set; } = default!;
+    public DbSet<ProjectParticipation> ProjectParticipations { get; set; } = default!;
     public DbSet<PaymentStage> PaymentStages { get; set; } = default!;
     public DbSet<PaymentStageDesign> PaymentStageDesigns { get; set; } = default!;
     public DbSet<Project> Projects { get; set; } = default!;

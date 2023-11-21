@@ -141,7 +141,7 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<InteriorItemCategory>("InteriorItemCategories");
     builder.EntitySet<InteriorItemColor>("InteriorItemColors");
     builder.EntitySet<Notification>("Notifications");
-    builder.EntitySet<ProjectParticipation>("Participations");
+    builder.EntitySet<ProjectParticipation>("ProjectParticipations");
     builder.EntitySet<PaymentStage>("PaymentStages");
     builder.EntitySet<PaymentStageDesign>("PaymentStageDesigns");
     builder.EntitySet<Project>("Projects");

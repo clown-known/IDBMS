@@ -10,11 +10,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RoomTypeController : ODataController
+    public class RoomTypesController : ODataController
     {
         private readonly RoomTypeService _service;
 
-        public RoomTypeController(RoomTypeService service)
+        public RoomTypesController(RoomTypeService service)
         {
             _service = service;
         }
