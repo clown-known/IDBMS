@@ -62,7 +62,7 @@ public class Project
 
     public List<Site> Sites { get; set; } = new();
     public List<Transaction> Transactions { get; set; } = new();
-    public List<ProjectParticipation> Participations { get; set; } = new();
+    public List<ProjectParticipation> ProjectParticipations { get; set; } = new();
     public List<PaymentStage> PaymentStages { get; set; } = new();
     public List<ProjectDocument> ProjectDocuments { get; set; } = new();
 }
