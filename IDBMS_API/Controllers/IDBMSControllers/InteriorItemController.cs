@@ -29,9 +29,19 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 Message = "Get successfully!",
                 Data = _service.GetAll()
             };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
-
+        [EnableQuery]
+        [HttpGet("interior-item-category/{id}")]
+        public IActionResult GetInteriorItemsByCategory(int id)
+        {
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetAll()
+            };
+            return Ok(_service.GetByCategory(id));
+        }
         [HttpPost]
         public IActionResult CreateInteriorItem([FromBody] InteriorItemRequest request)
         {

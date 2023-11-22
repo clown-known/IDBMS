@@ -29,6 +29,7 @@ public class ProjectService
             Id = Guid.NewGuid(),
             Name = request.Name,
             CompanyName = request.CompanyName,
+            CompanyAddress = request.CompanyAddress,
             Description = request.Description,
             Type = request.Type,
             ProjectCategoryId = request.ProjectCategoryId,
@@ -43,7 +44,7 @@ public class ProjectService
             AdvertisementStatus = AdvertisementStatus.None,
             AdminNote = request.AdminNote,
             BasedOnDecorProjectId = request.BasedOnDecorProjectId,
-/*            DecorProjectDesignId = request.DecorProjectDesignId*/
+            ProjectDesignId = request.ProjectDesignId
         };
 
         var createdProject = _repository.Save(project);
@@ -56,6 +57,7 @@ public class ProjectService
 
         p.Name = request.Name;
         p.CompanyName = request.CompanyName;
+        p.CompanyAddress = request.CompanyAddress;
         p.Description = request.Description;
         p.Type = request.Type;
         p.ProjectCategoryId = request.ProjectCategoryId;
@@ -69,7 +71,7 @@ public class ProjectService
         p.Status = request.Status;
         p.AdminNote = request.AdminNote;
         p.BasedOnDecorProjectId = request.BasedOnDecorProjectId;
-/*        p.DecorProjectDesignId = request.DecorProjectDesignId;*/
+        p.ProjectDesignId = request.ProjectDesignId;
 
         _repository.Update(p);
     }
@@ -83,11 +85,11 @@ public class ProjectService
         _repository.Update(project);
     }
 
-    public void UpdateProjectAdvertisementStatus(Guid id, int status)
+    public void UpdateProjectAdvertisementStatus(Guid id, AdvertisementStatus status)
     {
         var project = _repository.GetById(id) ?? throw new Exception("Not existed");
 
-/*        project.AdvertisementStatus = status;*/
+        project.AdvertisementStatus = status;
 
         _repository.Update(project);
     }

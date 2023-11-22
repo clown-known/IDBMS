@@ -67,6 +67,8 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public int TaskDesignId { get; set; }
 
+        public Guid? RoomId { get; set; }
+
         [Required]
         public ProjectTaskStatus Status { get; set; }
     }

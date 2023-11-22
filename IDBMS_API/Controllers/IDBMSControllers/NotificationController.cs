@@ -29,18 +29,18 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 Message = "Get successfully!",
                 Data = _service.GetAll()
             };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
         [EnableQuery]
-        [HttpGet("user/{userId}")]
-        public IActionResult GetByUserId(Guid userId)
+        [HttpGet("user/{id}")]
+        public IActionResult GetByUserId(Guid id)
         {
             var response = new ResponseMessage()
             {
                 Message = "Get successfully!",
-                Data = _service.GetByUserId(userId)
+                Data = _service.GetByUserId(id)
             };
-            return Ok(response);
+            return Ok(_service.GetByUserId(id));
         }
         [HttpPost]
         public IActionResult CreateNotificationsForAllUsers([FromBody] NotificationRequest request)

@@ -29,7 +29,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 Message = "Get successfully!",
                 Data = _service.GetAll()
             };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
         [EnableQuery]
         [HttpGet("{id}")]
@@ -40,7 +40,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 Message = "Get successfully!",
                 Data = _service.GetById(id)
             };
-            return Ok(response);
+            return Ok(_service.GetById(id));
         }
 
         [HttpPost]

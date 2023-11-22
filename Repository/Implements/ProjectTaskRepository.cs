@@ -48,7 +48,18 @@ namespace Repository.Implements
                 throw;
             }
         }
-
+        public IEnumerable<ProjectTask?> GetByPaymentStageId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.ProjectTasks.Where(task => task.PaymentStageId == id).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
         public ProjectTask Save(ProjectTask entity)
         {
             try

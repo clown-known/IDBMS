@@ -33,7 +33,33 @@ namespace Repository.Implements
                 throw;
             }
         }
+        public IEnumerable<InteriorItemColor?> GetByCategory(int id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                List<InteriorItemColor?> result = new List<InteriorItemColor?>();
+                
+                var iiList = context.InteriorItems.Where(ii => ii.InteriorItemCategoryId == id).ToList();
+      
+                if (iiList != null)
+                {
+                    foreach (InteriorItem item in iiList)
+                    {
+                        InteriorItemColor? color = new InteriorItemColor();
 
+                        if (item != null && item.InteriorItemColorId != null) color = context.InteriorItemColors.FirstOrDefault(iic => iic.Id == item.InteriorItemColorId);
+
+                        if (color.Id != 0 && color != null) result.Add(color);
+                    }
+                }
+                return result;
+            }
+            catch
+            {
+                throw;
+            }
+        }
         public InteriorItemColor Save(InteriorItemColor entity)
         {
             try

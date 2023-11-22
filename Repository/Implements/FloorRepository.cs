@@ -33,7 +33,18 @@ namespace Repository.Implements
                 throw;
             }
         }
-
+        public IEnumerable<Floor?> GetBySiteId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Floors.Where(floor => floor.SiteId == id);
+            }
+            catch
+            {
+                throw;
+            }
+        }
         public Floor Save(Floor entity)
         {
             try
@@ -80,5 +91,6 @@ namespace Repository.Implements
                 throw;
             }
         }
+
     }
 }

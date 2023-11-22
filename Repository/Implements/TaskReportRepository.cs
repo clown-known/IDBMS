@@ -47,7 +47,33 @@ namespace Repository.Implements
                 throw;
             }
         }
+        public IEnumerable<TaskReport?> GetByUserId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                List<TaskReport?> result = new List<TaskReport?>();
 
+                var ptList = context.TaskAssignments.Where(ptList => ptList.UserId == id).ToList();
+
+                if (ptList != null)
+                {
+                    foreach (TaskAssignment item in ptList)
+                    {
+                        TaskReport? tr = new TaskReport();
+
+                        if (item != null) tr = context.TaskReports.FirstOrDefault(tr => tr.ProjectTaskId == item.ProjectTaskId);
+
+                        if (tr != null) result.Add(tr);
+                    }
+                }
+                return result;
+            }
+            catch
+            {
+                throw;
+            }
+        }
         public TaskReport Save(TaskReport entity)
         {
             try
@@ -94,5 +120,7 @@ namespace Repository.Implements
                 throw;
             }
         }
+
+        
     }
 }

@@ -27,9 +27,31 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 Message = "Get successfully!",
                 Data = _service.GetAll()
             };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
 
+        [EnableQuery]
+        [HttpGet("user/{id}")]
+        public IActionResult GetWarrantyClaimsByUserId(Guid id)
+        {
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetByUserId(id)
+            };
+            return Ok(_service.GetByUserId(id));
+        }
+        [EnableQuery]
+        [HttpGet("project/{id}")]
+        public IActionResult GetWarrantyClaimsByProjectId(Guid id)
+        {
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetByProjectId(id)
+            };
+            return Ok(_service.GetByProjectId(id));
+        }
         [HttpPost]
         public IActionResult CreateWarrantyClaim([FromBody] WarrantyClaimRequest request)
         {

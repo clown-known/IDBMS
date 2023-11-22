@@ -9,5 +9,7 @@ namespace Repository.Interfaces
 {
     public interface IWarrantyClaimRepository : ICrudBaseRepository<WarrantyClaim, Guid>
     {
+        IEnumerable<WarrantyClaim?> GetByUserId(Guid id);
+        IEnumerable<WarrantyClaim?> GetByProjectId(Guid id);
     }
 }

@@ -21,13 +21,13 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-/*        public IEnumerable<Transaction?> GetByPaymentStageId(Guid psId)
+        public IEnumerable<Transaction?> GetByProjectId(Guid id)
         {
-            return _repository.GetByPaymentStageId(psId) ?? throw new Exception("This object is not existed!");
-        }*/
-        public IEnumerable<Transaction?> GetByUserId(Guid userId)
+            return _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+        }
+        public IEnumerable<Transaction?> GetByUserId(Guid id)
         {
-            return _repository.GetByUserId(userId) ?? throw new Exception("This object is not existed!");
+            return _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
         }
         public Transaction? CreateTransaction(TransactionRequest request)
         {

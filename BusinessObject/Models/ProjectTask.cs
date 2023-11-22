@@ -73,6 +73,9 @@ namespace BusinessObject.Models
         public int TaskDesignId { get; set; }
         public TaskDesign TaskDesign { get; set; }
 
+        public Guid? RoomId { get; set; }
+        public Room? Room { get; set; }
+
         [Required]
         public ProjectTaskStatus Status { get; set; }
 

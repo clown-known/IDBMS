@@ -9,5 +9,8 @@ namespace Repository.Interfaces
 {
     public interface ITaskAssignmentRepository : ICrudBaseRepository<TaskAssignment, Guid>
     {
+        IEnumerable<TaskAssignment?> GetByProjectId(Guid id);
+        IEnumerable<TaskAssignment?> GetByUserId(Guid id);
+
     }
 }

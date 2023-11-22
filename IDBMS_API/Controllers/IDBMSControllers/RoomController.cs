@@ -30,7 +30,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 Message = "Get successfully!",
                 Data = _service.GetAll()
             };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
 
         /*[EnableQuery]
@@ -54,7 +54,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 Message = "Get successfully!",
                 Data = _service.GetByFloorId(id)
             };
-            return Ok(response);
+            return Ok(_service.GetByFloorId(id));
         }
 
         [HttpPost]

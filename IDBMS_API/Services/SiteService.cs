@@ -21,6 +21,10 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
+        public IEnumerable<Site?> GetByProjectId(Guid id)
+        {
+            return _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+        }
         public Site? CreateSite(SiteRequest request)
         {
             var site = new Site

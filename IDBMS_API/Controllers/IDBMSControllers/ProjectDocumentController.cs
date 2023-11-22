@@ -28,9 +28,19 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 Message = "Get successfully!",
                 Data = _service.GetAll()
             };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
-
+        [EnableQuery]
+        [HttpGet("document-template/{id}")]
+        public IActionResult GetProjectDocumentByProjectDocumentTemplateId(int id)
+        {
+            var response = new ResponseMessage()
+            {
+                Message = "Get successfully!",
+                Data = _service.GetByFilter(null, id)
+            };
+            return Ok(_service.GetByFilter(null, id));
+        }
         [HttpPost]
         public IActionResult CreateProjectDocument([FromBody] ProjectDocumentRequest request)
         {

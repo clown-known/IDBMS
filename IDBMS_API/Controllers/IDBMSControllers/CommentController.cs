@@ -29,31 +29,31 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 Message = "Get successfully!",
                 Data = _service.GetAll()
             };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
         //permission
         [EnableQuery]
-        [HttpGet("construction-task/{id}")]
-        public IActionResult GetCommentsConstructionTaskId(Guid id)
+        [HttpGet("project-task/{id}")]
+        public IActionResult GetCommentsProjectTaskId(Guid id)
         {
             var response = new ResponseMessage()
             {
                 Message = "Get successfully!",
 /*                Data = _service.GetByConstructionTaskId(id)*/
             };
-            return Ok(response);
+            return Ok(_service.GetByProjectTaskId(id));
         }
         //permission
         [EnableQuery]
-        [HttpGet("decor-progress-report/{id}")]
-        public IActionResult GetCommentsDecorProgressReportId(Guid id)
+        [HttpGet("project/{id}")]
+        public IActionResult GetCommentsProjectId(Guid id)
         {
             var response = new ResponseMessage()
             {
                 Message = "Get successfully!",
 /*                Data = _service.GetByDecorProgressReportId(id)*/
             };
-            return Ok(response);
+            return Ok(_service.GetByProjectId(id));
         }
         [HttpPost]
         public IActionResult CreateComment([FromBody] CommentRequest request)

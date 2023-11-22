@@ -16,10 +16,10 @@ namespace IDBMS_API.Services
         {
             return _repository.GetAll();
         }
-/*        public IEnumerable<PaymentStageDesign> GetByDecorProjectDesignId(int designId)
+        public IEnumerable<PaymentStageDesign> GetByProjectDesignId(int id)
         {
-            return _repository.GetByDecorProjectDesignId(designId) ?? throw new Exception("This object is not existed!");
-        }*/
+            return _repository.GetByProjectDesignId(id) ?? throw new Exception("This object is not existed!");
+        }
         public PaymentStageDesign? GetById(int id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");

@@ -30,7 +30,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 Message = "Get successfully!",
                 Data = _service.GetAll()
             };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
 
         [EnableQuery]
@@ -42,7 +42,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 Message = "Get successfully!",
                 Data = _service.GetByUserId(id)
             };
-            return Ok(response);
+            return Ok(_service.GetByUserId(id));
         }
 
         [EnableQuery]
@@ -54,7 +54,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 Message = "Get successfully!",
                 Data = _service.GetByProjectId(id)
             };
-            return Ok(response);
+            return Ok(_service.GetByProjectId(id));
         }
 
         [HttpPost]

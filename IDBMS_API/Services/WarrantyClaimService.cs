@@ -21,6 +21,14 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
+        public IEnumerable<WarrantyClaim?> GetByUserId(Guid id)
+        {
+            return _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
+        }
+        public IEnumerable<WarrantyClaim?> GetByProjectId(Guid id)
+        {
+            return _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+        }
         public WarrantyClaim? CreateWarrantyClaim(WarrantyClaimRequest request)
         {
             var wc = new WarrantyClaim
