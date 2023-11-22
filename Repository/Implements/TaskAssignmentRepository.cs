@@ -67,7 +67,20 @@ namespace Repository.Implements
         }
         public void DeleteById(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var context = new IdtDbContext();
+                var ta = context.TaskAssignments.FirstOrDefault(a => a.Id == id);
+                if (ta != null)
+                {
+                    context.TaskAssignments.Remove(ta);
+                    context.SaveChanges();
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
 
     }

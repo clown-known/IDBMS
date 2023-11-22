@@ -1,5 +1,6 @@
 ﻿using API.Services;
 using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Request.AccountRequest;
 using BusinessObject.DTOs.Response;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,50 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 Data = _service.GetAll()
             };
             return Ok(response);
+        }
+
+        [HttpPost]
+        public IActionResult CreateUser([FromBody] CreateUserRequest request)
+        {
+                try
+                {
+                    var result = _service.CreateUser(request);
+                    var response = new ResponseMessage()
+                    {
+                        Message = "Create successfully!",
+                        Data = result
+                    };
+                    return Ok(response);
+                }
+                catch (Exception ex)
+                {
+                    var response = new ResponseMessage()
+                    {
+                        Message = $"Error: {ex.Message}"
+                    };
+                    return BadRequest(response);
+                }
+        }
+        [HttpPut("{id}")]
+        public IActionResult UpdateUser(string id, [FromBody] UpdateUserRequest request)
+        {
+            try
+            {
+                _service.UpdateUser(id, request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
     }
 }
