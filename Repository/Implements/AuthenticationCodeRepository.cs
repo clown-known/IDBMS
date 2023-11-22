@@ -17,9 +17,9 @@ namespace Repository.Implements
 
         public void EnableCodeOfUser(Guid userId)
         {
-            //using var context = new IdtDbContext();
-            //context.AuthenticationCodes.Where(c=>c.UserId.Equals(userId)).ToList()
-            //    .ForEach(c=>c.Status = BusinessObject.Enums.AuthenticationCodeStatus.Expired);
+            using var context = new IdtDbContext();
+            context.AuthenticationCodes.Where(c => c.UserId.Equals(userId)).ToList()
+                .ForEach(c => c.Status = BusinessObject.Enums.AuthenticationCodeStatus.Expired);
         }
 
         public IEnumerable<AuthenticationCode> GetAll()

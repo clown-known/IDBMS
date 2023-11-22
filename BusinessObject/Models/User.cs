@@ -60,4 +60,5 @@ public class User
     public List<Transaction> Transactions { get; set; } = new();
     public List<UserRole> UserRoles { get; set; } = new();
     public List<ProjectParticipation> Participations { get; set; } = new();
+    public List<AuthenticationCode> AuthenticationCodes { get; set; } = new();
 }

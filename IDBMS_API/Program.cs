@@ -3,6 +3,8 @@ using API.Supporters;
 using API.Supporters.JwtAuthSupport;
 using BLL.Services;
 using BusinessObject.Models;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.Edm;
@@ -14,7 +16,11 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+FirebaseApp.Create(new AppOptions()
+{
+    Credential = GoogleCredential.FromFile("idbms-7f5e1-firebase-adminsdk-er69h-99ecd4346c.json"),
+    ProjectId = builder.Configuration["Firebase:ProjectId"]
+});
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

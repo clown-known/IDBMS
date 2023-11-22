@@ -110,8 +110,8 @@ public class IdtDbContext : DbContext
         
         modelBuilder.Entity<User>()
             .Property(user => user.Language)
-            .HasConversion<int>();        
-        
+            .HasConversion<int>();
+
         modelBuilder.Entity<Project>()
             .Property(project => project.Language)
             .HasConversion<int>();        
@@ -159,6 +159,7 @@ public class IdtDbContext : DbContext
         modelBuilder.Entity<User>()
             .Property(user => user.Status)
             .HasConversion<int>();
+
 
     }
 }
