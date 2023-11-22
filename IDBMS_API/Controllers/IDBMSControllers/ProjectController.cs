@@ -13,11 +13,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProjectController : ODataController
+    public class ProjectsController : ODataController
     {
         private readonly ProjectService _service;
 
-        public ProjectController(ProjectService service)
+        public ProjectsController(ProjectService service)
         {
             _service = service;
         }

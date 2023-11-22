@@ -33,8 +33,12 @@ namespace BusinessObject.DTOs.Request
         public DateTime? EndDate { get; set; }
 
         public string? ConfirmationDocument { get; set; }
+
         [Required]
         public Guid ProjectId { get; set; }
+
+        [Required]
+        public Guid UserId { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; }
