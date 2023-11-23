@@ -20,9 +20,9 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<InteriorItemColor?> GetByCategory(int id)
+        public IEnumerable<InteriorItemColor?> GetByCategoryId(int id)
         {
-            return _repository.GetByCategory(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetByCategoryId(id) ?? throw new Exception("This object is not existed!");
         }
         public InteriorItemColor? CreateInteriorItemColor(InteriorItemColorRequest request)
         {

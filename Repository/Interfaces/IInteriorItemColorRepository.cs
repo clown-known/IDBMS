@@ -9,6 +9,6 @@ namespace Repository.Interfaces
 {
     public interface IInteriorItemColorRepository : ICrudBaseRepository<BusinessObject.Models.InteriorItemColor, int>
     {
-        IEnumerable<InteriorItemColor?> GetByCategory(int id);
+        IEnumerable<InteriorItemColor?> GetByCategoryId(int id);
     }
 }

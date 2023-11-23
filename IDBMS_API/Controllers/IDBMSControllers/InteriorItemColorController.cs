@@ -22,24 +22,14 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetInteriorItemColors()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
             return Ok(_service.GetAll());
         }
         //guest
         [EnableQuery]
         [HttpGet("interior-item-category/{id}")]
-        public IActionResult GetInteriorItemColorsByCategory(int id)
+        public IActionResult GetInteriorItemColorsByCategoryId(int id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByCategory(id)
-            };
-            return Ok(_service.GetByCategory(id));
+            return Ok(_service.GetByCategoryId(id));
         }
         [HttpPost]
         public IActionResult CreateInteriorItemColor([FromBody] InteriorItemColorRequest request)
