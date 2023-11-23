@@ -23,11 +23,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetPaymentStages()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
             return Ok(_service.GetAll());
         }
         //all
@@ -35,11 +30,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("project/{id}")]
         public IActionResult GetPaymentStagesByProjectId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByProjectId(id)
-            };
             return Ok(_service.GetByProjectId(id));
         }
         //permission
@@ -47,11 +37,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("{id}")]
         public IActionResult GetPaymentStagesById(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetById(id)
-            };
             return Ok(_service.GetById(id));
         }
         [HttpPost]

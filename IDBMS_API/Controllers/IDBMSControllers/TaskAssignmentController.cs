@@ -22,11 +22,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetTaskAssignments()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
             return Ok(_service.GetAll());
         }
         //lead arc, cons man
@@ -34,11 +29,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("project/{id}")]
         public IActionResult GetTaskAssignmentsByProjectId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByProjectId(id)
-            };
             return Ok(_service.GetByProjectId(id));
         }
         //lead arc, cons man
@@ -46,11 +36,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("user/{id}")]
         public IActionResult GetTaskAssignmentsByUserId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByUserId(id)
-            };
             return Ok(_service.GetByUserId(id));
         }
         [HttpPost]

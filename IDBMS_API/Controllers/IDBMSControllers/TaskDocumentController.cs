@@ -22,11 +22,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetTaskDocuments()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
             return Ok(_service.GetAll());
         }
 
@@ -34,11 +29,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("task-report/{id}")]
         public IActionResult GetTaskDocumentsByTaskReportId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByTaskReportId(id)
-            };
             return Ok(_service.GetByTaskReportId(id));
         }
         [HttpPost]

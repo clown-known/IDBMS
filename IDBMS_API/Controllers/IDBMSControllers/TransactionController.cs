@@ -24,11 +24,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetTransactions()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
             return Ok(_service.GetAll());
         }
         //admin, owner
@@ -36,11 +31,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("{id}")]
         public IActionResult GetTransactionsById(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetById(id)
-            };
             return Ok(_service.GetById(id));
         }
         //cus
@@ -48,11 +38,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("user/{id}")]
         public IActionResult GetTransactionsByUserId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByUserId(id)
-            };
             return Ok(_service.GetByUserId(id));
         }
         //admin, owner
@@ -60,11 +45,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("project/{id}")]
         public IActionResult GetTransactionsByProjectId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByProjectId(id)
-            };
             return Ok(_service.GetByProjectId(id));
         }
         [HttpPost]

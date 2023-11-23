@@ -22,22 +22,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetTaskReports()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
             return Ok(_service.GetAll());
         }
         [EnableQuery]
         [HttpGet("project-task/{id}")]
         public IActionResult GetTaskReportsByProjectTaskId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByTaskId(id)
-            };
             return Ok(_service.GetByTaskId(id));
         }
         //for Manager to view their list
@@ -45,11 +35,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("user/{id}")]
         public IActionResult GetTaskReportsByUserId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByUserId(id)
-            };
             return Ok(_service.GetByUserId(id));
         }
         [HttpPost]

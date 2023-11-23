@@ -25,35 +25,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetRooms()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
             return Ok(_service.GetAll());
         }
-
-        /*[EnableQuery]
-        [HttpGet("project/{id}")]
-        public IActionResult GetRoomsByProjectId([FromQuery] Guid id)
-        {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByProjectId(id)
-            };
-            return Ok(response);
-        }*/
 
         [EnableQuery]
         [HttpGet("floor/{id}")]
         public IActionResult GetRoomsByFloorId([FromQuery] Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByFloorId(id)
-            };
             return Ok(_service.GetByFloorId(id));
         }
 

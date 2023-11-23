@@ -25,11 +25,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetParticipations()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
             return Ok(_service.GetAll());
         }
 
@@ -37,11 +32,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("user/{id}")]
         public IActionResult GetParticipationsByUserId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByUserId(id)
-            };
             return Ok(_service.GetByUserId(id));
         }
 
@@ -49,11 +39,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("project/{id}")]
         public IActionResult GetParticipationsByProjectId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByProjectId(id)
-            };
             return Ok(_service.GetByProjectId(id));
         }
 

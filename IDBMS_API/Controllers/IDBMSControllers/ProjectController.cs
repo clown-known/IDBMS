@@ -26,11 +26,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetProjects()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
             return Ok(_service.GetAll());
         }
 
@@ -38,11 +33,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("{id}")]
         public IActionResult GetProjectById(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetById(id)
-            };
             return Ok(_service.GetById(id));
         }
 

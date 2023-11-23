@@ -23,11 +23,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetProjectTasks()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
             return Ok(_service.GetAll());
         }
 
@@ -35,22 +30,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("project/{id}")]
         public IActionResult GetProjectTasksByProjectId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByProjectId(id)
-            };
             return Ok(_service.GetByProjectId(id));
         }
         [EnableQuery]
         [HttpGet("payment-stage/{id}")]
         public IActionResult GetProjectTasksByPaymentStageId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByPaymentStageId(id)
-            };
             return Ok(_service.GetByPaymentStageId(id));
         }
         [HttpPost]

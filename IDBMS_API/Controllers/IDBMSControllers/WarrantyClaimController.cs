@@ -22,11 +22,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetWarrantyClaims()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
             return Ok(_service.GetAll());
         }
 
@@ -34,22 +29,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("user/{id}")]
         public IActionResult GetWarrantyClaimsByUserId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByUserId(id)
-            };
             return Ok(_service.GetByUserId(id));
         }
         [EnableQuery]
         [HttpGet("project/{id}")]
         public IActionResult GetWarrantyClaimsByProjectId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByProjectId(id)
-            };
             return Ok(_service.GetByProjectId(id));
         }
         [HttpPost]

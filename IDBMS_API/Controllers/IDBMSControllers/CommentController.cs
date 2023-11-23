@@ -24,11 +24,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetComments()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
             return Ok(_service.GetAll());
         }
         //permission
@@ -36,11 +31,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("project-task/{id}")]
         public IActionResult GetCommentsProjectTaskId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-/*                Data = _service.GetByConstructionTaskId(id)*/
-            };
             return Ok(_service.GetByProjectTaskId(id));
         }
         //permission
@@ -48,11 +38,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("project/{id}")]
         public IActionResult GetCommentsProjectId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-/*                Data = _service.GetByDecorProgressReportId(id)*/
-            };
             return Ok(_service.GetByProjectId(id));
         }
         [HttpPost]
