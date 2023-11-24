@@ -24,6 +24,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(_service.GetAll());
         }
 
+        [EnableQuery]
+        [HttpGet("project-design/{id}")]
+        public IActionResult GetPaymentStageDesignsByProjectDesignId(int id)
+        {
+            return Ok(_service.GetByProjectDesignId(id));
+        }
         [HttpPost]
         public IActionResult CreatePaymentStageDesign([FromBody] PaymentStageDesignRequest request)
         {

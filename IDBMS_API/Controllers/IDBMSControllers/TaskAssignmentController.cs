@@ -22,14 +22,22 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetTaskAssignments()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
-
+        //lead arc, cons man
+        [EnableQuery]
+        [HttpGet("project/{id}")]
+        public IActionResult GetTaskAssignmentsByProjectId(Guid id)
+        {
+            return Ok(_service.GetByProjectId(id));
+        }
+        //lead arc, cons man
+        [EnableQuery]
+        [HttpGet("user/{id}")]
+        public IActionResult GetTaskAssignmentsByUserId(Guid id)
+        {
+            return Ok(_service.GetByUserId(id));
+        }
         [HttpPost]
         public IActionResult CreateTaskAssignment([FromBody] TaskAssignmentRequest request)
         {

@@ -36,6 +36,18 @@ namespace Repository.Implements
                 throw;
             }
         }
+        public IEnumerable<Site?> GetByProjectId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Sites.Where(s => s.ProjectId == id).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
         public Site? Save(Site entity)
         {
@@ -70,5 +82,6 @@ namespace Repository.Implements
             throw new NotImplementedException();
         }
 
+       
     }
 }

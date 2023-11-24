@@ -26,24 +26,14 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetProjects()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
 
         [EnableQuery]
         [HttpGet("{id}")]
         public IActionResult GetProjectById(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetById(id)
-            };
-            return Ok(response);
+            return Ok(_service.GetById(id));
         }
 
         [HttpPost]
@@ -114,11 +104,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/isAdvertisement")]
-        public IActionResult UpdateProjectAdvertisementStatus(Guid id, int isAdvertisement)
+        public IActionResult UpdateProjectAdvertisementStatus(Guid id, AdvertisementStatus status)
         {
             try
             {
-                _service.UpdateProjectAdvertisementStatus(id, isAdvertisement);
+                _service.UpdateProjectAdvertisementStatus(id, status);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",

@@ -24,36 +24,28 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetTransactions()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
         //admin, owner
         [EnableQuery]
         [HttpGet("{id}")]
         public IActionResult GetTransactionsById(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetById(id)
-            };
-            return Ok(response);
+            return Ok(_service.GetById(id));
         }
         //cus
         [EnableQuery]
         [HttpGet("user/{id}")]
         public IActionResult GetTransactionsByUserId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByUserId(id)
-            };
-            return Ok(response);
+            return Ok(_service.GetByUserId(id));
+        }
+        //admin, owner
+        [EnableQuery]
+        [HttpGet("project/{id}")]
+        public IActionResult GetTransactionsByProjectId(Guid id)
+        {
+            return Ok(_service.GetByProjectId(id));
         }
         [HttpPost]
         public IActionResult CreateTransaction([FromBody] TransactionRequest request)

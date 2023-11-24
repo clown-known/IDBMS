@@ -22,12 +22,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetProjectDesigns()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
 
         [HttpPost]

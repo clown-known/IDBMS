@@ -9,40 +9,36 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WarrantyClaimsController : ODataController
+    public class TaskDocumentsController : ODataController
     {
-        private readonly WarrantyClaimService _service;
+        private readonly TaskDocumentService _service;
 
-        public WarrantyClaimsController(WarrantyClaimService service)
+        public TaskDocumentsController(TaskDocumentService service)
         {
             _service = service;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetWarrantyClaims()
+        public IActionResult GetTaskDocuments()
         {
             return Ok(_service.GetAll());
         }
 
         [EnableQuery]
-        [HttpGet("user/{id}")]
-        public IActionResult GetWarrantyClaimsByUserId(Guid id)
+        [HttpGet("task-report/{id}")]
+        public IActionResult GetTaskDocumentsByTaskReportId(Guid id)
         {
-            return Ok(_service.GetByUserId(id));
-        }
-        [EnableQuery]
-        [HttpGet("project/{id}")]
-        public IActionResult GetWarrantyClaimsByProjectId(Guid id)
-        {
-            return Ok(_service.GetByProjectId(id));
+            return Ok(_service.GetByTaskReportId(id));
         }
         [HttpPost]
-        public IActionResult CreateWarrantyClaim([FromBody] WarrantyClaimRequest request)
+        public IActionResult CreateTaskDocument([FromBody] TaskDocumentRequest request)
         {
+            try
+            {
                 try
                 {
-                    var result = _service.CreateWarrantyClaim(request);
+                    var result = _service.CreateTaskDocument(request);
                     var response = new ResponseMessage()
                     {
                         Message = "Create successfully!",
@@ -58,36 +54,19 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                     };
                     return BadRequest(response);
                 }
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult UpdateWarrantyClaim(Guid id, [FromBody] WarrantyClaimRequest request)
-        {
-            try
-            {
-                _service.UpdateWarrantyClaim(id, request);
-                var response = new ResponseMessage()
-                {
-                    Message = "Update successfully!",
-                };
-                return Ok(response);
             }
             catch (Exception ex)
             {
-                var response = new ResponseMessage()
-                {
-                    Message = $"Error: {ex.Message}"
-                };
-                return BadRequest(response);
+                throw new Exception(ex.Message);
             }
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteWarrantyClaim(Guid id)
+        public IActionResult DeleteTaskDocument(Guid id)
         {
             try
             {
-                _service.DeleteWarrantyClaim(id);
+                _service.DeleteTaskDocument(id);
                 var response = new ResponseMessage()
                 {
                     Message = "Delete successfully!",

@@ -23,26 +23,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetProjectTasks()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
 
         [EnableQuery]
         [HttpGet("project/{id}")]
         public IActionResult GetProjectTasksByProjectId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByProjectId(id)
-            };
-            return Ok(response);
+            return Ok(_service.GetByProjectId(id));
         }
-
+        [EnableQuery]
+        [HttpGet("payment-stage/{id}")]
+        public IActionResult GetProjectTasksByPaymentStageId(Guid id)
+        {
+            return Ok(_service.GetByPaymentStageId(id));
+        }
         [HttpPost]
         public IActionResult CreateProjectTask([FromBody] ProjectTaskRequest request)
         {

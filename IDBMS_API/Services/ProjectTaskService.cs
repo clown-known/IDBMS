@@ -22,7 +22,11 @@ namespace IDBMS_API.Services
         }
         public IEnumerable<ProjectTask?> GetByProjectId(Guid id)
         {
-            return _repository.GetByProjectId(id);
+            return _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+        }
+        public IEnumerable<ProjectTask?> GetByPaymentStageId(Guid id)
+        {
+            return _repository.GetByPaymentStageId(id) ?? throw new Exception("This object is not existed!");
         }
         public ProjectTask? CreateProjectTask(ProjectTaskRequest request)
         {
@@ -45,6 +49,7 @@ namespace IDBMS_API.Services
                 ProjectId = request.ProjectId,
                 PaymentStageId = request.PaymentStageId,
                 InteriorItemId = request.InteriorItemId,
+                RoomId = request.RoomId,
                 Status = request.Status,
             };
             var ctCreated = _repository.Save(ct);
@@ -69,6 +74,7 @@ namespace IDBMS_API.Services
             ct.ProjectId = request.ProjectId;
             ct.PaymentStageId = request.PaymentStageId;
             ct.InteriorItemId = request.InteriorItemId;
+            ct.RoomId = request.RoomId;
             ct.Status = request.Status;
 
             _repository.Update(ct);

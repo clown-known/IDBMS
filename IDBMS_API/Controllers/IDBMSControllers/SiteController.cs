@@ -22,14 +22,14 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetSites()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
-
+        [EnableQuery]
+        [HttpGet("project/{id}")]
+        public IActionResult GetSitesByProjectId(Guid id)
+        {
+            return Ok(_service.GetByProjectId(id));
+        }
         [HttpPost]
         public IActionResult CreateSite([FromBody] SiteRequest request)
         {

@@ -25,24 +25,14 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetFloors()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
 
         [EnableQuery]
-        [HttpGet("project/{id}")]
+        [HttpGet("site/{id}")]
         public IActionResult GetFloorsByProjectId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-/*                Data = _service.GetByProjectId(id)*/
-            };
-            return Ok(response);
+            return Ok(_service.GetBySiteId(id));
         }
 
         [HttpPost]

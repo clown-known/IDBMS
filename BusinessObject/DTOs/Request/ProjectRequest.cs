@@ -11,6 +11,8 @@ namespace BusinessObject.DTOs.Request
 
         public string? CompanyName { get; set; } = default!;
 
+        public string? CompanyAddress { get; set; }
+
         public string? Description { get; set; }
 
         [Required]
@@ -47,6 +49,6 @@ namespace BusinessObject.DTOs.Request
 
         public Guid? BasedOnDecorProjectId { get; set; }
 
-        public int? DecorProjectDesignId { get; set; }
+        public int? ProjectDesignId { get; set; }
     }
 }

@@ -22,23 +22,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetTaskReports()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
         [EnableQuery]
-        [HttpGet("-task/{id}")]
-        public IActionResult GetTaskReportsByTaskId(Guid id)
+        [HttpGet("project-task/{id}")]
+        public IActionResult GetTaskReportsByProjectTaskId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByTaskId(id)
-            };
-            return Ok(response);
+            return Ok(_service.GetByTaskId(id));
+        }
+        //for Manager to view their list
+        [EnableQuery]
+        [HttpGet("user/{id}")]
+        public IActionResult GetTaskReportsByUserId(Guid id)
+        {
+            return Ok(_service.GetByUserId(id));
         }
         [HttpPost]
         public IActionResult CreateTaskReport([FromBody] TaskReportRequest request)

@@ -25,36 +25,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetParticipations()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
 
         [EnableQuery]
         [HttpGet("user/{id}")]
         public IActionResult GetParticipationsByUserId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByUserId(id)
-            };
-            return Ok(response);
+            return Ok(_service.GetByUserId(id));
         }
 
         [EnableQuery]
         [HttpGet("project/{id}")]
         public IActionResult GetParticipationsByProjectId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByProjectId(id)
-            };
-            return Ok(response);
+            return Ok(_service.GetByProjectId(id));
         }
 
         [HttpPost]

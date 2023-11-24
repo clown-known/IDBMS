@@ -25,10 +25,10 @@ namespace IDBMS_API.Services
             return _repository.GetById(id) ?? throw new Exception("This object is not found!");
         }
 
-/*        public IEnumerable<Floor> GetByProjectId(Guid projectId)
+        public IEnumerable<Floor?> GetBySiteId(Guid id)
         {
-            return _repository.GetByProjectId(projectId);
-        }*/
+            return _repository.GetBySiteId(id);
+        }
 
         public Floor? CreateFloor(FloorRequest request)
         {

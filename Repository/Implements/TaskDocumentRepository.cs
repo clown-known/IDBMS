@@ -37,6 +37,19 @@ namespace Repository.Implements
             }
         }
 
+        public IEnumerable<TaskDocument?> GetByTaskReportId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.TaskDocuments.Where(td => td.TaskReportId == id).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public TaskDocument? Save(TaskDocument entity)
         {
             try
@@ -84,5 +97,6 @@ namespace Repository.Implements
             }
         }
 
+        
     }
 }

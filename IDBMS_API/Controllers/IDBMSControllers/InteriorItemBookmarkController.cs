@@ -25,24 +25,14 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetInteriorItemBookmarks()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
 
         [EnableQuery]
         [HttpGet("user/{id}")]
         public IActionResult GetInteriorItemBookmarksByUserId(Guid id)
-        {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByUserId(id)
-            };
-            return Ok(response);
+        { 
+            return Ok(_service.GetByUserId(id));
         }
 
         [HttpPost]

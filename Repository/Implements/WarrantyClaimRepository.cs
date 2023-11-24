@@ -36,6 +36,32 @@ namespace Repository.Implements
             }
         }
 
+        public IEnumerable<WarrantyClaim?> GetByUserId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.WarrantyClaims.Where(wc => wc.UserId == id).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<WarrantyClaim?> GetByProjectId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.WarrantyClaims.Where(wc => wc.ProjectId == id).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public WarrantyClaim? Save(WarrantyClaim entity)
         {
             try
@@ -68,5 +94,7 @@ namespace Repository.Implements
         {
             throw new NotImplementedException();
         }
+
+       
     }
 }
