@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 
 namespace Repository.Implements;
@@ -74,6 +75,7 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
             using var context = new IdtDbContext();
             return context.ProjectParticipations
                 .Where(u => u.UserId.Equals(id) && u.IsDeleted == false)
+                .Include(p => p.Project)
                 .ToList();
         }
         catch
