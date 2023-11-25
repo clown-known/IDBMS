@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -50,7 +51,12 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Comments.Where(comment => comment.ProjectId == id).ToList();
+                return context.Comments
+                    .Include(t => t.ProjectTask)
+                    .Include(u => u.User)
+                    .Where(comment => comment.ProjectId == id)
+                    .OrderByDescending(comment => comment.LastModifiedTime ?? comment.CreatedTime)
+                    .ToList();
             }
             catch
             {
