@@ -76,6 +76,7 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
             return context.ProjectParticipations
                 .Where(u => u.UserId.Equals(id) && u.IsDeleted == false)
                 .Include(p => p.Project)
+                    .ThenInclude(pc => pc.ProjectCategory)
                 .ToList();
         }
         catch

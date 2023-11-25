@@ -58,6 +58,7 @@ namespace BusinessObject.Models
         public ProjectTask? ParentTask { get; set; }
 
         public int? TaskCategoryId { get; set; }
+        public TaskCategory? TaskCategory { get; set; }
 
         [Required]
         public Guid ProjectId { get; set; }
