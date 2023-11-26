@@ -60,11 +60,11 @@ namespace API.Controllers
             return new JsonResult(response) { StatusCode = 400 };
         }
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(CreateUserRequest request)
+        public async Task<IActionResult> Register(CreateUserRequest request)
         {
             User user = userService.CreateUser(request);
 
-            return Ok(user);
+            return Login(new LoginRequest() { Email = request.Email,Password = request.Password});
         }
         [HttpPost("verify")]
         public IActionResult Verify(string email)

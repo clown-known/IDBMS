@@ -12,9 +12,11 @@ public class Project
     [Required]
     public string Name { get; set; } = default!;
 
-    public string? CompanyName { get; set; }
 
-    public string? CompanyAddress { get; set; } 
+    public string? CompanyName { get; set; } = default!;
+    public string? CompanyAdress { get; set; } = default!;
+    public string? CompanyCode { get; set; } = default!;
+
 
     public string? Description { get; set; }
 

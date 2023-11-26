@@ -38,6 +38,8 @@ public class User
 
     [Required]
     public DateTime CreatedDate { get; set; }
+    [Required]
+    public DateTime YearOfBirth { get; set; }
 
     [Required]
     public DateTime UpdatedDate { get; set; }
@@ -59,5 +61,6 @@ public class User
     public List<Notification> Notifications { get; set; } = new();
     public List<Transaction> Transactions { get; set; } = new();
     public List<UserRole> UserRoles { get; set; } = new();
-    public List<ProjectParticipation> ProjectParticipations { get; set; } = new();
+    public List<ProjectParticipation> Participations { get; set; } = new();
+    public List<AuthenticationCode> AuthenticationCodes { get; set; } = new();
 }

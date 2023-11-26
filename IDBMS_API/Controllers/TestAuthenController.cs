@@ -1,7 +1,10 @@
 ﻿using API.Supporters.JwtAuthSupport;
+using BLL.Services;
 using BusinessObject.DTOs.Request;
 using BusinessObject.DTOs.Request.AccountRequest;
 using BusinessObject.Models;
+using Firebase.Storage;
+using IDBMS_API.Supporters.File;
 using IDBMS_API.Supporters.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,6 +39,22 @@ namespace IDBMS_API.Controllers
             //user.PasswordSalt = passwordSalt;
 
             return Ok(user);
+        }
+        [HttpPost("file")]
+        public async Task<IActionResult> IndexAsync([FromForm] IFormFile imageFile)
+        {
+            if (imageFile != null && imageFile.Length != 0)
+            {
+
+                FirebaseService s = new FirebaseService();
+                string filename = await s.UploadImage(imageFile);
+
+                //byte[] file = await s.DownloadFile(filename);
+                //byte[] file2 = FileSupporter.GenFileBytes(file);
+                //string name = await s.UploadByByte(file2,"nam.docx");
+                return Ok();
+            }
+            return Ok("false");
         }
         [HttpGet("case1")]
         [Authorize]
