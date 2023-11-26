@@ -2,8 +2,6 @@
 
 public enum TransactionType
 {
-    CashDeposit = 0,
-    BankDeposit = 1,
-    Warranty = 2,
-    Withdraw = 3,
+    Cash = 0,
+    Bank = 1,
 }

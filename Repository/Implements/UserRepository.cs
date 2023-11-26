@@ -1,90 +1,58 @@
 ﻿using BusinessObject.Models;
 using Repository.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Repository.Implements;
-
-public class UserRepository : IUserRepository
+namespace Repository.Implements
 {
-    public IEnumerable<User> GetAll()
+    public class UserRepository : IUserRepository
+    { 
+    private readonly IdtDbContext context = new();
+
+    public void Dispose()
     {
-        try
-        {
-            using var context = new IdtDbContext();
-            return context.Users.ToList();
-        }
-        catch
-        {
-            throw;
-        }
-}
-    public User? GetById(Guid id)
-    {
-        try
-        {
-            using var context = new IdtDbContext();
-            return context.Users.FirstOrDefault(u => u.Id == id);
-        }
-        catch
-        {
-            throw;
-        }
+        context?.Dispose();
     }
 
-    public User? GetByEmail(string email)
+    public IEnumerable<User> GetAll()
     {
-        try
-        {
-            using var context = new IdtDbContext();
-            return context.Users.FirstOrDefault(d => d.Email == email );
-        }
-        catch
-        {
-            throw;
-        }
+        return context.Users.ToList();
+    }
+    public User? GetById(string id)
+    {
+        return context.Users.FirstOrDefault(d => d.Id.ToString() == id);
+    }
+
+    public User? GetByEmailAndPassword(string email, string password)
+    {
+        byte[] hashPass = new byte[2];
+        return context.Users.FirstOrDefault(d => d.Email == email && d.Password == hashPass);
     }
 
     public User? Save(User user)
     {
-        try
-        {
-            using var context = new IdtDbContext();
-            var userAdded = context.Users.Add(user);
-            context.SaveChanges();
-            return userAdded.Entity;
-        }
-        catch
-        {
-            throw;
-        }
+        var userAdded = context.Users.Add(user);
+        context.SaveChanges();
+        return userAdded.Entity;
     }
 
     public void Update(User user)
     {
-        try
-        {
-            using var context = new IdtDbContext();
-            context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            context.SaveChanges();
-        }
-        catch
-        {
-            throw;
-        }
+        context.Entry<User>(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+        context.SaveChanges();
     }
 
-    public void DeleteById(Guid userId)
+    public void DeleteById(string userId)
     {
-        try
+        var user = context.Users.Where(d => d.Id.ToString() == userId).FirstOrDefault();
+        if (user != null)
         {
-            using var context = new IdtDbContext();
-            User user = new() { Id = userId };
-            context.Users.Attach(user);
             context.Users.Remove(user);
-            context.SaveChanges();
         }
-        catch
-        {
-            throw;
-        }
+        context.SaveChanges();
     }
+}
 }
