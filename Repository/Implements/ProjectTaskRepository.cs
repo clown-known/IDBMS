@@ -29,7 +29,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectTasks.FirstOrDefault(task => task.Id == id);
+                return context.ProjectTasks
+
+                    .FirstOrDefault(task => task.Id == id);
             }
             catch
             {

@@ -24,6 +24,14 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             return Ok(_service.GetAll());
         }
+
+        [EnableQuery]
+        [HttpGet("{id}")]
+        public IActionResult GetSiteById(Guid id)
+        {
+            return Ok(_service.GetById(id));
+        }
+
         [EnableQuery]
         [HttpGet("project/{id}")]
         public IActionResult GetSitesByProjectId(Guid id)

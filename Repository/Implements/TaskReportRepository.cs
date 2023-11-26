@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskReports.Where(report => report.ProjectTaskId == id).ToList();
+                return context.TaskReports
+                    .Include(rd => rd.TaskDocuments)
+                    .Where(report => report.ProjectTaskId == id).ToList();
             }
             catch
             {
