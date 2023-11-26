@@ -56,7 +56,7 @@ namespace IDBMS_API.Supporters.File
                     FindAndReplaceText(doc, "[CreatedMonth]", time.Month.ToString());
                     FindAndReplaceText(doc, "[CreatedYear]", time.Year.ToString());
                     FindAndReplaceText(doc, "[CustomerName]", owner.Name);
-                    FindAndReplaceText(doc, "[YearOfBirth]", owner.YearOfBirth.ToString());
+                    FindAndReplaceText(doc, "[YearOfBirth]", owner.DateOfBirth.ToString());
                     FindAndReplaceText(doc, "[Adress]", owner.Address);
                     FindAndReplaceText(doc, "[Phone]", owner.Phone);
                     FindAndReplaceText(doc, "[Email]", owner.Email);

@@ -7,10 +7,14 @@ using BusinessObject.DTOs.Response;
 using Microsoft.AspNetCore.Mvc;
 using IDBMS_API.Supporters.Utils;
 using IDBMS_API.Services;
+using Azure;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Azure.Core;
+using DocumentFormat.OpenXml.Office2016.Excel;
 
 namespace API.Controllers
 {
-    [Route("api/auth")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
@@ -26,51 +30,126 @@ namespace API.Controllers
         [HttpPost("login")]
         public IActionResult Login(LoginRequest request)
         {
-            ResponseMessage response;
-            var (token, user) = userService.Login(request.Email, request.Password);
-            if (token == null)
+            try
             {
-                response = new ResponseMessage() { Message = "Incorrect email or password" };
-                return new JsonResult(response) { StatusCode = StatusCodes.Status400BadRequest };
-            }
-            response = new ResponseMessage() {
-                Message = "Login successfully",
-                Data = new
+                var (token, user) = userService.Login(request.Email, request.Password);
+                var response = new ResponseMessage();
+                if (token == null)
                 {
-                    Token=token,
+                    response.Message = "Incorrect email or password!";
+                    return BadRequest(response);
+                }
+
+                response.Message = "Login successfully!";
+                response.Data = new
+                {
+                    Token = token,
                     user.Name,
                     user.Id,
-                }
-            };
-            return new JsonResult(response) { StatusCode = StatusCodes.Status200OK };
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
         [HttpPut("logout")]
         [Authorize]
         public IActionResult Logout()
         {
-            ResponseMessage response;
-            var user = (User?) HttpContext.Items["User"];
-            if (user != null)
+            try
             {
-                //userService.Logout(user);
-                response = new ResponseMessage() { Message = "Logout successfully" };
-                return new JsonResult(response) { StatusCode = 200 };
+                var response = new ResponseMessage();
+                var user = (User?)HttpContext.Items["User"];
+                if (user != null)
+                {
+                    //userService.Logout(user);
+                    response.Message = "Logout successfully!" ;
+                    return Ok(response);
+                }
+                response.Message = "Cannot logout, user not existed";
+                return BadRequest(response);
             }
-            response = new ResponseMessage() { Message = "Cannot logout, user not existed" };
-            return new JsonResult(response) { StatusCode = 400 };
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
         [HttpPost("register")]
-        public async Task<IActionResult> Register(CreateUserRequest request)
+        public IActionResult Register(CreateUserRequest request)
         {
-            User user = userService.CreateUser(request);
-
-            return Login(new LoginRequest() { Email = request.Email,Password = request.Password});
+            try
+            {
+                var user = userService.CreateUser(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Login(new LoginRequest() { Email = request.Email, Password = request.Password });
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
+
+        [HttpPut("password")]
+        public IActionResult UpdateUserPassword(UpdatePasswordRequest request)
+        {
+            try
+            {
+                userService.UpdateUserPassword(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
         [HttpPost("verify")]
         public IActionResult Verify(string email)
         {
-            
-            return Ok(authenticationCodeService.SendActivationEmail(email));
+            try
+            {
+                var result = authenticationCodeService.SendActivationEmail(email);
+                var response = new ResponseMessage()
+                {
+                    Message = "Send successfully!",
+                    Data= result
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+
         }
     }
 }
