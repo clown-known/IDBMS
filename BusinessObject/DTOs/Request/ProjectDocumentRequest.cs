@@ -28,8 +28,7 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public Guid ProjectId { get; set; }
 
-        [Required]
-        public int ProjectDocumentTemplateId { get; set; }
+        public int? ProjectDocumentTemplateId { get; set; }
 
         [Required]
         public bool IsPublicAdvertisement { get; set; }
