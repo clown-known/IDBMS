@@ -24,6 +24,10 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByFilter(projectId, documentTemplateId) ?? throw new Exception("This object is not existed!");
         }
+        public IEnumerable<ProjectDocument?> GetByProjectId(Guid id)
+        {
+            return _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+        }
         public ProjectDocument? CreateProjectDocument(ProjectDocumentRequest request)
         {
             var pd = new ProjectDocument

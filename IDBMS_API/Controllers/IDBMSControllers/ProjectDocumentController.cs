@@ -31,6 +31,14 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             return Ok(_service.GetByFilter(null, id));
         }
+
+        [EnableQuery]
+        [HttpGet("project/{id}")]
+        public IActionResult GetProjectDocumentsByProjectId(Guid id)
+        {
+            return Ok(_service.GetByProjectId(id));
+        }
+
         [HttpPost]
         public IActionResult CreateProjectDocument([FromBody] ProjectDocumentRequest request)
         {

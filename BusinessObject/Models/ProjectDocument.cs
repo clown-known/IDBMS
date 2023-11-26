@@ -26,9 +26,8 @@ public class ProjectDocument
     public Guid ProjectId { get; set; }
     public Project Project { get; set; }
 
-    [Required]
-    public int ProjectDocumentTemplateId { get; set; }
-    public ProjectDocumentTemplate ProjectDocumentTemplate { get; set; }
+    public int? ProjectDocumentTemplateId { get; set; }
+    public ProjectDocumentTemplate? ProjectDocumentTemplate { get; set; }
 
     [Required]
     public bool IsPublicAdvertisement { get; set; }
