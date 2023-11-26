@@ -1,14 +1,11 @@
 ﻿
 using API.Supporters.JwtAuthSupport;
 using BLL.Services;
-using BusinessObject.DTOs.Request;
-using BusinessObject.DTOs.Request.AccountRequest;
 using BusinessObject.Models;
 using IDBMS_API.Constants;
-using IDBMS_API.Supporters.Utils;
+using IDBMS_API.DTOs.Request;
 using Repository.Interfaces;
 using System.Net;
-using System.Net.Mail;
 using System.Numerics;
 using System.Text.RegularExpressions;
 
@@ -16,40 +13,35 @@ namespace API.Services
 {
     public class UserService
     {
-        private readonly IUserRepository _repository;
+        private readonly IUserRepository userRepository;
         private readonly JwtTokenSupporter jwtTokenSupporter;
+        private readonly FirebaseService firebaseService;
         private readonly IConfiguration configuration;
-        public UserService(IUserRepository _repository, JwtTokenSupporter jwtTokenSupporter, IConfiguration configuration)
+        public UserService(IUserRepository userRepository, JwtTokenSupporter jwtTokenSupporter, FirebaseService firebaseService, IConfiguration configuration)
         {
-            this._repository = _repository;
+            this.userRepository = userRepository;
             this.jwtTokenSupporter = jwtTokenSupporter;
+            this.firebaseService = firebaseService;
             this.configuration = configuration;
         }
-        public User? GetById(Guid id)
+        public User? GetById(string id)
         {
-            return _repository.GetById(id);
-        }
-        public IEnumerable<User> GetAll()
-        {
-            return _repository.GetAll();
+            return userRepository.GetById(id);
         }
 
         public (string? token, User? user) Login(string email, string password)
         {
-            var user = _repository.GetByEmail(email);
+            var user = userRepository.GetByEmailAndPassword(email, password);
             if (user != null)
             {
-                if (PasswordUtils.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                if (user.Token != null)
                 {
-                    if (user.Token != null)
-                    {
-                        return (user.Token, user);
-                    }
-
-                    var token = jwtTokenSupporter.CreateToken(user);
-                    UpdateTokenForUser(user, token);
-                    return (token, user);
+                    return (user.Token, user);
                 }
+
+                var token = jwtTokenSupporter.CreateToken(user);
+                UpdateTokenForUser(user, token);
+                return (token, user);
             }
             return (null, null);
         }
@@ -57,12 +49,12 @@ namespace API.Services
         private void UpdateTokenForUser(User user, string token)
         {
             user.Token = token;
-            _repository.Update(user);
+            userRepository.Update(user);
         }
-        public User? CreateUser(CreateUserRequest request)
+        public async Task<User?> CreateUser(CreateAccountRequest request)
         {
             TryValidateRegisterRequest(request);
-            PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
             var user = new User()
             {
                 Address = request.Address,
@@ -72,17 +64,16 @@ namespace API.Services
                 Id = Guid.NewGuid(),
                 Email = request.Email,
                 Name = request.Name,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
+                //Password = request.Password,
                 Phone = request.Phone,
-                ExternalId = request.ExternalId
+                ExternalId = request.ExternalId ?? request.ExternalId
             };
 
-            var userCreated = _repository.Save(user);
+            var userCreated = userRepository.Save(user);
             return userCreated;
         }
         
-        private void TryValidateRegisterRequest(CreateUserRequest request)
+        private void TryValidateRegisterRequest(CreateAccountRequest request)
         {
             if (new Regex(RegexCollector.PhoneRegex).IsMatch(request.Phone) == false)
             {
@@ -103,23 +94,20 @@ namespace API.Services
             }
 
         }
-        public void UpdateUser(string userId, UpdateUserRequest request)
+        public async Task UpdateUser(string userId, UpdateUserRequest request)
         {
-            Guid.TryParse(userId,out Guid id);
-            var user = _repository.GetById(id) ?? throw new Exception("User not existed");
-            PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            var user = userRepository.GetById(userId) ?? throw new Exception("User not existed");
+
             user.Address = request.Address;
             user.Balance = 0;
             user.UpdatedDate = DateTime.UtcNow;
             user.Language = request.Language;
             user.Email = request.Email;
             user.Name = request.Name;
-            user.PasswordSalt = passwordSalt;
-            user.PasswordHash = passwordHash;
+            //user.Password = request.Password;
             user.Phone = request.Phone;
 
-            _repository.Update(user);
+            userRepository.Update(user);
         }
-        
     }
 }

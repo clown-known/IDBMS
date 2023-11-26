@@ -15,8 +15,6 @@ public class InteriorItem
     [Required]
     public string Name { get; set; } = default!;
 
-    public string? EnglishName { get; set; }
-
     [Required]
     public double Length { get; set; }
 
@@ -34,9 +32,8 @@ public class InteriorItem
 
     public string? Description { get; set; }
 
-    public string? EnglishDescription { get; set; }
-
-    public string? Origin { get; set; } = default!;
+    [Required]
+    public string Origin { get; set; } = default!;
 
     [Required]
     [Column(TypeName = "money")]
@@ -50,17 +47,15 @@ public class InteriorItem
     
     [Required]
     public int InteriorItemCategoryId { get; set; }
-    public InteriorItemCategory InteriorItemCategory { get; set; }
+    public InteriorItemCategory InteriorItemCategory { get; set; } = new();
 
     [Required]
     public InteriorItemStatus Status { get; set; }
 
-    [Required]
-    public bool IsDeleted { get; set; }
-
     public Guid? ParentItemId { get; set; }
     public InteriorItem? ParentItem { get; set; }
 
-    public List<ProjectTask> Tasks { get; set; } = new();
+    public List<ApplianceSuggestion> ApplianceSuggestions { get; set; } = new();
+    public List<ConstructionTask> ConstructionTasks { get; set; } = new();
     public List<InteriorItemBookmark> InteriorItemBookmarks { get; set; } = new();
 }

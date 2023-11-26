@@ -1,6 +1,5 @@
 ﻿using BusinessObject.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
 
@@ -17,7 +16,7 @@ public class Notification
 
     [Required]
     public Guid UserId { get; set; }
-    public User User { get; set; }
+    public User User { get; set; } = new();
 
     public string? Link { get; set; } = default!;
 

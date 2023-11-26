@@ -19,7 +19,7 @@ public class AuthenticationCode
 
     [Required]
     public Guid UserId { get; set; }
-    public User User { get; set; }
+    public User User { get; set; } = new();
 
     [Required]
     public AuthenticationCodeStatus Status { get; set; }

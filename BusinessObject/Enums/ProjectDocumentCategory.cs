@@ -2,11 +2,11 @@
 
 public enum ProjectDocumentCategory
 {
-    Unclassified = 0,
+    Contract = 0,
     BookingDescription = 1,
     DecorProgressReport = 2,
-    Contract = 3,
-    ConfirmationMinute = 4,
+    ConstructionTaskReport = 3,
+    ConstructionProgressReport = 4,
     FinalSettlementReport = 5,
-    CompletionImage = 6,
+    Unclassified = 6,
 }

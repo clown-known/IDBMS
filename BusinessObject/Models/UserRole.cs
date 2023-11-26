@@ -9,9 +9,9 @@ public class UserRole
     public int Id { get; set; }
 
     [Required]
-    public CompanyRole Role { get; set; }
+    public Role Role { get; set; }
 
     [Required]
     public Guid UserId { get; set; }
-    public User User { get; set; }
+    public User User { get; set; } = default!;
 }
