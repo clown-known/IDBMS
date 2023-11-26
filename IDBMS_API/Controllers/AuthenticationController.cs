@@ -10,7 +10,7 @@ using IDBMS_API.Services;
 
 namespace API.Controllers
 {
-    [Route("api/auth")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
@@ -64,7 +64,7 @@ namespace API.Controllers
         {
             User user = userService.CreateUser(request);
 
-            return Login(new LoginRequest() { Email = request.Email,Password = request.Password});
+            return Ok();
         }
         [HttpPost("verify")]
         public IActionResult Verify(string email)
