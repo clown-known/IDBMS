@@ -39,7 +39,7 @@ public class User
     [Required]
     public DateTime CreatedDate { get; set; }
     [Required]
-    public DateTime YearOfBirth { get; set; }
+    public DateTime DateOfBirth { get; set; }
 
     [Required]
     public DateTime UpdatedDate { get; set; }

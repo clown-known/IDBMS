@@ -57,7 +57,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 }
         }
         [HttpPut("{id}")]
-        public IActionResult UpdateUser(string id, [FromBody] UpdateUserRequest request)
+        public IActionResult UpdateUser(Guid id, [FromBody] UpdateUserRequest request)
         {
             try
             {
