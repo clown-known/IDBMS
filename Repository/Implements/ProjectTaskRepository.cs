@@ -30,7 +30,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.ProjectTasks
-
+                    .Include(c => c.TaskCategory)
                     .FirstOrDefault(task => task.Id == id);
             }
             catch

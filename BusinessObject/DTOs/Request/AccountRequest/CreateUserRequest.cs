@@ -31,9 +31,6 @@ namespace BusinessObject.DTOs.Request.AccountRequest
         [Required]
         public Language Language { get; set; } = default!;
 
-        [Required]
-        public UserStatus Status { get; set; }
-
         public string? ExternalId { get; set; } = default!;
 
     }
