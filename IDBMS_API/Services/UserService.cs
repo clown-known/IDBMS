@@ -69,13 +69,14 @@ namespace API.Services
                 Balance = 0,
                 CreatedDate = DateTime.UtcNow,
                 Language = request.Language,
+                DateOfBirth = request.DateOfBirth,
                 Id = Guid.NewGuid(),
                 Email = request.Email,
                 Name = request.Name,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 Phone = request.Phone,
-                ExternalId = request.ExternalId
+                ExternalId = request.ExternalId,
             };
 
             var userCreated = _repository.Save(user);
@@ -103,23 +104,37 @@ namespace API.Services
             }
 
         }
-        public void UpdateUser(string userId, UpdateUserRequest request)
+        public void UpdateUser(Guid userId, UpdateUserRequest request)
         {
-            Guid.TryParse(userId,out Guid id);
-            var user = _repository.GetById(id) ?? throw new Exception("User not existed");
-            PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            var user = _repository.GetById(userId) ?? throw new Exception("User not existed");
+
             user.Address = request.Address;
             user.Balance = 0;
             user.UpdatedDate = DateTime.UtcNow;
             user.Language = request.Language;
+            user.DateOfBirth= request.DateOfBirth;
             user.Email = request.Email;
             user.Name = request.Name;
-            user.PasswordSalt = passwordSalt;
-            user.PasswordHash = passwordHash;
             user.Phone = request.Phone;
+            user.ExternalId= request.ExternalId;
 
             _repository.Update(user);
         }
-        
+
+        public void UpdateUserPassword(UpdatePasswordRequest request)
+        {
+            var user = _repository.GetById(request.userId) ?? throw new Exception("User not existed");
+
+            if (!PasswordUtils.VerifyPasswordHash(request.oldPassword, user.PasswordHash, user.PasswordSalt))
+                throw new Exception("Password not match!");
+
+            PasswordUtils.CreatePasswordHash(request.newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+
+            user.PasswordSalt = passwordSalt;
+            user.PasswordHash = passwordHash;
+
+            _repository.Update(user);
+        }
+
     }
 }

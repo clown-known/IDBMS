@@ -29,7 +29,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectTasks.FirstOrDefault(task => task.Id == id);
+                return context.ProjectTasks
+
+                    .FirstOrDefault(task => task.Id == id);
             }
             catch
             {
@@ -44,10 +46,12 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.ProjectTasks
                     .Include(c => c.TaskCategory)
+                    .Include(i => i.InteriorItem)
                     .Include(r => r.Room)
                         .ThenInclude(f => f.Floor)
                         .ThenInclude(s => s.Site)
-                    .Where(task => task.ProjectId == id).ToList();
+                    .Where(task => task.ProjectId == id)
+                    .ToList();
             }
             catch
             {

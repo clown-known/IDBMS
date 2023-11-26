@@ -38,7 +38,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.PaymentStages.Where(stage => stage.ProjectId == id).ToList();
+                return context.PaymentStages
+                         .Where(stage => stage.ProjectId == id)
+                         .OrderBy(stage => stage.StageNo)
+                         .ToList();
             }
             catch
             {

@@ -38,6 +38,7 @@ public class ProjectService
             EstimatedPrice = request.EstimatedPrice,
             FinalPrice = request.FinalPrice,
             TotalWarrantyPaid = request.TotalWarrantyPaid,
+            EstimateBusinessDay= request.EstimateBusinessDay,
             CurrentStageId = request.CurrentStageId,
             Language = request.Language,
             Status = request.Status,
@@ -66,6 +67,7 @@ public class ProjectService
         p.EstimatedPrice = request.EstimatedPrice;
         p.FinalPrice = request.FinalPrice;
         p.TotalWarrantyPaid = request.TotalWarrantyPaid;
+        p.EstimateBusinessDay= request.EstimateBusinessDay;
         p.CurrentStageId = request.CurrentStageId;
         p.Language = request.Language;
         p.Status = request.Status;
