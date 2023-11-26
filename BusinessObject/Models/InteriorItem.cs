@@ -18,6 +18,9 @@ public class InteriorItem
     public string? EnglishName { get; set; }
 
     [Required]
+    public string ImageUrl { get; set; } = default!;
+
+    [Required]
     public double Length { get; set; }
 
     [Required]

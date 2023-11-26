@@ -33,6 +33,7 @@ namespace IDBMS_API.Services
                 Code = request.Code,
                 Name = request.Name,
                 EnglishName = request.EnglishName,
+                ImageUrl = request.ImageUrl,
                 Length = request.Length,
                 Width = request.Width,
                 Height = request.Height,
@@ -60,6 +61,7 @@ namespace IDBMS_API.Services
             ii.Code = request.Code;
             ii.Name = request.Name;
             ii.EnglishName = request.EnglishName;
+            ii.ImageUrl = request.ImageUrl;
             ii.Length = request.Length;
             ii.Width = request.Width;
             ii.Height = request.Height;
