@@ -24,17 +24,14 @@ public class ProjectDocument
 
     [Required]
     public Guid ProjectId { get; set; }
-    public Project Project { get; set; } = new();
-
-    public Guid? ConstructionTaskReportId { get; set; }
-    public ConstructionTaskReport? ConstructionTaskReport { get; set; }
-
-    public Guid? DecorProgressReportId { get; set; }
-    public DecorProgressReport? DecorProgressReport { get; set; }
+    public Project Project { get; set; }
 
     [Required]
     public int ProjectDocumentTemplateId { get; set; }
-    public ProjectDocumentTemplate ProjectDocumentTemplate { get; set; } = new();
+    public ProjectDocumentTemplate ProjectDocumentTemplate { get; set; }
+
+    [Required]
+    public bool IsPublicAdvertisement { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }

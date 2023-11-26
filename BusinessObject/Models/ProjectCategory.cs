@@ -10,6 +10,8 @@ public class ProjectCategory
     [Required]
     public string Name { get; set; } = default!;
 
+    public string? EnglishName { get; set; }
+
     [Required]
     public string IconImageUrl { get; set; } = default!;
 

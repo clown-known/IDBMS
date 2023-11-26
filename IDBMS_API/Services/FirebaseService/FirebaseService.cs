@@ -1,55 +1,98 @@
-﻿using Firebase.Storage;
-using Firebase.Auth;
+﻿using DocumentFormat.OpenXml.Vml;
+using Firebase.Storage;
+using IDBMS_API.Constants;
+using Microsoft.AspNetCore.Mvc;
+using Path = System.IO.Path;
 
 namespace BLL.Services
 {
     public class FirebaseService
     {
         IConfiguration config;
+        private readonly string _storageBucket;
         public  FirebaseService()
         {
             config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
+            _storageBucket = config["Firebase:StorageBucket"];
         }
-        public async Task<string> Upload(Stream fileStream, string fileName)
+        public async Task<string> UploadImage([FromForm] IFormFile file)
         {
-            var firebaseAuthLink = await SignIn();
-            var cancellation = new CancellationTokenSource();
-            var task = new FirebaseStorage(
-                    config["firebase:Bucket"],
-                    new FirebaseStorageOptions()
-                    {
-                        AuthTokenAsyncFactory = () => Task.FromResult(firebaseAuthLink.FirebaseToken),
-                        ThrowOnCancel = true
-                    }
-                ).Child(fileName)
-                .PutAsync(fileStream);
-            return await task;
-        }
-        public async void Delete
-            (string fileName)
-        {
-            var firebaseAuthLink = await SignIn();
-            var cancellation = new CancellationTokenSource();
-            var task = new FirebaseStorage(
-                    config["firebase:Bucket"],
-                    new FirebaseStorageOptions()
-                    {
-                        AuthTokenAsyncFactory = () => Task.FromResult(firebaseAuthLink.FirebaseToken),
-                        ThrowOnCancel = true
-                    }
-                ).Child(fileName)
-                .DeleteAsync();
-            await task;
-        }
+            if (file != null && file.Length != 0)
+            {
 
-        private async Task<FirebaseAuthLink> SignIn()
+                string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+
+                var storageClient = new FirebaseStorage(_storageBucket);
+                using (var stream = file.OpenReadStream())
+                {
+                    stream.Position = 0; // Reset the stream position
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await stream.CopyToAsync(memoryStream);
+                        memoryStream.Position = 0;
+                        await storageClient.Child("images").Child(fileName).PutAsync(memoryStream);
+                    }
+                }
+
+                FirebaseStorageReference starsRef = storageClient.Child("images/" + fileName);
+                string link = await starsRef.GetDownloadUrlAsync();
+                return link;
+            }
+            return null;
+        }
+        public async Task<string> UploadByByte(byte[] file,string filename,Guid ProjectId,string fileType)
         {
-            var auth = new FirebaseAuthProvider(new FirebaseConfig(config["firebase:ApiKey"]));
-            var a = await auth.SignInWithEmailAndPasswordAsync(config["firebase:auth:email"], config["firebase:auth:password"]);
-            return a;
+            string fileName = fileType+$"{Guid.NewGuid()}";
+
+            var storageClient = new FirebaseStorage(_storageBucket);
+            using (var stream = new MemoryStream(file))
+            {
+                stream.Position = 0; // Reset the stream position
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    await stream.CopyToAsync(memoryStream);
+                    memoryStream.Position = 0;
+                    await storageClient.Child($"{ProjectId}").Child(fileType).Child(fileName).PutAsync(memoryStream);
+                }
+            }
+
+            //FirebaseStorageReference starsRef = storageClient.Child("images/" + fileName);
+            //await starsRef.GetDownloadUrlAsync()
+            return fileName;
+        }
+        public async Task<byte[]> DownloadFile(string? fileName,Guid? projectId,string fileType,bool isSample)
+        {
+
+            var storageClient = new FirebaseStorage(_storageBucket);
+            FirebaseStorageReference starsRef;
+            if (isSample)
+            {
+                starsRef = storageClient.Child("Sample/" + fileType);
+            }
+            else
+            {
+                starsRef = storageClient.Child($"{projectId}/" + $"{fileType}/" + fileName);
+            }
+
+            // Get the download URL
+            string downloadUrl = await starsRef.GetDownloadUrlAsync();
+
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetAsync(downloadUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsByteArrayAsync();
+                    return content;
+                }
+            }
+            return null;
         }
     }
 }

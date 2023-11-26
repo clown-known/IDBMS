@@ -22,8 +22,8 @@ public class Floor
     public double Area { get; set; }
 
     [Required]
-    public Guid ProjectId { get; set; }
-    public Project Project { get; set; } = new();
+    public Guid SiteId { get; set; }
+    public Site Site { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }

@@ -11,6 +11,8 @@ public class InteriorItemColor
     [Required]
     public string Name { get; set; } = default!;
 
+    public string? EnglishName { get; set; }
+
     [Required]
     public ColorType Type { get; set; }
 

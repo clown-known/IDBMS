@@ -10,11 +10,10 @@ namespace API.Supporters.JwtAuthSupport
     public class AuthorizeAttribute : Attribute, IAuthorizationFilter
     {
         public string Policy { get; set; }
-        private ParticipationRepository _participationRepository;
-        public AuthorizeAttribute() { }
-        public AuthorizeAttribute(Guid projectid)
+        private ProjectParticipationRepository _participationRepository;
+        public AuthorizeAttribute()
         {
-            _participationRepository = new ParticipationRepository();
+            _participationRepository = new ProjectParticipationRepository();
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -32,12 +31,22 @@ namespace API.Supporters.JwtAuthSupport
                 {
 
                     var id = context.HttpContext.Request.Query["id"].ToString();
-                    if (id != null)
+                    Guid.TryParse(id, out Guid pid);
+                    bool accepted = _participationRepository
+                        //.GetAllParticipationByProjectID(pid)
+                        .GetByProjectId(pid)
+                        .Where(p => p.UserId.Equals(user.Id)).Count() != 0;
+                    if (!accepted)
                         context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
 
                 }
                 //context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
             } 
+            if(Policy != null && Policy == "Manager")
+            {
+                var role = user.UserRoles;
+
+            }
         }
     }
 }

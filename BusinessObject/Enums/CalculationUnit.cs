@@ -30,7 +30,11 @@ namespace BusinessObject.Enums
         Sheet = 19,
         TransportationUnit = 20,
         Worker = 21,
-        Kilometer = 22
+        Kilometer = 22,
+        Modun = 23,
+        Unclassified = 24,
+        Shelf = 25
+
     }
 
 }
