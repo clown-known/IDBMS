@@ -38,6 +38,8 @@ public class User
 
     [Required]
     public DateTime CreatedDate { get; set; }
+    [Required]
+    public DateTime YearOfBirth { get; set; }
 
     [Required]
     public DateTime UpdatedDate { get; set; }
