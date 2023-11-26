@@ -24,6 +24,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         public IActionResult GetProjectTasks()
         {
             return Ok(_service.GetAll());
+        }        
+        
+        [EnableQuery]
+        [HttpGet("{id}")]
+        public IActionResult GetProjectTaskById(Guid id)
+        {
+            return Ok(_service.GetById(id));
         }
 
         [EnableQuery]

@@ -17,13 +17,13 @@ namespace IDBMS_API.Supporters.File
                 {
                     DateTime.UtcNow.AddHours(7).Month.ToString();
                     DateTime time = DateTime.UtcNow.AddHours(7);
-                    User owner = project.Participations.Where(p => p.Role == BusinessObject.Enums.ParticipationRole.ProductOwner)
+                    User owner = project.ProjectParticipations.Where(p => p.Role == BusinessObject.Enums.ParticipationRole.ProductOwner)
                         .FirstOrDefault().User;
                     FindAndReplaceText(doc, "[CreatedDate]", time.Day.ToString());
                     FindAndReplaceText(doc, "[CreatedMonth]", time.Month.ToString());
                     FindAndReplaceText(doc, "[CreatedYear]", time.Year.ToString());
                     FindAndReplaceText(doc, "[CompanyName]", project.CompanyName);
-                    FindAndReplaceText(doc, "[CompanyAdress]", project.CompanyAdress);
+                    FindAndReplaceText(doc, "[CompanyAdress]", project.CompanyAddress);
                     FindAndReplaceText(doc, "[Representative]",owner.Name);
                     FindAndReplaceText(doc, "[Phone]", owner.Phone);
                     FindAndReplaceText(doc, "[Email]", owner.Email);
@@ -50,7 +50,7 @@ namespace IDBMS_API.Supporters.File
                 {
                     DateTime.UtcNow.AddHours(7).Month.ToString();
                     DateTime time = DateTime.UtcNow.AddHours(7);
-                    User owner = project.Participations.Where(p => p.Role == BusinessObject.Enums.ParticipationRole.ProductOwner)
+                    User owner = project.ProjectParticipations.Where(p => p.Role == BusinessObject.Enums.ParticipationRole.ProductOwner)
                         .FirstOrDefault().User;
                     FindAndReplaceText(doc, "[CreatedDate]", time.Day.ToString());
                     FindAndReplaceText(doc, "[CreatedMonth]", time.Month.ToString());

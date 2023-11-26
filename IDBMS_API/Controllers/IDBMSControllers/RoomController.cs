@@ -29,6 +29,14 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [EnableQuery]
+        [HttpGet("{id}")]
+        public IActionResult GetRoomById(Guid id)
+        {
+            return Ok(_service.GetById(id));
+        }
+
+
+        [EnableQuery]
         [HttpGet("floor/{id}")]
         public IActionResult GetRoomsByFloorId([FromQuery] Guid id)
         {
