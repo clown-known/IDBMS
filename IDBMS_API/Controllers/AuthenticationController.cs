@@ -105,7 +105,7 @@ namespace API.Controllers
                 return BadRequest(response);
             }
         }
-
+        
         [HttpPut("password")]
         public IActionResult UpdateUserPassword(UpdatePasswordRequest request)
         {
