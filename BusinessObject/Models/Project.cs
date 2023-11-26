@@ -12,9 +12,11 @@ public class Project
     [Required]
     public string Name { get; set; } = default!;
 
+
     public string? CompanyName { get; set; } = default!;
     public string? CompanyAdress { get; set; } = default!;
     public string? CompanyCode { get; set; } = default!;
+
 
     public string? Description { get; set; }
 
@@ -64,7 +66,7 @@ public class Project
 
     public List<Site> Sites { get; set; } = new();
     public List<Transaction> Transactions { get; set; } = new();
-    public List<ProjectParticipation> Participations { get; set; } = new();
+    public List<ProjectParticipation> ProjectParticipations { get; set; } = new();
     public List<PaymentStage> PaymentStages { get; set; } = new();
     public List<ProjectDocument> ProjectDocuments { get; set; } = new();
 }

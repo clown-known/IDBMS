@@ -33,7 +33,18 @@ namespace Repository.Implements
                 throw;
             }
         }
-
+        public IEnumerable<InteriorItem?> GetByCategory(int id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.InteriorItems.Where(ii => ii.InteriorItemCategoryId == id).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
         public InteriorItem Save(InteriorItem entity)
         {
             try
@@ -80,5 +91,7 @@ namespace Repository.Implements
                 throw;
             }
         }
+
+        
     }
 }

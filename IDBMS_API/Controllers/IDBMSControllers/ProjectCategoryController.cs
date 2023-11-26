@@ -24,23 +24,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetProjectCategories()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
         [EnableQuery]
         [HttpGet("{id}")]
         public IActionResult GetProjectCategoryById(int id)
-        {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetById(id)
-            };
-            return Ok(response);
+        { 
+            return Ok(_service.GetById(id));
         }
 
         [HttpPost]

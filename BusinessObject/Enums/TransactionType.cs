@@ -6,4 +6,5 @@ public enum TransactionType
     BankDeposit = 1,
     Warranty = 2,
     Withdraw = 3,
+    StagePayment = 4,
 }

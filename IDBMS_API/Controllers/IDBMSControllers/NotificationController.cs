@@ -24,23 +24,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetNotifications()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
         [EnableQuery]
-        [HttpGet("user/{userId}")]
-        public IActionResult GetByUserId(Guid userId)
+        [HttpGet("user/{id}")]
+        public IActionResult GetByUserId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByUserId(userId)
-            };
-            return Ok(response);
+            return Ok(_service.GetByUserId(id));
         }
         [HttpPost]
         public IActionResult CreateNotificationsForAllUsers([FromBody] NotificationRequest request)

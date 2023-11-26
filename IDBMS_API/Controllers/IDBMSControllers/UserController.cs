@@ -1,5 +1,6 @@
 ﻿using API.Services;
 using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Request.AccountRequest;
 using BusinessObject.DTOs.Response;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -23,12 +24,58 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetUsers()
         {
-            var response = new ResponseMessage()
+            return Ok(_service.GetAll());
+        }
+
+        [EnableQuery]
+        [HttpGet("{id}")]
+        public IActionResult GetUsersById(Guid id)
+        {
+            return Ok(_service.GetById(id));
+        }
+
+        [HttpPost]
+        public IActionResult CreateUser([FromBody] CreateUserRequest request)
+        {
+                try
+                {
+                    var result = _service.CreateUser(request);
+                    var response = new ResponseMessage()
+                    {
+                        Message = "Create successfully!",
+                        Data = result
+                    };
+                    return Ok(response);
+                }
+                catch (Exception ex)
+                {
+                    var response = new ResponseMessage()
+                    {
+                        Message = $"Error: {ex.Message}"
+                    };
+                    return BadRequest(response);
+                }
+        }
+        [HttpPut("{id}")]
+        public IActionResult UpdateUser(string id, [FromBody] UpdateUserRequest request)
+        {
+            try
             {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
-            return Ok(response);
+                _service.UpdateUser(id, request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
     }
 }

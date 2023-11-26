@@ -26,6 +26,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// repository
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IAuthenticationCodeRepository, AuthenticationCodeRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
@@ -56,6 +57,7 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IWarrantyClaimRepository, WarrantyClaimRepository>();
 
+// service
 builder.Services.AddScoped<AdminService, AdminService>();
 builder.Services.AddScoped<AuthenticationCodeService, AuthenticationCodeService>();
 builder.Services.AddScoped<CommentService, CommentService>();
@@ -94,6 +96,18 @@ builder.Services.AddControllers().AddJsonOptions(x =>
                 .Count().OrderBy().Expand().SetMaxTop(100).AddRouteComponents("odata", GetEdmModel()));
 builder.Services.AddODataQueryFilter();
 
+// cors
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://localhost:3000"
+                             //, "http://localhost:7979"
+                                                )
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -105,6 +119,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// cors
+app.UseCors();
 
 app.UseAuthorization();
 
@@ -130,7 +147,7 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<InteriorItemCategory>("InteriorItemCategories");
     builder.EntitySet<InteriorItemColor>("InteriorItemColors");
     builder.EntitySet<Notification>("Notifications");
-    builder.EntitySet<ProjectParticipation>("Participations");
+    builder.EntitySet<ProjectParticipation>("ProjectParticipations");
     builder.EntitySet<PaymentStage>("PaymentStages");
     builder.EntitySet<PaymentStageDesign>("PaymentStageDesigns");
     builder.EntitySet<Project>("Projects");

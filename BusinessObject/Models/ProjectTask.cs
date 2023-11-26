@@ -40,12 +40,17 @@ namespace BusinessObject.Models
         public double UnitUsed { get; set; }
 
         [Required]
-        public bool IsExceed { get; set; }
+        public bool IsIncurred { get; set; }
 
         [Required]
         public DateTime StartedDate { get; set; }
 
         public DateTime? EndDate { get; set; }
+
+        [Required]
+        public DateTime CreatedDate { get; set; }
+
+        public DateTime? UpdatedDate { get; set; }
 
         public int? NoDate { get; set; }
 
@@ -53,6 +58,7 @@ namespace BusinessObject.Models
         public ProjectTask? ParentTask { get; set; }
 
         public int? TaskCategoryId { get; set; }
+        public TaskCategory? TaskCategory { get; set; }
 
         [Required]
         public Guid ProjectId { get; set; }
@@ -67,6 +73,9 @@ namespace BusinessObject.Models
         [Required]
         public int TaskDesignId { get; set; }
         public TaskDesign TaskDesign { get; set; }
+
+        public Guid? RoomId { get; set; }
+        public Room? Room { get; set; }
 
         [Required]
         public ProjectTaskStatus Status { get; set; }

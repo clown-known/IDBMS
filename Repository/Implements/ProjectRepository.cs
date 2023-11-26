@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,11 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.FirstOrDefault(project => project.Id == id);
+                return context.Projects
+                    .Include(pc => pc.ProjectCategory)
+                    .Include(par => par.ProjectParticipations)
+                        .ThenInclude(u => u.User)
+                    .FirstOrDefault(project => project.Id == id);
             }
             catch
             {

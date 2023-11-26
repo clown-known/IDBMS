@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 
 namespace Repository.Implements;
@@ -11,7 +12,7 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
         try
         {
             using var context = new IdtDbContext();
-            return context.Participations.ToList();
+            return context.ProjectParticipations.ToList();
         }
         catch
         {
@@ -29,7 +30,7 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
         try
         {
             using var context = new IdtDbContext();
-            var partiAdded = context.Participations.Add(entity);
+            var partiAdded = context.ProjectParticipations.Add(entity);
             context.SaveChanges();
             return partiAdded.Entity;
         }
@@ -58,7 +59,7 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
         try
         {
             using var context = new IdtDbContext();
-            return context.Participations
+            return context.ProjectParticipations
                 .Where(u => u.ProjectId.Equals(id) && u.IsDeleted == false)
                 .ToList();
         }
@@ -72,8 +73,10 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
         try
         {
             using var context = new IdtDbContext();
-            return context.Participations
+            return context.ProjectParticipations
                 .Where(u => u.UserId.Equals(id) && u.IsDeleted == false)
+                .Include(p => p.Project)
+                    .ThenInclude(pc => pc.ProjectCategory)
                 .ToList();
         }
         catch

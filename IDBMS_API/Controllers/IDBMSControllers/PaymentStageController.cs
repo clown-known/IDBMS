@@ -23,36 +23,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetPaymentStages()
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetAll()
-            };
-            return Ok(response);
+            return Ok(_service.GetAll());
         }
         //all
         [EnableQuery]
-        [HttpGet("project/{projectId}")]
-        public IActionResult GetPaymentStagesByProjectId(Guid projectId)
+        [HttpGet("project/{id}")]
+        public IActionResult GetPaymentStagesByProjectId(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetByProjectId(projectId)
-            };
-            return Ok(response);
+            return Ok(_service.GetByProjectId(id));
         }
         //permission
         [EnableQuery]
         [HttpGet("{id}")]
         public IActionResult GetPaymentStagesById(Guid id)
         {
-            var response = new ResponseMessage()
-            {
-                Message = "Get successfully!",
-                Data = _service.GetById(id)
-            };
-            return Ok(response);
+            return Ok(_service.GetById(id));
         }
         [HttpPost]
         public IActionResult CreatePaymentStage([FromBody] PaymentStageRequest request)

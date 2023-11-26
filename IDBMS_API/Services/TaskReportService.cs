@@ -23,6 +23,10 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByTaskId(id) ?? throw new Exception("This object is not existed!");
         }
+        public IEnumerable<TaskReport?> GetByUserId(Guid id)
+        {
+            return _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
+        }
         public TaskReport? CreateTaskReport(TaskReportRequest request)
         {
             var ctr = new TaskReport

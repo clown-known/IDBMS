@@ -36,7 +36,31 @@ namespace Repository.Implements
                 throw;
             }
         }
+        public IEnumerable<TaskAssignment?> GetByProjectId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.TaskAssignments.Where(ta => ta.ProjectId == id).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
+        public IEnumerable<TaskAssignment?> GetByUserId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.TaskAssignments.Where(ta => ta.UserId == id).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
         public TaskAssignment? Save(TaskAssignment entity)
         {
             try
@@ -67,8 +91,22 @@ namespace Repository.Implements
         }
         public void DeleteById(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var context = new IdtDbContext();
+                var ta = context.TaskAssignments.FirstOrDefault(a => a.Id == id);
+                if (ta != null)
+                {
+                    context.TaskAssignments.Remove(ta);
+                    context.SaveChanges();
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
 
+       
     }
 }
