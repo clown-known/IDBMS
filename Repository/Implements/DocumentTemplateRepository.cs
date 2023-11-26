@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using BusinessObject.Enums;
+using BusinessObject.Models;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,19 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.ProjectDocumentTemplates.Where(dt => dt.Id == id).FirstOrDefault();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public ProjectDocumentTemplate getByType(DocumentTemplateType type)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.ProjectDocumentTemplates.Where(dt => dt.Type == type).FirstOrDefault();
             }
             catch
             {

@@ -46,8 +46,8 @@ namespace BLL.Services
         }
         public async Task<string> UploadByByte(byte[] file,string filename,Guid ProjectId,string fileType)
         {
-            string fileName = fileType+$"{Guid.NewGuid()}";
-
+            string fileName = filename+$"-{DateTime.UtcNow}.docx";
+            
             var storageClient = new FirebaseStorage(_storageBucket);
             using (var stream = new MemoryStream(file))
             {
@@ -61,9 +61,9 @@ namespace BLL.Services
                 }
             }
 
-            //FirebaseStorageReference starsRef = storageClient.Child("images/" + fileName);
-            //await starsRef.GetDownloadUrlAsync()
-            return fileName;
+            FirebaseStorageReference starsRef = storageClient.Child($"{ProjectId}").Child(fileType).Child(fileName);
+            string downloadUrl = await starsRef.GetDownloadUrlAsync();
+            return downloadUrl;
         }
         public async Task<byte[]> DownloadFile(string? fileName,Guid? projectId,string fileType,bool isSample)
         {
@@ -72,16 +72,56 @@ namespace BLL.Services
             FirebaseStorageReference starsRef;
             if (isSample)
             {
-                starsRef = storageClient.Child("Sample/" + fileType);
+                starsRef = storageClient.Child("Sample").Child($"{fileType}").Child(fileName);
             }
             else
             {
-                starsRef = storageClient.Child($"{projectId}/" + $"{fileType}/" + fileName);
+                starsRef = storageClient.Child(projectId.ToString()).Child($"{fileType}").Child(fileName);
+                //starsRef = storageClient.Child($"{projectId}/" + $"{fileType}/" + fileName);
             }
 
             // Get the download URL
             string downloadUrl = await starsRef.GetDownloadUrlAsync();
 
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetAsync(downloadUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsByteArrayAsync();
+                    return content;
+                }
+            }
+            return null;
+        }
+        public async Task<byte[]> DownloadFiletest(string? fileName)
+        {
+
+            var storageClient = new FirebaseStorage(_storageBucket);
+            FirebaseStorageReference starsRef;
+
+                starsRef = storageClient.Child("images/images/"+ fileName);
+                //starsRef = storageClient.Child($"{projectId}/" + $"{fileType}/" + fileName);
+
+
+            // Get the download URL
+            string downloadUrl = await starsRef.GetDownloadUrlAsync();
+
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetAsync(downloadUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsByteArrayAsync();
+                    return content;
+                }
+            }
+            return null;
+        }
+        public async Task<byte[]> DownloadFileByDownloadUrl(string downloadUrl)
+        {
             using (var httpClient = new HttpClient())
             {
                 var response = await httpClient.GetAsync(downloadUrl);
