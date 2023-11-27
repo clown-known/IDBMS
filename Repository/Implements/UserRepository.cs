@@ -1,6 +1,7 @@
 ﻿using BusinessObject.Enums;
 using BusinessObject.Models;
 using Repository.Interfaces;
+using System.Xml.Linq;
 
 namespace Repository.Implements;
 
@@ -36,7 +37,7 @@ public class UserRepository : IUserRepository
         try
         {
             using var context = new IdtDbContext();
-            return context.Users.FirstOrDefault(d => d.Email == email );
+            return context.Users.FirstOrDefault(d => d.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
         }
         catch
         {
@@ -64,6 +65,7 @@ public class UserRepository : IUserRepository
         try
         {
             using var context = new IdtDbContext();
+            user.Email = user.Email.ToLower();
             var userAdded = context.Users.Add(user);
             context.SaveChanges();
             return userAdded.Entity;

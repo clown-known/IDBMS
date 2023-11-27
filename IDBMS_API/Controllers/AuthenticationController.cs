@@ -90,6 +90,7 @@ namespace API.Controllers
             try
             {
                 var user = userService.CreateUser(request);
+                if (user == null) return BadRequest("Email already exist!");
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
