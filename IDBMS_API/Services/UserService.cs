@@ -1,10 +1,11 @@
 ﻿
 using API.Supporters.JwtAuthSupport;
 using BLL.Services;
-using BusinessObject.DTOs.Request;
-using BusinessObject.DTOs.Request.AccountRequest;
+using IDBMS_API.DTOs.Request;
+using IDBMS_API.DTOs.Request.AccountRequest;
 using BusinessObject.Models;
 using IDBMS_API.Constants;
+using IDBMS_API.DTOs.Request.AccountRequest;
 using IDBMS_API.Supporters.Utils;
 using Repository.Interfaces;
 using System.Net;
@@ -62,6 +63,7 @@ namespace API.Services
         public User? CreateUser(CreateUserRequest request)
         {
             TryValidateRegisterRequest(request);
+            if (_repository.GetByEmail(request.Email) != null) return null;
             PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
             var user = new User()
             {

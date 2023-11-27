@@ -1,9 +1,10 @@
 ﻿using API.Supporters.JwtAuthSupport;
 using BLL.Services;
-using BusinessObject.DTOs.Request;
-using BusinessObject.DTOs.Request.AccountRequest;
+using IDBMS_API.DTOs.Request;
 using BusinessObject.Models;
 using Firebase.Storage;
+using IDBMS_API.DTOs.Request.AccountRequest;
+using IDBMS_API.Services;
 using IDBMS_API.Supporters.File;
 using IDBMS_API.Supporters.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -41,20 +42,30 @@ namespace IDBMS_API.Controllers
             return Ok(user);
         }
         [HttpPost("file")]
-        public async Task<IActionResult> IndexAsync([FromForm] IFormFile imageFile)
+        [Authorize(Policy = "ParticipationAccess")]
+        public async Task<IActionResult> IndexAsync([FromForm] IFormFile id)
         {
-            if (imageFile != null && imageFile.Length != 0)
-            {
+            
 
                 FirebaseService s = new FirebaseService();
-                string filename = await s.UploadImage(imageFile);
+            //string filename = await s.UploadImage(imageFile);
+            var content = await s.DownloadFiletest("c4d07b71-c86d-45a9-9afd-076580bf82ea.jpg");
+            //byte[] file = await s.DownloadFile(filename);
+            //byte[] file2 = FileSupporter.GenFileBytes(file);
+            //string name = await s.UploadByByte(file2,"nam.docx");
+            return File(content, "application/octet-stream", "c4d07b71-c86d-45a9-9afd-076580bf82ea.jpg");
 
-                //byte[] file = await s.DownloadFile(filename);
-                //byte[] file2 = FileSupporter.GenFileBytes(file);
-                //string name = await s.UploadByByte(file2,"nam.docx");
-                return Ok();
-            }
-            return Ok("false");
+            // return Ok("false");
+        }
+        [HttpPost("file2")]
+        public async Task<IActionResult> IndexAsync2(Guid projectid)
+        {
+            FirebaseService s = new FirebaseService();
+            ContractService c = new ContractService();
+            var content = await c.GenNewConstract(projectid);
+            //string name = await s.UploadByByte(file2,"nam.docx");
+            //return File(content, "application/octet-stream", "c4d07b71-c86d-45a9-9afd-076580bf82ea.jpg");
+            return File(content, "application/octet-stream", "Contract.docx");
         }
         [HttpGet("case1")]
         [Authorize]

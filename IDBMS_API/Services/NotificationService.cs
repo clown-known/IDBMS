@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Repository.Interfaces;
 using Repository.Implements;
 
-using BusinessObject.DTOs.Request;
+using IDBMS_API.DTOs.Request;
 
 namespace IDBMS_API.Services
 {

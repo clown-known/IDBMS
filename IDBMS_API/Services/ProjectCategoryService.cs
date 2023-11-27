@@ -1,5 +1,5 @@
-﻿using BusinessObject.DTOs.Request;
-using BusinessObject.Models;
+﻿using BusinessObject.Models;
+using IDBMS_API.DTOs.Request;
 using Repository.Interfaces;
 
 namespace IDBMS_API.Services

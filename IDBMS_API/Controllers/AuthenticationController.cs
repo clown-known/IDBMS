@@ -1,9 +1,7 @@
 ﻿
 using API.Services;
 using API.Supporters.JwtAuthSupport;
-using BusinessObject.DTOs.Request.AccountRequest;
 using BusinessObject.Models;
-using BusinessObject.DTOs.Response;
 using Microsoft.AspNetCore.Mvc;
 using IDBMS_API.Supporters.Utils;
 using IDBMS_API.Services;
@@ -11,6 +9,8 @@ using Azure;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Azure.Core;
 using DocumentFormat.OpenXml.Office2016.Excel;
+using IDBMS_API.DTOs.Request.AccountRequest;
+using IDBMS_API.DTOs.Response;
 
 namespace API.Controllers
 {
@@ -90,6 +90,7 @@ namespace API.Controllers
             try
             {
                 var user = userService.CreateUser(request);
+                if (user == null) return BadRequest("Email already exist!");
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
@@ -105,7 +106,7 @@ namespace API.Controllers
                 return BadRequest(response);
             }
         }
-
+        
         [HttpPut("password")]
         public IActionResult UpdateUserPassword(UpdatePasswordRequest request)
         {
@@ -131,24 +132,19 @@ namespace API.Controllers
         [HttpPost("verify")]
         public IActionResult Verify(string email)
         {
-            try
-            {
-                var result = authenticationCodeService.SendActivationEmail(email);
-                var response = new ResponseMessage()
-                {
-                    Message = "Send successfully!",
-                    Data= result
-                };
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var response = new ResponseMessage()
-                {
-                    Message = $"Error: {ex.Message}"
-                };
-                return BadRequest(response);
-            }
+
+            var code = authenticationCodeService.CreateCode(email);
+            if (code == null) return BadRequest();
+            string link = $"<a href='https://localhost:7062/api/Authentication/confirmverify?code={code}&email={email}' style='background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px;'>" +
+                "Click here</a>";
+            authenticationCodeService.SendEmail(email, "Verify Code For IDT", $"Click this button to verify: {link}");
+            return Ok();
+        }
+        [HttpGet("confirmverify")]
+        public IActionResult ConfirmVerify(string code,string email)
+        {
+            if (authenticationCodeService.Verify(code, email)) return Ok();
+            return Unauthorized();
 
         }
     }
