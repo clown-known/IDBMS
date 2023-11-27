@@ -43,7 +43,7 @@ namespace IDBMS_API.Controllers
         }
         [HttpPost("file")]
         [Authorize(Policy = "ParticipationAccess")]
-        public async Task<IActionResult> IndexAsync(string id)
+        public async Task<IActionResult> IndexAsync([FromForm] IFormFile id)
         {
             
 
