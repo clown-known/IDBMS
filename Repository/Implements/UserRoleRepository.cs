@@ -1,5 +1,4 @@
-﻿using BusinessObject.Enums;
-using BusinessObject.Models;
+﻿using BusinessObject.Models;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,19 +8,14 @@ using System.Threading.Tasks;
 
 namespace Repository.Implements
 {
-    public class DocumentTemplateRepository : IProjectDocumentTemplateRepository
+    public class UserRoleRepository : IUserRoleRepository
     {
-        public void DeleteById(int id)
+        public IEnumerable<UserRole> GetAll()
         {
             try
             {
                 using var context = new IdtDbContext();
-                var dt = context.ProjectDocumentTemplates.Where(dt => dt.Id == id).FirstOrDefault();
-                if (dt != null)
-                {
-                    context.ProjectDocumentTemplates.Remove(dt);
-                    context.SaveChanges();
-                }
+                return context.UserRoles.ToList();
             }
             catch
             {
@@ -29,12 +23,12 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<ProjectDocumentTemplate> GetAll()
+        public UserRole? GetById(int id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectDocumentTemplates.ToList();
+                return context.UserRoles.Where(td => td.Id == id).FirstOrDefault();
             }
             catch
             {
@@ -42,12 +36,12 @@ namespace Repository.Implements
             }
         }
 
-        public ProjectDocumentTemplate? GetById(int id)
+        public IEnumerable<UserRole?> GetByUserId(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectDocumentTemplates.Where(dt => dt.Id == id).FirstOrDefault();
+                return context.UserRoles.Where(td => td.UserId == id).ToList();
             }
             catch
             {
@@ -55,27 +49,14 @@ namespace Repository.Implements
             }
         }
 
-        public ProjectDocumentTemplate getByType(DocumentTemplateType type)
+        public UserRole? Save(UserRole entity)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectDocumentTemplates.Where(dt => dt.Type == type).FirstOrDefault();
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        public ProjectDocumentTemplate? Save(ProjectDocumentTemplate entity)
-        {
-            try
-            {
-                using var context = new IdtDbContext();
-                var dt = context.ProjectDocumentTemplates.Add(entity);
+                var td = context.UserRoles.Add(entity);
                 context.SaveChanges();
-                return dt.Entity;
+                return td.Entity;
             }
             catch
             {
@@ -83,13 +64,31 @@ namespace Repository.Implements
             }
         }
 
-        public void Update(ProjectDocumentTemplate entity)
+        public void Update(UserRole entity)
         {
             try
             {
                 using var context = new IdtDbContext();
                 context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 context.SaveChanges();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void DeleteById(int id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                var td = context.UserRoles.FirstOrDefault(td => td.Id == id);
+                if (td != null)
+                {
+                    context.UserRoles.Remove(td);
+                    context.SaveChanges();
+                }
             }
             catch
             {

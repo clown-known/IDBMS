@@ -63,6 +63,7 @@ namespace API.Services
         public User? CreateUser(CreateUserRequest request)
         {
             TryValidateRegisterRequest(request);
+            if (_repository.GetByEmail(request.Email) != null) return null;
             PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
             var user = new User()
             {
