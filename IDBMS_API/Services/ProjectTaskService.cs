@@ -1,4 +1,6 @@
-﻿using BusinessObject.DTOs.Request;
+﻿using Azure.Core;
+using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Request.BookingRequest;
 using BusinessObject.Enums;
 using BusinessObject.Models;
 using Repository.Interfaces;
@@ -54,6 +56,30 @@ namespace IDBMS_API.Services
             };
             var ctCreated = _repository.Save(ct);
             return ctCreated;
+        }
+        public void CreateBookProjectTask(Guid projectId, Guid roomId, List<BookingTaskRequest> request)
+        {
+            foreach (var taskRequest in request)
+            {
+                var projectTask = new ProjectTask
+                {
+                    Id = Guid.NewGuid(),
+                    Name = taskRequest.Name,
+                    Description = taskRequest.Description,
+                    Percentage = 0,
+                    CalculationUnit = taskRequest.CalculationUnit,
+                    PricePerUnit = 0,
+                    UnitInContract = taskRequest.UnitInContract,
+                    IsIncurred = false,
+                    CreatedDate = DateTime.Now,
+                    ProjectId = projectId,
+                    InteriorItemId = taskRequest.InteriorItemId,
+                    RoomId = roomId,
+                    Status = ProjectTaskStatus.Pending,
+                };
+
+                _repository.Save(projectTask);
+            }
         }
         public void UpdateProjectTask(Guid id, ProjectTaskRequest request)
         {

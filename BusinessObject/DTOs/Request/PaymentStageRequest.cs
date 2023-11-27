@@ -17,8 +17,7 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public string Name { get; set; } = default!;
 
-        [Required]
-        public string Description { get; set; } = default!;
+        public string? Description { get; set; }
 
         [Required]
         public bool IsPaid { get; set; }
@@ -51,8 +50,7 @@ namespace BusinessObject.DTOs.Request
         [Column(TypeName = "money")]
         public decimal? PenaltyFee { get; set; }
 
-        [Required]
-        public int EstimateBusinessDay { get; set; }
+        public int? EstimateBusinessDay { get; set; }
 
         [Required]
         public Guid ProjectId { get; set; }

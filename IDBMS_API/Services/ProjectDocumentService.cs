@@ -1,4 +1,5 @@
 ﻿using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Request.BookingRequest;
 using BusinessObject.Models;
 using Repository.Implements;
 using Repository.Interfaces;
@@ -47,6 +48,29 @@ namespace IDBMS_API.Services
             var pdCreated = _repository.Save(pd);
             return pdCreated;
         }
+
+        public void CreateBookProjectDocument(Guid projectId, List<BookingDocumentRequest> requests)
+        {
+            foreach (var request in requests)
+            {
+                var pd = new ProjectDocument
+                {
+                    Id = Guid.NewGuid(),
+                    Name = request.Name,
+                    Description = request.Description,
+                    Url = request.Url ?? "",
+                    CreatedDate = DateTime.Now,
+                    Category = request.Category,
+                    ProjectId = projectId,
+                    IsPublicAdvertisement = false,
+                    IsDeleted = false,
+                };
+
+                _repository.Save(pd);
+            }
+        }
+
+
         public void UpdateProjectDocument(Guid id, ProjectDocumentRequest request)
         {
             var pd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");

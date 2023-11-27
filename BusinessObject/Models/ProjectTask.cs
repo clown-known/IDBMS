@@ -14,8 +14,7 @@ namespace BusinessObject.Models
         [Key]
         public Guid Id { get; set; }
 
-        [Required]
-        public string Code { get; set; } = default!;
+        public string? Code { get; set; }
 
         [Required]
         public string Name { get; set; } = default!;
@@ -42,8 +41,7 @@ namespace BusinessObject.Models
         [Required]
         public bool IsIncurred { get; set; }
 
-        [Required]
-        public DateTime StartedDate { get; set; }
+        public DateTime? StartedDate { get; set; }
 
         public DateTime? EndDate { get; set; }
 
@@ -63,16 +61,14 @@ namespace BusinessObject.Models
         [Required]
         public Guid ProjectId { get; set; }
 
-        [Required]
-        public Guid PaymentStageId { get; set; }
-        public PaymentStage PaymentStage { get; set; }
+        public Guid? PaymentStageId { get; set; }
+        public PaymentStage? PaymentStage { get; set; }
 
         public Guid? InteriorItemId { get; set; }
         public InteriorItem? InteriorItem { get; set; }
 
-        [Required]
-        public int TaskDesignId { get; set; }
-        public TaskDesign TaskDesign { get; set; }
+        public int? TaskDesignId { get; set; }
+        public TaskDesign? TaskDesign { get; set; }
 
         public Guid? RoomId { get; set; }
         public Room? Room { get; set; }

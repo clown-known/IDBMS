@@ -9,30 +9,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.DTOs.Request
+namespace BusinessObject.DTOs.Request.BookingRequest
 {
-    public class ProjectDesignRequest
+    public class BookingTaskRequest
     {
-        [Required]
-        [Column(TypeName = "money")]
-        public decimal MinBudget { get; set; }
-
-        [Required]
-        [Column(TypeName = "money")]
-        public decimal MaxBudget { get; set; }
-
-        public int? EstimateBusinessDay { get; set; }
-
         [Required]
         public string Name { get; set; } = default!;
 
         public string? Description { get; set; }
 
         [Required]
-        public ProjectType ProjectType { get; set; }
+        public CalculationUnit CalculationUnit { get; set; }
 
         [Required]
-        public bool IsHidden { get; set; }
+        public double UnitInContract { get; set; }
 
+        public Guid? InteriorItemId { get; set; }
     }
 }

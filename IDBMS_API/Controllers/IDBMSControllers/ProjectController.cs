@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Request.BookingRequest;
 using BusinessObject.DTOs.Response;
 using BusinessObject.Enums;
 using IDBMS_API.Services;
@@ -36,15 +37,38 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(_service.GetById(id));
         }
 
-        [HttpPost]
-        public IActionResult CreateProject([FromBody] ProjectRequest request)
+        [HttpPost("decor")]
+        public IActionResult BookDecorProject([FromBody] BookingDecorProjectRequest request)
         {
             try
             {
-                var result = _service.CreateProject(request);
+                var result = _service.BookDecorProject(request);
                 var response = new ResponseMessage()
                 {
-                    Message = "Create successfully!",
+                    Message = "Book successfully!",
+                    Data = result
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [HttpPost("construction")]
+        public IActionResult BookConstructionProject([FromBody] BookingConstructionProjectRequest request)
+        {
+            try
+            {
+                var result = _service.BookConstructionProject(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Book successfully!",
                     Data = result
                 };
                 return Ok(response);

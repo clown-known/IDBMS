@@ -22,8 +22,7 @@ namespace BusinessObject.Models
         [Column(TypeName = "money")]
         public decimal MaxBudget { get; set; }
 
-        [Required]
-        public int EstimateBusinessDay { get; set; }
+        public int? EstimateBusinessDay { get; set; }
 
         [Required]
         public string Name { get; set; } = default!;

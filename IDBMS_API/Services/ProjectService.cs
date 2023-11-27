@@ -1,60 +1,137 @@
 ﻿using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Request.BookingRequest;
 using BusinessObject.Enums;
 using BusinessObject.Models;
+using IDBMS_API.Services;
 using Repository.Interfaces;
 
 public class ProjectService
 {
-    private readonly IProjectRepository _repository;
+    private readonly IProjectRepository _projectRepo;
+    private readonly IPaymentStageDesignRepository _paymentStageDesignRepo;
+    private readonly IPaymentStageRepository _paymentStageRepo;
+    private readonly IProjectDocumentRepository _projectDocumentRepo;
+    private readonly ISiteRepository _siteRepo;
+    private readonly IFloorRepository _floorRepo;
+    private readonly IRoomRepository _roomRepo;
+    private readonly IProjectTaskRepository _taskRepo;
 
-    public ProjectService(IProjectRepository _repository)
+    public ProjectService(
+            IProjectRepository projectRepo,
+            IPaymentStageDesignRepository paymentStageDesignRepo,
+            IPaymentStageRepository paymentStageRepo,
+            IProjectDocumentRepository projectDocumentRepo,
+            ISiteRepository siteRepo,
+            IFloorRepository floorRepo,
+            IRoomRepository roomRepo,
+            IProjectTaskRepository taskRepo)
     {
-        this._repository = _repository;
+        _projectRepo = projectRepo;
+        _paymentStageDesignRepo = paymentStageDesignRepo;
+        _paymentStageRepo = paymentStageRepo;
+        _projectDocumentRepo = projectDocumentRepo;
+        _siteRepo = siteRepo;
+        _floorRepo = floorRepo;
+        _roomRepo = roomRepo;
+        _taskRepo = taskRepo;
     }
 
     public IEnumerable<Project> GetAll()
     {
-        return _repository.GetAll();
+        return _projectRepo.GetAll();
     }
 
     public Project? GetById(Guid id)
     {
-        return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+        return _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
     }
 
-    public Project? CreateProject(ProjectRequest request)
+    public Project? BookDecorProject(BookingDecorProjectRequest request)
     {
         var project = new Project
         {
             Id = Guid.NewGuid(),
+            CreatedDate = DateTime.Now,
+            Status = ProjectStatus.PendingConfirmation,
+            AdvertisementStatus = AdvertisementStatus.None,
+            Type = ProjectType.Decor,
+
             Name = request.Name,
             CompanyName = request.CompanyName,
             CompanyAddress = request.CompanyAddress,
+            CompanyCode = request.CompanyCode,
             Description = request.Description,
-            Type = request.Type,
             ProjectCategoryId = request.ProjectCategoryId,
-            CreatedDate = DateTime.Now,
-            NoStage = request.NoStage,
+            ProjectDesignId = request.ProjectDesignId,
             EstimatedPrice = request.EstimatedPrice,
-            FinalPrice = request.FinalPrice,
-            TotalWarrantyPaid = request.TotalWarrantyPaid,
-            EstimateBusinessDay= request.EstimateBusinessDay,
-            CurrentStageId = request.CurrentStageId,
+            EstimateBusinessDay = request.EstimateBusinessDay,
             Language = request.Language,
-            Status = request.Status,
-            AdvertisementStatus = AdvertisementStatus.None,
-            AdminNote = request.AdminNote,
-            BasedOnDecorProjectId = request.BasedOnDecorProjectId,
-            ProjectDesignId = request.ProjectDesignId
         };
 
-        var createdProject = _repository.Save(project);
-        return createdProject;
+        var projectCreated = _projectRepo.Save(project);
+        if (projectCreated != null)
+        {
+            if (request.Documents != null)
+            {
+                ProjectDocumentService documentService = new ProjectDocumentService(_projectDocumentRepo);
+                documentService.CreateBookProjectDocument(projectCreated.Id, request.Documents);
+            }
+
+            if (request.Sites != null)
+            {
+                SiteService siteService = new SiteService(_siteRepo, _floorRepo, _roomRepo, _taskRepo);
+                siteService.CreateBookSite(projectCreated.Id, request.Sites);
+            }
+
+            if (request.ProjectDesignId != null)
+            {
+                PaymentStageDesignService paymentStageDesignService = new PaymentStageDesignService(_paymentStageDesignRepo);
+                var listStageDesigns = paymentStageDesignService.GetByProjectDesignId((int)request.ProjectDesignId);
+                if (listStageDesigns.Any() && projectCreated.EstimatedPrice.HasValue)
+                {
+                    PaymentStageService paymentStageService = new PaymentStageService(_paymentStageRepo);
+                    paymentStageService.CreatePaymentStageByDesign(projectCreated.Id, projectCreated.EstimatedPrice.Value, (List<PaymentStageDesign>)listStageDesigns);
+                }
+            }
+        }
+        return projectCreated;
+    }
+    public Project? BookConstructionProject(BookingConstructionProjectRequest request)
+    {
+        var project = new Project
+        {
+            Id = Guid.NewGuid(),
+            CreatedDate = DateTime.Now,
+            Status = ProjectStatus.PendingConfirmation,
+            AdvertisementStatus = AdvertisementStatus.None,
+            Type = ProjectType.Decor,
+
+            Name = request.Name,
+            CompanyName = request.CompanyName,
+            CompanyAddress = request.CompanyAddress,
+            CompanyCode = request.CompanyCode,
+            Description = request.Description,
+            ProjectCategoryId = request.ProjectCategoryId,
+            BasedOnDecorProjectId = request.BasedOnDecorProjectId,
+            Language = request.Language,
+        };
+
+        var projectCreated = _projectRepo.Save(project);
+        if (projectCreated != null)
+        {
+            if (request.Documents != null)
+            {
+                ProjectDocumentService documentService = new ProjectDocumentService(_projectDocumentRepo);
+                documentService.CreateBookProjectDocument(projectCreated.Id, request.Documents);
+            }
+
+        }
+        return projectCreated;
     }
 
     public void UpdateProject(Guid id, ProjectRequest request)
     {
-        var p = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+        var p = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
         p.Name = request.Name;
         p.CompanyName = request.CompanyName;
@@ -75,24 +152,24 @@ public class ProjectService
         p.BasedOnDecorProjectId = request.BasedOnDecorProjectId;
         p.ProjectDesignId = request.ProjectDesignId;
 
-        _repository.Update(p);
+        _projectRepo.Update(p);
     }
 
     public void UpdateProjectStatus(Guid id, ProjectStatus status)
     {
-        var project = _repository.GetById(id) ?? throw new Exception("Not existed");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("Not existed");
 
         project.Status = status;
 
-        _repository.Update(project);
+        _projectRepo.Update(project);
     }
 
     public void UpdateProjectAdvertisementStatus(Guid id, AdvertisementStatus status)
     {
-        var project = _repository.GetById(id) ?? throw new Exception("Not existed");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("Not existed");
 
         project.AdvertisementStatus = status;
 
-        _repository.Update(project);
+        _projectRepo.Update(project);
     }
 }

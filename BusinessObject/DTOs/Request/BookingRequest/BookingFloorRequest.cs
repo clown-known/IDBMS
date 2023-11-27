@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.DTOs.Request
+namespace BusinessObject.DTOs.Request.BookingRequest
 {
-    public class FloorRequest
+    public class BookingFloorRequest
     {
         public string? Description { get; set; }
 
@@ -21,11 +21,6 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public double Area { get; set; }
 
-        [Required]
-        public Guid SiteId { get; set; }
-
-        [Required]
-        public bool IsDeleted { get; set; }
-
+        public List<BookingRoomRequest>? Rooms { get; set; }
     }
 }

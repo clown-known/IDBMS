@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,14 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.DTOs.Request
+namespace BusinessObject.DTOs.Request.BookingRequest
 {
-    public class RoomRequest
+    public class BookingRoomRequest
     {
-
-        [Required]
-        public Guid FloorId { get; set; }
-
         public string? Description { get; set; }
 
         [Required]
@@ -30,7 +27,6 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public int RoomTypeId { get; set; }
 
-        [Required]
-        public bool IsHidden { get; set; }
+        public List<BookingTaskRequest>? Tasks { get; set; }
     }
 }
