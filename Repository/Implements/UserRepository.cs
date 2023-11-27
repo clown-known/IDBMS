@@ -37,7 +37,7 @@ public class UserRepository : IUserRepository
         try
         {
             using var context = new IdtDbContext();
-            return context.Users.FirstOrDefault(d => d.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+            return context.Users.FirstOrDefault(d => d.Email.ToLower().Equals(email.ToLower()));
         }
         catch
         {
