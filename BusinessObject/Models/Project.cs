@@ -13,9 +13,9 @@ public class Project
     public string Name { get; set; } = default!;
 
 
-    public string? CompanyName { get; set; } = default!;
-    public string? CompanyAddress { get; set; } = default!;
-    public string? CompanyCode { get; set; } = default!;
+    public string? CompanyName { get; set; }
+    public string? CompanyAddress { get; set; }
+    public string? CompanyCode { get; set; }
 
 
     public string? Description { get; set; }
@@ -34,19 +34,16 @@ public class Project
 
     public int? NoStage { get; set; }
 
-    [Required]
     [Column(TypeName = "money")]
-    public decimal EstimatedPrice { get; set; }
+    public decimal? EstimatedPrice { get; set; }
 
     [Column(TypeName = "money")]
     public decimal? FinalPrice { get; set; }
 
-    [Required]
     [Column(TypeName = "money")]
-    public decimal TotalWarrantyPaid { get; set; }
+    public decimal? TotalWarrantyPaid { get; set; }
 
-    [Required]
-    public int EstimateBusinessDay { get; set; }
+    public int? EstimateBusinessDay { get; set; }
 
     public Guid? CurrentStageId { get; set; }
 

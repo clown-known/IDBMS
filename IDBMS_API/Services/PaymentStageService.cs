@@ -1,5 +1,7 @@
-﻿using BusinessObject.DTOs.Request;
+﻿using Azure.Core;
+using BusinessObject.DTOs.Request;
 using BusinessObject.Models;
+using DocumentFormat.OpenXml.Office2016.Excel;
 using Repository.Interfaces;
 
 namespace IDBMS_API.Services
@@ -47,6 +49,28 @@ namespace IDBMS_API.Services
 
             var psCreated = _repository.Save(ps);
             return psCreated;
+        }
+        public void CreatePaymentStageByDesign(Guid projectId, decimal EstimatedPrice, List<PaymentStageDesign> listStageDesigns)
+        {
+            foreach (var stage in listStageDesigns)
+            {
+                var ps = new PaymentStage
+                {
+                    Id = Guid.NewGuid(),
+                    StageNo = stage.StageNo, // Assuming StageNo is a property of PaymentStageDesign
+                    Name = stage.Name,
+                    Description = stage.Description,
+                    IsPaid = false,
+                    TotalContractPaid = (decimal)(stage.PricePercentage / 100) * EstimatedPrice,
+                    IsPrepaid = stage.IsPrepaid,
+                    PricePercentage = stage.PricePercentage,
+                    EstimateBusinessDay = stage.EstimateBusinessDay,
+                    ProjectId = projectId,
+                    IsHidden = false,
+                };
+
+                _repository.Save(ps);
+            }
         }
         public void UpdatePaymentStage(Guid id, PaymentStageRequest request)
         {

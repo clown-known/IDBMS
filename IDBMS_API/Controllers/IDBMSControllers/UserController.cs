@@ -34,28 +34,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(_service.GetById(id));
         }
 
-        [HttpPost]
-        public IActionResult CreateUser([FromBody] CreateUserRequest request)
-        {
-                try
-                {
-                    var result = _service.CreateUser(request);
-                    var response = new ResponseMessage()
-                    {
-                        Message = "Create successfully!",
-                        Data = result
-                    };
-                    return Ok(response);
-                }
-                catch (Exception ex)
-                {
-                    var response = new ResponseMessage()
-                    {
-                        Message = $"Error: {ex.Message}"
-                    };
-                    return BadRequest(response);
-                }
-        }
         [HttpPut("{id}")]
         public IActionResult UpdateUser(Guid id, [FromBody] UpdateUserRequest request)
         {

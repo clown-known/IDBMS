@@ -1,4 +1,5 @@
 ﻿using BusinessObject.DTOs.Request;
+using BusinessObject.DTOs.Request.BookingRequest;
 using BusinessObject.Models;
 using Repository.Interfaces;
 
@@ -6,24 +7,33 @@ namespace IDBMS_API.Services
 {
     public class SiteService
     {
-        private readonly ISiteRepository _repository;
+        private readonly ISiteRepository _siteRepo;
+        private readonly IFloorRepository _floorRepo;
+        private readonly IRoomRepository _roomRepo;
+        private readonly IProjectTaskRepository _taskRepo;
 
-        public SiteService(ISiteRepository repository)
+        public SiteService(
+                ISiteRepository siteRepo,
+                IFloorRepository floorRepo,
+                IRoomRepository roomRepo,
+                IProjectTaskRepository taskRepo)
         {
-            _repository = repository;
+            _siteRepo = siteRepo;
+            _floorRepo = floorRepo;
+            _roomRepo = roomRepo;
+            _taskRepo = taskRepo;
         }
-
         public IEnumerable<Site> GetAll()
         {
-            return _repository.GetAll();
+            return _siteRepo.GetAll();
         }
         public Site? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _siteRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public IEnumerable<Site?> GetByProjectId(Guid id)
         {
-            return _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+            return _siteRepo.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
         }
         public Site? CreateSite(SiteRequest request)
         {
@@ -38,12 +48,40 @@ namespace IDBMS_API.Services
                 ProjectId = request.ProjectId,
                 IsDeleted = false,
             };
-            var siteCreated = _repository.Save(site);
+            var siteCreated = _siteRepo.Save(site);
             return siteCreated;
+        }
+        public void CreateBookSite(Guid projectId, List<BookingSiteRequest> request)
+        {
+            foreach (var siteRequest in request)
+            {
+                var site = new Site
+                {
+                    Id = Guid.NewGuid(),
+                    Name = siteRequest.Name,
+                    Description = siteRequest.Description,
+                    Address = siteRequest.Address,
+                    UsePurpose = siteRequest.UsePurpose,
+                    Area = siteRequest.Area,
+                    ProjectId = projectId,
+                    IsDeleted = false,
+                };
+
+                var siteCreated = _siteRepo.Save(site);
+
+                if (siteCreated != null)
+                {
+                    if (siteRequest.Floors != null)
+                    {
+                        FloorService floorService = new FloorService(_floorRepo, _roomRepo, _taskRepo);
+                        floorService.CreateBookFloor(projectId, siteCreated.Id, siteRequest.Floors);
+                    }
+                }
+            }
         }
         public void UpdateSite(Guid id, SiteRequest request)
         {
-            var site = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var site = _siteRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             site.Name = request.Name;
             site.Description = request.Description;
@@ -52,15 +90,15 @@ namespace IDBMS_API.Services
             site.Area = request.Area;
             site.ProjectId = request.ProjectId;
 
-            _repository.Save(site);
+            _siteRepo.Save(site);
         }
         public void DeleteSite(Guid id)
         {
-            var site = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var site = _siteRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             site.IsDeleted = true;
 
-            _repository.Save(site);
+            _siteRepo.Save(site);
         }
 
     }

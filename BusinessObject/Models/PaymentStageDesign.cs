@@ -25,8 +25,7 @@ public class PaymentStageDesign
 
     public string? EnglishDescription { get; set; }
 
-    [Required]
-    public int EstimateBusinessDay { get; set; }
+    public int? EstimateBusinessDay { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }

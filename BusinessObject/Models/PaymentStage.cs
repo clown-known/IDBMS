@@ -14,8 +14,7 @@ public class PaymentStage
     [Required]
     public string Name { get; set; } = default!;
 
-    [Required]
-    public string Description { get; set; } = default!;
+    public string? Description { get; set; }
 
     [Required]
     public bool IsPaid { get; set; }
@@ -33,23 +32,18 @@ public class PaymentStage
     [Required]
     public double PricePercentage { get; set; }
 
-    [Required]
-    public DateTime PaidDate { get; set; }
+    public DateTime? PaidDate { get; set; }
 
-    [Required]
-    public DateTime StartedDate { get; set; }
+    public DateTime? StartedDate { get; set; }
 
-    [Required]
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
-    [Required]
-    public DateTime EndTimePayment { get; set; }
+    public DateTime? EndTimePayment { get; set; }
 
     [Column(TypeName = "money")]
     public decimal? PenaltyFee { get; set; }
 
-    [Required]
-    public int EstimateBusinessDay { get; set; }
+    public int? EstimateBusinessDay { get; set; }
 
     [Required]
     public Guid ProjectId { get; set; }

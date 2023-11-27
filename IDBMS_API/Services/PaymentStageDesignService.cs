@@ -32,8 +32,11 @@ namespace IDBMS_API.Services
                 IsPrepaid = request.IsPrepaid,
                 StageNo = request.StageNo,
                 Name = request.Name,
+                EnglishName= request.EnglishName,
                 Description = request.Description,
-/*                DecorProjectDesignId = request.DecorProjectDesignId,*/
+                EnglishDescription= request.EnglishDescription,
+                EstimateBusinessDay= request.EstimateBusinessDay,
+                ProjectDesignId= request.ProjectDesignId,
                 IsDeleted = false
             };
 
@@ -47,8 +50,11 @@ namespace IDBMS_API.Services
             psd.IsPrepaid = request.IsPrepaid;
             psd.StageNo = request.StageNo;
             psd.Name = request.Name;
+            psd.EnglishName = request.EnglishName;
             psd.Description = request.Description;
-/*            psd.DecorProjectDesignId = request.DecorProjectDesignId;*/
+            psd.EnglishDescription = request.EnglishDescription;
+            psd.EstimateBusinessDay = request.EstimateBusinessDay;
+            psd.ProjectDesignId = request.ProjectDesignId;
 
             _repository.Update(psd);
         }

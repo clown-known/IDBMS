@@ -12,8 +12,7 @@ namespace BusinessObject.DTOs.Request
 {
     public class ProjectTaskRequest
     {
-        [Required]
-        public string Code { get; set; } = default!;
+        public string? Code { get; set; }
 
         [Required]
         public string Name { get; set; } = default!;
@@ -59,13 +58,11 @@ namespace BusinessObject.DTOs.Request
         [Required]
         public Guid ProjectId { get; set; }
 
-        [Required]
-        public Guid PaymentStageId { get; set; }
+        public Guid? PaymentStageId { get; set; }
 
         public Guid? InteriorItemId { get; set; }
 
-        [Required]
-        public int TaskDesignId { get; set; }
+        public int? TaskDesignId { get; set; }
 
         public Guid? RoomId { get; set; }
 
