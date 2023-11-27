@@ -4,6 +4,8 @@ using IDBMS_API.DTOs.Request.BookingRequest;
 using BusinessObject.Enums;
 using BusinessObject.Models;
 using Repository.Interfaces;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IDBMS_API.Services
 {
@@ -57,6 +59,34 @@ namespace IDBMS_API.Services
             var ctCreated = _repository.Save(ct);
             return ctCreated;
         }
+
+        public void AssignTasksToStage(Guid paymentStageId, List<Guid> listTaskId)
+        {
+                foreach (var taskId in listTaskId)
+                {
+                    var task = _repository.GetById(taskId) ?? throw new Exception("This object is not existed!");
+
+                    task.PaymentStageId = paymentStageId;
+
+                    _repository.Update(task);
+                }
+        }
+        public void StartTasksOfStage(Guid paymentStageId)
+        {
+            var listTask = _repository.GetByPaymentStageId(paymentStageId);
+            if (listTask.Any())
+            {
+                foreach (var task in listTask)
+                {
+                    if (task!= null && task.PaymentStageId == paymentStageId)
+                    {
+                        task.StartedDate = DateTime.Now;
+                        _repository.Update(task);
+                    }
+                }
+            }
+        }
+
         public void CreateBookProjectTask(Guid projectId, Guid roomId, List<BookingTaskRequest> request)
         {
             foreach (var taskRequest in request)
