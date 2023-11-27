@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Vml;
 using Firebase.Storage;
 using IDBMS_API.Constants;
+using IDBMS_API.DTOs.Request.BookingRequest;
 using Microsoft.AspNetCore.Mvc;
 using Path = System.IO.Path;
 
@@ -44,6 +45,185 @@ namespace BLL.Services
             }
             return null;
         }
+        public async Task<string> UploadTransactionImage([FromForm] IFormFile file)
+        {
+            if (file != null && file.Length != 0)
+            {
+
+                string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+
+                var storageClient = new FirebaseStorage(_storageBucket);
+                using (var stream = file.OpenReadStream())
+                {
+                    stream.Position = 0; // Reset the stream position
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await stream.CopyToAsync(memoryStream);
+                        memoryStream.Position = 0;
+                        await storageClient.Child("Transactions").Child(fileName).PutAsync(memoryStream);
+                    }
+                }
+
+                FirebaseStorageReference starsRef = storageClient.Child("Transactions/" + fileName);
+                string link = await starsRef.GetDownloadUrlAsync();
+                return link;
+            }
+            return null;
+        } 
+        public async Task<string> UploadDocument([FromForm] IFormFile file,Guid projectid)
+        {
+            if (file != null && file.Length != 0)
+            {
+
+                string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+
+                var storageClient = new FirebaseStorage(_storageBucket);
+                using (var stream = file.OpenReadStream())
+                {
+                    stream.Position = 0; // Reset the stream position
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await stream.CopyToAsync(memoryStream);
+                        memoryStream.Position = 0;
+                        await storageClient.Child(projectid.ToString()).Child("Document").Child(fileName).PutAsync(memoryStream);
+                    }
+                }
+
+                FirebaseStorageReference starsRef = storageClient.Child(projectid.ToString()).Child("Document").Child(fileName);
+                string link = await starsRef.GetDownloadUrlAsync();
+                return link;
+            }
+            return null;
+        }
+        public async Task<string> UploadBookingDocument([FromForm] IFormFile file,string category,Guid projectid)
+        {
+            if (file != null && file.Length != 0)
+            {
+
+                string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+
+                var storageClient = new FirebaseStorage(_storageBucket);
+                using (var stream = file.OpenReadStream())
+                {
+                    stream.Position = 0; // Reset the stream position
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await stream.CopyToAsync(memoryStream);
+                        memoryStream.Position = 0;
+                        await storageClient.Child(projectid.ToString()).Child("BookingDocument").Child(category).Child(fileName).PutAsync(memoryStream);
+                    }
+                }
+
+                FirebaseStorageReference starsRef = storageClient.Child(projectid.ToString()).Child("BookingDocument").Child(category).Child(fileName);
+                string link = await starsRef.GetDownloadUrlAsync();
+                return link;
+            }
+            return null;
+        }
+        public async Task<string> UploadInteriorItemImage([FromForm] IFormFile file)
+        {
+            if (file != null && file.Length != 0)
+            {
+
+                string fileName = $"{Guid.NewGuid()}{file.FileName}";
+
+                var storageClient = new FirebaseStorage(_storageBucket);
+                using (var stream = file.OpenReadStream())
+                {
+                    stream.Position = 0; // Reset the stream position
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await stream.CopyToAsync(memoryStream);
+                        memoryStream.Position = 0;
+                        await storageClient.Child("InteriorItem").Child(fileName).PutAsync(memoryStream);
+                    }
+                }
+
+                FirebaseStorageReference starsRef = storageClient.Child("InteriorItem/" + fileName);
+                string link = await starsRef.GetDownloadUrlAsync();
+                return link;
+            }
+            return null;
+        }
+        public async Task<string> UploadFile([FromForm] IFormFile file)
+        {
+            if (file != null && file.Length != 0)
+            {
+
+                string fileName = $"{Guid.NewGuid()}{file.FileName}";
+
+                var storageClient = new FirebaseStorage(_storageBucket);
+                using (var stream = file.OpenReadStream())
+                {
+                    stream.Position = 0; // Reset the stream position
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await stream.CopyToAsync(memoryStream);
+                        memoryStream.Position = 0;
+                        await storageClient.Child("files").Child(fileName).PutAsync(memoryStream);
+                    }
+                }
+
+                FirebaseStorageReference starsRef = storageClient.Child("files/" + fileName);
+                string link = await starsRef.GetDownloadUrlAsync();
+                return link;
+            }
+            return null;
+        }
+        public async Task<string> UploadCommentFile([FromForm] IFormFile file,Guid projectid,Guid projecttaskid)
+        {
+            if (file != null && file.Length != 0)
+            {
+
+                string fileName = $"{Guid.NewGuid()}{file.FileName}";
+
+                var storageClient = new FirebaseStorage(_storageBucket);
+                using (var stream = file.OpenReadStream())
+                {
+                    stream.Position = 0; // Reset the stream position
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await stream.CopyToAsync(memoryStream);
+                        memoryStream.Position = 0;
+                        await storageClient.Child(projectid.ToString()).Child(projecttaskid.ToString()).Child("CommentFiles").Child(fileName).PutAsync(memoryStream);
+                    }
+                }
+
+                FirebaseStorageReference starsRef = storageClient.Child(projectid.ToString()).Child(projecttaskid.ToString()).Child("CommentFiles").Child(fileName);
+                string link = await starsRef.GetDownloadUrlAsync();
+                return link;
+            }
+            return null;
+        }
+        //public async Task<bool> DeleteFile(string fileName)
+        //{
+        //    try
+        //    {
+        //        var storageClient = new FirebaseStorage(_storageBucket);
+
+        //        await storageClient.Child("files").Child(fileName).DeleteAsync();
+
+        //        return true;
+        //    }
+        //    catch (Firebase.Storage.FirebaseStorageException ex)
+        //    {
+        //        // Log or handle the exception appropriately
+        //        Console.WriteLine($"Firebase Storage error: {ex.Message}");
+        //        return false;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log or handle the exception appropriately
+        //        Console.WriteLine($"An error occurred: {ex.Message}");
+        //        return false;
+        //    }
+        //}
         public async Task<string> UploadByByte(byte[] file,string filename,Guid ProjectId,string fileType)
         {
             string fileName = filename+$"-{DateTime.UtcNow}.docx";

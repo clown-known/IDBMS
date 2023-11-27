@@ -2,7 +2,7 @@
 using BusinessObject.Enums;
 using BusinessObject.Models;
 using Repository.Interfaces;
-
+using BLL.Services;
 
 namespace IDBMS_API.Services
 {
@@ -29,8 +29,10 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
         }
-        public Transaction? CreateTransaction(TransactionRequest request)
+        public async Task<Transaction?> CreateTransaction(TransactionRequest request)
         {
+            FirebaseService s = new FirebaseService();
+            string link = await s.UploadTransactionImage(request.TransactionReceiptImage);
             var trans = new Transaction
             {
                 Id = Guid.NewGuid(),
@@ -43,23 +45,24 @@ namespace IDBMS_API.Services
                 WarrantyClaimId = request.WarrantyClaimId,
                 Status = TransactionStatus.Pending,
                 IsDeleted = false,
-                TransactionReceiptImageUrl = request.TransactionReceiptImageUrl,
+                TransactionReceiptImageUrl = link,
                 AdminNote = request.AdminNote,
             };
             var transCreated = _repository.Save(trans);
             return transCreated;
         }
-        public void UpdateTransaction(Guid id, TransactionRequest request)
+        public async void UpdateTransaction(Guid id, TransactionRequest request)
         {
             var trans = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-
+            FirebaseService s = new FirebaseService();
+            string link = await s.UploadTransactionImage(request.TransactionReceiptImage);
             trans.Type = request.Type;
             trans.Amount = request.Amount;
             trans.Note = request.Note;
             trans.UserId = request.UserId;
             trans.ProjectId = request.ProjectId;
             trans.WarrantyClaimId = request.WarrantyClaimId;
-            trans.TransactionReceiptImageUrl = request.TransactionReceiptImageUrl;
+            trans.TransactionReceiptImageUrl = link;
             trans.AdminNote = request.AdminNote;
 
             _repository.Update(trans);

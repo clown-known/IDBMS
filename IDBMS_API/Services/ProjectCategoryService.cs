@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using BLL.Services;
+using BusinessObject.Models;
 using IDBMS_API.DTOs.Request;
 using Repository.Interfaces;
 
@@ -19,25 +20,29 @@ namespace IDBMS_API.Services
         {
             return projectCategoryRepository.GetById(id);
         }
-        public ProjectCategory? CreateProjectCategory(ProjectCategoryRequest projectCategory)
+        public async Task<ProjectCategory?> CreateProjectCategory(ProjectCategoryRequest projectCategory)
         {
+            FirebaseService s = new FirebaseService();
+            string link = await s.UploadImage(projectCategory.IconImage);
             var pc = new ProjectCategory
             {
                 Name = projectCategory.Name,
                 EnglishName = projectCategory.EnglishName,
-                IconImageUrl = projectCategory.IconImageUrl,
+                IconImageUrl = link,
                 IsHidden = false,
             };
 
             var pcCreated = projectCategoryRepository.Save(pc);
             return pcCreated;
         }
-        public void UpdateProjectCategory(int id, ProjectCategoryRequest projectCategory)
+        public async void UpdateProjectCategory(int id, ProjectCategoryRequest projectCategory)
         {
+            FirebaseService s = new FirebaseService();
+            string link = await s.UploadImage(projectCategory.IconImage);
             var pc = projectCategoryRepository.GetById(id) ?? throw new Exception("This object is not existed!");
             pc.Name = projectCategory.Name;
             pc.EnglishName = projectCategory.EnglishName;
-            pc.IconImageUrl = projectCategory.IconImageUrl;
+            pc.IconImageUrl = link;
             
             projectCategoryRepository.Update(pc);
         }

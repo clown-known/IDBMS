@@ -23,7 +23,7 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public Guid UserId { get; set; }
 
-        public string? FileUrl { get; set; }
+        public IFormFile? File { get; set; }
 
         [Required]
         public DateTime CreatedTime { get; set; }

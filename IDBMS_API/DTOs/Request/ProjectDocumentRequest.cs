@@ -17,7 +17,7 @@ namespace IDBMS_API.DTOs.Request
         public string? Description { get; set; }
 
         [Required]
-        public string Url { get; set; } = default!;
+        public IFormFile file { get; set; } = default!;
 
         [Required]
         public DateTime CreatedDate { get; set; }

@@ -23,7 +23,7 @@ namespace IDBMS_API.DTOs.Request
         public ProjectType ProjectType { get; set; }
 
         [Required]
-        public string IconImageUrl { get; set; } = default!;
+        public IFormFile IconImage { get; set; } = default!;
 
         [Required]
         public bool IsDeleted { get; set; }
