@@ -1,5 +1,5 @@
-﻿using BusinessObject.DTOs.Request;
-using BusinessObject.DTOs.Request.BookingRequest;
+﻿using IDBMS_API.DTOs.Request;
+using IDBMS_API.DTOs.Request.BookingRequest;
 using BusinessObject.Models;
 using Repository.Implements;
 using Repository.Interfaces;

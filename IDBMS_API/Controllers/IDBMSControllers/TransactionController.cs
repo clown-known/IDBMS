@@ -1,6 +1,6 @@
 ﻿using Azure.Core;
-using BusinessObject.DTOs.Request;
-using BusinessObject.DTOs.Response;
+using IDBMS_API.DTOs.Request;
+using IDBMS_API.DTOs.Response;
 using BusinessObject.Enums;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;

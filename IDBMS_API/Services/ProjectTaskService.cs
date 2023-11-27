@@ -1,6 +1,6 @@
 ﻿using Azure.Core;
-using BusinessObject.DTOs.Request;
-using BusinessObject.DTOs.Request.BookingRequest;
+using IDBMS_API.DTOs.Request;
+using IDBMS_API.DTOs.Request.BookingRequest;
 using BusinessObject.Enums;
 using BusinessObject.Models;
 using Repository.Interfaces;
