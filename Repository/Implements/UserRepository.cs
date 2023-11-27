@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using BusinessObject.Enums;
+using BusinessObject.Models;
 using Repository.Interfaces;
 
 namespace Repository.Implements;
@@ -36,6 +37,21 @@ public class UserRepository : IUserRepository
         {
             using var context = new IdtDbContext();
             return context.Users.FirstOrDefault(d => d.Email == email );
+        }
+        catch
+        {
+            throw;
+        }
+    }
+    public void Lock(string email)
+    {
+        try
+        {
+            using var context = new IdtDbContext();
+            var user = context.Users.FirstOrDefault(d => d.Email == email);
+            user.LockedUntil = DateTime.Now.AddMinutes((int)ConstantValues.LockedTime);
+            context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.SaveChanges();
         }
         catch
         {
