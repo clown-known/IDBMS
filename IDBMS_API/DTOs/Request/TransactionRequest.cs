@@ -41,7 +41,7 @@ namespace IDBMS_API.DTOs.Request
         public bool IsDeleted { get; set; }
 
         [Required]
-        public string TransactionReceiptImageUrl { get; set; } = default!;
+        public IFormFile TransactionReceiptImage { get; set; } = default!;
 
         public string? AdminNote { get; set; }
     }

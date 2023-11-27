@@ -15,7 +15,7 @@ namespace IDBMS_API.DTOs.Request
         public string? EnglishName { get; set; }
 
         [Required]
-        public string IconImageUrl { get; set; } = default!;
+        public IFormFile IconImage { get; set; } = default!;
 
         [Required]
         public bool IsHidden { get; set; }
