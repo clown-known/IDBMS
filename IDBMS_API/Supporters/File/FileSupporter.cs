@@ -48,7 +48,7 @@ namespace IDBMS_API.Supporters.File
                     FindAndReplaceText(doc, "[NumOfB]", ""+ NumOfB ?? ConstantValue.NumOfB.ToString());
                     FindAndReplaceText(doc, "[NumOfPages]", ""+ CountPages(doc));
                     FindAndReplaceText(doc, "[ProjectName]", project.Name);
-                    FindAndReplaceText(doc, "[Value]", ""+ IntUtils.ConvertStringToMoney(project.EstimatedPrice));
+                    FindAndReplaceText(doc, "[Value]", ""+ IntUtils.ConvertStringToMoney((decimal)project.EstimatedPrice));
                     FindAndReplaceText(doc, "[Money]", ""+ IntUtils.ConvertNumberToVietnamese((int)project.EstimatedPrice));
                     FindAndReplaceText(doc, "[CreatedDate]", time.Day.ToString()+"/"+time.Month.ToString()+"/"+time.Year.ToString());
                     //FindAndReplaceText(doc, "[EstimateBusinessDay]", project);
@@ -92,7 +92,7 @@ namespace IDBMS_API.Supporters.File
                     FindAndReplaceText(doc, "[NumOfB]", ""+ NumOfB ?? ConstantValue.NumOfB.ToString());
                     FindAndReplaceText(doc, "[NumOfPages]", ""+ CountPages(doc));
                     FindAndReplaceText(doc, "[ProjectName]", project.Name);
-                    FindAndReplaceText(doc, "[Value]", "" + IntUtils.ConvertStringToMoney(project.EstimatedPrice));
+                    FindAndReplaceText(doc, "[Value]", "" + IntUtils.ConvertStringToMoney((decimal)project.EstimatedPrice));
                     FindAndReplaceText(doc, "[Money]", "" + IntUtils.ConvertNumberToVietnamese((int)project.EstimatedPrice));
                     FindAndReplaceText(doc, "[CreatedDate]", time.Day.ToString() + "/" + time.Month.ToString() + "/" + time.Year.ToString());
                     //FindAndReplaceText(doc, "[EstimateBusinessDay]", project);
