@@ -3,6 +3,7 @@ using BusinessObject.Models;
 using IDBMS_API.Constants;
 using Repository.Interfaces;
 using System.Text.RegularExpressions;
+using BusinessObject.Enums;
 
 namespace IDBMS_API.Services
 {
@@ -37,6 +38,21 @@ namespace IDBMS_API.Services
                 UserId = request.UserId,
                 ProjectId = request.ProjectId,
                 Role = request.Role,
+                IsDeleted = false,
+            };
+
+            var pCreated = _repository.Save(p);
+            return pCreated;
+        }
+
+        public ProjectParticipation? CreateProjectOwnerParticipation(Guid projectId, Guid userId)
+        {
+            var p = new ProjectParticipation
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                ProjectId = projectId,
+                Role = ParticipationRole.ProductOwner,
                 IsDeleted = false,
             };
 
