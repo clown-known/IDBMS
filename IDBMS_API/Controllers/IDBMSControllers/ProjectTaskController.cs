@@ -90,6 +90,50 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
+        [HttpPut("payment-stage/{id}")]
+        public IActionResult AssignTasksToStage(Guid id,[FromBody] List<Guid> listTaskId)
+        {
+            try
+            {
+                _service.AssignTasksToStage(id, listTaskId);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [HttpPut("StartedDate")]
+        public IActionResult StartTasksOfStage(Guid paymentStageId)
+        {
+            try
+            {
+                _service.StartTasksOfStage(paymentStageId);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
         [HttpPut("{id}/status")]
         public IActionResult UpdateProjectTaskStatus(Guid id, ProjectTaskStatus status)
         {
