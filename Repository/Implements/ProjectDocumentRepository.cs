@@ -42,6 +42,21 @@ namespace Repository.Implements
             }
         }
 
+        public IEnumerable<ProjectDocument> GetByProjectId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.ProjectDocuments
+                        .Where(d => d.ProjectId == id)
+                        .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public IEnumerable<ProjectDocument> GetByFilter(Guid? projectId, int? documentTemplateId)
         {
             try

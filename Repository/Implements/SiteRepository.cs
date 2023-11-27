@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Sites.Where(s => s.Id == id).FirstOrDefault();
+                return context.Sites
+                    .Include(f => f.Floors)
+                    .Where(s => s.Id == id).FirstOrDefault();
             }
             catch
             {

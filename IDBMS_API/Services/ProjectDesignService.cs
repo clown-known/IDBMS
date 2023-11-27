@@ -26,6 +26,7 @@ namespace IDBMS_API.Services
             {
                 MinBudget = request.MinBudget,
                 MaxBudget = request.MaxBudget,
+                EstimateBusinessDay= request.EstimateBusinessDay,
                 Name = request.Name,
                 Description = request.Description,
                 ProjectType= request.ProjectType,
@@ -40,6 +41,7 @@ namespace IDBMS_API.Services
 
             obj.MinBudget = request.MinBudget;
             obj.MaxBudget = request.MaxBudget;
+            obj.EstimateBusinessDay = request.EstimateBusinessDay;
             obj.Name = request.Name;
             obj.Description = request.Description;
             obj.ProjectType = request.ProjectType;

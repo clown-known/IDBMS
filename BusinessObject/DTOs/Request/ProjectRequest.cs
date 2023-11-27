@@ -34,6 +34,9 @@ namespace BusinessObject.DTOs.Request
         [DataType(DataType.Currency)]
         public decimal TotalWarrantyPaid { get; set; }
 
+        [Required]
+        public int EstimateBusinessDay { get; set; }
+
         public Guid? CurrentStageId { get; set; }
 
         [Required]
