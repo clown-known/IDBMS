@@ -5,5 +5,6 @@ namespace Repository.Interfaces;
 
 public interface IUserRepository : ICrudBaseRepository<User, Guid>
 {
-    User? GetByEmail(string email);
+    public User? GetByEmail(string email);
+    public void Lock(string email);
 }

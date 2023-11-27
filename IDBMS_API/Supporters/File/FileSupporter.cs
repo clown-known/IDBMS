@@ -23,8 +23,7 @@ namespace IDBMS_API.Supporters.File
                 using (WordprocessingDocument doc = WordprocessingDocument.Open(stream,true ))
                 {
                     
-                    DateTime.UtcNow.AddHours(7).Month.ToString();
-                    DateTime time = DateTime.UtcNow.AddHours(7);
+                    DateTime time = DateTime.Now;
                     User owner = project.ProjectParticipations.Where(p => p.Role == BusinessObject.Enums.ParticipationRole.ProductOwner)
                         .FirstOrDefault().User;
                     string code = time.Day.ToString() + time.Month.ToString() + "/" + time.Year.ToString();
@@ -68,8 +67,7 @@ namespace IDBMS_API.Supporters.File
             {
                 using (WordprocessingDocument doc = WordprocessingDocument.Open(stream, true))
                 {
-                    DateTime.UtcNow.AddHours(7).Month.ToString();
-                    DateTime time = DateTime.UtcNow.AddHours(7);
+                    DateTime time = DateTime.Now;
                     User owner = project.ProjectParticipations.Where(p => p.Role == BusinessObject.Enums.ParticipationRole.ProductOwner)
                         .FirstOrDefault().User;
                     string code = time.Day.ToString() + time.Month.ToString() + "/" + time.Year.ToString();

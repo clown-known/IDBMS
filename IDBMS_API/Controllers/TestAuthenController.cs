@@ -42,7 +42,8 @@ namespace IDBMS_API.Controllers
             return Ok(user);
         }
         [HttpPost("file")]
-        public async Task<IActionResult> IndexAsync()
+        [Authorize(Policy = "ParticipationAccess")]
+        public async Task<IActionResult> IndexAsync(string id)
         {
             
 
