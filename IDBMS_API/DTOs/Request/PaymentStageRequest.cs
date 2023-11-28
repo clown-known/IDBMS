@@ -27,7 +27,7 @@ namespace IDBMS_API.DTOs.Request
         public decimal TotalContractPaid { get; set; }
 
         [Column(TypeName = "money")]
-        public decimal? TotalIncurringPaid { get; set; }
+        public decimal? TotalIncurredPaid { get; set; }
 
         [Required]
         public bool IsPrepaid { get; set; }
@@ -35,17 +35,13 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public double PricePercentage { get; set; }
 
-        [Required]
-        public DateTime PaidDate { get; set; }
+        public DateTime? PaidDate { get; set; }
 
-        [Required]
-        public DateTime StartedDate { get; set; }
+        public DateTime? StartedDate { get; set; }
 
-        [Required]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
-        [Required]
-        public DateTime EndTimePayment { get; set; }
+        public DateTime? EndTimePayment { get; set; }
 
         [Column(TypeName = "money")]
         public decimal? PenaltyFee { get; set; }

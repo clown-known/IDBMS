@@ -16,7 +16,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectTasks.ToList();
+                return context.ProjectTasks
+                    .Include(c => c.TaskCategory)
+                    .ToList();
             }
             catch
             {

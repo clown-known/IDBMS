@@ -31,8 +31,7 @@ namespace IDBMS_API.DTOs.Request
         [Column(TypeName = "money")]
         public decimal EstimatePricePerUnit { get; set; }
 
-        [Required]
-        public int InteriorItemCategoryId { get; set; }
+        public int? InteriorItemCategoryId { get; set; }
 
         public int? TaskCategoryId { get; set; }
     }
