@@ -61,7 +61,7 @@ namespace IDBMS_API.Services
             return pCreated;
         }
 
-        public void UpdateParticipation(Guid id, ProjectParticipationRequest request)
+        public void UpdateParticipation(ProjectParticipationRequest request)
         {
             var p = _repository.GetById(request.ProjectId) ?? throw new Exception("This object is not existed!");
 
