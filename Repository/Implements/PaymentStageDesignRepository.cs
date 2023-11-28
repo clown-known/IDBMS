@@ -15,10 +15,11 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                var psd = context.PaymentStageDesigns.Where(psd => psd.Id == id).FirstOrDefault();
+                var psd = context.PaymentStageDesigns.Where(psd => psd.Id == id && psd.IsDeleted == false).FirstOrDefault();
                 if (psd != null)
                 {
-                    context.PaymentStageDesigns.Remove(psd);
+                    psd.IsDeleted = true;
+                    context.Entry(psd).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
             }
@@ -33,7 +34,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.PaymentStageDesigns.ToList();
+                return context.PaymentStageDesigns.Where(psd=> psd.IsDeleted == false).ToList();
             }
             catch
             {
@@ -47,7 +48,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.PaymentStageDesigns
-                    .Where(psd => psd.ProjectDesignId == id).ToList();
+                    .Where(psd => psd.ProjectDesignId == id && psd.IsDeleted == false).ToList();
             }
             catch
             {
@@ -60,7 +61,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.PaymentStageDesigns.Where(psd => psd.Id == id).FirstOrDefault();
+                return context.PaymentStageDesigns.Where(psd => psd.Id == id && psd.IsDeleted == false).FirstOrDefault();
             }
             catch
             {

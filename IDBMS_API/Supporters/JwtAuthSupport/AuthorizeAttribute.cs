@@ -19,54 +19,141 @@ namespace API.Supporters.JwtAuthSupport
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var user = (User?)context.HttpContext.Items["User"];
+            var role = (string?)context.HttpContext.Items["role"];
             
-            if (user == null)
+            if (user == null && role == null)
             {
                 context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
             }
-            if(Policy != null && Policy == "ParticipationAccess")
+            if (role == null || !role.Equals("admin"))
             {
-                var routeData = context.HttpContext.GetRouteData();
-                if (routeData != null)
+                if (Policy != null && Policy == "ParticipationAccess")
                 {
+                    var routeData = context.HttpContext.GetRouteData();
+                    if (routeData != null)
+                    {
 
-                    var id = context.HttpContext.Request.Query["id"].ToString();
-                   
-                    Guid.TryParse(id, out Guid pid);
+                        var id = context.HttpContext.Request.Query["projectId"].ToString();
 
-                    bool accepted =  _participationRepository.GetByProjectId(pid) != null;
+                        Guid.TryParse(id, out Guid pid);
 
-                    if (!accepted)
-                        context.Result = new UnauthorizedResult();
+                        bool accepted = _participationRepository.GetByProjectId(pid).Where(p => p.UserId == user.Id) != null;
 
-                    new JsonResult(
-                            new { Message = "Unauthorized" }) { 
-                                StatusCode = StatusCodes.Status401Unauthorized 
+                        if (!accepted)
+                            context.Result = new UnauthorizedResult();
+
+                        new JsonResult(
+                                new { Message = "Unauthorized" })
+                        {
+                            StatusCode = StatusCodes.Status401Unauthorized
                         };
+                    }
+                }
+                if (Policy != null && Policy == "Owner")
+                {
+                    var routeData = context.HttpContext.GetRouteData();
+                    if (routeData != null)
+                    {
+
+                        var id = context.HttpContext.Request.Query["projectId"].ToString();
+
+                        Guid.TryParse(id, out Guid pid);
+
+                        bool accepted = _participationRepository.GetByProjectId(pid).Where(p => p.UserId == user.Id
+                                                && p.Role == BusinessObject.Enums.ParticipationRole.ProductOwner) != null;
+
+                        if (!accepted)
+                            context.Result = new JsonResult(
+                                new { Message = "Unauthorized" })
+                            {
+                                StatusCode = StatusCodes.Status401Unauthorized
+                            };
+                    }
+                }
+                if (Policy != null && Policy == "ArchitechOfProject")
+                {
+                    var routeData = context.HttpContext.GetRouteData();
+                    if (routeData != null)
+                    {
+
+                        var id = context.HttpContext.Request.Query["projectId"].ToString();
+
+                        Guid.TryParse(id, out Guid pid);
+
+                        bool accepted = _participationRepository.GetByProjectId(pid).Where(p => p.UserId == user.Id
+                                                && p.Role == BusinessObject.Enums.ParticipationRole.Architect) != null;
+
+                        if (!accepted)
+                            context.Result = new JsonResult(
+                                new { Message = "Unauthorized" })
+                            {
+                                StatusCode = StatusCodes.Status401Unauthorized
+                            };
+                    }
+                }
+                if (Policy != null && Policy == "LeadArchitechOfProject")
+                {
+                    var routeData = context.HttpContext.GetRouteData();
+                    if (routeData != null)
+                    {
+
+                        var id = context.HttpContext.Request.Query["projectId"].ToString();
+
+                        Guid.TryParse(id, out Guid pid);
+
+                        bool accepted = _participationRepository.GetByProjectId(pid).Where(p => p.UserId == user.Id
+                                                && p.Role == BusinessObject.Enums.ParticipationRole.LeadArchitect) != null;
+
+                        if (!accepted)
+                            context.Result = new JsonResult(
+                                new { Message = "Unauthorized" })
+                            {
+                                StatusCode = StatusCodes.Status401Unauthorized
+                            };
+                    }
+                }
+                if (Policy != null && Policy == "ConstructionManagerOfProject")
+                {
+                    var routeData = context.HttpContext.GetRouteData();
+                    if (routeData != null)
+                    {
+
+                        var id = context.HttpContext.Request.Query["projectId"].ToString();
+
+                        Guid.TryParse(id, out Guid pid);
+
+                        bool accepted = _participationRepository.GetByProjectId(pid).Where(p => p.UserId == user.Id
+                                                && p.Role == BusinessObject.Enums.ParticipationRole.ConstructionManager) != null;
+
+                        if (!accepted)
+                            context.Result = new JsonResult(
+                                new { Message = "Unauthorized" })
+                            {
+                                StatusCode = StatusCodes.Status401Unauthorized
+                            };
+                    }
+                }
+                if (Policy != null && Policy == "Architect")
+                {
+                    bool accepted = user.UserRoles.Where(r => r.Role == BusinessObject.Enums.CompanyRole.Architect) != null;
+                    if (!accepted)
+                        context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
 
                 }
-                //context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
-            } 
-            if(Policy != null && Policy == "Architect")
-            {
-                bool accepted = user.UserRoles.Where(r=>r.Role == BusinessObject.Enums.CompanyRole.Architect) != null;
-                if (!accepted)
-                    context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
+                if (Policy != null && Policy == "ConstructionManager")
+                {
+                    bool accepted = user.UserRoles.Where(r => r.Role == BusinessObject.Enums.CompanyRole.ConstructionManager) != null;
+                    if (!accepted)
+                        context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
 
-            }
-            if (Policy != null && Policy == "ConstructionManager")
-            {
-                bool accepted = user.UserRoles.Where(r => r.Role == BusinessObject.Enums.CompanyRole.ConstructionManager) != null;
-                if (!accepted)
-                    context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
+                }
+                if (Policy != null && Policy == "ParticipationIgnoreViewerAccess")
+                {
+                    bool accepted = user.UserRoles.Where(r => r.Role == BusinessObject.Enums.CompanyRole.ConstructionManager) != null;
+                    if (!accepted)
+                        context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
 
-            }
-            if (Policy != null && Policy == "ParticipationIgnoreViewerAccess")
-            {
-                bool accepted = user.UserRoles.Where(r => r.Role == BusinessObject.Enums.CompanyRole.ConstructionManager) != null;
-                if (!accepted)
-                    context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
-
+                }
             }
         }
     }

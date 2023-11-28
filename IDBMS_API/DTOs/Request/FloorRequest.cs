@@ -23,9 +23,5 @@ namespace IDBMS_API.DTOs.Request
 
         [Required]
         public Guid SiteId { get; set; }
-
-        [Required]
-        public bool IsDeleted { get; set; }
-
     }
 }

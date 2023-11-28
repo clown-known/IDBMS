@@ -16,7 +16,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskReports.ToList();
+                return context.TaskReports.Where(report => report.IsDeleted == false).ToList();
             }
             catch
             {
@@ -29,7 +29,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskReports.FirstOrDefault(report => report.Id == id);
+                return context.TaskReports.FirstOrDefault(report => report.Id == id && report.IsDeleted == false);
             }
             catch
             {
@@ -43,7 +43,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.TaskReports
                     .Include(rd => rd.TaskDocuments)
-                    .Where(report => report.ProjectTaskId == id).ToList();
+                    .Where(report => report.ProjectTaskId == id && report.IsDeleted == false).ToList();
             }
             catch
             {
@@ -65,7 +65,7 @@ namespace Repository.Implements
                     {
                         TaskReport? tr = new TaskReport();
 
-                        if (item != null) tr = context.TaskReports.FirstOrDefault(tr => tr.ProjectTaskId == item.ProjectTaskId);
+                        if (item != null) tr = context.TaskReports.FirstOrDefault(tr => tr.ProjectTaskId == item.ProjectTaskId && tr.IsDeleted == false);
 
                         if (tr != null) result.Add(tr);
                     }
@@ -114,7 +114,8 @@ namespace Repository.Implements
                 var report = context.TaskReports.FirstOrDefault(report => report.Id == id);
                 if (report != null)
                 {
-                    context.TaskReports.Remove(report);
+                    report.IsDeleted = true;
+                    context.Entry(report).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
             }

@@ -3,6 +3,7 @@ using IDBMS_API.DTOs.Request.BookingRequest;
 using BusinessObject.Models;
 using Repository.Implements;
 using Repository.Interfaces;
+using BLL.Services;
 
 namespace IDBMS_API.Services
 {
@@ -29,14 +30,16 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
         }
-        public ProjectDocument? CreateProjectDocument(ProjectDocumentRequest request)
+        public async Task<ProjectDocument?> CreateProjectDocument(ProjectDocumentRequest request)
         {
+            FirebaseService s = new FirebaseService();
+            string link = await s.UploadDocument(request.file,request.ProjectId);
             var pd = new ProjectDocument
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
                 Description = request.Description,
-                Url = request.Url,
+                Url = link,
                 CreatedDate = DateTime.Now,
                 Category = request.Category,
                 ProjectId = request.ProjectId,
@@ -49,16 +52,22 @@ namespace IDBMS_API.Services
             return pdCreated;
         }
 
-        public void CreateBookProjectDocument(Guid projectId, List<BookingDocumentRequest> requests)
+        public async void CreateBookProjectDocument(Guid projectId, List<BookingDocumentRequest> requests)
         {
+            FirebaseService s = new FirebaseService();
             foreach (var request in requests)
             {
+                string link = "";
+                if (request.file != null)
+                {
+                    link = await s.UploadBookingDocument(request.file,nameof(request.Category),projectId);
+                }
                 var pd = new ProjectDocument
                 {
                     Id = Guid.NewGuid(),
                     Name = request.Name,
                     Description = request.Description,
-                    Url = request.Url ?? "",
+                    Url = link,
                     CreatedDate = DateTime.Now,
                     Category = request.Category,
                     ProjectId = projectId,
@@ -71,13 +80,14 @@ namespace IDBMS_API.Services
         }
 
 
-        public void UpdateProjectDocument(Guid id, ProjectDocumentRequest request)
+        public async void UpdateProjectDocument(Guid id, ProjectDocumentRequest request)
         {
             var pd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-
+            FirebaseService s = new FirebaseService();
+            string link = await s.UploadDocument(request.file, request.ProjectId);
             pd.Name = request.Name;
             pd.Description = request.Description;
-            pd.Url = request.Url;
+            pd.Url = link;
             pd.CreatedDate = request.CreatedDate;
             pd.Category = request.Category;
             pd.ProjectId = request.ProjectId;

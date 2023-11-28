@@ -1,6 +1,7 @@
 ﻿using IDBMS_API.DTOs.Request;
 using BusinessObject.Models;
 using Repository.Interfaces;
+using BLL.Services;
 
 namespace IDBMS_API.Services
 {
@@ -20,8 +21,10 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public TaskCategory? CreateTaskCategory(TaskCategoryRequest request)
+        public async Task<TaskCategory?> CreateTaskCategory(TaskCategoryRequest request)
         {
+            FirebaseService s = new FirebaseService();
+            string link = await s.UploadImage(request.IconImage);
             var ctc = new TaskCategory
             {
                 Name = request.Name,
@@ -29,22 +32,23 @@ namespace IDBMS_API.Services
                 Description = request.Description,
                 EnglishDescription = request.EnglishDescription,
                 ProjectType = request.ProjectType,
-                IconImageUrl = request.IconImageUrl,
+                IconImageUrl = link,
                 IsDeleted = false,
             };
             var ctcCreated = _repository.Save(ctc);
             return ctcCreated;
         }
-        public void UpdateTaskCategory(int id, TaskCategoryRequest request)
+        public async void UpdateTaskCategory(int id, TaskCategoryRequest request)
         {
             var ctc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-
+            FirebaseService s = new FirebaseService();
+            string link = await s.UploadImage(request.IconImage);
             ctc.Name = request.Name;
             ctc.EnglishName = request.EnglishName;
             ctc.Description = request.Description;
             ctc.EnglishDescription = request.EnglishDescription;
             ctc.ProjectType = request.ProjectType;
-            ctc.IconImageUrl = request.IconImageUrl;
+            ctc.IconImageUrl = link;
 
             _repository.Update(ctc);
         }

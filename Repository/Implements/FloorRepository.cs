@@ -14,7 +14,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Floors.ToList();
+                return context.Floors.Where(floor => floor.IsDeleted == false).ToList();
             }
             catch
             {
@@ -42,7 +42,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Floors.Where(floor => floor.SiteId == id);
+                return context.Floors.Where(floor => floor.SiteId == id && floor.IsDeleted == false);
             }
             catch
             {
@@ -86,7 +86,8 @@ namespace Repository.Implements
                 var floor = context.Floors.FirstOrDefault(floor => floor.Id == id);
                 if (floor != null)
                 {
-                    context.Floors.Remove(floor);
+                    floor.IsDeleted = true;
+                    context.Entry(floor).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
             }

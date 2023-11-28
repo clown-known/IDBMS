@@ -21,17 +21,14 @@ namespace IDBMS_API.DTOs.Request
         public string? EnglishDescription { get; set; }
 
         [Required]
-        public string BannerImageUrl { get; set; } = default!;
+        public IFormFile BannerImage { get; set; } = default!;
 
         [Required]
-        public string IconImageUrl { get; set; } = default!;
+        public IFormFile IconImage { get; set; } = default!;
 
         [Required]
         public InteriorItemType InteriorItemType { get; set; }
 
         public int? ParentCategoryId { get; set; }
-
-        [Required]
-        public bool IsDeleted { get; set; }
     }
 }

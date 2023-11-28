@@ -3,6 +3,8 @@ using BusinessObject.Enums;
 using BusinessObject.Models;
 using Newtonsoft.Json.Linq;
 using Repository.Interfaces;
+using BLL.Services;
+using Microsoft.AspNetCore.OData.Formatter.Wrapper;
 
 namespace IDBMS_API.Services
 {
@@ -25,15 +27,17 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByCategory(id) ?? throw new Exception("This object is not existed!");
         }
-        public InteriorItem? CreateInteriorItem(InteriorItemRequest request)
+        public async Task<InteriorItem?> CreateInteriorItem(InteriorItemRequest request)
         {
+            FirebaseService s = new FirebaseService();
+            string link = await s.UploadInteriorItemImage(request.Image);
             var ii = new InteriorItem
             {
                 Id = Guid.NewGuid(),
                 Code = request.Code,
                 Name = request.Name,
                 EnglishName = request.EnglishName,
-                ImageUrl = request.ImageUrl,
+                ImageUrl = link,
                 Length = request.Length,
                 Width = request.Width,
                 Height = request.Height,
@@ -54,14 +58,15 @@ namespace IDBMS_API.Services
             var iiCreated = _repository.Save(ii);
             return iiCreated;
         }
-        public void UpdateInteriorItem(Guid id, InteriorItemRequest request)
+        public async void UpdateInteriorItem(Guid id, InteriorItemRequest request)
         {
             var ii = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-
+            FirebaseService s = new FirebaseService();
+            string link = await s.UploadInteriorItemImage(request.Image);
             ii.Code = request.Code;
             ii.Name = request.Name;
             ii.EnglishName = request.EnglishName;
-            ii.ImageUrl = request.ImageUrl;
+            ii.ImageUrl = link;
             ii.Length = request.Length;
             ii.Width = request.Width;
             ii.Height = request.Height;

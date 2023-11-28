@@ -16,7 +16,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskDocuments.ToList();
+                return context.TaskDocuments.Where(td => td.IsDeleted == false).ToList();
             }
             catch
             {
@@ -29,7 +29,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskDocuments.Where(td => td.Id == id).FirstOrDefault();
+                return context.TaskDocuments.Where(td => td.Id == id && td.IsDeleted == false).FirstOrDefault();
             }
             catch
             {
@@ -42,7 +42,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskDocuments.Where(td => td.TaskReportId == id).ToList();
+                return context.TaskDocuments.Where(td => td.TaskReportId == id && td.IsDeleted == false).ToList();
             }
             catch
             {
@@ -84,10 +84,11 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                var td = context.TaskDocuments.FirstOrDefault(td => td.Id == id);
+                var td = context.TaskDocuments.FirstOrDefault(td => td.Id == id && td.IsDeleted == false);
                 if (td != null)
                 {
-                    context.TaskDocuments.Remove(td);
+                    td.IsDeleted = true;
+                    context.Entry(td).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
             }

@@ -22,7 +22,15 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
 
     public ProjectParticipation? GetById(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            using var context = new IdtDbContext();
+            return context.ProjectParticipations.Where(p=>p.Id == id && p.IsDeleted == false).FirstOrDefault();
+        }
+        catch
+        {
+            throw;
+        }
     }
 
     public ProjectParticipation? Save(ProjectParticipation entity)
@@ -87,6 +95,20 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
 
     public void DeleteById(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            using var context = new IdtDbContext();
+            var entity = context.ProjectParticipations.Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault();
+            if (entity != null)
+            {
+                entity.IsDeleted = true;
+                context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                context.SaveChanges();
+            }
+        }
+        catch
+        {
+            throw;
+        }
     }
 }

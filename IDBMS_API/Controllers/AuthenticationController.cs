@@ -19,12 +19,14 @@ namespace API.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly UserService userService;
+        private readonly AdminService adminService;
         private readonly AuthenticationCodeService authenticationCodeService;
 
-        public AuthenticationController(UserService userService, AuthenticationCodeService authenticationCodeService )
+        public AuthenticationController(UserService userService, AuthenticationCodeService authenticationCodeService,AdminService adminService )
         {
             this.userService = userService;
             this.authenticationCodeService = authenticationCodeService;
+            this.adminService = adminService;
         }
 
         [HttpPost("login")]
@@ -33,6 +35,37 @@ namespace API.Controllers
             try
             {
                 var (token, user) = userService.Login(request.Email, request.Password);
+                var response = new ResponseMessage();
+                if (token == null)
+                {
+                    response.Message = "Incorrect email or password!";
+                    return BadRequest(response);
+                }
+
+                response.Message = "Login successfully!";
+                response.Data = new
+                {
+                    Token = token,
+                    user.Name,
+                    user.Id,
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+        [HttpPost("admin/login")]
+        public IActionResult LoginAdmin(LoginRequest request)
+        {
+            try
+            {
+                var (token, user) = adminService.Login(request.Email, request.Password);
                 var response = new ResponseMessage();
                 if (token == null)
                 {

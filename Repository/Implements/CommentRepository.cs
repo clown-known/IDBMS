@@ -14,7 +14,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Comments.ToList();
+                return context.Comments.Where(comment => comment.IsDeleted == false).ToList();
             }
             catch
             {
@@ -27,7 +27,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Comments.FirstOrDefault(comment => comment.Id == id);
+                return context.Comments.FirstOrDefault(comment => comment.Id == id );
             }
             catch
             {
@@ -39,7 +39,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Comments.Where(comment => comment.ProjectTaskId == id).ToList();
+                return context.Comments.Where(comment => comment.ProjectTaskId == id && comment.IsDeleted == false).ToList();
             }
             catch
             {
@@ -54,7 +54,7 @@ namespace Repository.Implements
                 return context.Comments
                     .Include(t => t.ProjectTask)
                     .Include(u => u.User)
-                    .Where(comment => comment.ProjectId == id)
+                    .Where(comment => comment.ProjectId == id && comment.IsDeleted == false)
                     .OrderByDescending(comment => comment.LastModifiedTime ?? comment.CreatedTime)
                     .ToList();
             }
@@ -101,7 +101,8 @@ namespace Repository.Implements
                 var comment = context.Comments.FirstOrDefault(comment => comment.Id == id);
                 if (comment != null)
                 {
-                    context.Comments.Remove(comment);
+                    comment.IsDeleted = true;
+                    context.Entry(comment).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
             }
