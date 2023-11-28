@@ -42,7 +42,6 @@ namespace IDBMS_API.Services
                 CreatedDate = DateTime.Now,
                 UserId = request.UserId,
                 ProjectId = request.ProjectId,
-                WarrantyClaimId = request.WarrantyClaimId,
                 Status = TransactionStatus.Pending,
                 IsDeleted = false,
                 TransactionReceiptImageUrl = link,
@@ -61,7 +60,6 @@ namespace IDBMS_API.Services
             trans.Note = request.Note;
             trans.UserId = request.UserId;
             trans.ProjectId = request.ProjectId;
-            trans.WarrantyClaimId = request.WarrantyClaimId;
             trans.TransactionReceiptImageUrl = link;
             trans.AdminNote = request.AdminNote;
 
