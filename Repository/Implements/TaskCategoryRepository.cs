@@ -15,10 +15,11 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                var ctc = context.TaskCategories.Where(ctc => ctc.Id == id).FirstOrDefault();
+                var ctc = context.TaskCategories.Where(ctc => ctc.Id == id && ctc.IsDeleted == false).FirstOrDefault();
                 if (ctc != null)
                 {
-                    context.TaskCategories.Remove(ctc);
+                    ctc.IsDeleted = true;   
+                    context.Entry(ctc).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
             }
@@ -33,7 +34,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskCategories.ToList();
+                return context.TaskCategories.Where(ctc=> ctc.IsDeleted == false).ToList();
             }
             catch
             {
@@ -46,7 +47,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskCategories.Where(ctc => ctc.Id == id).FirstOrDefault();
+                return context.TaskCategories.Where(ctc => ctc.Id == id && ctc.IsDeleted == false).FirstOrDefault();
             }
             catch
             {

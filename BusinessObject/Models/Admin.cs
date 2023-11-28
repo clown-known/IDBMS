@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace BusinessObject.Models;
@@ -24,8 +25,11 @@ public class Admin
     [Required]
     [JsonIgnore]
     public byte[] PasswordSalt { get; set; } = default!;
+    [Required]
+    public AdminStatus Status { get; set; }
 
     public string? AuthenticationCode { get; set; }
+    public string? token { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }

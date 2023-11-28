@@ -15,7 +15,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.WarrantyClaims.ToList();
+                return context.WarrantyClaims.Where(wc=> wc.IsDeleted == false).ToList();
             }
             catch
             {
@@ -28,7 +28,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.WarrantyClaims.Where(wc => wc.Id == id).FirstOrDefault();
+                return context.WarrantyClaims.Where(wc => wc.Id == id && wc.IsDeleted == false).FirstOrDefault();
             }
             catch
             {
@@ -41,7 +41,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.WarrantyClaims.Where(wc => wc.UserId == id).ToList();
+                return context.WarrantyClaims.Where(wc => wc.UserId == id && wc.IsDeleted == false).ToList();
             }
             catch
             {
@@ -54,7 +54,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.WarrantyClaims.Where(wc => wc.ProjectId == id).ToList();
+                return context.WarrantyClaims.Where(wc => wc.ProjectId == id && wc.IsDeleted == false).ToList();
             }
             catch
             {
@@ -92,7 +92,21 @@ namespace Repository.Implements
         }
         public void DeleteById(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var context = new IdtDbContext();
+                var entity = context.WarrantyClaims.Where(wc => wc.Id == id && wc.IsDeleted == false).FirstOrDefault();
+                if (entity != null)
+                {
+                    entity.IsDeleted = true;
+                    context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    context.SaveChanges();
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
 
        

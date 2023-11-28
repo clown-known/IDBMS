@@ -25,5 +25,7 @@ namespace IDBMS_API.DTOs.Request.BookingRequest
         public double Area { get; set; }
 
         public List<BookingFloorRequest>? Floors { get; set; }
+        [Required]
+        public Guid ProjectId { get; set; }
     }
 }

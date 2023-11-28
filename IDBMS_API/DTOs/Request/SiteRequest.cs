@@ -23,11 +23,7 @@ namespace IDBMS_API.DTOs.Request
 
         [Required]
         public double Area { get; set; }
-
         [Required]
         public Guid ProjectId { get; set; }
-
-        [Required]
-        public bool IsDeleted { get; set; }
     }
 }

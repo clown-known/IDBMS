@@ -24,16 +24,5 @@ namespace IDBMS_API.DTOs.Request
         public Guid UserId { get; set; }
 
         public IFormFile? File { get; set; }
-
-        [Required]
-        public DateTime CreatedTime { get; set; }
-
-        public DateTime? LastModifiedTime { get; set; }
-
-        [Required]
-        public CommentStatus Status { get; set; }
-
-        [Required]
-        public bool IsDeleted { get; set; }
     }
 }

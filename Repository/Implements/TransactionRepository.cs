@@ -30,7 +30,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Transactions.Where(trans => trans.Id == id).FirstOrDefault();
+                return context.Transactions.Where(trans => trans.Id == id && trans.IsDeleted == false).FirstOrDefault();
             }
             catch
             {
@@ -43,7 +43,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Transactions.Where(trans => trans.ProjectId == id).ToList();
+                return context.Transactions.Where(trans => trans.ProjectId == id && trans.IsDeleted == false).ToList();
             }
             catch
             {
@@ -56,7 +56,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Transactions.Where(trans => trans.UserId == id).ToList();
+                return context.Transactions.Where(trans => trans.UserId == id && trans.IsDeleted == false).ToList();
             }
             catch
             {
@@ -97,10 +97,11 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                var transaction = context.Transactions.Where(trans => trans.Id == id).FirstOrDefault();
+                var transaction = context.Transactions.Where(trans => trans.Id == id && trans.IsDeleted == false).FirstOrDefault();
                 if (transaction != null)
                 {
-                    context.Transactions.Remove(transaction);
+                    transaction.IsDeleted = true;
+                    context.Entry(transaction).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
             }

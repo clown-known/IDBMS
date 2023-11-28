@@ -60,9 +60,6 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public InteriorItemStatus Status { get; set; }
 
-        [Required]
-        public bool IsDeleted { get; set; }
-
         public Guid? ParentItemId { get; set; }
     }
 }
