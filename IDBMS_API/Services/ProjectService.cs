@@ -8,6 +8,7 @@ using Repository.Interfaces;
 public class ProjectService
 {
     private readonly IProjectRepository _projectRepo;
+    private readonly IProjectParticipationRepository _participationRepo;
     private readonly IPaymentStageDesignRepository _paymentStageDesignRepo;
     private readonly IPaymentStageRepository _paymentStageRepo;
     private readonly IProjectDocumentRepository _projectDocumentRepo;
@@ -18,6 +19,7 @@ public class ProjectService
 
     public ProjectService(
             IProjectRepository projectRepo,
+            IProjectParticipationRepository participationRepo,
             IPaymentStageDesignRepository paymentStageDesignRepo,
             IPaymentStageRepository paymentStageRepo,
             IProjectDocumentRepository projectDocumentRepo,
@@ -27,6 +29,7 @@ public class ProjectService
             IProjectTaskRepository taskRepo)
     {
         _projectRepo = projectRepo;
+        _participationRepo = participationRepo;
         _paymentStageDesignRepo = paymentStageDesignRepo;
         _paymentStageRepo = paymentStageRepo;
         _projectDocumentRepo = projectDocumentRepo;
@@ -48,85 +51,115 @@ public class ProjectService
 
     public Project? BookDecorProject(BookingDecorProjectRequest request)
     {
-        var project = new Project
+        try
         {
-            Id = Guid.NewGuid(),
-            CreatedDate = DateTime.Now,
-            Status = ProjectStatus.PendingConfirmation,
-            AdvertisementStatus = AdvertisementStatus.None,
-            Type = ProjectType.Decor,
-
-            Name = request.Name,
-            CompanyName = request.CompanyName,
-            CompanyAddress = request.CompanyAddress,
-            CompanyCode = request.CompanyCode,
-            Description = request.Description,
-            ProjectCategoryId = request.ProjectCategoryId,
-            ProjectDesignId = request.ProjectDesignId,
-            EstimatedPrice = request.EstimatedPrice,
-            EstimateBusinessDay = request.EstimateBusinessDay,
-            Language = request.Language,
-        };
-
-        var projectCreated = _projectRepo.Save(project);
-        if (projectCreated != null)
-        {
-            if (request.Documents != null)
+            var project = new Project
             {
-                ProjectDocumentService documentService = new ProjectDocumentService(_projectDocumentRepo);
-                documentService.CreateBookProjectDocument(projectCreated.Id, request.Documents);
-            }
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Status = ProjectStatus.Draft,
+                AdvertisementStatus = AdvertisementStatus.None,
+                Type = ProjectType.Decor,
 
-            if (request.Sites != null)
-            {
-                SiteService siteService = new SiteService(_siteRepo, _floorRepo, _roomRepo, _taskRepo);
-                siteService.CreateBookSite(projectCreated.Id, request.Sites);
-            }
+                Name = request.Name,
+                CompanyName = request.CompanyName,
+                CompanyAddress = request.CompanyAddress,
+                CompanyCode = request.CompanyCode,
+                Description = request.Description,
+                ProjectCategoryId = request.ProjectCategoryId,
+                ProjectDesignId = request.ProjectDesignId,
+                EstimatedPrice = request.EstimatedPrice,
+                EstimateBusinessDay = request.EstimateBusinessDay,
+                Language = request.Language,
+            };
 
-            if (request.ProjectDesignId != null)
+            var draftProject = _projectRepo.Save(project);
+            if (draftProject != null)
             {
-                PaymentStageDesignService paymentStageDesignService = new PaymentStageDesignService(_paymentStageDesignRepo);
-                var listStageDesigns = paymentStageDesignService.GetByProjectDesignId((int)request.ProjectDesignId);
-                if (listStageDesigns.Any() && projectCreated.EstimatedPrice.HasValue)
+
+                ProjectParticipationService participationService = new ProjectParticipationService(_participationRepo);
+                participationService.CreateProjectOwnerParticipation(draftProject.Id, request.UserId);
+
+                if (request.Documents != null)
                 {
-                    PaymentStageService paymentStageService = new PaymentStageService(_paymentStageRepo);
-                    paymentStageService.CreatePaymentStageByDesign(projectCreated.Id, projectCreated.EstimatedPrice.Value, (List<PaymentStageDesign>)listStageDesigns);
+                    ProjectDocumentService documentService = new ProjectDocumentService(_projectDocumentRepo);
+                    documentService.CreateBookProjectDocument(draftProject.Id, request.Documents);
                 }
+
+                if (request.Sites != null)
+                {
+                    SiteService siteService = new SiteService(_siteRepo, _floorRepo, _roomRepo, _taskRepo);
+                    siteService.CreateBookSite(draftProject.Id, request.Sites);
+                }
+
+                if (request.ProjectDesignId != null)
+                {
+                    PaymentStageDesignService paymentStageDesignService = new PaymentStageDesignService(_paymentStageDesignRepo);
+                    var listStageDesigns = paymentStageDesignService.GetByProjectDesignId((int)request.ProjectDesignId);
+                    if (listStageDesigns.Any() && draftProject.EstimatedPrice.HasValue)
+                    {
+                        PaymentStageService paymentStageService = new PaymentStageService(_paymentStageRepo);
+                        paymentStageService.CreatePaymentStageByDesign(draftProject.Id, draftProject.EstimatedPrice.Value, (List<PaymentStageDesign>)listStageDesigns);
+                    }
+                }
+
+                var projectCreated = _projectRepo.GetById(draftProject.Id) ?? throw new Exception("This object is not existed!");
+                projectCreated.Status = ProjectStatus.PendingConfirmation;
+                _projectRepo.Update(projectCreated);
+                return projectCreated;
             }
+            return draftProject;
         }
-        return projectCreated;
+        catch
+        {
+            throw new Exception("Fail to book project!");
+        }
     }
     public Project? BookConstructionProject(BookingConstructionProjectRequest request)
     {
-        var project = new Project
+        try
         {
-            Id = Guid.NewGuid(),
-            CreatedDate = DateTime.Now,
-            Status = ProjectStatus.PendingConfirmation,
-            AdvertisementStatus = AdvertisementStatus.None,
-            Type = ProjectType.Decor,
-
-            Name = request.Name,
-            CompanyName = request.CompanyName,
-            CompanyAddress = request.CompanyAddress,
-            CompanyCode = request.CompanyCode,
-            Description = request.Description,
-            ProjectCategoryId = request.ProjectCategoryId,
-            BasedOnDecorProjectId = request.BasedOnDecorProjectId,
-            Language = request.Language,
-        };
-
-        var projectCreated = _projectRepo.Save(project);
-        if (projectCreated != null)
-        {
-            if (request.Documents != null)
+            var project = new Project
             {
-                ProjectDocumentService documentService = new ProjectDocumentService(_projectDocumentRepo);
-                documentService.CreateBookProjectDocument(projectCreated.Id, request.Documents);
-            }
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Status = ProjectStatus.Draft,
+                AdvertisementStatus = AdvertisementStatus.None,
+                Type = ProjectType.Decor,
 
+                Name = request.Name,
+                CompanyName = request.CompanyName,
+                CompanyAddress = request.CompanyAddress,
+                CompanyCode = request.CompanyCode,
+                Description = request.Description,
+                ProjectCategoryId = request.ProjectCategoryId,
+                BasedOnDecorProjectId = request.BasedOnDecorProjectId,
+                Language = request.Language,
+            };
+
+            var draftProject = _projectRepo.Save(project);
+            if (draftProject != null)
+            {
+                ProjectParticipationService participationService = new ProjectParticipationService(_participationRepo);
+                participationService.CreateProjectOwnerParticipation(draftProject.Id, request.UserId);
+
+                if (request.Documents != null)
+                {
+                    ProjectDocumentService documentService = new ProjectDocumentService(_projectDocumentRepo);
+                    documentService.CreateBookProjectDocument(draftProject.Id, request.Documents);
+                }
+
+                var projectCreated = _projectRepo.GetById(draftProject.Id) ?? throw new Exception("This object is not existed!");
+                projectCreated.Status = ProjectStatus.PendingConfirmation;
+                _projectRepo.Update(projectCreated);
+                return projectCreated;
+            }
+            return draftProject;
         }
-        return projectCreated;
+        catch
+        {
+            throw new Exception("Fail to book project!");
+        }
     }
 
     public void UpdateProject(Guid id, ProjectRequest request)

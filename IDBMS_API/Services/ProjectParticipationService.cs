@@ -3,6 +3,7 @@ using BusinessObject.Models;
 using IDBMS_API.Constants;
 using Repository.Interfaces;
 using System.Text.RegularExpressions;
+using BusinessObject.Enums;
 
 namespace IDBMS_API.Services
 {
@@ -44,7 +45,23 @@ namespace IDBMS_API.Services
             return pCreated;
         }
 
-        public void UpdateParticipation( ProjectParticipationRequest request)
+
+        public ProjectParticipation? CreateProjectOwnerParticipation(Guid projectId, Guid userId)
+        {
+            var p = new ProjectParticipation
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                ProjectId = projectId,
+                Role = ParticipationRole.ProductOwner,
+                IsDeleted = false,
+            };
+
+            var pCreated = _repository.Save(p);
+            return pCreated;
+        }
+
+        public void UpdateParticipation(Guid id, ProjectParticipationRequest request)
         {
             var p = _repository.GetById(request.ProjectId) ?? throw new Exception("This object is not existed!");
 

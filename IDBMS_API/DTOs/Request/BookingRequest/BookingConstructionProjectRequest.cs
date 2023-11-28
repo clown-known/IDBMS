@@ -30,6 +30,9 @@ namespace IDBMS_API.DTOs.Request.BookingRequest
 
         public Guid? BasedOnDecorProjectId { get; set; }
 
+        [Required]
+        public Guid UserId { get; set; }
+
         public List<BookingDocumentRequest>? Documents { get; set; }
     }
 }

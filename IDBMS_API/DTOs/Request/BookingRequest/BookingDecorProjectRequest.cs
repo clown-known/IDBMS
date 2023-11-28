@@ -37,6 +37,9 @@ namespace IDBMS_API.DTOs.Request.BookingRequest
         [Required]
         public int EstimateBusinessDay { get; set; }
 
+        [Required]
+        public Guid UserId { get; set; }
+
         public List<BookingSiteRequest>? Sites { get; set; }
         public List<BookingDocumentRequest>? Documents { get; set; }
     }
