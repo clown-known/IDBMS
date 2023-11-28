@@ -30,7 +30,7 @@ namespace IDBMS_API.Services
             var ps = new PaymentStage
             {
                 Id = Guid.NewGuid(),
-                StageNo = request.StageNo,
+                StageNo = request.StageNo, //danh so +1
                 Name = request.Name,
                 Description = request.Description,
                 IsPaid = request.IsPaid,
@@ -57,7 +57,7 @@ namespace IDBMS_API.Services
                 var ps = new PaymentStage
                 {
                     Id = Guid.NewGuid(),
-                    StageNo = stage.StageNo, // Assuming StageNo is a property of PaymentStageDesign
+                    StageNo = stage.StageNo, 
                     Name = stage.Name,
                     Description = stage.Description,
                     IsPaid = false,
