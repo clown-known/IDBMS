@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Enums;
 using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System.Xml.Linq;
 
@@ -12,7 +13,9 @@ public class UserRepository : IUserRepository
         try
         {
             using var context = new IdtDbContext();
-            return context.Users.ToList();
+            return context.Users
+                .Include(ur=> ur.UserRoles)
+                .ToList();
         }
         catch
         {
