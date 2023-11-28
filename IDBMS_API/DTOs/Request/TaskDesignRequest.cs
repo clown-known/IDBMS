@@ -32,9 +32,6 @@ namespace IDBMS_API.DTOs.Request
         public decimal EstimatePricePerUnit { get; set; }
 
         [Required]
-        public bool IsDeleted { get; set; }
-
-        [Required]
         public int InteriorItemCategoryId { get; set; }
 
         public int? TaskCategoryId { get; set; }

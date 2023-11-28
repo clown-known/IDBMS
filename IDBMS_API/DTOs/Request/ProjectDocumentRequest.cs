@@ -20,9 +20,6 @@ namespace IDBMS_API.DTOs.Request
         public IFormFile file { get; set; } = default!;
 
         [Required]
-        public DateTime CreatedDate { get; set; }
-
-        [Required]
         public ProjectDocumentCategory Category { get; set; }
 
         [Required]
@@ -32,9 +29,5 @@ namespace IDBMS_API.DTOs.Request
 
         [Required]
         public bool IsPublicAdvertisement { get; set; }
-
-        [Required]
-        public bool IsDeleted { get; set; }
-
     }
 }

@@ -33,7 +33,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(_service.GetByCategory(id));
         }
         [HttpPost]
-        public IActionResult CreateInteriorItem([FromBody] InteriorItemRequest request)
+        public IActionResult CreateInteriorItem([FromBody][FromForm] InteriorItemRequest request)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateInteriorItem(Guid id, [FromBody] InteriorItemRequest request)
+        public IActionResult UpdateInteriorItem(Guid id, [FromBody][FromForm] InteriorItemRequest request)
         {
             try
             {

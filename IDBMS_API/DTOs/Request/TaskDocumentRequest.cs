@@ -19,8 +19,5 @@ namespace IDBMS_API.DTOs.Request
 
         [Required]
         public Guid TaskReportId { get; set; }
-
-        [Required]
-        public bool IsDeleted { get; set; }
     }
 }

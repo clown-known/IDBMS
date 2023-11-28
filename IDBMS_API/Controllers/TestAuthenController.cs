@@ -43,7 +43,7 @@ namespace IDBMS_API.Controllers
         }
         [HttpPost("file")]
         [Authorize(Policy = "ParticipationAccess")]
-        public async Task<IActionResult> IndexAsync([FromForm] IFormFile id)
+        public async Task<IActionResult> IndexAsync([FromBody][FromForm] IFormFile id)
         {
             
 
@@ -58,14 +58,22 @@ namespace IDBMS_API.Controllers
             // return Ok("false");
         }
         [HttpPost("file2")]
-        public async Task<IActionResult> IndexAsync2(Guid projectid)
+        public async Task<IActionResult> IndexAsync2(TransactionRequest request)
         {
             FirebaseService s = new FirebaseService();
-            ContractService c = new ContractService();
-            var content = await c.GenNewConstract(projectid);
+            string link = await s.UploadTransactionImage(request.TransactionReceiptImage);
             //string name = await s.UploadByByte(file2,"nam.docx");
             //return File(content, "application/octet-stream", "c4d07b71-c86d-45a9-9afd-076580bf82ea.jpg");
-            return File(content, "application/octet-stream", "Contract.docx");
+            return Ok(link);
+        }
+        [HttpPost("file3")]
+        public async Task<IActionResult> IndexAsync3([FromForm] TestRequest request)
+        {
+            FirebaseService s = new FirebaseService();
+            string link = await s.UploadTransactionImage(request.file);
+            //string name = await s.UploadByByte(file2,"nam.docx");
+            //return File(content, "application/octet-stream", "c4d07b71-c86d-45a9-9afd-076580bf82ea.jpg");
+            return Ok();
         }
         [HttpGet("case1")]
         [Authorize]

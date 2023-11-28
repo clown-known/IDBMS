@@ -24,8 +24,5 @@ namespace IDBMS_API.DTOs.Request
 
         [Required]
         public IFormFile IconImage { get; set; } = default!;
-
-        [Required]
-        public bool IsDeleted { get; set; }
     }
 }

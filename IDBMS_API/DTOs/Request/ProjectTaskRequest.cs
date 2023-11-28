@@ -44,11 +44,6 @@ namespace IDBMS_API.DTOs.Request
 
         public DateTime? EndDate { get; set; }
 
-        [Required]
-        public DateTime CreatedDate { get; set; }
-
-        public DateTime? UpdatedDate { get; set; }
-
         public int? NoDate { get; set; }
 
         public Guid? ParentTaskId { get; set; }

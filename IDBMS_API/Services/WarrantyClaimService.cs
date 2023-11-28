@@ -1,6 +1,8 @@
 ﻿using IDBMS_API.DTOs.Request;
 using BusinessObject.Models;
 using Repository.Interfaces;
+using BLL.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IDBMS_API.Services
 {
@@ -29,8 +31,14 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
         }
-        public WarrantyClaim? CreateWarrantyClaim(WarrantyClaimRequest request)
+        public async Task<WarrantyClaim?> CreateWarrantyClaim([FromForm]WarrantyClaimRequest request)
         {
+            string link = "";
+            if(request.ConfirmationDocument != null)
+            {
+                FirebaseService s = new FirebaseService();
+                link = await s.UploadDocument(request.ConfirmationDocument,request.ProjectId);
+            }
             var wc = new WarrantyClaim
             {
                 Id = Guid.NewGuid(),
@@ -42,7 +50,7 @@ namespace IDBMS_API.Services
                 IsCompanyCover = request.IsCompanyCover,
                 CreatedDate = DateTime.Now,
                 EndDate = request.EndDate,
-                ConfirmationDocument = request.ConfirmationDocument,
+                ConfirmationDocument = link,
                 ProjectId = request.ProjectId,
                 UserId = request.UserId,
                 IsDeleted = false,
@@ -50,10 +58,15 @@ namespace IDBMS_API.Services
             var wcCreated = _repository.Save(wc);
             return wcCreated;
         }
-        public void UpdateWarrantyClaim(Guid id, WarrantyClaimRequest request)
+        public async void UpdateWarrantyClaim(Guid id, [FromForm] WarrantyClaimRequest request)
         {
             var wc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-
+            string link = wc.ConfirmationDocument;
+            if (request.ConfirmationDocument != null)
+            {
+                FirebaseService s = new FirebaseService();
+                link = await s.UploadDocument(request.ConfirmationDocument, request.ProjectId);
+            }
             wc.Name = request.Name;
             wc.Reason = request.Reason;
             wc.Solution = request.Solution;
@@ -61,7 +74,7 @@ namespace IDBMS_API.Services
             wc.TotalPaid = request.TotalPaid;
             wc.IsCompanyCover = request.IsCompanyCover;
             wc.EndDate = request.EndDate;
-            wc.ConfirmationDocument = request.ConfirmationDocument;
+            wc.ConfirmationDocument = link;
             wc.ProjectId = request.ProjectId;
             wc.UserId = request.UserId;
 

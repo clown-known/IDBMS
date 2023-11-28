@@ -1,6 +1,7 @@
 ﻿using BLL.Services;
 using BusinessObject.Models;
 using IDBMS_API.DTOs.Request;
+using Microsoft.AspNetCore.Mvc;
 using Repository.Interfaces;
 
 namespace IDBMS_API.Services
@@ -20,7 +21,7 @@ namespace IDBMS_API.Services
         {
             return projectCategoryRepository.GetById(id);
         }
-        public async Task<ProjectCategory?> CreateProjectCategory(ProjectCategoryRequest projectCategory)
+        public async Task<ProjectCategory?> CreateProjectCategory([FromForm] ProjectCategoryRequest projectCategory)
         {
             FirebaseService s = new FirebaseService();
             string link = await s.UploadImage(projectCategory.IconImage);
@@ -35,7 +36,7 @@ namespace IDBMS_API.Services
             var pcCreated = projectCategoryRepository.Save(pc);
             return pcCreated;
         }
-        public async void UpdateProjectCategory(int id, ProjectCategoryRequest projectCategory)
+        public async void UpdateProjectCategory(int id, [FromForm] ProjectCategoryRequest projectCategory)
         {
             FirebaseService s = new FirebaseService();
             string link = await s.UploadImage(projectCategory.IconImage);

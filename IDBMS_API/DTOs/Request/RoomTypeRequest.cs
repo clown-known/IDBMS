@@ -17,7 +17,7 @@ namespace IDBMS_API.DTOs.Request
         public string? EnglishName { get; set; }
 
         [Required]
-        public string ImageUrl { get; set; } = default!;
+        public IFormFile Image { get; set; } = default!;
 
         public string? Description { get; set; }
 

@@ -27,20 +27,14 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public bool IsCompanyCover { get; set; }
 
-        [Required]
-        public DateTime CreatedDate { get; set; }
-
         public DateTime? EndDate { get; set; }
 
-        public string? ConfirmationDocument { get; set; }
+        public IFormFile? ConfirmationDocument { get; set; }
 
         [Required]
         public Guid ProjectId { get; set; }
 
         [Required]
         public Guid UserId { get; set; }
-
-        [Required]
-        public bool IsDeleted { get; set; }
     }
 }

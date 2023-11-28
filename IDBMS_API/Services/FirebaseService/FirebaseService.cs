@@ -19,7 +19,7 @@ namespace BLL.Services
                 .Build();
             _storageBucket = config["Firebase:StorageBucket"];
         }
-        public async Task<string> UploadImage([FromForm] IFormFile file)
+        public async Task<string> UploadImage(IFormFile file)
         {
             if (file != null && file.Length != 0)
             {
@@ -45,12 +45,12 @@ namespace BLL.Services
             }
             return null;
         }
-        public async Task<string> UploadTransactionImage([FromForm] IFormFile file)
+        public async Task<string> UploadTransactionImage(IFormFile file)
         {
             if (file != null && file.Length != 0)
             {
 
-                string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+                string fileName = $"{Guid.NewGuid()}{file.FileName}";
 
                 var storageClient = new FirebaseStorage(_storageBucket);
                 using (var stream = file.OpenReadStream())

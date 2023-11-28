@@ -38,7 +38,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(_service.GetByProjectId(id));
         }
         [HttpPost]
-        public IActionResult CreateWarrantyClaim([FromBody] WarrantyClaimRequest request)
+        public IActionResult CreateWarrantyClaim([FromBody][FromForm] WarrantyClaimRequest request)
         {
                 try
                 {
@@ -61,7 +61,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateWarrantyClaim(Guid id, [FromBody] WarrantyClaimRequest request)
+        public IActionResult UpdateWarrantyClaim(Guid id, [FromBody][FromForm] WarrantyClaimRequest request)
         {
             try
             {
