@@ -40,7 +40,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateProjectDocument([FromBody] ProjectDocumentRequest request)
+        public IActionResult CreateProjectDocument([FromBody][FromForm] ProjectDocumentRequest request)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateProjectDocument(Guid id, [FromBody] ProjectDocumentRequest request)
+        public IActionResult UpdateProjectDocument(Guid id, [FromBody][FromForm] ProjectDocumentRequest request)
         {
             try
             {

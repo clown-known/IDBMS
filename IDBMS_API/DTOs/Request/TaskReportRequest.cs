@@ -26,14 +26,6 @@ namespace IDBMS_API.DTOs.Request
         public Guid ConstructionTaskId { get; set; }
 
         [Required]
-        public DateTime CreatedTime { get; set; }
-
-        public DateTime? UpdatedTime { get; set; }
-
-        [Required]
         public Guid ProjectTaskId { get; set; }
-
-        [Required]
-        public bool IsDeleted { get; set; }
     }
 }

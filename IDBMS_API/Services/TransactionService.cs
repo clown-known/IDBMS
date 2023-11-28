@@ -3,6 +3,7 @@ using BusinessObject.Enums;
 using BusinessObject.Models;
 using Repository.Interfaces;
 using BLL.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IDBMS_API.Services
 {
@@ -29,7 +30,7 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
         }
-        public async Task<Transaction?> CreateTransaction(TransactionRequest request)
+        public async Task<Transaction?> CreateTransaction([FromForm] TransactionRequest request)
         {
             FirebaseService s = new FirebaseService();
             string link = await s.UploadTransactionImage(request.TransactionReceiptImage);
@@ -42,7 +43,7 @@ namespace IDBMS_API.Services
                 CreatedDate = DateTime.Now,
                 UserId = request.UserId,
                 ProjectId = request.ProjectId,
-                Status = TransactionStatus.Pending,
+                Status = request.Status,
                 IsDeleted = false,
                 TransactionReceiptImageUrl = link,
                 AdminNote = request.AdminNote,

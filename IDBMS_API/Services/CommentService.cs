@@ -4,6 +4,7 @@ using BusinessObject.Models;
 using Repository.Implements;
 using Repository.Interfaces;
 using BLL.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IDBMS_API.Services
 {
@@ -30,7 +31,7 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByProjectId(dprId) ?? throw new Exception("This object is not existed!");
         }
-        public async Task<Comment?> CreateComment(CommentRequest comment)
+        public async Task<Comment?> CreateComment([FromForm] CommentRequest comment)
         {
             FirebaseService s = new FirebaseService();
             string link = "";
@@ -51,7 +52,7 @@ namespace IDBMS_API.Services
             var cmtCreated = _repository.Save(cmt);
             return cmtCreated;
         }
-        public async void UpdateComment(Guid id, CommentRequest comment)
+        public async void UpdateComment(Guid id, [FromForm] CommentRequest comment)
         {
             var cmt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             FirebaseService s = new FirebaseService();

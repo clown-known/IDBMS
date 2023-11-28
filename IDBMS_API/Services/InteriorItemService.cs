@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using Repository.Interfaces;
 using BLL.Services;
 using Microsoft.AspNetCore.OData.Formatter.Wrapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IDBMS_API.Services
 {
@@ -27,7 +28,7 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByCategory(id) ?? throw new Exception("This object is not existed!");
         }
-        public async Task<InteriorItem?> CreateInteriorItem(InteriorItemRequest request)
+        public async Task<InteriorItem?> CreateInteriorItem([FromForm] InteriorItemRequest request)
         {
             FirebaseService s = new FirebaseService();
             string link = await s.UploadInteriorItemImage(request.Image);
@@ -58,7 +59,7 @@ namespace IDBMS_API.Services
             var iiCreated = _repository.Save(ii);
             return iiCreated;
         }
-        public async void UpdateInteriorItem(Guid id, InteriorItemRequest request)
+        public async void UpdateInteriorItem(Guid id, [FromForm] InteriorItemRequest request)
         {
             var ii = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             FirebaseService s = new FirebaseService();

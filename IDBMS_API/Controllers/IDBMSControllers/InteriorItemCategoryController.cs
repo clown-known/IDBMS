@@ -26,7 +26,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateInteriorItemCategory([FromBody] InteriorItemCategoryRequest request)
+        public IActionResult CreateInteriorItemCategory([FromBody][FromForm] InteriorItemCategoryRequest request)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateInteriorItemCategory(int id, [FromBody] InteriorItemCategoryRequest request)
+        public IActionResult UpdateInteriorItemCategory(int id, [FromBody][FromForm] InteriorItemCategoryRequest request)
         {
             try
             {

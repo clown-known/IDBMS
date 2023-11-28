@@ -41,7 +41,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(_service.GetByProjectId(id));
         }
         [HttpPost]
-        public IActionResult CreateComment([FromBody] CommentRequest request)
+        public IActionResult CreateComment([FromBody][FromForm] CommentRequest request)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateComment(Guid id, [FromBody] CommentRequest request)
+        public IActionResult UpdateComment(Guid id, [FromBody][FromForm] CommentRequest request)
         {
             try
             {

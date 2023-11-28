@@ -48,7 +48,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(_service.GetByProjectId(id));
         }
         [HttpPost]
-        public IActionResult CreateTransaction([FromBody] TransactionRequest request)
+        public IActionResult CreateTransaction([FromBody][FromForm] TransactionRequest request)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateTransaction(Guid id, [FromBody] TransactionRequest request)
+        public IActionResult UpdateTransaction(Guid id, [FromBody][FromForm] TransactionRequest request)
         {
             try
             {

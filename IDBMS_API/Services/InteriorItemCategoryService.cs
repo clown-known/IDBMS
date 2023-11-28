@@ -3,6 +3,7 @@ using BusinessObject.Models;
 using Repository.Implements;
 using Repository.Interfaces;
 using BLL.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IDBMS_API.Services
 {
@@ -21,7 +22,7 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public async Task<InteriorItemCategory?> CreateInteriorItemCategory(InteriorItemCategoryRequest request)
+        public async Task<InteriorItemCategory?> CreateInteriorItemCategory([FromForm] InteriorItemCategoryRequest request)
         {
             FirebaseService s = new FirebaseService();
             string BannerImageUrl = await s.UploadImage(request.IconImage);
@@ -42,7 +43,7 @@ namespace IDBMS_API.Services
             var iicCreated = _repository.Save(iic);
             return iicCreated;
         }
-        public async void UdpateInteriorItemCategory(int id, InteriorItemCategoryRequest request)
+        public async void UdpateInteriorItemCategory(int id, [FromForm] InteriorItemCategoryRequest request)
         {
             FirebaseService s = new FirebaseService();
             string BannerImageUrl = await s.UploadImage(request.IconImage);

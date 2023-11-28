@@ -46,10 +46,10 @@ namespace IDBMS_API.Services
                 UnitInContract = request.UnitInContract,
                 UnitUsed = request.UnitUsed,
                 IsIncurred = request.IsIncurred,
-                StartedDate = DateTime.Now,
+                StartedDate = request.StartedDate,
                 EndDate = request.EndDate,
                 NoDate = request.NoDate,
-                CreatedDate = request.CreatedDate,
+                CreatedDate = DateTime.Now,
                 ProjectId = request.ProjectId,
                 PaymentStageId = request.PaymentStageId,
                 InteriorItemId = request.InteriorItemId,
@@ -124,7 +124,7 @@ namespace IDBMS_API.Services
             ct.UnitInContract = request.UnitInContract;
             ct.UnitUsed = request.UnitUsed;
             ct.IsIncurred = request.IsIncurred;
-            ct.UpdatedDate= request.UpdatedDate;
+            ct.UpdatedDate= DateTime.Now;
             ct.EndDate = request.EndDate;
             ct.NoDate = request.NoDate;
             ct.ProjectId = request.ProjectId;

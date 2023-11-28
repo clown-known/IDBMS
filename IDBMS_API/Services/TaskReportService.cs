@@ -50,6 +50,7 @@ namespace IDBMS_API.Services
             ctr.CalculationUnit = request.CalculationUnit;
             ctr.UnitUsed = request.UnitUsed;
             ctr.Description = request.Description;
+            ctr.UpdatedTime = DateTime.Now;
 
             _repository.Update(ctr);
         }

@@ -4,6 +4,7 @@ using BusinessObject.Models;
 using Repository.Implements;
 using Repository.Interfaces;
 using BLL.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IDBMS_API.Services
 {
@@ -30,7 +31,7 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
         }
-        public async Task<ProjectDocument?> CreateProjectDocument(ProjectDocumentRequest request)
+        public async Task<ProjectDocument?> CreateProjectDocument([FromForm] ProjectDocumentRequest request)
         {
             FirebaseService s = new FirebaseService();
             string link = await s.UploadDocument(request.file,request.ProjectId);
@@ -52,7 +53,7 @@ namespace IDBMS_API.Services
             return pdCreated;
         }
 
-        public async void CreateBookProjectDocument(Guid projectId, List<BookingDocumentRequest> requests)
+        public async void CreateBookProjectDocument(Guid projectId, [FromForm] List<BookingDocumentRequest> requests)
         {
             FirebaseService s = new FirebaseService();
             foreach (var request in requests)
@@ -80,7 +81,7 @@ namespace IDBMS_API.Services
         }
 
 
-        public async void UpdateProjectDocument(Guid id, ProjectDocumentRequest request)
+        public async void UpdateProjectDocument(Guid id, [FromForm] ProjectDocumentRequest request)
         {
             var pd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             FirebaseService s = new FirebaseService();
@@ -88,7 +89,7 @@ namespace IDBMS_API.Services
             pd.Name = request.Name;
             pd.Description = request.Description;
             pd.Url = link;
-            pd.CreatedDate = request.CreatedDate;
+            pd.CreatedDate = DateTime.Now;
             pd.Category = request.Category;
             pd.ProjectId = request.ProjectId;
             pd.ProjectDocumentTemplateId = request.ProjectDocumentTemplateId;
