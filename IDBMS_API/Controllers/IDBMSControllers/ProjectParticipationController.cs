@@ -30,14 +30,14 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("user/{id}")]
-        public IActionResult GetParticipationsByUserId(Guid id)
+        public IActionResult GetParticipationsByUserId(Guid projectId, Guid id)
         {
             return Ok(_service.GetByUserId(id));
         }
 
         [EnableQuery]
         [HttpGet("project/{id}")]
-        public IActionResult GetParticipationsByProjectId(Guid id)
+        public IActionResult GetParticipationsByProjectId(Guid projectId, Guid id)
         {
             return Ok(_service.GetByProjectId(id));
         }
@@ -66,11 +66,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateParticipation(Guid id, [FromBody] ProjectParticipationRequest request)
+        public IActionResult UpdateParticipation(Guid projectId, [FromBody] ProjectParticipationRequest request)
         {
             try
             {
-                _service.UpdateParticipation(id, request);
+                _service.UpdateParticipation(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
@@ -88,7 +88,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteParticipation(Guid id)
+        public IActionResult DeleteParticipation(Guid projectId, Guid id)
         {
             try
             {

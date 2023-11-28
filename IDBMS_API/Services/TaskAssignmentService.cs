@@ -35,7 +35,7 @@ namespace IDBMS_API.Services
             {
                 Id = Guid.NewGuid(),
                 UserId = request.UserId,
-                ProjectTaskId = request.ProjectId,
+                ProjectTaskId = request.ProjectTaskId,
                 ProjectId = request.ProjectId,
             };
 
@@ -47,7 +47,7 @@ namespace IDBMS_API.Services
             var ta = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ta.UserId = request.UserId;
-            ta.ProjectTaskId = request.ProjectId;
+            ta.ProjectTaskId = request.ProjectTaskId;
             ta.ProjectId = request.ProjectId;
             
             _repository.Update(ta);

@@ -13,7 +13,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.InteriorItems.ToList();
+                return context.InteriorItems.Where(ii=> ii.IsDeleted == false).ToList();
             }
             catch
             {
@@ -26,7 +26,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.InteriorItems.FirstOrDefault(ii => ii.Id == id);
+                return context.InteriorItems.FirstOrDefault(ii => ii.Id == id && ii.IsDeleted == false);
             }
             catch
             {
@@ -38,7 +38,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.InteriorItems.Where(ii => ii.InteriorItemCategoryId == id).ToList();
+                return context.InteriorItems.Where(ii => ii.InteriorItemCategoryId == id && ii.IsDeleted == false).ToList();
             }
             catch
             {
@@ -79,10 +79,11 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                var ii = context.InteriorItems.FirstOrDefault(ii => ii.Id == id);
+                var ii = context.InteriorItems.FirstOrDefault(ii => ii.Id == id && ii.IsDeleted == false);
                 if (ii != null)
                 {
-                    context.InteriorItems.Remove(ii);
+                    ii.IsDeleted = true;
+                    context.Entry(ii).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
             }

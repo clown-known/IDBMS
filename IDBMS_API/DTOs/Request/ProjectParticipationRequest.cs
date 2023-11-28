@@ -15,11 +15,9 @@ namespace IDBMS_API.DTOs.Request
         public Guid UserId { get; set; }
 
         [Required]
-        public Guid ProjectId { get; set; }
-
-        [Required]
         public ParticipationRole Role { get; set; }
 
-
+        [Required]
+        public Guid ProjectId { get; set; }
     }
 }

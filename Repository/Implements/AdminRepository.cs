@@ -84,5 +84,17 @@ namespace Repository.Implements
             }
         }
 
+        public Admin? GetByEmail(string email)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Admins.Where(a => a.Email.ToLower() == email.ToLower()).FirstOrDefault();
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

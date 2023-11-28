@@ -1,16 +1,39 @@
 ﻿using IDBMS_API.DTOs.Request;
 using BusinessObject.Models;
 using Repository.Interfaces;
+using API.Supporters.JwtAuthSupport;
+using IDBMS_API.Supporters.Utils;
 
 namespace IDBMS_API.Services
 {
     public class AdminService
     {
         private readonly IAdminRepository _repository;
-        public AdminService(IAdminRepository repository)
+        private readonly JwtTokenSupporter jwtTokenSupporter;
+        public AdminService(IAdminRepository repository, JwtTokenSupporter jwtTokenSupporter)
         {
             _repository = repository;
-        }   
+            this.jwtTokenSupporter = jwtTokenSupporter;
+        }
+        public (string? token, Admin? user) Login(string email, string password)
+        {
+            var user = _repository.GetByEmail(email);
+            if (user != null)
+            {
+                if (PasswordUtils.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                {
+                    if (user.token != null)
+                    {
+                        return (user.token, user);
+                    }
+
+                    var token = jwtTokenSupporter.CreateTokenForAdmin(user);
+                    UpdateTokenForAdmin(user, token);
+                    return (token, user);
+                }
+            }
+            return (null, null);
+        }
         public IEnumerable<Admin> GetAll()
         {
             return _repository.GetAll();
@@ -48,6 +71,11 @@ namespace IDBMS_API.Services
             admin.AuthenticationCode = request.AuthenticationCode;
             admin.CreatorId = request.CreatorId;
 
+            _repository.Update(admin);
+        }
+        public void UpdateTokenForAdmin(Admin admin, string token)
+        {
+            admin.token = token;
             _repository.Update(admin);
         }
         public void DeleteAdmin(Guid id)

@@ -1,6 +1,7 @@
 ﻿using IDBMS_API.DTOs.Request;
 using BusinessObject.Models;
 using Repository.Interfaces;
+using BLL.Services;
 
 namespace IDBMS_API.Services
 {
@@ -19,8 +20,10 @@ namespace IDBMS_API.Services
         {
             return _repository.GetAll();
         }
-        public RoomType? CreateRoomType(RoomTypeRequest roomType)
+        public async Task<RoomType?> CreateRoomType(RoomTypeRequest roomType)
         {
+            FirebaseService s = new FirebaseService();
+            string link = await s.UploadImage(roomType.IconImage);
             var rt = new RoomType
             {
                 Name = roomType.Name,
@@ -30,23 +33,24 @@ namespace IDBMS_API.Services
                 EnglishDescription = roomType.EnglishDescription,
                 PricePerArea = roomType.PricePerArea,
                 IsHidden = false,
-                IconImageUrl = roomType.IconImageUrl,
+                IconImageUrl = link,
             };
 
             var roomTypeCreated = _repository.Save(rt);
             return roomTypeCreated;
         }
-        public void UpdateRoomType(int id, RoomTypeRequest roomType)
+        public async void UpdateRoomType(int id, RoomTypeRequest roomType)
         {
             var rt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-
+            FirebaseService s = new FirebaseService();
+            string link = await s.UploadImage(roomType.IconImage);
             rt.Name = roomType.Name;
             rt.EnglishName = roomType.EnglishName;
             rt.ImageUrl = roomType.ImageUrl;
             rt.Description = roomType.Description;
             rt.EnglishDescription = roomType.EnglishDescription;
             rt.PricePerArea = roomType.PricePerArea;
-            rt.IconImageUrl = roomType.IconImageUrl;
+            rt.IconImageUrl = link;
 
             _repository.Update(rt);
         }

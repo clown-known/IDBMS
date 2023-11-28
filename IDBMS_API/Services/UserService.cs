@@ -19,12 +19,10 @@ namespace API.Services
     {
         private readonly IUserRepository _repository;
         private readonly JwtTokenSupporter jwtTokenSupporter;
-        private readonly IConfiguration configuration;
-        public UserService(IUserRepository _repository, JwtTokenSupporter jwtTokenSupporter, IConfiguration configuration)
+        public UserService(IUserRepository _repository, JwtTokenSupporter jwtTokenSupporter)
         {
             this._repository = _repository;
             this.jwtTokenSupporter = jwtTokenSupporter;
-            this.configuration = configuration;
         }
         public User? GetById(Guid id)
         {

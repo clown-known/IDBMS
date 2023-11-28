@@ -2,6 +2,7 @@
 using BusinessObject.Models;
 using Repository.Implements;
 using Repository.Interfaces;
+using BLL.Services;
 
 namespace IDBMS_API.Services
 {
@@ -20,16 +21,19 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public InteriorItemCategory? CreateInteriorItemCategory(InteriorItemCategoryRequest request)
+        public async Task<InteriorItemCategory?> CreateInteriorItemCategory(InteriorItemCategoryRequest request)
         {
+            FirebaseService s = new FirebaseService();
+            string BannerImageUrl = await s.UploadImage(request.IconImage);
+            string IconImageUrl = await s.UploadImage(request.IconImage);
             var iic = new InteriorItemCategory
             {
                 Name = request.Name,
                 EnglishName = request.EnglishName,
                 Description = request.Description,
                 EnglishDescription = request.EnglishDescription,
-                BannerImageUrl = request.BannerImageUrl,
-                IconImageUrl = request.IconImageUrl,
+                BannerImageUrl = BannerImageUrl,
+                IconImageUrl = IconImageUrl,
                 InteriorItemType = request.InteriorItemType,
                 ParentCategoryId = request.ParentCategoryId,
                 IsDeleted = false,
@@ -38,15 +42,18 @@ namespace IDBMS_API.Services
             var iicCreated = _repository.Save(iic);
             return iicCreated;
         }
-        public void UdpateInteriorItemCategory(int id, InteriorItemCategoryRequest request)
+        public async void UdpateInteriorItemCategory(int id, InteriorItemCategoryRequest request)
         {
+            FirebaseService s = new FirebaseService();
+            string BannerImageUrl = await s.UploadImage(request.IconImage);
+            string IconImageUrl = await s.UploadImage(request.IconImage);
             var iic = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             iic.Name = request.Name;
             iic.EnglishName = request.EnglishName;
             iic.Description = request.Description;
             iic.EnglishDescription = request.EnglishDescription;
-            iic.BannerImageUrl = request.BannerImageUrl;
-            iic.IconImageUrl = request.IconImageUrl; 
+            iic.BannerImageUrl = BannerImageUrl;
+            iic.IconImageUrl = IconImageUrl; 
             iic.InteriorItemType = request.InteriorItemType; 
             iic.ParentCategoryId = request.ParentCategoryId;
 

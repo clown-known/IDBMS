@@ -46,7 +46,7 @@ namespace IDBMS_API.Services
                 UserId = comment.UserId,
                 FileUrl = link,
                 CreatedTime = DateTime.Now,
-                Status = comment.Status,
+                Status = CommentStatus.Sent,
             };
             var cmtCreated = _repository.Save(cmt);
             return cmtCreated;

@@ -15,10 +15,11 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                var pd = context.ProjectDocuments.Where(ctc => ctc.Id == id).FirstOrDefault();
+                var pd = context.ProjectDocuments.Where(ctc => ctc.Id == id && ctc.IsDeleted == false).FirstOrDefault();
                 if (pd != null)
                 {
-                    context.ProjectDocuments.Remove(pd);
+                    pd.IsDeleted = true;
+                    context.Entry(pd).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
             }
@@ -34,7 +35,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectDocuments.ToList();
+                return context.ProjectDocuments.Where(ctc => ctc.IsDeleted == false).ToList();
             }
             catch
             {
@@ -48,7 +49,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.ProjectDocuments
-                        .Where(d => d.ProjectId == id)
+                        .Where(d => d.ProjectId == id && d.IsDeleted == false)
                         .ToList();
             }
             catch
@@ -65,7 +66,9 @@ namespace Repository.Implements
                 return context.ProjectDocuments
                     .Where(pd =>
                         (projectId == null || pd.ProjectId == projectId) &&
-                        (documentTemplateId == null || pd.ProjectDocumentTemplateId == documentTemplateId))
+                        (documentTemplateId == null || pd.ProjectDocumentTemplateId == documentTemplateId) &&
+                        (pd.IsDeleted == false)
+                        )
                     .ToList();
             }
             catch
@@ -79,7 +82,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectDocuments.Where(pd => pd.Id == id).FirstOrDefault();
+                return context.ProjectDocuments.Where(pd => pd.Id == id && pd.IsDeleted == false).FirstOrDefault();
             }
             catch
             {

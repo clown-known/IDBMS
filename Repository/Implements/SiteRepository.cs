@@ -16,7 +16,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Sites.ToList();
+                return context.Sites.Where( s=> s.IsDeleted == false).ToList();
             }
             catch
             {
@@ -32,7 +32,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Sites
                     .Include(f => f.Floors)
-                    .Where(s => s.Id == id).FirstOrDefault();
+                    .Where(s => s.Id == id && s.IsDeleted == false).FirstOrDefault();
             }
             catch
             {
@@ -44,7 +44,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Sites.Where(s => s.ProjectId == id).ToList();
+                return context.Sites.Where(s => s.ProjectId == id && s.IsDeleted == false).ToList();
             }
             catch
             {
@@ -82,7 +82,12 @@ namespace Repository.Implements
         }
         public void DeleteById(Guid id)
         {
-            throw new NotImplementedException();
+            using var context = new IdtDbContext();
+            var entity = context.Sites
+                    .Where(s => s.Id == id).FirstOrDefault();
+            entity.IsDeleted = true;
+            context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.SaveChanges();
         }
 
        
