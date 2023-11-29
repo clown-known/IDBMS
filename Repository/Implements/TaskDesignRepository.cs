@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskDesigns.Where(psd=> psd.IsDeleted == false).ToList();
+                return context.TaskDesigns
+                    .Include(u => u.InteriorItemCategory)
+                    .Include(p => p.TaskCategory)
+                    .Where(psd=> psd.IsDeleted == false).ToList();
             }
             catch
             {
