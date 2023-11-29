@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Transactions.ToList();
+                return context.Transactions
+                    .Include(u => u.User)
+                    .Include(p => p.Project)
+                    .ToList();
             }
             catch
             {
