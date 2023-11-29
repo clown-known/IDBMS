@@ -29,6 +29,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Projects
                     .Include(pc => pc.ProjectCategory)
+                    .Include(pc => pc.Sites)
                     .Include(par => par.ProjectParticipations)
                         .ThenInclude(u => u.User)
                     .FirstOrDefault(project => project.Id == id);

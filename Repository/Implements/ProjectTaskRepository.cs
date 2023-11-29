@@ -48,6 +48,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.ProjectTasks
                     .Include(c => c.TaskCategory)
+                    .Include(p => p.PaymentStage)
                     .Include(i => i.InteriorItem)
                     .Include(r => r.Room)
                         .ThenInclude(f => f.Floor)
