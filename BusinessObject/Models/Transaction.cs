@@ -41,6 +41,4 @@ public class Transaction
 
     [Required]
     public string TransactionReceiptImageUrl { get; set; } = default!;
-
-    public string? AdminNote { get; set; }
 }

@@ -36,4 +36,6 @@ public class Admin
 
     public Guid? CreatorId { get; set; }
     public Admin? Creator { get; set; }
+
+    public List<Project> Projects { get; set; } = new();
 }

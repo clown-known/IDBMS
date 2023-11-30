@@ -37,7 +37,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(_service.GetById(id));
         }
 
-        [HttpPost("decor")]
+        /*[HttpPost("decor")]
         public IActionResult BookDecorProject([FromBody] BookingDecorProjectRequest request)
         {
             try
@@ -81,7 +81,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
-        }
+        }*/
 
         [HttpPut("{id}")]
         public IActionResult UpdateProject(Guid id, [FromBody] ProjectRequest request)

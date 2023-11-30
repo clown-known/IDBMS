@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessObject.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,15 +8,13 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    public class Site
+    public class BookingRequest
     {
         [Key]
         public Guid Id { get; set; }
 
         [Required]
-        public string Name { get; set; } = default!;
-
-        public string? Description { get; set; }
+        public ProjectType ProjectType { get; set; }
 
         [Required]
         public string ContactEmail { get; set; } = default!;
@@ -26,14 +25,16 @@ namespace BusinessObject.Models
         [Required]
         public string ContactLocation { get; set; } = default!;
 
-        public string? CompanyCode { get; set; }
+        public string? Note { get; set; } = default!;
 
         [Required]
-        public string Address { get; set; } = default!;
+        public Guid UserId { get; set; }
+        public User User { get; set; }
+
+        [Required]
+        public BookingRequestStatus Status { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; }
-
-        public List<Project> Projects { get; set; } = new();
     }
 }

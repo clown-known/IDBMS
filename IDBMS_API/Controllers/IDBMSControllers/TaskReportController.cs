@@ -30,13 +30,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             return Ok(_service.GetByTaskId(id));
         }
-        //for Manager to view their list
-        [EnableQuery]
-        [HttpGet("user/{id}")]
-        public IActionResult GetTaskReportsByUserId(Guid id)
-        {
-            return Ok(_service.GetByUserId(id));
-        }
+
         [HttpPost]
         public IActionResult CreateTaskReport([FromBody] TaskReportRequest request)
         {

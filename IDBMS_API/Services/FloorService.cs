@@ -33,9 +33,9 @@ namespace IDBMS_API.Services
             return _floorRepo.GetById(id) ?? throw new Exception("This object is not found!");
         }
 
-        public IEnumerable<Floor?> GetBySiteId(Guid id)
+        public IEnumerable<Floor?> GetByProjectId(Guid id)
         {
-            return _floorRepo.GetBySiteId(id);
+            return _floorRepo.GetByProjectId(id);
         }
 
         public Floor? CreateFloor(FloorRequest request)
@@ -45,9 +45,7 @@ namespace IDBMS_API.Services
                 Id = Guid.NewGuid(),
                 Description = request.Description,
                 FloorNo = request.FloorNo,
-                Area = request.Area,
                 UsePurpose = request.UsePurpose,
-                SiteId = request.SiteId,    
                 IsDeleted = false,
             };
 
@@ -63,9 +61,7 @@ namespace IDBMS_API.Services
                     Id = Guid.NewGuid(),
                     Description = floorRequest.Description,
                     FloorNo = floorRequest.FloorNo,
-                    Area = floorRequest.Area,
                     UsePurpose = floorRequest.UsePurpose,
-                    SiteId = siteId,
                     IsDeleted = false,
                 };
 
@@ -88,8 +84,6 @@ namespace IDBMS_API.Services
 
             floor.Description = request.Description;
             floor.FloorNo = request.FloorNo;
-            floor.Area = request.Area;
-            floor.SiteId = request.SiteId;
             floor.UsePurpose = request.UsePurpose;
 
             _floorRepo.Update(floor);

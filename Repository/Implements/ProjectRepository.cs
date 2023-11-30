@@ -29,10 +29,22 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Projects
                     .Include(pc => pc.ProjectCategory)
-                    .Include(pc => pc.Sites)
                     .Include(par => par.ProjectParticipations)
                         .ThenInclude(u => u.User)
                     .FirstOrDefault(project => project.Id == id);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<Project> GetBySiteId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Projects.Where(p => p.SiteId == id).ToList();
             }
             catch
             {

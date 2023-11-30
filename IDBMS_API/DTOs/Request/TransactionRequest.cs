@@ -34,7 +34,5 @@ namespace IDBMS_API.DTOs.Request
 
         [Required]
         public IFormFile TransactionReceiptImage { get; set; } = default!;
-
-        public string? AdminNote { get; set; }
     }
 }

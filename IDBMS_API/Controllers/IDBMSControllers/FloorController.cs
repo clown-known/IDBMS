@@ -39,7 +39,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("site/{id}")]
         public IActionResult GetFloorsByProjectId(Guid id)
         {
-            return Ok(_service.GetBySiteId(id));
+            return Ok(_service.GetByProjectId(id));
         }
 
         [HttpPost]

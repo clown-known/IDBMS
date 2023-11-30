@@ -32,12 +32,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(_service.GetById(id));
         }
 
-        [EnableQuery]
-        [HttpGet("project/{id}")]
-        public IActionResult GetSitesByProjectId(Guid id)
-        {
-            return Ok(_service.GetByProjectId(id));
-        }
         [HttpPost]
         public IActionResult CreateSite([FromBody] SiteRequest request)
         {

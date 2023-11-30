@@ -9,6 +9,5 @@ namespace Repository.Interfaces
 {
     public interface ISiteRepository : ICrudBaseRepository<Site, Guid>
     {
-        IEnumerable<Site?> GetByProjectId(Guid id);
     }
 }

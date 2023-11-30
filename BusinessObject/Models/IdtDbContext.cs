@@ -39,6 +39,7 @@ public class IdtDbContext : DbContext
     public DbSet<Transaction> Transactions { get; set; } = default!;
     public DbSet<User> Users { get; set; } = default!;
     public DbSet<UserRole> UserRoles { get; set; } = default!;
+    public DbSet<BookingRequest> BookingRequests { get; set; } = default!;
     public DbSet<WarrantyClaim> WarrantyClaims { get; set; } = default!;
 
     private static string? GetConnectionString()
@@ -56,6 +57,18 @@ public class IdtDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Admin>()
+            .Property(admin => admin.Status)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<BookingRequest>()
+            .Property(bookingRequest => bookingRequest.Status)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<BookingRequest>()
+            .Property(bookingRequest => bookingRequest.ProjectType)
+            .HasConversion<int>();
+
         modelBuilder.Entity<AuthenticationCode>()
             .Property(authenticationCode => authenticationCode.Status)
             .HasConversion<int>();

@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskAssignments.Where(ta => ta.ProjectId == id).ToList();
+                return context.TaskAssignments
+                    .Include(ta => ta.ProjectParticipation)
+                    .Where(ta => ta.ProjectParticipation.ProjectId == id)
+                    .ToList();
             }
             catch
             {
@@ -54,7 +58,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskAssignments.Where(ta => ta.UserId == id).ToList();
+                return context.TaskAssignments
+                    .Include(ta => ta.ProjectParticipation)
+                    .Where(ta => ta.ProjectParticipation.UserId == id)
+                    .ToList();
             }
             catch
             {

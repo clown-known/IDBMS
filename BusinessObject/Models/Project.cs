@@ -12,12 +12,6 @@ public class Project
     [Required]
     public string Name { get; set; } = default!;
 
-
-    public string? CompanyName { get; set; }
-    public string? CompanyAddress { get; set; }
-    public string? CompanyCode { get; set; }
-
-
     public string? Description { get; set; }
 
     [Required]
@@ -29,6 +23,13 @@ public class Project
 
     [Required]
     public DateTime CreatedDate { get; set; }
+
+    [Required]
+    public string CreatedAdminUsername { get; set; } = default!;
+
+    [Required]
+    public Guid CreatedByAdminId { get; set; }
+    public Admin CreatedByAdmin { get; set; }
 
     public DateTime? UpdatedDate { get; set; }
 
@@ -43,6 +44,9 @@ public class Project
     [Column(TypeName = "money")]
     public decimal? TotalWarrantyPaid { get; set; }
 
+    [Required]
+    public double Area { get; set; }
+
     public int? EstimateBusinessDay { get; set; }
 
     public Guid? CurrentStageId { get; set; }
@@ -56,15 +60,16 @@ public class Project
     [Required]
     public AdvertisementStatus AdvertisementStatus { get; set; }
 
-    public string? AdminNote { get; set; }
-
     public Guid? BasedOnDecorProjectId { get; set; }
     public Project? BasedOnDecorProject { get; set; }
 
     public int? ProjectDesignId { get; set; }
     public ProjectDesign? ProjectDesign { get; set; }
 
-    public List<Site> Sites { get; set; } = new();
+    [Required]
+    public Guid SiteId { get; set; }
+    public Site Site { get; set; }
+
     public List<Transaction> Transactions { get; set; } = new();
     public List<ProjectParticipation> ProjectParticipations { get; set; } = new();
     public List<PaymentStage> PaymentStages { get; set; } = new();

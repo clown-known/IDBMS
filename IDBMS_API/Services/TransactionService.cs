@@ -46,7 +46,6 @@ namespace IDBMS_API.Services
                 Status = request.Status,
                 IsDeleted = false,
                 TransactionReceiptImageUrl = link,
-                AdminNote = request.AdminNote,
             };
             var transCreated = _repository.Save(trans);
             return transCreated;
@@ -62,7 +61,6 @@ namespace IDBMS_API.Services
             trans.UserId = request.UserId;
             trans.ProjectId = request.ProjectId;
             trans.TransactionReceiptImageUrl = link;
-            trans.AdminNote = request.AdminNote;
 
             _repository.Update(trans);
         }

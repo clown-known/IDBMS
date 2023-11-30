@@ -31,10 +31,6 @@ namespace IDBMS_API.Services
         {
             return _siteRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<Site?> GetByProjectId(Guid id)
-        {
-            return _siteRepo.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
-        }
         public Site? CreateSite(SiteRequest request)
         {
             var site = new Site
@@ -43,9 +39,6 @@ namespace IDBMS_API.Services
                 Name = request.Name,
                 Description = request.Description,
                 Address = request.Address,
-                UsePurpose = request.UsePurpose,
-                Area = request.Area,
-                ProjectId = request.ProjectId,
                 IsDeleted = false,
             };
             var siteCreated = _siteRepo.Save(site);
@@ -61,9 +54,6 @@ namespace IDBMS_API.Services
                     Name = siteRequest.Name,
                     Description = siteRequest.Description,
                     Address = siteRequest.Address,
-                    UsePurpose = siteRequest.UsePurpose,
-                    Area = siteRequest.Area,
-                    ProjectId = projectId,
                     IsDeleted = false,
                 };
 
@@ -86,9 +76,6 @@ namespace IDBMS_API.Services
             site.Name = request.Name;
             site.Description = request.Description;
             site.Address = request.Address;
-            site.UsePurpose = request.UsePurpose;
-            site.Area = request.Area;
-            site.ProjectId = request.ProjectId;
 
             _siteRepo.Save(site);
         }

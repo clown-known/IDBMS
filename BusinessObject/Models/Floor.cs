@@ -16,11 +16,8 @@ public class Floor
     public int FloorNo { get; set; }
 
     [Required]
-    public double Area { get; set; }
-
-    [Required]
-    public Guid SiteId { get; set; }
-    public Site Site { get; set; }
+    public Guid ProjectId { get; set; }
+    public Project Project { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }

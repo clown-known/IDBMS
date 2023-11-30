@@ -52,7 +52,6 @@ namespace Repository.Implements
                     .Include(i => i.InteriorItem)
                     .Include(r => r.Room)
                         .ThenInclude(f => f.Floor)
-                        .ThenInclude(s => s.Site)
                     .Where(task => task.ProjectId == id)
                     .ToList();
             }
