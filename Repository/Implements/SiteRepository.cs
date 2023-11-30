@@ -31,7 +31,6 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.Sites
-                    .Include(f => f.Projects)
                     .Where(s => s.Id == id && s.IsDeleted == false).FirstOrDefault();
             }
             catch

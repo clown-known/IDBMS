@@ -18,6 +18,9 @@ namespace IDBMS_API.DTOs.Request
         public string? CompanyCode { get; set; }
 
         [Required]
+        public string ContactName { get; set; } = default!;
+
+        [Required]
         public string ContactEmail { get; set; } = default!;
 
         [Required]

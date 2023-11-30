@@ -31,6 +31,7 @@ namespace IDBMS_API.Services
             {
                 Id = Guid.NewGuid(),
                 ProjectType = BookingRequest.ProjectType,
+                ContactName= BookingRequest.ContactName,
                 ContactEmail = BookingRequest.ContactEmail,
                 ContactPhone = BookingRequest.ContactPhone,
                 ContactLocation = BookingRequest.ContactLocation,
@@ -48,6 +49,7 @@ namespace IDBMS_API.Services
             var br = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             br.ProjectType = BookingRequest.ProjectType;
+            br.ContactName = BookingRequest.ContactName;
             br.ContactEmail = BookingRequest.ContactEmail;
             br.ContactPhone = BookingRequest.ContactPhone;
             br.ContactLocation = BookingRequest.ContactLocation;

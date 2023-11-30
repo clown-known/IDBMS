@@ -29,6 +29,7 @@ namespace IDBMS_API.Services
                 Name = request.Name,
                 Description = request.Description,
                 Address = request.Address,
+                ContactName= request.ContactName,
                 ContactEmail = request.ContactEmail,
                 ContactLocation = request.ContactLocation,
                 ContactPhone = request.ContactPhone,
@@ -46,6 +47,7 @@ namespace IDBMS_API.Services
             site.Name = request.Name;
             site.Description = request.Description;
             site.Address = request.Address;
+            site.ContactName = request.ContactName;
             site.ContactEmail = request.ContactEmail;
             site.ContactLocation = request.ContactLocation;
             site.ContactPhone = request.ContactPhone;
