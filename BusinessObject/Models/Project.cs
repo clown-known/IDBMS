@@ -33,8 +33,6 @@ public class Project
 
     public DateTime? UpdatedDate { get; set; }
 
-    public int? NoStage { get; set; }
-
     [Column(TypeName = "money")]
     public decimal? EstimatedPrice { get; set; }
 
@@ -48,8 +46,6 @@ public class Project
     public double Area { get; set; }
 
     public int? EstimateBusinessDay { get; set; }
-
-    public Guid? CurrentStageId { get; set; }
 
     [Required]
     public int Language { get; set; }

@@ -7,4 +7,5 @@ public enum ParticipationRole
     LeadArchitect = 2,
     Architect = 3,
     ConstructionManager = 4,
+    ProjectManager = 5,
 }
