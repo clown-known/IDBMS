@@ -48,5 +48,12 @@ namespace IDBMS_API.DTOs.Request
 
         [Required]
         public AdvertisementStatus AdvertisementStatus { get; set; }
+
+        public Guid? BasedOnDecorProjectId { get; set; }
+
+        public int? ProjectDesignId { get; set; }
+
+        [Required]
+        public Guid SiteId { get; set; }
     }
 }

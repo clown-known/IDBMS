@@ -17,6 +17,6 @@ namespace IDBMS_API.DTOs.Request
         public Guid ProjectParticipationId { get; set; }
 
         [Required]
-        public Guid ProjectId { get; set; }
+        public Guid ProjectTaskId { get; set; }
     }
 }

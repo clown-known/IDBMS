@@ -1,5 +1,4 @@
 ﻿using IDBMS_API.DTOs.Request;
-using IDBMS_API.DTOs.Request.BookingRequest;
 using BusinessObject.Models;
 using IDBMS_API.Constants;
 using Repository.Interfaces;
@@ -11,12 +10,10 @@ namespace IDBMS_API.Services
     public class RoomService
     {
         private readonly IRoomRepository _roomRepo;
-        private readonly IProjectTaskRepository _taskRepo;
 
-        public RoomService(IRoomRepository roomRepo, IProjectTaskRepository taskRepo)
+        public RoomService(IRoomRepository roomRepo)
         {
             _roomRepo = roomRepo;
-            _taskRepo = taskRepo;
         }
 
         public IEnumerable<Room> GetAll()
@@ -50,35 +47,6 @@ namespace IDBMS_API.Services
 
             var roomCreated = _roomRepo.Save(room);
             return roomCreated;
-        }
-
-        public void CreateBookRoom(Guid projectId, Guid floorId, List<BookingRoomRequest> request)
-        {
-            foreach (var roomRequest in request)
-            {
-                var room = new Room
-                {
-                    Id = Guid.NewGuid(),
-                    FloorId = floorId,
-                    Description = roomRequest.Description,
-                    UsePurpose = roomRequest.UsePurpose,
-                    Area = roomRequest.Area,
-                    PricePerArea = roomRequest.PricePerArea,
-                    RoomTypeId = roomRequest.RoomTypeId,
-                    IsHidden = false,
-                };
-
-                var roomCreated = _roomRepo.Save(room);
-
-                if (roomCreated != null)
-                {
-                    if (roomRequest.Tasks != null)
-                    {
-                        ProjectTaskService taskService = new ProjectTaskService(_taskRepo);
-                        taskService.CreateBookProjectTask(projectId, roomCreated.Id, roomRequest.Tasks);
-                    }
-                }
-            }
         }
 
         public void UpdateRoom(Guid id, RoomRequest request)
