@@ -45,7 +45,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateBookingRequest(int id, [FromBody] BookingRequestRequest request)
+        public IActionResult UpdateBookingRequest(Guid id, [FromBody] BookingRequestRequest request)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/status")]
-        public IActionResult UpdateBookingRequestStatus(int id, BookingRequestStatus status)
+        public IActionResult UpdateBookingRequestStatus(Guid id, BookingRequestStatus status)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteBookingRequest(int id)
+        public IActionResult DeleteBookingRequest(Guid id)
         {
             try
             {

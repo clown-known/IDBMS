@@ -17,7 +17,7 @@ namespace IDBMS_API.Services
         {
             this._repository = _repository;
         }
-        public BookingRequest? GetById(int id)
+        public BookingRequest? GetById(Guid id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
@@ -43,7 +43,7 @@ namespace IDBMS_API.Services
             var BookingRequestCreated = _repository.Save(br);
             return BookingRequestCreated;
         }
-        public void UpdateBookingRequest(int id, [FromForm] BookingRequestRequest BookingRequest)
+        public void UpdateBookingRequest(Guid id, [FromForm] BookingRequestRequest BookingRequest)
         {
             var br = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
@@ -56,7 +56,7 @@ namespace IDBMS_API.Services
             _repository.Update(br);
         }
 
-        public void UpdateBookingRequestStatus(int id, BookingRequestStatus status)
+        public void UpdateBookingRequestStatus(Guid id, BookingRequestStatus status)
         {
             var br = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
@@ -65,7 +65,7 @@ namespace IDBMS_API.Services
             _repository.Update(br);
         }
 
-        public void DeleteBookingRequest(int id)
+        public void DeleteBookingRequest(Guid id)
         {
             var br = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 

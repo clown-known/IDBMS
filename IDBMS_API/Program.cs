@@ -56,7 +56,7 @@ builder.Services.AddScoped<ISiteRepository, SiteRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
-builder.Services.AddScoped<IBookingRequestRepository, IBookingRequestRepository>();
+builder.Services.AddScoped<IBookingRequestRepository, BookingRequestRepository>();
 builder.Services.AddScoped<IWarrantyClaimRepository, WarrantyClaimRepository>();
 
 // service
@@ -89,7 +89,7 @@ builder.Services.AddScoped<SiteService, SiteService>();
 builder.Services.AddScoped<TransactionService, TransactionService>();
 builder.Services.AddScoped<UserService, UserService>();
 builder.Services.AddScoped<UserRolesService, UserRolesService>();
-builder.Services.AddScoped<BookingRequestRepository, BookingRequestRepository>();
+builder.Services.AddScoped<BookingRequestService, BookingRequestService>();
 builder.Services.AddScoped<WarrantyClaimService, WarrantyClaimService>();
 
 builder.Services.AddScoped<FirebaseService, FirebaseService>();

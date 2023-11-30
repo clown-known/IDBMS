@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    public interface IBookingRequestRepository : ICrudBaseRepository<BookingRequest, int>
+    public interface IBookingRequestRepository : ICrudBaseRepository<BookingRequest, Guid>
     {
     }
 }
