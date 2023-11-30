@@ -1,27 +1,17 @@
 ﻿using IDBMS_API.DTOs.Request;
-using IDBMS_API.DTOs.Request.BookingRequest;
 using BusinessObject.Models;
 using Repository.Interfaces;
+using BusinessObject.Enums;
 
 namespace IDBMS_API.Services
 {
     public class SiteService
     {
         private readonly ISiteRepository _siteRepo;
-        private readonly IFloorRepository _floorRepo;
-        private readonly IRoomRepository _roomRepo;
-        private readonly IProjectTaskRepository _taskRepo;
 
-        public SiteService(
-                ISiteRepository siteRepo,
-                IFloorRepository floorRepo,
-                IRoomRepository roomRepo,
-                IProjectTaskRepository taskRepo)
+        public SiteService(ISiteRepository siteRepo)
         {
             _siteRepo = siteRepo;
-            _floorRepo = floorRepo;
-            _roomRepo = roomRepo;
-            _taskRepo = taskRepo;
         }
         public IEnumerable<Site> GetAll()
         {
@@ -39,36 +29,16 @@ namespace IDBMS_API.Services
                 Name = request.Name,
                 Description = request.Description,
                 Address = request.Address,
+                ContactEmail = request.ContactEmail,
+                ContactLocation = request.ContactLocation,
+                ContactPhone = request.ContactPhone,
+                CompanyCode = request.CompanyCode,
                 IsDeleted = false,
             };
             var siteCreated = _siteRepo.Save(site);
             return siteCreated;
         }
-        public void CreateBookSite(Guid projectId, List<BookingSiteRequest> request)
-        {
-            foreach (var siteRequest in request)
-            {
-                var site = new Site
-                {
-                    Id = Guid.NewGuid(),
-                    Name = siteRequest.Name,
-                    Description = siteRequest.Description,
-                    Address = siteRequest.Address,
-                    IsDeleted = false,
-                };
 
-                var siteCreated = _siteRepo.Save(site);
-
-                if (siteCreated != null)
-                {
-                    if (siteRequest.Floors != null)
-                    {
-                        FloorService floorService = new FloorService(_floorRepo, _roomRepo, _taskRepo);
-                        floorService.CreateBookFloor(projectId, siteCreated.Id, siteRequest.Floors);
-                    }
-                }
-            }
-        }
         public void UpdateSite(Guid id, SiteRequest request)
         {
             var site = _siteRepo.GetById(id) ?? throw new Exception("This object is not existed!");
@@ -76,6 +46,10 @@ namespace IDBMS_API.Services
             site.Name = request.Name;
             site.Description = request.Description;
             site.Address = request.Address;
+            site.ContactEmail = request.ContactEmail;
+            site.ContactLocation = request.ContactLocation;
+            site.ContactPhone = request.ContactPhone;
+            site.CompanyCode = request.CompanyCode;
 
             _siteRepo.Save(site);
         }

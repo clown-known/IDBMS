@@ -45,22 +45,6 @@ namespace IDBMS_API.Services
             return pCreated;
         }
 
-
-        public ProjectParticipation? CreateProjectOwnerParticipation(Guid projectId, Guid userId)
-        {
-            var p = new ProjectParticipation
-            {
-                Id = Guid.NewGuid(),
-                UserId = userId,
-                ProjectId = projectId,
-                Role = ParticipationRole.ProductOwner,
-                IsDeleted = false,
-            };
-
-            var pCreated = _repository.Save(p);
-            return pCreated;
-        }
-
         public void UpdateParticipation(ProjectParticipationRequest request)
         {
             var p = _repository.GetById(request.ProjectId) ?? throw new Exception("This object is not existed!");

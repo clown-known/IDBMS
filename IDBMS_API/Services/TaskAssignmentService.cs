@@ -34,17 +34,12 @@ namespace IDBMS_API.Services
             var ta = new TaskAssignment
             {
                 Id = Guid.NewGuid(),
+                ProjectParticipationId = request.ProjectParticipationId,
+                ProjectTaskId = request.ProjectTaskId
             };
 
             var taCreated = _repository.Save(ta);
             return taCreated;        
-        }
-        public void UpdateTaskAssignment(Guid id, TaskAssignmentRequest request)
-        {
-            var ta = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-
-            
-            _repository.Update(ta);
         }
 
         public void DeleteTaskAssignment(Guid id)

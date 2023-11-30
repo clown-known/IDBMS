@@ -61,28 +61,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 }  
         }
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateTaskAssignment(Guid id, [FromBody] TaskAssignmentRequest request)
-        {
-            try
-            {
-                _service.UpdateTaskAssignment(id, request);
-                var response = new ResponseMessage()
-                {
-                    Message = "Update successfully!",
-                };
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var response = new ResponseMessage()
-                {
-                    Message = $"Error: {ex.Message}"
-                };
-                return BadRequest(response);
-            }
-        }
-
         [HttpDelete("{id}")]
         public IActionResult DeleteTaskAssignment(Guid id)
         {

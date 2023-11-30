@@ -2,7 +2,6 @@
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using BusinessObject.Enums;
-using IDBMS_API.DTOs.Request.BookingRequest;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -37,15 +36,22 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(_service.GetById(id));
         }
 
-        /*[HttpPost("decor")]
-        public IActionResult BookDecorProject([FromBody] BookingDecorProjectRequest request)
+        [EnableQuery]
+        [HttpGet("/site/{id}")]
+        public IActionResult GetProjectsBySiteId(Guid id)
+        {
+            return Ok(_service.GetBySiteId(id));
+        }
+
+        [HttpPost]
+        public IActionResult BookDecorProject([FromBody] ProjectRequest request)
         {
             try
             {
-                var result = _service.BookDecorProject(request);
+                var result = _service.CreateProject(request);
                 var response = new ResponseMessage()
                 {
-                    Message = "Book successfully!",
+                    Message = "Create successfully!",
                     Data = result
                 };
                 return Ok(response);
@@ -59,29 +65,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
-
-        [HttpPost("construction")]
-        public IActionResult BookConstructionProject([FromBody] BookingConstructionProjectRequest request)
-        {
-            try
-            {
-                var result = _service.BookConstructionProject(request);
-                var response = new ResponseMessage()
-                {
-                    Message = "Book successfully!",
-                    Data = result
-                };
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var response = new ResponseMessage()
-                {
-                    Message = $"Error: {ex.Message}"
-                };
-                return BadRequest(response);
-            }
-        }*/
 
         [HttpPut("{id}")]
         public IActionResult UpdateProject(Guid id, [FromBody] ProjectRequest request)

@@ -1,5 +1,4 @@
 ﻿using IDBMS_API.DTOs.Request;
-using IDBMS_API.DTOs.Request.BookingRequest;
 using BusinessObject.Models;
 using Repository.Implements;
 using Repository.Interfaces;
@@ -52,34 +51,6 @@ namespace IDBMS_API.Services
             var pdCreated = _repository.Save(pd);
             return pdCreated;
         }
-
-        public async void CreateBookProjectDocument(Guid projectId, [FromForm] List<BookingDocumentRequest> requests)
-        {
-            FirebaseService s = new FirebaseService();
-            foreach (var request in requests)
-            {
-                string link = "";
-                if (request.file != null)
-                {
-                    link = await s.UploadBookingDocument(request.file,nameof(request.Category),projectId);
-                }
-                var pd = new ProjectDocument
-                {
-                    Id = Guid.NewGuid(),
-                    Name = request.Name,
-                    Description = request.Description,
-                    Url = link,
-                    CreatedDate = DateTime.Now,
-                    Category = request.Category,
-                    ProjectId = projectId,
-                    IsPublicAdvertisement = false,
-                    IsDeleted = false,
-                };
-
-                _repository.Save(pd);
-            }
-        }
-
 
         public async void UpdateProjectDocument(Guid id, [FromForm] ProjectDocumentRequest request)
         {
