@@ -25,8 +25,6 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public Guid CreatedByAdminId { get; set; }
 
-        public int? NoStage { get; set; }
-
         public decimal? EstimatedPrice { get; set; }
 
         public decimal? FinalPrice { get; set; }
@@ -37,8 +35,6 @@ namespace IDBMS_API.DTOs.Request
         public double Area { get; set; }
 
         public int? EstimateBusinessDay { get; set; }
-
-        public Guid? CurrentStageId { get; set; }
 
         [Required]
         public int Language { get; set; }

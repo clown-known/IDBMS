@@ -38,13 +38,11 @@ public class ProjectService
             ProjectCategoryId = request.ProjectCategoryId,
             CreatedAdminUsername = request.CreatedAdminUsername,
             CreatedByAdminId = request.CreatedByAdminId,
-            NoStage = request.NoStage,
             EstimatedPrice = request.EstimatedPrice,
             FinalPrice = request.FinalPrice,
             TotalWarrantyPaid = request.TotalWarrantyPaid,
             Area = request.Area,
             EstimateBusinessDay = request.EstimateBusinessDay,
-            CurrentStageId = request.CurrentStageId,
             Language = request.Language,
             Status = request.Status,
             AdvertisementStatus = request.AdvertisementStatus,
@@ -66,13 +64,11 @@ public class ProjectService
         p.ProjectCategoryId = request.ProjectCategoryId;
         p.CreatedAdminUsername = request.CreatedAdminUsername;
         p.CreatedByAdminId = request.CreatedByAdminId;
-        p.NoStage = request.NoStage;
         p.EstimatedPrice = request.EstimatedPrice;
         p.FinalPrice = request.FinalPrice;
         p.TotalWarrantyPaid = request.TotalWarrantyPaid;
         p.Area = request.Area;
         p.EstimateBusinessDay = request.EstimateBusinessDay;
-        p.CurrentStageId = request.CurrentStageId;
         p.Language = request.Language;
         p.Status = request.Status;
         p.AdvertisementStatus = request.AdvertisementStatus;
