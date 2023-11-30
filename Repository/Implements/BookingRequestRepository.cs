@@ -1,5 +1,4 @@
 ﻿using BusinessObject.Models;
-using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,14 +8,21 @@ using System.Threading.Tasks;
 
 namespace Repository.Implements
 {
-    public class SiteRepository : ISiteRepository
+    public class BookingRequestRepository : IBookingRequestRepository
     {
-        public IEnumerable<Site> GetAll()
+        public void DeleteById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<BookingRequest> GetAll()
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Sites.Where( s=> s.IsDeleted == false).ToList();
+                return context.BookingRequests
+                    .Where(br => br.IsDeleted == false)
+                    .ToList();
             }
             catch
             {
@@ -24,15 +30,14 @@ namespace Repository.Implements
             }
         }
 
-        public Site? GetById(Guid id)
+        public BookingRequest? GetById(Guid id)
         {
-
             try
             {
                 using var context = new IdtDbContext();
-                return context.Sites
-                    .Include(f => f.Projects)
-                    .Where(s => s.Id == id && s.IsDeleted == false).FirstOrDefault();
+                return context.BookingRequests
+                    .Where(br => br.Id == id && br.IsDeleted == false)
+                    .FirstOrDefault();
             }
             catch
             {
@@ -40,14 +45,14 @@ namespace Repository.Implements
             }
         }
 
-        public Site? Save(Site entity)
+        public BookingRequest? Save(BookingRequest entity)
         {
             try
             {
                 using var context = new IdtDbContext();
-                var site = context.Sites.Add(entity);
+                var BookingRequest = context.BookingRequests.Add(entity);
                 context.SaveChanges();
-                return site.Entity;
+                return BookingRequest.Entity;
             }
             catch
             {
@@ -55,7 +60,7 @@ namespace Repository.Implements
             }
         }
 
-        public void Update(Site entity)
+        public void Update(BookingRequest entity)
         {
             try
             {
@@ -68,16 +73,5 @@ namespace Repository.Implements
                 throw;
             }
         }
-        public void DeleteById(Guid id)
-        {
-            using var context = new IdtDbContext();
-            var entity = context.Sites
-                    .Where(s => s.Id == id).FirstOrDefault();
-            entity.IsDeleted = true;
-            context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            context.SaveChanges();
-        }
-
-       
     }
 }

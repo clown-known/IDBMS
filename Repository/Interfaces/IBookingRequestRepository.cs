@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    public interface IFloorRepository : ICrudBaseRepository<Floor, Guid>
+    public interface IBookingRequestRepository : ICrudBaseRepository<BookingRequest, Guid>
     {
-        IEnumerable<Floor?> GetByProjectId(Guid id); 
     }
 }

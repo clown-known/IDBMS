@@ -49,7 +49,7 @@ public class ProjectService
         return _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
     }
 
-    public Project? BookDecorProject(BookingDecorProjectRequest request)
+    /*public Project? BookDecorProject(BookingDecorProjectRequest request)
     {
         try
         {
@@ -160,15 +160,13 @@ public class ProjectService
         {
             throw new Exception("Fail to book project!");
         }
-    }
+    }*/
 
     public void UpdateProject(Guid id, ProjectRequest request)
     {
         var p = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
         p.Name = request.Name;
-        p.CompanyName = request.CompanyName;
-        p.CompanyAddress = request.CompanyAddress;
         p.Description = request.Description;
         p.Type = request.Type;
         p.ProjectCategoryId = request.ProjectCategoryId;
@@ -181,9 +179,6 @@ public class ProjectService
         p.CurrentStageId = request.CurrentStageId;
         p.Language = request.Language;
         p.Status = request.Status;
-        p.AdminNote = request.AdminNote;
-        p.BasedOnDecorProjectId = request.BasedOnDecorProjectId;
-        p.ProjectDesignId = request.ProjectDesignId;
 
         _projectRepo.Update(p);
     }

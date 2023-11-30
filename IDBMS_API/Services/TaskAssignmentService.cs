@@ -34,9 +34,6 @@ namespace IDBMS_API.Services
             var ta = new TaskAssignment
             {
                 Id = Guid.NewGuid(),
-                UserId = request.UserId,
-                ProjectTaskId = request.ProjectTaskId,
-                ProjectId = request.ProjectId,
             };
 
             var taCreated = _repository.Save(ta);
@@ -46,9 +43,6 @@ namespace IDBMS_API.Services
         {
             var ta = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
-            ta.UserId = request.UserId;
-            ta.ProjectTaskId = request.ProjectTaskId;
-            ta.ProjectId = request.ProjectId;
             
             _repository.Update(ta);
         }

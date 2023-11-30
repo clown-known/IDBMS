@@ -19,9 +19,6 @@ namespace IDBMS_API.DTOs.Request
         public int FloorNo { get; set; }
 
         [Required]
-        public double Area { get; set; }
-
-        [Required]
-        public Guid SiteId { get; set; }
+        public Guid ProjectId { get; set; }
     }
 }

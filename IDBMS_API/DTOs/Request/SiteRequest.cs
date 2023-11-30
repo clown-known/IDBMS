@@ -15,15 +15,19 @@ namespace IDBMS_API.DTOs.Request
 
         public string? Description { get; set; }
 
+        public string? CompanyCode { get; set; }
+
+        [Required]
+        public string ContactEmail { get; set; } = default!;
+
+        [Required]
+        public string ContactPhone { get; set; } = default!;
+
+        [Required]
+        public string ContactLocation { get; set; } = default!;
+
         [Required]
         public string Address { get; set; } = default!;
 
-        [Required]
-        public string UsePurpose { get; set; } = default!;
-
-        [Required]
-        public double Area { get; set; }
-        [Required]
-        public Guid ProjectId { get; set; }
     }
 }
