@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using BusinessObject.Enums;
 
 namespace API.Services
 {
@@ -77,7 +78,8 @@ namespace API.Services
                 PasswordSalt = passwordSalt,
                 Phone = request.Phone,
                 ExternalId = request.ExternalId,
-                CompanyName = request.CompanyName
+                CompanyName = request.CompanyName,
+                JobPosition = request.JobPosition,
             };
 
             var userCreated = _repository.Save(user);
@@ -119,6 +121,7 @@ namespace API.Services
             user.Phone = request.Phone;
             user.ExternalId= request.ExternalId;
             user.CompanyName = request.CompanyName;
+            user.JobPosition = request.JobPosition;
 
             _repository.Update(user);
         }
@@ -134,6 +137,15 @@ namespace API.Services
 
             user.PasswordSalt = passwordSalt;
             user.PasswordHash = passwordHash;
+
+            _repository.Update(user);
+        }
+
+        public void UpdateUserStatus(Guid id, UserStatus status)
+        {
+            var user = _repository.GetById(id) ?? throw new Exception("User not existed");
+
+            user.Status= status;
 
             _repository.Update(user);
         }

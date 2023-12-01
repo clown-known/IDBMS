@@ -14,6 +14,7 @@ public class User
     public string Name { get; set; } = default!;
 
     public string? CompanyName { get; set; } = default!;
+    public string? JobPosition { get; set; } = default!;
     public string? Bio { get; set; } = default!;
 
     [Required]
@@ -51,8 +52,10 @@ public class User
     [Required]
     public UserStatus Status { get; set; }
 
+    [JsonIgnore]
     public string? ExternalId { get; set; } = default!;
 
+    [JsonIgnore]
     public string? Token { get; set; } = default!;
 
     public DateTime? LockedUntil { get; set; }

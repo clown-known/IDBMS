@@ -12,6 +12,7 @@ namespace IDBMS_API.DTOs.Request.AccountRequest
         public string Name { get; set; } = default!;
 
         public string? Bio { get; set; } = default!;
+        public string? JobPosition { get; set; } = default!;
 
         public string? CompanyName { get; set; } = default!;
 

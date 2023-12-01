@@ -10,5 +10,6 @@ namespace Repository.Interfaces
     public interface IAdminRepository : ICrudBaseRepository<Admin, Guid>
     {
         public Admin? GetByEmail(string email);
+        public Admin? GetByUsername(string username);
     }
 }

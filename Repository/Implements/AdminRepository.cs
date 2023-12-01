@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Admins.ToList();
+                return context.Admins
+                    .Include(a => a.Creator)
+                    .ToList();
             }
             catch
             {
@@ -90,6 +93,19 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.Admins.Where(a => a.Email.ToLower() == email.ToLower()).FirstOrDefault();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public Admin? GetByUsername(string username)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Admins.Where(a => a.Username.ToLower() == username.ToLower()).FirstOrDefault();
             }
             catch
             {
