@@ -61,7 +61,7 @@ namespace IDBMS_API.Services
 
             site.IsDeleted = true;
 
-            _siteRepo.Save(site);
+            _siteRepo.Update(site);
         }
 
     }

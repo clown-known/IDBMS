@@ -16,6 +16,11 @@ namespace IDBMS_API.Services
         {
             return _repository.GetAll();
         }
+        public IEnumerable<ProjectDesign> GetByType(ProjectType type)
+        {
+            return _repository.GetByType(type);
+        }
+
         public ProjectDesign? GetById(int id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");

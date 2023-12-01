@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using BusinessObject.Enums;
+using BusinessObject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace Repository.Interfaces
 {
     public interface IProjectDesignRepository : ICrudBaseRepository<ProjectDesign, int>
     {
+        IEnumerable<ProjectDesign> GetByType(ProjectType type); 
     }
 }

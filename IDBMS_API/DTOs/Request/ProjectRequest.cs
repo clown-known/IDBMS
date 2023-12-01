@@ -47,8 +47,6 @@ namespace IDBMS_API.DTOs.Request
 
         public Guid? BasedOnDecorProjectId { get; set; }
 
-        public int? ProjectDesignId { get; set; }
-
         [Required]
         public Guid SiteId { get; set; }
     }

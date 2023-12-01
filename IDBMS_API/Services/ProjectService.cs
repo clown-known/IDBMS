@@ -62,8 +62,6 @@ public class ProjectService
         p.Description = request.Description;
         p.Type = request.Type;
         p.ProjectCategoryId = request.ProjectCategoryId;
-        p.CreatedAdminUsername = request.CreatedAdminUsername;
-        p.CreatedByAdminId = request.CreatedByAdminId;
         p.EstimatedPrice = request.EstimatedPrice;
         p.FinalPrice = request.FinalPrice;
         p.TotalWarrantyPaid = request.TotalWarrantyPaid;
