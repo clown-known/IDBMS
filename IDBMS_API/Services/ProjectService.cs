@@ -46,10 +46,14 @@ public class ProjectService
             Language = request.Language,
             Status = request.Status,
             AdvertisementStatus = request.AdvertisementStatus,
-            BasedOnDecorProjectId = request.BasedOnDecorProjectId,
             SiteId = request.SiteId,
             CreatedDate = DateTime.Now 
         };
+
+        if (newProject.Type == ProjectType.Construction)
+        {
+            newProject.BasedOnDecorProjectId = request.BasedOnDecorProjectId;
+        }
 
         return _repository.Save(newProject);
     }
@@ -70,9 +74,13 @@ public class ProjectService
         p.Language = request.Language;
         p.Status = request.Status;
         p.AdvertisementStatus = request.AdvertisementStatus;
-        p.BasedOnDecorProjectId = request.BasedOnDecorProjectId;
         p.SiteId= request.SiteId;
         p.UpdatedDate = DateTime.Now;
+
+        if (p.Type == ProjectType.Construction)
+        {
+            p.BasedOnDecorProjectId = request.BasedOnDecorProjectId;
+        }
 
         _repository.Update(p);
     }

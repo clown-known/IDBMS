@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BusinessObject.Enums;
+using BusinessObject.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,11 +21,13 @@ namespace IDBMS_API.DTOs.Request
         public string Email { get; set; } = default!;
 
         [Required]
-        public byte[] PasswordHash { get; set; } = default!;
-        [Required]
-        public byte[] PasswordSalt { get; set; } = default!;
+        public string Password { get; set; } = default!;
 
-        public string? AuthenticationCode { get; set; }
+        [Required]
+        public AdminStatus Status { get; set; }
+
+        [Required]
+        public bool IsDeleted { get; set; }
 
         public Guid? CreatorId { get; set; }
     }

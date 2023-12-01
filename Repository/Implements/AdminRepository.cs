@@ -96,5 +96,18 @@ namespace Repository.Implements
                 throw;
             }
         }
+
+        public Admin? GetByUsername(string username)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Admins.Where(a => a.Username.ToLower() == username.ToLower()).FirstOrDefault();
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

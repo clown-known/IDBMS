@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Repository.Interfaces;
+using DocumentFormat.OpenXml.Office2016.Excel;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -25,8 +26,33 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             return Ok(_service.GetAll());
         }
+
+        [EnableQuery]
+        [HttpGet("{username}")]
+        public IActionResult CheckUsernameExist(string username)
+        {
+            try
+            {
+                var result = _service.CheckByUsername(username);
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = result
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
         [HttpPost]
-        public IActionResult RegisterAdmin([FromBody] AdminRequest request)
+        public IActionResult CreateAdmin([FromBody] AdminRequest request)
         {
             try
             {
