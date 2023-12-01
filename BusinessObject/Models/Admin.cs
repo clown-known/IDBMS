@@ -28,7 +28,10 @@ public class Admin
     [Required]
     public AdminStatus Status { get; set; }
 
+    [JsonIgnore]
     public string? AuthenticationCode { get; set; }
+
+    [JsonIgnore]
     public string? token { get; set; }
 
     [Required]
