@@ -3,27 +3,39 @@ using IDBMS_API.DTOs.Request;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Office2016.Excel;
 using Repository.Interfaces;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace IDBMS_API.Services
 {
     public class PaymentStageService
     {
-        private readonly IPaymentStageRepository _repository;
-        public PaymentStageService(IPaymentStageRepository repository)
+        private readonly IPaymentStageRepository _stageRepo;
+        private readonly IProjectRepository _projectRepo;
+        private readonly IProjectDesignRepository _projectDesignRepo;
+        private readonly IPaymentStageDesignRepository _stageDesignRepo;
+
+        public PaymentStageService(
+            IPaymentStageRepository stageRepo, 
+            IProjectRepository projectRepo, 
+            IProjectDesignRepository projectDesignRepo, 
+            IPaymentStageDesignRepository stageDesignRepo)
         {
-            _repository = repository;
+            _stageRepo = stageRepo;
+            _projectRepo = projectRepo;
+            _projectDesignRepo = projectDesignRepo;
+            _stageDesignRepo = stageDesignRepo;
         }
         public IEnumerable<PaymentStage> GetAll()
         {
-            return _repository.GetAll();
+            return _stageRepo.GetAll();
         }
         public PaymentStage? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public IEnumerable<PaymentStage?> GetByProjectId(Guid projectId)
         {
-            return _repository.GetByProjectId(projectId) ?? throw new Exception("This object is not existed!");
+            return _stageRepo.GetByProjectId(projectId) ?? throw new Exception("This object is not existed!");
         }
         public PaymentStage? CreatePaymentStage(PaymentStageRequest request)
         {
@@ -47,21 +59,39 @@ namespace IDBMS_API.Services
                 IsHidden = false,
             };
 
-            var psCreated = _repository.Save(ps);
+            var psCreated = _stageRepo.Save(ps);
             return psCreated;
         }
-        public void CreatePaymentStageByDesign(Guid projectId, decimal EstimatedPrice, List<PaymentStageDesign> listStageDesigns)
+
+        public void CreatePaymentStagesByProjectDesign(Guid projectId)
         {
-            foreach (var stage in listStageDesigns)
+            var project = _projectRepo.GetById(projectId) ?? throw new Exception("This object is not existed!");
+
+            ProjectDesignService pjDesignService = new ProjectDesignService(_projectDesignRepo);
+            var projectDesigns = pjDesignService.GetByType(project.Type);
+
+            var selectedDesign = projectDesigns.FirstOrDefault(design =>
+                project.EstimatedPrice >= design.MinBudget &&
+                project.EstimatedPrice <= design.MaxBudget);
+
+            if (selectedDesign == null)
+            {
+                throw new Exception("No suitable project design found for the given budget range.");
+            }
+
+            PaymentStageDesignService pmDesignService = new PaymentStageDesignService(_stageDesignRepo);
+            var pmDesigns = pmDesignService.GetByProjectDesignId(selectedDesign.Id);
+
+            foreach (var stage in pmDesigns)
             {
                 var ps = new PaymentStage
                 {
                     Id = Guid.NewGuid(),
-                    StageNo = stage.StageNo, 
+                    StageNo = stage.StageNo,
                     Name = stage.Name,
                     Description = stage.Description,
                     IsPaid = false,
-                    TotalContractPaid = (decimal)(stage.PricePercentage / 100) * EstimatedPrice,
+                    TotalContractPaid = (decimal)(stage.PricePercentage / 100) * (decimal)project.EstimatedPrice,
                     IsPrepaid = stage.IsPrepaid,
                     PricePercentage = stage.PricePercentage,
                     EstimateBusinessDay = stage.EstimateBusinessDay,
@@ -69,12 +99,14 @@ namespace IDBMS_API.Services
                     IsHidden = false,
                 };
 
-                _repository.Save(ps);
+                _stageRepo.Save(ps);
             }
         }
+
+
         public void UpdatePaymentStage(Guid id, PaymentStageRequest request)
         {
-            var ps = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ps.StageNo = request.StageNo;
             ps.Name = request.Name;
@@ -91,15 +123,15 @@ namespace IDBMS_API.Services
             ps.EstimateBusinessDay = request.EstimateBusinessDay;
             ps.ProjectId = request.ProjectId;
             
-            _repository.Update(ps);
+            _stageRepo.Update(ps);
         }
         public void UpdatePaymentStageStatus(Guid id, bool isHidden)
         {
-            var ps = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ps.IsHidden = isHidden;
 
-            _repository.Update(ps);
+            _stageRepo.Update(ps);
         }
     }
 }

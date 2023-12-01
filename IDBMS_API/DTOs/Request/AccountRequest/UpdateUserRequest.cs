@@ -8,6 +8,8 @@ namespace IDBMS_API.DTOs.Request.AccountRequest
         [Required]
         public string Name { get; set; } = default!;
 
+        public string? CompanyName { get; set; } = default!;
+
         public string? Bio { get; set; } = default!;
 
         [Required]

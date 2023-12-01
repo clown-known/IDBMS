@@ -77,6 +77,7 @@ namespace API.Services
                 PasswordSalt = passwordSalt,
                 Phone = request.Phone,
                 ExternalId = request.ExternalId,
+                CompanyName = request.CompanyName
             };
 
             var userCreated = _repository.Save(user);
@@ -117,6 +118,7 @@ namespace API.Services
             user.Name = request.Name;
             user.Phone = request.Phone;
             user.ExternalId= request.ExternalId;
+            user.CompanyName = request.CompanyName;
 
             _repository.Update(user);
         }

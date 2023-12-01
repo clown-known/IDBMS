@@ -62,6 +62,28 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
+        [HttpPost("project/{id}")]
+        public IActionResult CreatePaymentStagesByDesigns( Guid id)
+        {
+            try
+            {
+                _service.CreatePaymentStagesByProjectDesign(id);
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
         [HttpPut("{id}")]
         public IActionResult UpdatePaymentStage(Guid id, [FromBody] PaymentStageRequest request)
         {

@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using BusinessObject.Enums;
+using BusinessObject.Models;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,22 @@ namespace Repository.Implements
                 throw;
             }
             
+        }
+
+        public IEnumerable<ProjectDesign> GetByType(ProjectType type)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.ProjectDesigns
+                    .Where(pd => pd.ProjectType == type)
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+
         }
 
         public ProjectDesign? GetById(int id)
