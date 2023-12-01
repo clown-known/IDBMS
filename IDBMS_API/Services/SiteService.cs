@@ -53,7 +53,7 @@ namespace IDBMS_API.Services
             site.ContactPhone = request.ContactPhone;
             site.CompanyCode = request.CompanyCode;
 
-            _siteRepo.Save(site);
+            _siteRepo.Update(site);
         }
         public void DeleteSite(Guid id)
         {

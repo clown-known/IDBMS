@@ -3,6 +3,7 @@ using BusinessObject.Models;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace IDBMS_API.Services
 {
@@ -58,19 +59,13 @@ namespace IDBMS_API.Services
             _floorRepo.Update(floor);
         }
 
-        public void UpdateFloorStatus(Guid id, bool isDeleted)
-        {
-            var floor = _floorRepo.GetById(id) ?? throw new Exception("This object is not found!");
-
-            floor.IsDeleted = isDeleted;
-
-            _floorRepo.Update(floor);
-        }
-
         public void DeleteFloor(Guid id)
         {
             var floor = _floorRepo.GetById(id) ?? throw new Exception("This object is not found!");
-            _floorRepo.DeleteById(id);
+
+            floor.IsDeleted = true;
+
+            _floorRepo.Update(floor);
         }
     }
 }

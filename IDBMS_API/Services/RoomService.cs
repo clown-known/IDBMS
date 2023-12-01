@@ -72,11 +72,5 @@ namespace IDBMS_API.Services
             _roomRepo.Update(room);
         }
 
-        public void DeleteRoom(Guid id)
-        {
-            var room = _roomRepo.GetById(id) ?? throw new Exception("This object is not found!");
-
-            _roomRepo.DeleteById(id);
-        }
     }
 }
