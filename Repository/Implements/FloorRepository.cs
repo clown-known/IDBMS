@@ -80,21 +80,7 @@ namespace Repository.Implements
 
         public void DeleteById(Guid id)
         {
-            try
-            {
-                using var context = new IdtDbContext();
-                var floor = context.Floors.FirstOrDefault(floor => floor.Id == id);
-                if (floor != null)
-                {
-                    floor.IsDeleted = true;
-                    context.Entry(floor).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                    context.SaveChanges();
-                }
-            }
-            catch
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
     }

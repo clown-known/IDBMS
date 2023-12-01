@@ -87,28 +87,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpPut("{id}/isDeleted")]
-        public IActionResult UpdateFloorStatus(Guid id, bool isDeleted)
-        {
-            try
-            {
-                _service.UpdateFloorStatus(id, isDeleted);
-                var response = new ResponseMessage()
-                {
-                    Message = "Update successfully!",
-                };
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var response = new ResponseMessage()
-                {
-                    Message = $"Error: {ex.Message}"
-                };
-                return BadRequest(response);
-            }
-        }
-
         [HttpDelete("{id}")]
         public IActionResult DeleteFloor(Guid id)
         {

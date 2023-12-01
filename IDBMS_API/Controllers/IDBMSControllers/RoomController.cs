@@ -109,27 +109,5 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteRoom(Guid id)
-        {
-            try
-            {
-                _service.DeleteRoom(id);
-                var response = new ResponseMessage()
-                {
-                    Message = "Delete successfully!",
-                };
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var response = new ResponseMessage()
-                {
-                    Message = $"Error: {ex.Message}"
-                };
-                return BadRequest(response);
-            }
-        }
     }
 }
