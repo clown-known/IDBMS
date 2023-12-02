@@ -9,6 +9,6 @@ namespace Repository.Interfaces
 {
     public interface IFloorRepository : ICrudBaseRepository<Floor, Guid>
     {
-        IEnumerable<Floor?> GetByProjectId(Guid id); 
+        IEnumerable<Floor> GetByProjectId(Guid id); 
     }
 }

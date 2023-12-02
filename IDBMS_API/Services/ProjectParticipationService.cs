@@ -4,6 +4,7 @@ using IDBMS_API.Constants;
 using Repository.Interfaces;
 using System.Text.RegularExpressions;
 using BusinessObject.Enums;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IDBMS_API.Services
 {
@@ -45,6 +46,25 @@ namespace IDBMS_API.Services
             return pCreated;
         }
 
+        public void CreateParticipationsByRole(CreateParticipationListRequest request)
+        {
+            if (request.Role == ParticipationRole.ProjectManager || request.Role == ParticipationRole.ProductOwner)
+                throw new Exception("Only creating 1 Project Manager or 1 Project Owner!");
+            foreach (var userId in request.ListUserId)
+            {
+                var p = new ProjectParticipation
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = userId,
+                    ProjectId = request.ProjectId,
+                    Role = request.Role,
+                    IsDeleted = false,
+                };
+
+                var pCreated = _repository.Save(p);
+            }
+        }
+        
         public void UpdateParticipation(ProjectParticipationRequest request)
         {
             var p = _repository.GetById(request.ProjectId) ?? throw new Exception("This object is not existed!");

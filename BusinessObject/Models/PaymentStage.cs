@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
@@ -51,6 +52,9 @@ public class PaymentStage
 
     [Required]
     public bool IsHidden { get; set; }
+
+    [Required]
+    public StageStatus Status { get; set; }
 
     public List<ProjectTask> Tasks { get; set; } = new();
 }

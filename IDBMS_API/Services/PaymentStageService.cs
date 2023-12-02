@@ -4,6 +4,7 @@ using BusinessObject.Models;
 using DocumentFormat.OpenXml.Office2016.Excel;
 using Repository.Interfaces;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using BusinessObject.Enums;
 
 namespace IDBMS_API.Services
 {
@@ -56,7 +57,8 @@ namespace IDBMS_API.Services
                 PenaltyFee = request.PenaltyFee,
                 EstimateBusinessDay = request.EstimateBusinessDay,
                 ProjectId = request.ProjectId,
-                IsHidden = false,
+                IsHidden = request.IsHidden,
+                Status = request.Status,
             };
 
             var psCreated = _stageRepo.Save(ps);
@@ -97,6 +99,7 @@ namespace IDBMS_API.Services
                     EstimateBusinessDay = stage.EstimateBusinessDay,
                     ProjectId = projectId,
                     IsHidden = false,
+                    Status = StageStatus.Unopen
                 };
 
                 _stageRepo.Save(ps);
@@ -122,6 +125,8 @@ namespace IDBMS_API.Services
             ps.PenaltyFee = request.PenaltyFee;
             ps.EstimateBusinessDay = request.EstimateBusinessDay;
             ps.ProjectId = request.ProjectId;
+            ps.IsHidden = request.IsHidden;
+            ps.Status = request.Status;
             
             _stageRepo.Update(ps);
         }

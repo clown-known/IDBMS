@@ -57,6 +57,10 @@ public class IdtDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<PaymentStage>()
+            .Property(stage => stage.Status)
+            .HasConversion<int>();
+        
         modelBuilder.Entity<Admin>()
             .Property(admin => admin.Status)
             .HasConversion<int>();

@@ -16,7 +16,8 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskDocuments.Where(td => td.IsDeleted == false).ToList();
+                return context.TaskDocuments
+                    .Where(td => td.IsDeleted == false).ToList();
             }
             catch
             {

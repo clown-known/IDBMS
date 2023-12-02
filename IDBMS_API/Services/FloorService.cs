@@ -26,7 +26,7 @@ namespace IDBMS_API.Services
             return _floorRepo.GetById(id) ?? throw new Exception("This object is not found!");
         }
 
-        public IEnumerable<Floor?> GetByProjectId(Guid id)
+        public IEnumerable<Floor> GetByProjectId(Guid id)
         {
             return _floorRepo.GetByProjectId(id);
         }

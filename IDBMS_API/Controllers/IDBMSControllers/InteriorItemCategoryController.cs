@@ -53,7 +53,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                _service.UdpateInteriorItemCategory(id, request);
+                _service.UpdateInteriorItemCategory(id, request);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
