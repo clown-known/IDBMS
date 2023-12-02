@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Rooms.ToList();
+                return context.Rooms
+                    .Include(rt => rt.RoomType)
+                    .ToList();
             }
             catch
             {
@@ -26,7 +29,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Rooms.FirstOrDefault(room => room.Id == id);
+                return context.Rooms
+                    .Include(rt => rt.RoomType)
+                    .Include(t => t.Tasks)
+                    .FirstOrDefault(room => room.Id == id);
             }
             catch
             {
@@ -55,6 +61,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.Rooms
+                    .Include(rt => rt.RoomType)
                     .Where(room => room.FloorId == id && room.IsHidden == false)
                     .ToList();
             }

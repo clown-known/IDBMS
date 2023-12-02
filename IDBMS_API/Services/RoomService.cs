@@ -10,10 +10,12 @@ namespace IDBMS_API.Services
     public class RoomService
     {
         private readonly IRoomRepository _roomRepo;
+        private readonly IRoomTypeRepository _roomTypeRepo;
 
-        public RoomService(IRoomRepository roomRepo)
+        public RoomService(IRoomRepository roomRepo, IRoomTypeRepository roomTypeRepo)
         {
             _roomRepo = roomRepo;
+            _roomTypeRepo = roomTypeRepo;
         }
 
         public IEnumerable<Room> GetAll()
@@ -40,10 +42,18 @@ namespace IDBMS_API.Services
                 Description = request.Description,
                 UsePurpose = request.UsePurpose,
                 Area = request.Area,
-                PricePerArea = request.PricePerArea,
                 RoomTypeId = request.RoomTypeId,
                 IsHidden = false,
             };
+
+            RoomTypeService rtService = new RoomTypeService(_roomTypeRepo);
+            var roomType = rtService.GetById(request.RoomTypeId);
+
+            if (roomType != null)
+            {
+                room.PricePerArea = roomType.PricePerArea;
+
+            }
 
             var roomCreated = _roomRepo.Save(room);
             return roomCreated;
@@ -57,8 +67,16 @@ namespace IDBMS_API.Services
             room.Description = request.Description;
             room.UsePurpose = request.UsePurpose;
             room.Area = request.Area;
-            room.PricePerArea = request.PricePerArea;
             room.RoomTypeId = request.RoomTypeId;
+
+            RoomTypeService rtService = new RoomTypeService(_roomTypeRepo);
+            var roomType = rtService.GetById(request.RoomTypeId);
+
+            if (roomType != null)
+            {
+                room.PricePerArea = roomType.PricePerArea;
+
+            }
 
             _roomRepo.Update(room);
         }
