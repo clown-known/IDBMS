@@ -24,10 +24,6 @@ namespace IDBMS_API.DTOs.Request
         public double Area { get; set; }
 
         [Required]
-        [Column(TypeName = "money")]
-        public decimal PricePerArea { get; set; }
-
-        [Required]
         public int RoomTypeId { get; set; }
 
         [Required]
