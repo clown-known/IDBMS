@@ -37,12 +37,15 @@ namespace Repository.Implements
                 throw;
             }
         }
-        public IEnumerable<Floor?> GetByProjectId(Guid id)
+        public IEnumerable<Floor> GetByProjectId(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.Floors.Where(floor => floor.ProjectId == id && floor.IsDeleted == false);
+                return context.Floors
+                    .Where(floor => floor.ProjectId == id && floor.IsDeleted == false)
+                    .OrderBy(floor => floor.FloorNo)
+                    .ToList();
             }
             catch
             {

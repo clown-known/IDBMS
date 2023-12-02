@@ -43,7 +43,7 @@ namespace IDBMS_API.Services
             var iicCreated = _repository.Save(iic);
             return iicCreated;
         }
-        public async void UdpateInteriorItemCategory(int id, [FromForm] InteriorItemCategoryRequest request)
+        public async void UpdateInteriorItemCategory(int id, [FromForm] InteriorItemCategoryRequest request)
         {
             FirebaseService s = new FirebaseService();
             string BannerImageUrl = await s.UploadImage(request.IconImage);

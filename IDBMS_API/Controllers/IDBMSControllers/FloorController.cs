@@ -36,7 +36,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [EnableQuery]
-        [HttpGet("site/{id}")]
+        [HttpGet("project/{id}")]
         public IActionResult GetFloorsByProjectId(Guid id)
         {
             return Ok(_service.GetByProjectId(id));

@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Azure.Core;
+using BusinessObject.Enums;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
@@ -52,6 +53,28 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 {
                     Message = "Create successfully!",
                     Data = result
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [HttpPost("employees")]
+        public IActionResult CreateParticipationsByRole([FromBody] CreateParticipationListRequest request)
+        {
+            try
+            {
+                _service.CreateParticipationsByRole(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
                 };
                 return Ok(response);
             }
