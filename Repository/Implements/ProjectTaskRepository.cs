@@ -72,6 +72,53 @@ namespace Repository.Implements
                 throw;
             }
         }
+
+        public IEnumerable<ProjectTask?> GetSuggestionTasksByProjectId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.ProjectTasks
+                        .Include(c => c.TaskCategory)
+                        .Include(p => p.PaymentStage)
+                        .Include(i => i.InteriorItem)
+                            .ThenInclude(c => c.InteriorItemCategory)
+                        .Where(task => task.ProjectId == id
+                            && task.InteriorItem != null
+                            && task.InteriorItem.InteriorItemCategory != null
+                            && (task.InteriorItem.InteriorItemCategory.InteriorItemType == BusinessObject.Enums.InteriorItemType.Furniture
+                            || task.InteriorItem.InteriorItemCategory.InteriorItemType == BusinessObject.Enums.InteriorItemType.CustomFurniture))
+                        .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<ProjectTask?> GetSuggestionTasksByRoomId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.ProjectTasks
+                        .Include(c => c.TaskCategory)
+                        .Include(p => p.PaymentStage)
+                        .Include(i => i.InteriorItem)
+                            .ThenInclude(c => c.InteriorItemCategory)
+                        .Where(task => task.RoomId == id
+                            && task.InteriorItem != null
+                            && task.InteriorItem.InteriorItemCategory != null
+                            && (task.InteriorItem.InteriorItemCategory.InteriorItemType == BusinessObject.Enums.InteriorItemType.Furniture
+                            || task.InteriorItem.InteriorItemCategory.InteriorItemType == BusinessObject.Enums.InteriorItemType.CustomFurniture))
+                        .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public ProjectTask Save(ProjectTask entity)
         {
             try

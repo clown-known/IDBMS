@@ -9,6 +9,7 @@ namespace BusinessObject.Enums
     public enum InteriorItemType
     {
         Furniture = 0,
-        Material = 1
+        Material = 1,
+        CustomFurniture = 2,
     }
 }

@@ -11,5 +11,7 @@ namespace Repository.Interfaces
     {
         IEnumerable<ProjectTask?> GetByProjectId(Guid id);
         IEnumerable<ProjectTask?> GetByPaymentStageId(Guid id);
+        IEnumerable<ProjectTask?> GetSuggestionTasksByProjectId(Guid id);
+        IEnumerable<ProjectTask?> GetSuggestionTasksByRoomId(Guid id);
     }
 }
