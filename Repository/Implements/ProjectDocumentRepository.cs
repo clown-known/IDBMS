@@ -35,7 +35,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectDocuments.Where(ctc => ctc.IsDeleted == false).ToList();
+                return context.ProjectDocuments
+                    .OrderByDescending(time => time.CreatedDate)
+                    .Where(ctc => ctc.IsDeleted == false).ToList();
             }
             catch
             {
@@ -49,6 +51,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.ProjectDocuments
+                        .OrderByDescending(time => time.CreatedDate)
                         .Where(d => d.ProjectId == id && d.IsDeleted == false)
                         .ToList();
             }
@@ -64,6 +67,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.ProjectDocuments
+                    .OrderByDescending(time => time.CreatedDate)
                     .Where(pd =>
                         (projectId == null || pd.ProjectId == projectId) &&
                         (documentTemplateId == null || pd.ProjectDocumentTemplateId == documentTemplateId) &&

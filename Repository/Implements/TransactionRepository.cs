@@ -17,7 +17,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Transactions
+                return context.Transactions.OrderByDescending(time => time.CreatedDate)
                     .Include(u => u.User)
                     .Include(p => p.Project)
                     .ToList();
@@ -47,7 +47,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Transactions.Where(trans => trans.ProjectId == id && trans.IsDeleted == false).ToList();
+                return context.Transactions
+                    .OrderByDescending(time => time.CreatedDate)
+                    .Where(trans => trans.ProjectId == id && trans.IsDeleted == false).ToList();
             }
             catch
             {
@@ -60,7 +62,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Transactions.Where(trans => trans.UserId == id && trans.IsDeleted == false).ToList();
+                return context.Transactions
+                    .OrderByDescending(time => time.CreatedDate)
+                    .Where(trans => trans.UserId == id && trans.IsDeleted == false).ToList();
             }
             catch
             {

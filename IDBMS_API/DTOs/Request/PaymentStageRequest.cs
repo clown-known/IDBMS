@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessObject.Enums;
 
 namespace IDBMS_API.DTOs.Request
 {
@@ -53,5 +54,8 @@ namespace IDBMS_API.DTOs.Request
 
         [Required]
         public bool IsHidden { get; set; }
+
+        [Required]
+        public StageStatus Status { get; set; }
     }
 }

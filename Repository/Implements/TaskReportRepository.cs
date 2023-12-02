@@ -16,7 +16,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskReports.Where(report => report.IsDeleted == false).ToList();
+                return context.TaskReports
+                    .OrderByDescending(time => time.CreatedTime)
+                    .Where(report => report.IsDeleted == false).ToList();
             }
             catch
             {
@@ -42,6 +44,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.TaskReports
+                    .OrderByDescending(time => time.CreatedTime)
                     .Include(rd => rd.TaskDocuments)
                     .Where(report => report.ProjectTaskId == id && report.IsDeleted == false).ToList();
             }

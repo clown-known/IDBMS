@@ -20,7 +20,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Notifications.ToList();
+                return context.Notifications
+                    .OrderByDescending(notification => notification.CreatedDate)
+                    .ToList();
             }
             catch
             {
@@ -47,6 +49,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.Notifications
+                    .OrderByDescending(notification => notification.CreatedDate)
                     .Where(n => n.UserId == id).ToList();
             }
             catch

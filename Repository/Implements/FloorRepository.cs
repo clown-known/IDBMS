@@ -43,6 +43,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.Floors
+                    .Include(r => r.Rooms)
                     .Where(floor => floor.ProjectId == id && floor.IsDeleted == false)
                     .OrderBy(floor => floor.FloorNo)
                     .ToList();

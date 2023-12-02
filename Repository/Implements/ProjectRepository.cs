@@ -14,7 +14,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.ToList();
+                return context.Projects
+                    .OrderByDescending(time => time.CreatedDate)
+                    .ToList();
             }
             catch
             {
@@ -44,7 +46,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Projects.Where(p => p.SiteId == id).ToList();
+                return context.Projects
+                    .OrderByDescending(time => time.CreatedDate)
+                    .Where(p => p.SiteId == id).ToList();
             }
             catch
             {
