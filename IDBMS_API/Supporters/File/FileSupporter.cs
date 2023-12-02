@@ -24,15 +24,17 @@ namespace IDBMS_API.Supporters.File
                 using (WordprocessingDocument doc = WordprocessingDocument.Open(stream,true ))
                 {
                     DateTime time = DateTime.Now;
-                    string code = time.Day.ToString() + time.Month.ToString() + "/" + time.Year.ToString();
-                    FindAndReplaceText(doc, "[Code]", code);
+
+                    FindAndReplaceText(doc, "[Code]", GetCode());
                     FindAndReplaceText(doc, "[CreatedDate]", time.Day.ToString());
                     FindAndReplaceText(doc, "[CreatedMonth]", time.Month.ToString());
                     FindAndReplaceText(doc, "[CreatedYear]", time.Year.ToString());
                     FindAndReplaceText(doc, "[ACompanyName]", request.ACompanyName);
                     FindAndReplaceText(doc, "[ACompanyAddress]", request.ACompanyAddress);
+                    FindAndReplaceText(doc, "[CompanyCode]", request.ACompanyCode);
                     FindAndReplaceText(doc, "[ARepresentative]", request.AOwnerName);
                     FindAndReplaceText(doc, "[APhone]", request.APhone);
+                    FindAndReplaceText(doc, "[Position]", request.APosition);
                     FindAndReplaceText(doc, "[AEmail]", request.AEmail);
 
                     FindAndReplaceText(doc, "[BName]", request.BCompanyName);
@@ -50,7 +52,7 @@ namespace IDBMS_API.Supporters.File
                     FindAndReplaceText(doc, "[PaymentMethod]", request.PaymentMethod);
                     FindAndReplaceText(doc, "[Value]", ""+ IntUtils.ConvertStringToMoney(request.Value));
                     FindAndReplaceText(doc, "[Money]", ""+ IntUtils.ConvertNumberToVietnamese((int)request.Value));
-                    FindAndReplaceText(doc, "[CreatedDate]", time.Day.ToString()+"/"+time.Month.ToString()+"/"+time.Year.ToString());
+                    FindAndReplaceText(doc, "[StartedDate]", time.Day.ToString()+"/"+time.Month.ToString()+"/"+time.Year.ToString());
                     FindAndReplaceText(doc, "[EstimateBusinessDay]", request.EstimateDays.ToString());
 
                     doc.Save();
@@ -66,9 +68,8 @@ namespace IDBMS_API.Supporters.File
                 using (WordprocessingDocument doc = WordprocessingDocument.Open(stream, true))
                 {
                     DateTime time = DateTime.Now;
-                    string code = time.Day.ToString() + time.Month.ToString() + "/" + time.Year.ToString();
                     string stringDate = time.Day.ToString() + "/" + time.Month.ToString() + "/" + time.Year.ToString();
-                    FindAndReplaceText(doc, "[Code]", code);
+                    FindAndReplaceText(doc, "[Code]", GetCode());
                     FindAndReplaceText(doc, "[CreatedDate]", time.Day.ToString());
                     FindAndReplaceText(doc, "[CreatedMonth]", time.Month.ToString());
                     FindAndReplaceText(doc, "[CreatedYear]", time.Year.ToString());
@@ -97,7 +98,7 @@ namespace IDBMS_API.Supporters.File
                     FindAndReplaceText(doc, "[PaymentMethod]", request.PaymentMethod);
                     FindAndReplaceText(doc, "[Value]", "" + IntUtils.ConvertStringToMoney(request.Value));
                     FindAndReplaceText(doc, "[Money]", "" + IntUtils.ConvertNumberToVietnamese((int)request.Value));
-                    FindAndReplaceText(doc, "[CreatedDate]", stringDate);
+                    FindAndReplaceText(doc, "[StartedDate]", stringDate);
                     FindAndReplaceText(doc, "[EstimateBusinessDay]", request.EstimateDays.ToString());
                     doc.Save();
                 }
@@ -106,7 +107,16 @@ namespace IDBMS_API.Supporters.File
         }
         static private string DateParse(DateTime input)
         {
-            return input.Day.ToString() + "/" + input.Month.ToString() + "/" + input.Year.ToString();
+            string day = input.Day > 10 ? input.Day.ToString() : "0" + input.Day.ToString();
+            string month = input.Month > 10 ? input.Month.ToString() : "0" + input.Month.ToString();
+            return  day + "/" + month+ "/" + input.Year.ToString();
+        }
+        static private string GetCode()
+        {
+            DateTime input = DateTime.Now;
+            string day = input.Day > 10 ? input.Day.ToString() : "0" + input.Day.ToString();
+            string month = input.Month > 10 ? input.Month.ToString() : "0" + input.Month.ToString();
+            return  day + "" + month+ "/" + input.Year.ToString();
         }
         
         static public int CountPages(WordprocessingDocument doc)

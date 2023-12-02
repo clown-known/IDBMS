@@ -96,6 +96,32 @@ namespace BLL.Services
             }
             return null;
         }
+        public async Task<string> UploadContract([FromForm] IFormFile file,Guid projectid)
+        {
+            if (file != null && file.Length != 0)
+            {
+
+                string fileName = $"{DateTime.Now.ToString()}{file.FileName}";
+
+                var storageClient = new FirebaseStorage(_storageBucket);
+                using (var stream = file.OpenReadStream())
+                {
+                    stream.Position = 0; // Reset the stream position
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await stream.CopyToAsync(memoryStream);
+                        memoryStream.Position = 0;
+                        await storageClient.Child(projectid.ToString()).Child("Contract").Child(fileName).PutAsync(memoryStream);
+                    }
+                }
+
+                FirebaseStorageReference starsRef = storageClient.Child(projectid.ToString()).Child("Contract").Child(fileName);
+                string link = await starsRef.GetDownloadUrlAsync();
+                return link;
+            }
+            return null;
+        }
         public async Task<string> UploadBookingDocument([FromForm] IFormFile file,string category,Guid projectid)
         {
             if (file != null && file.Length != 0)

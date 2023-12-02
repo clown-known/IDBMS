@@ -11,5 +11,6 @@ namespace Repository.Interfaces
     {
         IEnumerable<ProjectDocument> GetByFilter(Guid? projectId, int? documentTemplateId);
         IEnumerable<ProjectDocument> GetByProjectId(Guid id);
+        public ProjectDocument? GetContractById(Guid id);
     }
 }

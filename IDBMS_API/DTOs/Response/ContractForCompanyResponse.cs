@@ -5,8 +5,9 @@
         public string ACompanyName { get; set; }
         public string ACompanyAddress { get; set; }
         public string AOwnerName { get; set; }
-        public string Aposition { get; set; }
         public string APhone { get; set; }
+        public string ACompanyCode { get; set; }
+        public string ACompanyPosition { get; set; }
         public string AEmail { get; set; }
 
         public string BCompanyName { get; set; }

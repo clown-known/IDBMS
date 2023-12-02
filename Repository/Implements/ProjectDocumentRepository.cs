@@ -93,6 +93,18 @@ namespace Repository.Implements
                 throw;
             }
         }
+        public ProjectDocument? GetContractById(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.ProjectDocuments.Where(pd => pd.Id == id && pd.IsDeleted == false && pd.Category == BusinessObject.Enums.ProjectDocumentCategory.Contract).FirstOrDefault();
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
         public ProjectDocument? Save(ProjectDocument entity)
         {
