@@ -29,6 +29,12 @@ namespace IDBMS_API.Services
         {
             return _taskRepo.GetByProjectId(id);
         }
+
+        public IEnumerable<ProjectTask?> GetByRoomId(Guid id)
+        {
+            return _taskRepo.GetByRoomId(id);
+        }
+
         public IEnumerable<ProjectTask?> GetByPaymentStageId(Guid id)
         {
             return _taskRepo.GetByPaymentStageId(id);

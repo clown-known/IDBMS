@@ -60,6 +60,27 @@ namespace Repository.Implements
                 throw;
             }
         }
+
+        public IEnumerable<ProjectTask?> GetByRoomId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.ProjectTasks
+                    .Include(c => c.TaskCategory)
+                    .Include(p => p.PaymentStage)
+                    .Include(i => i.InteriorItem)
+                    .Include(r => r.Room)
+                        .ThenInclude(f => f.Floor)
+                    .Where(task => task.RoomId == id)
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public IEnumerable<ProjectTask?> GetByPaymentStageId(Guid id)
         {
             try
