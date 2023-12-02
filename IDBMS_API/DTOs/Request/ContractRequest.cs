@@ -12,6 +12,8 @@ namespace IDBMS_API.DTOs.Request
         public string ACompanyAddress { get; set; }
         public string AOwnerName { get; set; }
         public string APhone { get; set; }
+        public string ACompanyCode { get; set; }
+        public string APosition { get; set; }
         public string AEmail { get; set; }
          
         public string BCompanyName { get; set; }

@@ -5,6 +5,7 @@ using IDBMS_API.Constants;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Supporters.File;
+using Microsoft.AspNetCore.Mvc;
 using Repository.Implements;
 
 namespace IDBMS_API.Services
@@ -57,8 +58,9 @@ namespace IDBMS_API.Services
                 {
                     ACompanyAddress = site.Address,
                     AOwnerName = owner.Name,
-                    //Aposition = owner
                     APhone = site.ContactPhone,
+                    ACompanyPosition = owner.JobPosition,
+                    ACompanyCode = site.CompanyCode,
                     ACompanyName = owner.CompanyName,
                     AEmail = owner.Email,
                     BCompanyPhone = doc.CompanyPhone,
@@ -92,7 +94,6 @@ namespace IDBMS_API.Services
                 {
                     Address = site.Address,
                     CustomerName = owner.Name,
-                    //Aposition = owner
                     Phone = site.ContactPhone,
                     DateOfBirth = owner.DateOfBirth,
                     Email = owner.Email,
@@ -119,6 +120,45 @@ namespace IDBMS_API.Services
             var project = _projectRepository.GetById(projectid);
             ProjectDocument d = project.ProjectDocuments.Where(d => d.Category == ProjectDocumentCategory.Contract).FirstOrDefault();
             return await firebaseService.DownloadFileByDownloadUrl(d.Url);
+        }
+        public async Task<bool> UploadContract(Guid projectId,[FromForm] IFormFile file)
+        {
+            if (file == null) return false;
+            var project = _projectRepository.GetById(projectId);
+            try
+            {
+                string link = await firebaseService.UploadContract(file, projectId);
+                DocumentTemplateRepository documentTemplateRepository = new DocumentTemplateRepository();
+                var temp = documentTemplateRepository.getByType(DocumentTemplateType.Contract);
+                var currentDoc = _projectDocumentRepository.GetContractById(projectId);
+                if (currentDoc != null)
+                {
+                    currentDoc.Url = link;
+                    currentDoc.Category = ProjectDocumentCategory.Contract;
+                    currentDoc.CreatedDate = DateTime.Now;
+                    currentDoc.ProjectDocumentTemplateId = temp.Id;
+                    currentDoc.IsDeleted = false;
+                    _projectDocumentRepository.Update(currentDoc);
+                }
+                else
+                {
+                    _projectDocumentRepository.Save(new ProjectDocument
+                    {
+                        Category = ProjectDocumentCategory.Contract,
+                        CreatedDate = DateTime.Now,
+                        IsDeleted = false,
+                        Name = "Contract",
+                        Url = link,
+                        ProjectId = projectId,
+                        ProjectDocumentTemplateId = temp.Id,
+                        IsPublicAdvertisement = project.AdvertisementStatus == AdvertisementStatus.Public,
+                    });
+                }
+                return true;
+            }catch(Exception e)
+            {
+                return false;
+            }
         }
     }
 }

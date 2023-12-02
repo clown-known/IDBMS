@@ -30,9 +30,9 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return File(file, "application/octet-stream", fileName);
         }
         [HttpPost("getDataForCompany")]
-        public async Task<IActionResult> GetDataForCompany(Guid projectid)
+        public async Task<IActionResult> GetDataForCompany(Guid projectId)
         {
-            var response = contractService.GetDataForCompanyContract(projectid);
+            var response = contractService.GetDataForCompanyContract(projectId);
             return Ok(response);
         }
         [HttpPost("generateForCustomer")]
@@ -42,6 +42,18 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             //string fileName = "Contract-"+projectid.ToString()+".docx";
             string fileName = "Contract.docx";
             return File(file, "application/octet-stream", fileName);
+        }
+        [HttpPost("getDataForCustomer")]
+        public async Task<IActionResult> GetDataForCustomer(Guid projectId)
+        {
+            var response = contractService.GetDataForCustomerContract(projectId);
+            return Ok(response);
+        }
+        [HttpPost("getDataForCustomer")]
+        public async Task<IActionResult> UploadContract(Guid projectId, [FromForm]IFormFile file)
+        {
+            if ( await contractService.UploadContract(projectId, file) == false) return BadRequest();
+            return Ok();
         }
     }
 }
