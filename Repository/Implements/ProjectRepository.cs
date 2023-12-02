@@ -40,6 +40,23 @@ namespace Repository.Implements
                 throw;
             }
         }
+        public Project? GetByIdWithSite(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Projects
+                    .Include(pc => pc.ProjectCategory)
+                    .Include(pc => pc.Site)
+                    .Include(par => par.ProjectParticipations)
+                        .ThenInclude(u => u.User)
+                    .FirstOrDefault(project => project.Id == id);
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
         public IEnumerable<Project> GetBySiteId(Guid id)
         {
