@@ -14,7 +14,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             this.contractService = contractService;
         }
-        [HttpGet]
+        [HttpGet("downLoadContract")]
         public async Task<IActionResult> Index(Guid projectid)
         {
             byte[] file = await contractService.DownloadContract(projectid);
@@ -49,7 +49,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             var response = contractService.GetDataForCustomerContract(projectId);
             return Ok(response);
         }
-        [HttpPost("getDataForCustomer")]
+        [HttpPost("pploadContract")]
         public async Task<IActionResult> UploadContract(Guid projectId, [FromForm]IFormFile file)
         {
             if ( await contractService.UploadContract(projectId, file) == false) return BadRequest();
