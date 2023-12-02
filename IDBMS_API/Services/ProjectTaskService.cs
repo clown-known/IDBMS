@@ -10,27 +10,40 @@ namespace IDBMS_API.Services
 {
     public class ProjectTaskService
     {
-        private readonly IProjectTaskRepository _repository;
-        public ProjectTaskService(IProjectTaskRepository repository)
+        private readonly IProjectTaskRepository _taskRepo;
+        private readonly IInteriorItemRepository _itemRepo;
+        public ProjectTaskService(IProjectTaskRepository taskRepo, IInteriorItemRepository itemRepo)
         {
-            _repository = repository;
+            _taskRepo = taskRepo;
+            _itemRepo = itemRepo;
         }
         public IEnumerable<ProjectTask> GetAll()
         {
-            return _repository.GetAll();
+            return _taskRepo.GetAll();
         }
         public ProjectTask? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _taskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public IEnumerable<ProjectTask?> GetByProjectId(Guid id)
         {
-            return _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+            return _taskRepo.GetByProjectId(id);
         }
         public IEnumerable<ProjectTask?> GetByPaymentStageId(Guid id)
         {
-            return _repository.GetByPaymentStageId(id) ?? throw new Exception("This object is not existed!");
+            return _taskRepo.GetByPaymentStageId(id);
         }
+
+        public IEnumerable<ProjectTask?> GetSuggestionTasksByProjectId(Guid id)
+        {
+            return _taskRepo.GetSuggestionTasksByProjectId(id);
+        }        
+        
+        public IEnumerable<ProjectTask?> GetSuggestionTasksByRoomId(Guid id)
+        {
+            return _taskRepo.GetSuggestionTasksByRoomId(id);
+        }
+
         public ProjectTask? CreateProjectTask(ProjectTaskRequest request)
         {
             var ct = new ProjectTask
@@ -55,7 +68,7 @@ namespace IDBMS_API.Services
                 RoomId = request.RoomId,
                 Status = request.Status,
             };
-            var ctCreated = _repository.Save(ct);
+            var ctCreated = _taskRepo.Save(ct);
             return ctCreated;
         }
 
@@ -63,16 +76,16 @@ namespace IDBMS_API.Services
         {
                 foreach (var taskId in listTaskId)
                 {
-                    var task = _repository.GetById(taskId) ?? throw new Exception("This object is not existed!");
+                    var task = _taskRepo.GetById(taskId) ?? throw new Exception("This object is not existed!");
 
                     task.PaymentStageId = paymentStageId;
 
-                    _repository.Update(task);
+                    _taskRepo.Update(task);
                 }
         }
         public void StartTasksOfStage(Guid paymentStageId)
         {
-            var listTask = _repository.GetByPaymentStageId(paymentStageId);
+            var listTask = _taskRepo.GetByPaymentStageId(paymentStageId);
             if (listTask.Any())
             {
                 foreach (var task in listTask)
@@ -80,7 +93,7 @@ namespace IDBMS_API.Services
                     if (task!= null && task.PaymentStageId == paymentStageId)
                     {
                         task.StartedDate = DateTime.Now;
-                        _repository.Update(task);
+                        _taskRepo.Update(task);
                     }
                 }
             }
@@ -88,7 +101,7 @@ namespace IDBMS_API.Services
 
         public void UpdateProjectTask(Guid id, ProjectTaskRequest request)
         {
-            var ct = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ct = _taskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ct.Code = request.Code;
             ct.Name = request.Name;
@@ -108,15 +121,51 @@ namespace IDBMS_API.Services
             ct.RoomId = request.RoomId;
             ct.Status = request.Status;
 
-            _repository.Update(ct);
+            _taskRepo.Update(ct);
         }
         public void UpdateProjectTaskStatus(Guid id, ProjectTaskStatus status)
         {
-            var ct = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ct = _taskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ct.Status = status;
 
-            _repository.Update(ct);
+            _taskRepo.Update(ct);
+        }
+
+        public ProjectTask CreateProjectTaskWithCustomItem(CustomItemSuggestionRequest request)
+        {
+            var ct = new ProjectTask
+            {
+                Id = Guid.NewGuid(),
+                Name = request.Name,
+                Description = request.Description,
+                Percentage = request.Percentage,
+                CalculationUnit = request.CalculationUnit,
+                PricePerUnit = request.PricePerUnit,
+                UnitInContract = request.UnitInContract,
+                UnitUsed = request.UnitUsed,
+                IsIncurred = request.IsIncurred,
+                StartedDate = request.StartedDate,
+                EndDate = request.EndDate,
+                NoDate = request.NoDate,
+                CreatedDate = DateTime.Now,
+                ProjectId = request.ProjectId,
+                PaymentStageId = request.PaymentStageId,
+                RoomId = request.RoomId,
+                Status = request.Status,
+            };
+
+            InteriorItemService itemService = new InteriorItemService(_itemRepo);
+
+            var item = itemService.CreateInteriorItem(request.itemRequest);
+
+            if (item.Result != null)
+            {
+                ct.InteriorItemId = item.Result.Id;
+            }
+
+            var ctCreated = _taskRepo.Save(ct);
+            return ctCreated;
         }
     }
 }
