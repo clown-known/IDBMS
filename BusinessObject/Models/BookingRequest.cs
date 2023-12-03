@@ -35,6 +35,11 @@ namespace BusinessObject.Models
         public User User { get; set; }
 
         [Required]
+        public DateTime CreatedDate { get; set; }
+
+        public DateTime? UpdatedDate { get; set; }
+
+        [Required]
         public BookingRequestStatus Status { get; set; }
 
         [Required]
