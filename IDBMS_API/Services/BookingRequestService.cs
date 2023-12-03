@@ -40,6 +40,7 @@ namespace IDBMS_API.Services
                 Status = BookingRequestStatus.Pending,
                 IsDeleted = false,
                 CreatedDate= DateTime.Now,
+                AdminReply = BookingRequest.AdminReply,
             };
 
             var BookingRequestCreated = _repository.Save(br);
@@ -56,6 +57,7 @@ namespace IDBMS_API.Services
             br.ContactLocation = BookingRequest.ContactLocation;
             br.Note = BookingRequest.Note;
             br.UpdatedDate= DateTime.Now;
+            br.AdminReply = BookingRequest.AdminReply;
 
             _repository.Update(br);
         }
