@@ -30,9 +30,16 @@ namespace BusinessObject.Models
 
         public string? Note { get; set; } = default!;
 
+        public string? AdminReply { get; set; } = default!;
+
         [Required]
         public Guid UserId { get; set; }
         public User User { get; set; }
+
+        [Required]
+        public DateTime CreatedDate { get; set; }
+
+        public DateTime? UpdatedDate { get; set; }
 
         [Required]
         public BookingRequestStatus Status { get; set; }

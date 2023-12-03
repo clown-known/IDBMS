@@ -39,6 +39,8 @@ namespace IDBMS_API.Services
                 UserId = BookingRequest.UserId,
                 Status = BookingRequestStatus.Pending,
                 IsDeleted = false,
+                CreatedDate= DateTime.Now,
+                AdminReply = BookingRequest.AdminReply,
             };
 
             var BookingRequestCreated = _repository.Save(br);
@@ -54,6 +56,8 @@ namespace IDBMS_API.Services
             br.ContactPhone = BookingRequest.ContactPhone;
             br.ContactLocation = BookingRequest.ContactLocation;
             br.Note = BookingRequest.Note;
+            br.UpdatedDate= DateTime.Now;
+            br.AdminReply = BookingRequest.AdminReply;
 
             _repository.Update(br);
         }
@@ -63,6 +67,7 @@ namespace IDBMS_API.Services
             var br = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             br.Status = status;
+            br.UpdatedDate = DateTime.Now;
 
             _repository.Update(br);
         }
@@ -72,6 +77,7 @@ namespace IDBMS_API.Services
             var br = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             br.IsDeleted = true;
+            br.UpdatedDate = DateTime.Now;
 
             _repository.Update(br);
         }
