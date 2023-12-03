@@ -53,6 +53,14 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             return Ok(_service.GetByProjectId(id));
         }
+
+        [EnableQuery]
+        [HttpGet("room/{id}")]
+        public IActionResult GetProjectTasksByRoomId(Guid id)
+        {
+            return Ok(_service.GetByRoomId(id));
+        }
+
         [EnableQuery]
         [HttpGet("payment-stage/{id}")]
         public IActionResult GetProjectTasksByPaymentStageId(Guid id)
