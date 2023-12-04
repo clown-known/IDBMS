@@ -35,6 +35,7 @@ namespace IDBMS_API.Services
                 ContactPhone = request.ContactPhone,
                 CompanyCode = request.CompanyCode,
                 IsDeleted = false,
+                CreatedDate = DateTime.Now,
             };
             var siteCreated = _siteRepo.Save(site);
             return siteCreated;
