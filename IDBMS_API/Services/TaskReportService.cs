@@ -29,10 +29,10 @@ namespace IDBMS_API.Services
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
-                CalculationUnit = request.CalculationUnit,
                 UnitUsed = request.UnitUsed,
                 Description = request.Description,
                 CreatedTime = DateTime.Now,
+                ProjectTaskId= request.ProjectTaskId,
                 IsDeleted = false,
             };
             var ctrCreated = _repository.Save(ctr);
@@ -43,7 +43,6 @@ namespace IDBMS_API.Services
             var ctr = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ctr.Name = request.Name;
-            ctr.CalculationUnit = request.CalculationUnit;
             ctr.UnitUsed = request.UnitUsed;
             ctr.Description = request.Description;
             ctr.UpdatedTime = DateTime.Now;

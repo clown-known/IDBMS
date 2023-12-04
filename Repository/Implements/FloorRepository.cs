@@ -49,8 +49,7 @@ namespace Repository.Implements
                     .Include(r => r.Rooms)
                     .Where(floor => floor.ProjectId == id && floor.IsDeleted == false)
                     .OrderBy(floor => floor.FloorNo)
-                    .ToList()
-                    .Reverse<Floor>();
+                    .ToList();
             }
             catch
             {

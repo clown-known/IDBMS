@@ -187,7 +187,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 _service.UpdateProjectTaskStatus(id, status);
                 var response = new ResponseMessage()
                 {
-                    Message = "Delete successfully!",
+                    Message = "Update successfully!",
                 };
                 return Ok(response);
             }

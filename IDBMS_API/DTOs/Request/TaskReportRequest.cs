@@ -15,15 +15,9 @@ namespace IDBMS_API.DTOs.Request
         public string Name { get; set; } = default!;
 
         [Required]
-        public CalculationUnit CalculationUnit { get; set; }
-
-        [Required]
         public double UnitUsed { get; set; }
 
         public string? Description { get; set; }
-
-        [Required]
-        public Guid ConstructionTaskId { get; set; }
 
         [Required]
         public Guid ProjectTaskId { get; set; }

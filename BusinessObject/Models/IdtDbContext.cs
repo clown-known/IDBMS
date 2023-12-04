@@ -81,10 +81,6 @@ public class IdtDbContext : DbContext
             .Property(projectTask => projectTask.CalculationUnit)
             .HasConversion<int>();
 
-        modelBuilder.Entity<TaskReport>()
-            .Property(taskReport => taskReport.CalculationUnit)
-            .HasConversion<int>();
-
         modelBuilder.Entity<TaskDesign>()
             .Property(taskDesign => taskDesign.CalculationUnit)
             .HasConversion<int>();            

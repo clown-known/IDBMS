@@ -41,20 +41,22 @@ namespace Repository.Implements
             }
         }
 
-       /* public IEnumerable<Room> GetByProjectId(Guid projectId)
+        public IEnumerable<Room> GetByProjectId(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
                 return context.Rooms
-                    .Where(room => room.ProjectId == projectId && room.IsHidden == false)
-                    .ToList();
+                    .Include(f => f.Floor)
+                    .Where(room => room.Floor != null && room.Floor.ProjectId == id && room.IsHidden == false)
+                    .ToList()
+                    .Reverse<Room>();
             }
             catch
             {
                 throw;
             }
-        }*/
+        }
 
         public IEnumerable<Room> GetByFloorId(Guid id)
         {
