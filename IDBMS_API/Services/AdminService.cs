@@ -18,21 +18,21 @@ namespace IDBMS_API.Services
             _repository = repository;
             this.jwtTokenSupporter = jwtTokenSupporter;
         }
-        public (string? token, Admin? user) Login(string email, string password)
+        public (string? token, Admin? admin) Login(string username, string password)
         {
-            var user = _repository.GetByEmail(email);
-            if (user != null)
+            var admin = _repository.GetByUsername(username);
+            if (admin != null)
             {
-                if (PasswordUtils.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                if (PasswordUtils.VerifyPasswordHash(password, admin.PasswordHash, admin.PasswordSalt))
                 {
-                    if (user.token != null)
+                    if (admin.token != null)
                     {
-                        return (user.token, user);
+                        return (admin.token, admin);
                     }
 
-                    var token = jwtTokenSupporter.CreateTokenForAdmin(user);
-                    UpdateTokenForAdmin(user, token);
-                    return (token, user);
+                    var token = jwtTokenSupporter.CreateTokenForAdmin(admin);
+                    UpdateTokenForAdmin(admin, token);
+                    return (token, admin);
                 }
             }
             return (null, null);
