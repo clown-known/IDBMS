@@ -35,7 +35,8 @@ namespace IDBMS_API.Services
             {
                 Id = Guid.NewGuid(),
                 ProjectParticipationId = request.ProjectParticipationId,
-                ProjectTaskId = request.ProjectTaskId
+                ProjectTaskId = request.ProjectTaskId,
+                CreatedDate = DateTime.Now,
             };
 
             var taCreated = _repository.Save(ta);

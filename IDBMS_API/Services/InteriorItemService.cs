@@ -54,6 +54,7 @@ namespace IDBMS_API.Services
                 Status = request.Status,
                 ParentItemId = request.ParentItemId,
                 IsDeleted = false,
+                CreatedDate = DateTime.Now,
             };
 
             var iiCreated = _repository.Save(ii);
