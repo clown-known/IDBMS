@@ -16,13 +16,13 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationsController : ControllerBase
     {
         private readonly UserService userService;
         private readonly AdminService adminService;
         private readonly AuthenticationCodeService authenticationCodeService;
 
-        public AuthenticationController(UserService userService, AuthenticationCodeService authenticationCodeService,AdminService adminService )
+        public AuthenticationsController(UserService userService, AuthenticationCodeService authenticationCodeService,AdminService adminService )
         {
             this.userService = userService;
             this.authenticationCodeService = authenticationCodeService;
@@ -61,15 +61,15 @@ namespace API.Controllers
             }
         }
         [HttpPost("admin/login")]
-        public IActionResult LoginAdmin(LoginRequest request)
+        public IActionResult LoginAdmin(AdminLoginRequest request)
         {
             try
             {
-                var (token, user) = adminService.Login(request.Email, request.Password);
+                var (token, user) = adminService.Login(request.Username, request.Password);
                 var response = new ResponseMessage();
                 if (token == null)
                 {
-                    response.Message = "Incorrect email or password!";
+                    response.Message = "Incorrect username or password!";
                     return BadRequest(response);
                 }
 
@@ -77,6 +77,7 @@ namespace API.Controllers
                 response.Data = new
                 {
                     Token = token,
+                    user.Username,
                     user.Name,
                     user.Id,
                 };
