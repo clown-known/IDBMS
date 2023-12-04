@@ -35,6 +35,9 @@ namespace BusinessObject.Models
         public string Address { get; set; } = default!;
 
         [Required]
+        public DateTime CreatedDate { get; set; }
+
+        [Required]
         public bool IsDeleted { get; set; }
 
         public List<Project> Projects { get; set; } = new();
