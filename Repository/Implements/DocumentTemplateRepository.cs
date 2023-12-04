@@ -34,7 +34,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectDocumentTemplates.ToList();
+                return context.ProjectDocumentTemplates
+                    .OrderByDescending(dt => dt.CreatedDate)
+                    .ToList();
             }
             catch
             {

@@ -2,6 +2,7 @@
 using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace Repository.Implements;
@@ -14,7 +15,8 @@ public class UserRepository : IUserRepository
         {
             using var context = new IdtDbContext();
             return context.Users
-                .Include(ur=> ur.UserRoles)
+                .Include(ur => ur.UserRoles)
+                .OrderByDescending(u => u.CreatedDate)
                 .ToList();
         }
         catch

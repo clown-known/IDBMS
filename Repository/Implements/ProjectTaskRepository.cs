@@ -18,6 +18,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.ProjectTasks
                     .Include(c => c.TaskCategory)
+                    .OrderByDescending(c => c.CreatedDate)
                     .ToList();
             }
             catch
@@ -57,6 +58,7 @@ namespace Repository.Implements
                     .Include(r => r.Room)
                         .ThenInclude(f => f.Floor)
                     .Where(task => task.ProjectId == id)
+                    .OrderByDescending(c => c.CreatedDate)
                     .ToList();
             }
             catch
@@ -77,6 +79,7 @@ namespace Repository.Implements
                     .Include(r => r.Room)
                         .ThenInclude(f => f.Floor)
                     .Where(task => task.RoomId == id)
+                    .OrderByDescending(c => c.CreatedDate)
                     .ToList();
             }
             catch
@@ -90,7 +93,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectTasks.Where(task => task.PaymentStageId == id).ToList();
+                return context.ProjectTasks
+                    .Where(task => task.PaymentStageId == id)
+                    .OrderByDescending(c => c.CreatedDate)
+                    .ToList();
             }
             catch
             {
@@ -113,6 +119,7 @@ namespace Repository.Implements
                             && task.InteriorItem.InteriorItemCategory != null
                             && (task.InteriorItem.InteriorItemCategory.InteriorItemType == BusinessObject.Enums.InteriorItemType.Furniture
                             || task.InteriorItem.InteriorItemCategory.InteriorItemType == BusinessObject.Enums.InteriorItemType.CustomFurniture))
+                        .OrderByDescending(c => c.CreatedDate)
                         .ToList();
             }
             catch
@@ -136,6 +143,7 @@ namespace Repository.Implements
                             && task.InteriorItem.InteriorItemCategory != null
                             && (task.InteriorItem.InteriorItemCategory.InteriorItemType == BusinessObject.Enums.InteriorItemType.Furniture
                             || task.InteriorItem.InteriorItemCategory.InteriorItemType == BusinessObject.Enums.InteriorItemType.CustomFurniture))
+                        .OrderByDescending(c => c.CreatedDate)
                         .ToList();
             }
             catch

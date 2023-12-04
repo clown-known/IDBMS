@@ -14,7 +14,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Floors.Where(floor => floor.IsDeleted == false).ToList();
+                return context.Floors
+                    .Where(floor => floor.IsDeleted == false)
+                    .ToList()
+                    .Reverse<Floor>();
             }
             catch
             {
@@ -46,7 +49,8 @@ namespace Repository.Implements
                     .Include(r => r.Rooms)
                     .Where(floor => floor.ProjectId == id && floor.IsDeleted == false)
                     .OrderBy(floor => floor.FloorNo)
-                    .ToList();
+                    .ToList()
+                    .Reverse<Floor>();
             }
             catch
             {

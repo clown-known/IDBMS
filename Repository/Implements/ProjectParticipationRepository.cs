@@ -12,7 +12,9 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
         try
         {
             using var context = new IdtDbContext();
-            return context.ProjectParticipations.ToList();
+            return context.ProjectParticipations
+                .ToList()
+                .Reverse<ProjectParticipation>();
         }
         catch
         {
@@ -70,7 +72,8 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
             return context.ProjectParticipations
                 .Include(u => u.User)
                 .Where(u => u.ProjectId.Equals(id) && u.IsDeleted == false)
-                .ToList();
+                .ToList()
+                .Reverse<ProjectParticipation>();
         }
         catch
         {
@@ -86,7 +89,8 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
                 .Where(u => u.UserId.Equals(id) && u.IsDeleted == false)
                 .Include(p => p.Project)
                     .ThenInclude(pc => pc.ProjectCategory)
-                .ToList();
+                .ToList()
+                .Reverse<ProjectParticipation>();
         }
         catch
         {

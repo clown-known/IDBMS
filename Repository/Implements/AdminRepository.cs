@@ -17,8 +17,9 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.Admins
-                    .Include(a => a.Creator)
-                    .ToList();
+                            .Include(a => a.Creator)
+                            .ToList()
+                            .Reverse<Admin>();
             }
             catch
             {

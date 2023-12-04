@@ -34,7 +34,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.PaymentStageDesigns.Where(psd=> psd.IsDeleted == false).ToList();
+                return context.PaymentStageDesigns
+                    .Where(psd=> psd.IsDeleted == false)
+                    .OrderBy(psd=>psd.StageNo)
+                    .ToList();
             }
             catch
             {
@@ -48,7 +51,9 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.PaymentStageDesigns
-                    .Where(psd => psd.ProjectDesignId == id && psd.IsDeleted == false).ToList();
+                    .Where(psd => psd.ProjectDesignId == id && psd.IsDeleted == false)
+                    .OrderBy(psd => psd.StageNo)
+                    .ToList();
             }
             catch
             {

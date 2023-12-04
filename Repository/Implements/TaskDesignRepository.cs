@@ -19,7 +19,9 @@ namespace Repository.Implements
                 return context.TaskDesigns
                     .Include(u => u.InteriorItemCategory)
                     .Include(p => p.TaskCategory)
-                    .Where(psd=> psd.IsDeleted == false).ToList();
+                    .Where(psd=> psd.IsDeleted == false)
+                    .ToList()
+                    .Reverse<TaskDesign>();
             }
             catch
             {

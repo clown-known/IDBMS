@@ -15,6 +15,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.PaymentStages
                     .OrderByDescending(time => time.StartedDate)
+                    .OrderBy(ps => ps.StageNo)
                     .ToList();
             }
             catch

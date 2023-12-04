@@ -34,7 +34,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskCategories.Where(ctc=> ctc.IsDeleted == false).ToList();
+                return context.TaskCategories
+                    .Where(ctc=> ctc.IsDeleted == false)
+                    .ToList()
+                    .Reverse<TaskCategory>();
             }
             catch
             {

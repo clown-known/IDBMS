@@ -17,7 +17,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskAssignments.ToList();
+                return context
+                    .TaskAssignments
+                    .OrderByDescending(a => a.CreatedDate)
+                    .ToList();
             }
             catch
             {
@@ -45,6 +48,7 @@ namespace Repository.Implements
                 return context.TaskAssignments
                     .Include(ta => ta.ProjectParticipation)
                     .Where(ta => ta.ProjectParticipation.ProjectId == id)
+                    .OrderByDescending(a => a.CreatedDate)
                     .ToList();
             }
             catch
@@ -61,6 +65,7 @@ namespace Repository.Implements
                 return context.TaskAssignments
                     .Include(ta => ta.ProjectParticipation)
                     .Where(ta => ta.ProjectParticipation.UserId == id)
+                    .OrderByDescending(a => a.CreatedDate)
                     .ToList();
             }
             catch

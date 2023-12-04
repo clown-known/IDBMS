@@ -17,7 +17,9 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.TaskDocuments
-                    .Where(td => td.IsDeleted == false).ToList();
+                    .Where(td => td.IsDeleted == false)
+                    .ToList()
+                    .Reverse<TaskDocument>();
             }
             catch
             {
@@ -43,7 +45,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskDocuments.Where(td => td.TaskReportId == id && td.IsDeleted == false).ToList();
+                return context.TaskDocuments.Where(td => td.TaskReportId == id && td.IsDeleted == false)
+                    .ToList()
+                    .Reverse<TaskDocument>();
             }
             catch
             {

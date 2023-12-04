@@ -16,7 +16,8 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Rooms
                     .Include(rt => rt.RoomType)
-                    .ToList();
+                    .ToList()
+                    .Reverse<Room>();
             }
             catch
             {
@@ -63,7 +64,8 @@ namespace Repository.Implements
                 return context.Rooms
                     .Include(rt => rt.RoomType)
                     .Where(room => room.FloorId == id)
-                    .ToList();
+                    .ToList()
+                    .Reverse<Room>();
             }
             catch
             {
