@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,8 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.WarrantyClaims
-                    .Where(wc=> wc.IsDeleted == false)
+                    .Where(wc => wc.IsDeleted == false)
+                    .Include(wc => wc.Transactions.Where(wc=> wc.IsDeleted == false))   
                     .OrderByDescending(wc => wc.CreatedDate)
                     .ToList();
             }
@@ -31,7 +33,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.WarrantyClaims.Where(wc => wc.Id == id && wc.IsDeleted == false).FirstOrDefault();
+                return context.WarrantyClaims
+                    .Where(wc => wc.Id == id && wc.IsDeleted == false)
+                    .Include(wc => wc.Transactions.Where(wc => wc.IsDeleted == false))
+                    .FirstOrDefault();
             }
             catch
             {
@@ -46,6 +51,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.WarrantyClaims
                     .Where(wc => wc.UserId == id && wc.IsDeleted == false)
+                    .Include(wc => wc.Transactions.Where(wc => wc.IsDeleted == false))
                     .OrderByDescending(wc => wc.CreatedDate)
                     .ToList();
             }
@@ -62,6 +68,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.WarrantyClaims
                     .Where(wc => wc.ProjectId == id && wc.IsDeleted == false)
+                    .Include(wc => wc.Transactions.Where(wc => wc.IsDeleted == false))
                     .OrderByDescending(wc => wc.CreatedDate)
                     .ToList();
             }
