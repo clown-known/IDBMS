@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Enums;
 using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.ProjectDocumentTemplates
+                    .Include(pdt => pdt.ProjectDocuments.Where(pd => pd.IsDeleted == false))
                     .OrderByDescending(dt => dt.CreatedDate)
                     .ToList();
             }
@@ -49,7 +51,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectDocumentTemplates.Where(dt => dt.Id == id).FirstOrDefault();
+                return context.ProjectDocumentTemplates
+                    .Where(dt => dt.Id == id)
+                    .Include(pdt => pdt.ProjectDocuments.Where(pd => pd.IsDeleted == false))
+                    .FirstOrDefault();
             }
             catch
             {
@@ -57,12 +62,15 @@ namespace Repository.Implements
             }
         }
 
-        public ProjectDocumentTemplate getByType(DocumentTemplateType type)
+        public ProjectDocumentTemplate? getByType(DocumentTemplateType type)
         {
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectDocumentTemplates.Where(dt => dt.Type == type).FirstOrDefault();
+                return context.ProjectDocumentTemplates
+                    .Where(dt => dt.Type == type)
+                    .Include(pdt => pdt.ProjectDocuments.Where(pd => pd.IsDeleted == false))
+                    .FirstOrDefault();
             }
             catch
             {

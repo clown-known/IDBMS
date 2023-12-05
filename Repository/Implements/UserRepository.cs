@@ -16,6 +16,10 @@ public class UserRepository : IUserRepository
             using var context = new IdtDbContext();
             return context.Users
                 .Include(ur => ur.UserRoles)
+                .Include(u => u.Comments.Where(cmt => cmt.IsDeleted ==false))
+                .Include(u => u.Transactions.Where(trans => trans.IsDeleted == false))
+                .Include(u => u.Participations.Where(p => p.IsDeleted == false))
+                .Include(u => u.BookingRequests.Where(br => br.IsDeleted == false))
                 .OrderByDescending(u => u.CreatedDate)
                 .ToList();
         }
@@ -29,7 +33,12 @@ public class UserRepository : IUserRepository
         try
         {
             using var context = new IdtDbContext();
-            return context.Users.FirstOrDefault(u => u.Id == id);
+            return context.Users
+                .Include(u => u.Comments.Where(cmt => cmt.IsDeleted == false))
+                .Include(u => u.Transactions.Where(trans => trans.IsDeleted == false))
+                .Include(u => u.Participations.Where(p => p.IsDeleted == false))
+                .Include(u => u.BookingRequests.Where(br => br.IsDeleted == false))
+                .FirstOrDefault(u => u.Id == id);
         }
         catch
         {
@@ -42,7 +51,12 @@ public class UserRepository : IUserRepository
         try
         {
             using var context = new IdtDbContext();
-            return context.Users.FirstOrDefault(d => d.Email.ToLower().Equals(email.ToLower()));
+            return context.Users
+                .Include(u => u.Comments.Where(cmt => cmt.IsDeleted == false))
+                .Include(u => u.Transactions.Where(trans => trans.IsDeleted == false))
+                .Include(u => u.Participations.Where(p => p.IsDeleted == false))
+                .Include(u => u.BookingRequests.Where(br => br.IsDeleted == false))
+                .FirstOrDefault(d => d.Email.ToLower().Equals(email.ToLower()));
         }
         catch
         {

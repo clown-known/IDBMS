@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.InteriorItemColors
+                    .Include(color => color.InteriorItems.Where(ii => ii.IsDeleted == false))
                     .ToList()
                     .Reverse<InteriorItemColor>();
             }
@@ -28,7 +30,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.InteriorItemColors.FirstOrDefault(iic => iic.Id == id);
+                return context.InteriorItemColors
+                    .Include(color => color.InteriorItems.Where(ii => ii.IsDeleted == false))
+                    .FirstOrDefault(iic => iic.Id == id);
             }
             catch
             {
@@ -50,7 +54,7 @@ namespace Repository.Implements
                     {
                         InteriorItemColor? color = new InteriorItemColor();
 
-                        if (item != null && item.InteriorItemColorId != null) color = context.InteriorItemColors.FirstOrDefault(iic => iic.Id == item.InteriorItemColorId);
+                        if (item != null && item.InteriorItemColorId != null) color = context.InteriorItemColors.Include(color => color.InteriorItems.Where(ii => ii.IsDeleted == false)).FirstOrDefault(iic => iic.Id == item.InteriorItemColorId);
 
                         if (color.Id != 0 && color != null) result.Add(color);
                     }
