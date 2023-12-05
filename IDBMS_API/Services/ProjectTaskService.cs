@@ -40,7 +40,7 @@ namespace IDBMS_API.Services
             return _taskRepo.GetByPaymentStageId(id);
         }
 
-        public IEnumerable<ProjectTask?> GetSuggestionTasksByProjectId(Guid id)
+/*        public IEnumerable<ProjectTask?> GetSuggestionTasksByProjectId(Guid id)
         {
             return _taskRepo.GetSuggestionTasksByProjectId(id);
         }        
@@ -48,7 +48,7 @@ namespace IDBMS_API.Services
         public IEnumerable<ProjectTask?> GetSuggestionTasksByRoomId(Guid id)
         {
             return _taskRepo.GetSuggestionTasksByRoomId(id);
-        }
+        }*/
 
         public ProjectTask? CreateProjectTask(ProjectTaskRequest request)
         {
@@ -70,7 +70,6 @@ namespace IDBMS_API.Services
                 CreatedDate = DateTime.Now,
                 ProjectId = request.ProjectId,
                 PaymentStageId = request.PaymentStageId,
-                InteriorItemId = request.InteriorItemId,
                 RoomId = request.RoomId,
                 Status = request.Status,
             };
@@ -123,7 +122,6 @@ namespace IDBMS_API.Services
             ct.NoDate = request.NoDate;
             ct.ProjectId = request.ProjectId;
             ct.PaymentStageId = request.PaymentStageId;
-            ct.InteriorItemId = request.InteriorItemId;
             ct.RoomId = request.RoomId;
             ct.Status = request.Status;
 
@@ -138,40 +136,5 @@ namespace IDBMS_API.Services
             _taskRepo.Update(ct);
         }
 
-        public ProjectTask CreateProjectTaskWithCustomItem(CustomItemSuggestionRequest request)
-        {
-            var ct = new ProjectTask
-            {
-                Id = Guid.NewGuid(),
-                Name = request.Name,
-                Description = request.Description,
-                Percentage = request.Percentage,
-                CalculationUnit = request.CalculationUnit,
-                PricePerUnit = request.PricePerUnit,
-                UnitInContract = request.UnitInContract,
-                UnitUsed = request.UnitUsed,
-                IsIncurred = request.IsIncurred,
-                StartedDate = request.StartedDate,
-                EndDate = request.EndDate,
-                NoDate = request.NoDate,
-                CreatedDate = DateTime.Now,
-                ProjectId = request.ProjectId,
-                PaymentStageId = request.PaymentStageId,
-                RoomId = request.RoomId,
-                Status = request.Status,
-            };
-
-            InteriorItemService itemService = new InteriorItemService(_itemRepo);
-
-            var item = itemService.CreateInteriorItem(request.itemRequest);
-
-            if (item.Result != null)
-            {
-                ct.InteriorItemId = item.Result.Id;
-            }
-
-            var ctCreated = _taskRepo.Save(ct);
-            return ctCreated;
-        }
     }
 }

@@ -33,7 +33,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(_service.GetById(id));
         }
 
-        [EnableQuery]
+        /*[EnableQuery]
         [HttpGet("project/{id}/interior-items")]
         public IActionResult GetSuggestionTasksByProjectId(Guid id)
         {
@@ -45,7 +45,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         public IActionResult GetSuggestionTasksByRoomId(Guid id)
         {
             return Ok(_service.GetSuggestionTasksByRoomId(id));
-        }
+        }*/
 
         [EnableQuery]
         [HttpGet("project/{id}")]
@@ -73,29 +73,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 var result = _service.CreateProjectTask(request);
-                var response = new ResponseMessage()
-                {
-                    Message = "Create successfully!",
-                    Data = result
-                };
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var response = new ResponseMessage()
-                {
-                    Message = $"Error: {ex.Message}"
-                };
-                return BadRequest(response);
-            }
-        }
-
-        [HttpPost("interior-item")]
-        public IActionResult CreateProjectTaskWithCustomItem([FromBody] CustomItemSuggestionRequest request)
-        {
-            try
-            {
-                var result = _service.CreateProjectTaskWithCustomItem(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",

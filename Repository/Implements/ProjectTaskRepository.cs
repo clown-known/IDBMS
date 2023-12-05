@@ -38,7 +38,6 @@ namespace Repository.Implements
                     .Include(c => c.TaskCategory)
                     .Include(p => p.PaymentStage)
                     .Include(p => p.ParentTask)
-                    .Include(i => i.InteriorItem)
                     .Include(r => r.Room)
                     .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
                     .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
@@ -58,7 +57,6 @@ namespace Repository.Implements
                 return context.ProjectTasks
                     .Include(c => c.TaskCategory)
                     .Include(p => p.PaymentStage)
-                    .Include(i => i.InteriorItem)
                     .Include(r => r.Room)
                         .ThenInclude(f => f.Floor)
                     .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
@@ -81,7 +79,6 @@ namespace Repository.Implements
                 return context.ProjectTasks
                     .Include(c => c.TaskCategory)
                     .Include(p => p.PaymentStage)
-                    .Include(i => i.InteriorItem)
                     .Include(r => r.Room)
                         .ThenInclude(f => f.Floor)
                     .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
@@ -114,7 +111,7 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<ProjectTask?> GetSuggestionTasksByProjectId(Guid id)
+        /*public IEnumerable<ProjectTask?> GetSuggestionTasksByProjectId(Guid id)
         {
             try
             {
@@ -164,7 +161,7 @@ namespace Repository.Implements
             {
                 throw;
             }
-        }
+        }*/
 
         public ProjectTask Save(ProjectTask entity)
         {

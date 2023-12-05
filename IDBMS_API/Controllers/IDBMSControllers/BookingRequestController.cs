@@ -58,6 +58,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
+        [HttpPut("{id}/process")]
+        public IActionResult ProcessBookingRequest(Guid id, [FromBody] string adminReply)
+        {
+            try
+            {
+                _service.ProcessBookingRequest(id, adminReply);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
+        }
+
         [HttpPut("{id}/status")]
         public IActionResult UpdateBookingRequestStatus(Guid id, BookingRequestStatus status)
         {
