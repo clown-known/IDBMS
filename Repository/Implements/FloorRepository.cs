@@ -14,7 +14,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Floors.Where(floor => floor.IsDeleted == false).ToList();
+                return context.Floors
+                    .Where(floor => floor.IsDeleted == false)
+                    .ToList()
+                    .Reverse<Floor>();
             }
             catch
             {

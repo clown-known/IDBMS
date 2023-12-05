@@ -15,7 +15,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.WarrantyClaims.Where(wc=> wc.IsDeleted == false).ToList();
+                return context.WarrantyClaims
+                    .Where(wc=> wc.IsDeleted == false)
+                    .OrderByDescending(wc => wc.CreatedDate)
+                    .ToList();
             }
             catch
             {
@@ -41,7 +44,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.WarrantyClaims.Where(wc => wc.UserId == id && wc.IsDeleted == false).ToList();
+                return context.WarrantyClaims
+                    .Where(wc => wc.UserId == id && wc.IsDeleted == false)
+                    .OrderByDescending(wc => wc.CreatedDate)
+                    .ToList();
             }
             catch
             {
@@ -54,7 +60,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.WarrantyClaims.Where(wc => wc.ProjectId == id && wc.IsDeleted == false).ToList();
+                return context.WarrantyClaims
+                    .Where(wc => wc.ProjectId == id && wc.IsDeleted == false)
+                    .OrderByDescending(wc => wc.CreatedDate)
+                    .ToList();
             }
             catch
             {

@@ -48,6 +48,9 @@ public class InteriorItem
     [Required]
     public double LaborCost { get; set; }
 
+    [Required]
+    public DateTime CreatedDate { get; set; }
+
     public int? InteriorItemColorId { get; set; }
     public InteriorItemColor? InteriorItemColor { get; set; }
     

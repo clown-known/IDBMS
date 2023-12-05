@@ -17,7 +17,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.Sites
-                    .OrderBy(br => br.CreatedDate)
+                    .OrderByDescending(br => br.CreatedDate)
                     .Where( s=> s.IsDeleted == false).ToList();
             }
             catch

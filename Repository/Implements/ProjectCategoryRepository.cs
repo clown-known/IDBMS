@@ -20,7 +20,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectCategories.ToList();
+                return context.ProjectCategories
+                    .ToList()
+                    .Reverse<ProjectCategory>();
             }
             catch
             {

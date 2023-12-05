@@ -13,7 +13,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.InteriorItemColors.ToList();
+                return context.InteriorItemColors
+                    .ToList()
+                    .Reverse<InteriorItemColor>();
             }
             catch
             {
@@ -53,7 +55,7 @@ namespace Repository.Implements
                         if (color.Id != 0 && color != null) result.Add(color);
                     }
                 }
-                return result;
+                return result.Reverse<InteriorItemColor>();
             }
             catch
             {

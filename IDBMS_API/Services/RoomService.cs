@@ -11,11 +11,13 @@ namespace IDBMS_API.Services
     {
         private readonly IRoomRepository _roomRepo;
         private readonly IRoomTypeRepository _roomTypeRepo;
+        private readonly IProjectRepository _projectRepo;
 
-        public RoomService(IRoomRepository roomRepo, IRoomTypeRepository roomTypeRepo)
+        public RoomService(IRoomRepository roomRepo, IRoomTypeRepository roomTypeRepo, IProjectRepository projectRepo)
         {
             _roomRepo = roomRepo;
             _roomTypeRepo = roomTypeRepo;
+            _projectRepo = projectRepo;
         }
 
         public IEnumerable<Room> GetAll()
@@ -31,6 +33,11 @@ namespace IDBMS_API.Services
         public IEnumerable<Room> GetByFloorId(Guid id)
         {
             return _roomRepo.GetByFloorId(id);
+        }
+        
+        public IEnumerable<Room> GetByProjectId(Guid id)
+        {
+            return _roomRepo.GetByProjectId(id);
         }
 
         public Room? CreateRoom(RoomRequest request)
@@ -56,6 +63,10 @@ namespace IDBMS_API.Services
             }
 
             var roomCreated = _roomRepo.Save(room);
+
+/*            ProjectService projectService = new ProjectService(_projectRepo, _roomRepo, _roomTypeRepo);
+            projectService.UpdateProjectEstimatePrice()*/
+
             return roomCreated;
         }
 

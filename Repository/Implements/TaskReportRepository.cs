@@ -18,6 +18,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.TaskReports
                     .OrderByDescending(time => time.CreatedTime)
+                    .Include(report => report.ProjectTask)
                     .Where(report => report.IsDeleted == false).ToList();
             }
             catch
@@ -31,7 +32,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskReports.FirstOrDefault(report => report.Id == id && report.IsDeleted == false);
+                return context.TaskReports
+                    .Include(report => report.TaskDocuments.Where(doc => doc.IsDeleted == false))
+                    .Include(report => report.ProjectTask)
+                    .FirstOrDefault(report => report.Id == id && report.IsDeleted == false);
             }
             catch
             {
@@ -45,7 +49,8 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.TaskReports
                     .OrderByDescending(time => time.CreatedTime)
-                    .Include(rd => rd.TaskDocuments)
+                    .Include(rd => rd.TaskDocuments.Where(doc => doc.IsDeleted == false))
+                    .Include(report => report.ProjectTask)
                     .Where(report => report.ProjectTaskId == id && report.IsDeleted == false).ToList();
             }
             catch

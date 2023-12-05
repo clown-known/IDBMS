@@ -20,7 +20,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.RoomTypes.ToList();
+                return context.RoomTypes
+                    .OrderBy(r => r.PricePerArea)
+                    .ToList();
             }
             catch
             {

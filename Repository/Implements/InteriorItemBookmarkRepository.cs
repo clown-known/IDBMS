@@ -15,7 +15,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.InteriorItemBookmarks.ToList();
+                return context.InteriorItemBookmarks
+                    .ToList()
+                    .Reverse<InteriorItemBookmark>();
             }
             catch
             {
@@ -43,7 +45,8 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.InteriorItemBookmarks
                     .Where(iib => iib.UserId.Equals(userId))
-                    .ToList();
+                    .ToList()
+                    .Reverse<InteriorItemBookmark>();
             }
             catch
             {

@@ -15,7 +15,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.UserRoles.ToList();
+                return context.UserRoles
+                    .ToList()
+                    .Reverse<UserRole>();
             }
             catch
             {
@@ -41,7 +43,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.UserRoles.Where(td => td.UserId == id).ToList();
+                return context.UserRoles.Where(td => td.UserId == id)
+                    .ToList()
+                    .Reverse<UserRole>();
             }
             catch
             {

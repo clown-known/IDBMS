@@ -13,6 +13,9 @@ namespace BusinessObject.Models
         public Guid Id { get; set; }
 
         [Required]
+        public DateTime CreatedDate { get; set; }
+
+        [Required]
         public Guid ProjectParticipationId { get; set; }
         public ProjectParticipation ProjectParticipation { get; set; }
 

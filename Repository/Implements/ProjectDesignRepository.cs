@@ -21,7 +21,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.ProjectDesigns.ToList();    
+                return context.ProjectDesigns
+                    .ToList()
+                    .Reverse<ProjectDesign>();
             }
             catch
             {
@@ -37,7 +39,8 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.ProjectDesigns
                     .Where(pd => pd.ProjectType == type)
-                    .ToList();
+                    .ToList()
+                    .Reverse<ProjectDesign>();
             }
             catch
             {

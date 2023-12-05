@@ -7,25 +7,35 @@ using Microsoft.OData.Edm;
 
 public class ProjectService
 {
-    private readonly IProjectRepository _repository;
+    private readonly IProjectRepository _projectRepo;
+    private readonly IRoomRepository _roomRepo;
+    private readonly IRoomTypeRepository _roomTypeRepo;
+    private readonly IProjectTaskRepository _taskRepo;
+    private readonly IInteriorItemRepository _itemRepo;
 
-    public ProjectService(IProjectRepository repository)
+    public ProjectService(IProjectRepository projectRepo, IRoomRepository roomRepo, 
+                    IRoomTypeRepository roomTypeRepo, IProjectTaskRepository taskRepo,
+                    IInteriorItemRepository itemRepo)
     {
-        _repository = repository;
+        _projectRepo = projectRepo;
+        _roomRepo = roomRepo;
+        _roomTypeRepo = roomTypeRepo;
+        _taskRepo = taskRepo;
+        _itemRepo = itemRepo;
     }
 
     public IEnumerable<Project> GetAll()
     {
-        return _repository.GetAll();
+        return _projectRepo.GetAll();
     }
 
     public Project? GetById(Guid id)
     {
-        return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+        return _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
     }    
     public IEnumerable<Project> GetBySiteId(Guid id)
     {
-        return _repository.GetBySiteId(id) ?? throw new Exception("This object is not existed!");
+        return _projectRepo.GetBySiteId(id) ?? throw new Exception("This object is not existed!");
     }
 
     public Project? CreateProject(ProjectRequest request)
@@ -55,12 +65,12 @@ public class ProjectService
             newProject.BasedOnDecorProjectId = request.BasedOnDecorProjectId;
         }
 
-        return _repository.Save(newProject);
+        return _projectRepo.Save(newProject);
     }
 
     public void UpdateProject(Guid id, ProjectRequest request)
     {
-        var p = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+        var p = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
         p.Name = request.Name;
         p.Description = request.Description;
@@ -82,24 +92,65 @@ public class ProjectService
             p.BasedOnDecorProjectId = request.BasedOnDecorProjectId;
         }
 
-        _repository.Update(p);
+        _projectRepo.Update(p);
+    }
+
+    /*public void UpdateProjectEstimatePrice(Guid id)
+    {
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+        decimal totalSumRooms = 0;
+
+        RoomService roomService = new RoomService(_roomRepo, _roomTypeRepo);
+        var roomsInProject = roomService.GetByProjectId(project.Id);
+
+        if (roomsInProject != null)
+        {
+            totalSumRooms = roomsInProject.Sum(room => ((decimal?)room.PricePerArea ?? 0) * ((decimal?)room.Area ?? 0));
+        }
+
+        project.EstimatedPrice = totalSumRooms;
+        project.UpdatedDate = DateTime.Now;
+
+        _projectRepo.Update(project);
+    }*/
+
+    public void UpdateProjectEstimatePrice(Guid id)
+    {
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+        decimal totalSum = 0;
+
+        ProjectTaskService taskService = new ProjectTaskService(_taskRepo, _itemRepo);
+        var tasksInProject = taskService.GetByProjectId(project.Id);
+
+        if (tasksInProject != null && tasksInProject.Any())
+        {
+            totalSum = tasksInProject.Sum(task =>
+                ((decimal?)task.PricePerUnit ?? 0) *
+                (decimal)(task.UnitUsed > task.UnitInContract ? task.UnitUsed : task.UnitInContract)
+            );
+        }
+
+        project.EstimatedPrice = totalSum;
+        project.UpdatedDate = DateTime.Now;
+
+        _projectRepo.Update(project);
     }
 
     public void UpdateProjectStatus(Guid id, ProjectStatus status)
     {
-        var project = _repository.GetById(id) ?? throw new Exception("Not existed");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("Not existed");
 
         project.Status = status;
 
-        _repository.Update(project);
+        _projectRepo.Update(project);
     }
 
     public void UpdateProjectAdvertisementStatus(Guid id, AdvertisementStatus status)
     {
-        var project = _repository.GetById(id) ?? throw new Exception("Not existed");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("Not existed");
 
         project.AdvertisementStatus = status;
 
-        _repository.Update(project);
+        _projectRepo.Update(project);
     }
 }

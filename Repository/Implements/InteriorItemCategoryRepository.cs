@@ -13,7 +13,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.InteriorItemCategories.Where(iic =>  iic.IsDeleted == false).ToList();
+                return context.InteriorItemCategories
+                    .Where(iic =>  iic.IsDeleted == false)
+                    .ToList()
+                    .Reverse<InteriorItemCategory>();
             }
             catch
             {

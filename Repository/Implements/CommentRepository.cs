@@ -14,7 +14,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Comments.Where(comment => comment.IsDeleted == false).ToList();
+                return context.Comments
+                    .Where(comment => comment.IsDeleted == false)
+                    .OrderByDescending(comment => comment.LastModifiedTime ?? comment.CreatedTime)
+                    .ToList();
             }
             catch
             {
@@ -39,7 +42,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Comments.Where(comment => comment.ProjectTaskId == id && comment.IsDeleted == false).ToList();
+                return context.Comments
+                    .Where(comment => comment.ProjectTaskId == id && comment.IsDeleted == false)
+                    .OrderByDescending(comment => comment.LastModifiedTime ?? comment.CreatedTime)
+                    .ToList();
             }
             catch
             {
