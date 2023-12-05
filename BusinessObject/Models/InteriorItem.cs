@@ -46,9 +46,6 @@ public class InteriorItem
     public decimal EstimatePrice { get; set; }
 
     [Required]
-    public double LaborCost { get; set; }
-
-    [Required]
     public DateTime CreatedDate { get; set; }
 
     public int? InteriorItemColorId { get; set; }
@@ -67,6 +64,6 @@ public class InteriorItem
     public Guid? ParentItemId { get; set; }
     public InteriorItem? ParentItem { get; set; }
 
-    public List<ProjectTask> Tasks { get; set; } = new();
+    public List<ItemInTask> ItemInTasks { get; set; } = new();
     public List<InteriorItemBookmark> InteriorItemBookmarks { get; set; } = new();
 }

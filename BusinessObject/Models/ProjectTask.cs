@@ -64,9 +64,6 @@ namespace BusinessObject.Models
         public Guid? PaymentStageId { get; set; }
         public PaymentStage? PaymentStage { get; set; }
 
-        public Guid? InteriorItemId { get; set; }
-        public InteriorItem? InteriorItem { get; set; }
-
         public int? TaskDesignId { get; set; }
         public TaskDesign? TaskDesign { get; set; }
 
@@ -78,6 +75,7 @@ namespace BusinessObject.Models
 
         public List<Comment> Comments { get; set; } = new();
         public List<TaskReport> TaskReports { get; set; } = new();
+        public List<ItemInTask> ItemInTasks { get; set; } = new();
     }
 }
 

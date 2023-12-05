@@ -58,6 +58,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<IBookingRequestRepository, BookingRequestRepository>();
 builder.Services.AddScoped<IWarrantyClaimRepository, WarrantyClaimRepository>();
+builder.Services.AddScoped<IItemInTaskRepository, ItemInTaskRepository>();
 
 // service
 builder.Services.AddScoped<AdminService, AdminService>();
@@ -92,6 +93,7 @@ builder.Services.AddScoped<UserService, UserService>();
 builder.Services.AddScoped<UserRolesService, UserRolesService>();
 builder.Services.AddScoped<BookingRequestService, BookingRequestService>();
 builder.Services.AddScoped<WarrantyClaimService, WarrantyClaimService>();
+builder.Services.AddScoped<ItemInTaskService, ItemInTaskService>();
 
 builder.Services.AddScoped<FirebaseService, FirebaseService>();
 builder.Services.AddScoped<JwtTokenSupporter, JwtTokenSupporter>();
@@ -174,6 +176,7 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<UserRole>("UserRoles");
     builder.EntitySet<BookingRequest>("BookingRequests");
     builder.EntitySet<WarrantyClaim>("WarrantyClaims");
+    builder.EntitySet<ItemInTask>("ItemInTasks");
 
     return builder.GetEdmModel();
 }

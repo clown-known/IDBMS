@@ -48,7 +48,6 @@ namespace IDBMS_API.Services
                 EnglishDescription = request.EnglishDescription,
                 Origin = request.Origin,
                 EstimatePrice = request.EstimatePrice,
-                LaborCost = request.LaborCost,
                 InteriorItemColorId = request.InteriorItemColorId,
                 InteriorItemCategoryId = request.InteriorItemCategoryId,
                 Status = request.Status,
@@ -78,7 +77,6 @@ namespace IDBMS_API.Services
             ii.EnglishDescription = request.EnglishDescription;
             ii.Origin = request.Origin;
             ii.EstimatePrice = request.EstimatePrice;
-            ii.LaborCost = request.LaborCost;
             ii.InteriorItemColorId = request.InteriorItemColorId;
             ii.InteriorItemCategoryId = request.InteriorItemCategoryId;
             ii.Status = request.Status;

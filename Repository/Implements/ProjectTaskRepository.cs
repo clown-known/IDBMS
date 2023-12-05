@@ -36,7 +36,6 @@ namespace Repository.Implements
                     .Include(c => c.TaskCategory)
                     .Include(p => p.PaymentStage)
                     .Include(p => p.ParentTask)
-                    .Include(i => i.InteriorItem)
                     .Include(r => r.Room)
                     .FirstOrDefault(task => task.Id == id);
             }
@@ -54,7 +53,6 @@ namespace Repository.Implements
                 return context.ProjectTasks
                     .Include(c => c.TaskCategory)
                     .Include(p => p.PaymentStage)
-                    .Include(i => i.InteriorItem)
                     .Include(r => r.Room)
                         .ThenInclude(f => f.Floor)
                     .Where(task => task.ProjectId == id)
@@ -75,7 +73,6 @@ namespace Repository.Implements
                 return context.ProjectTasks
                     .Include(c => c.TaskCategory)
                     .Include(p => p.PaymentStage)
-                    .Include(i => i.InteriorItem)
                     .Include(r => r.Room)
                         .ThenInclude(f => f.Floor)
                     .Where(task => task.RoomId == id)
@@ -104,7 +101,7 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<ProjectTask?> GetSuggestionTasksByProjectId(Guid id)
+        /*public IEnumerable<ProjectTask?> GetSuggestionTasksByProjectId(Guid id)
         {
             try
             {
@@ -112,8 +109,6 @@ namespace Repository.Implements
                 return context.ProjectTasks
                         .Include(c => c.TaskCategory)
                         .Include(p => p.PaymentStage)
-                        .Include(i => i.InteriorItem)
-                            .ThenInclude(c => c.InteriorItemCategory)
                         .Where(task => task.ProjectId == id
                             && task.InteriorItem != null
                             && task.InteriorItem.InteriorItemCategory != null
@@ -150,7 +145,7 @@ namespace Repository.Implements
             {
                 throw;
             }
-        }
+        }*/
 
         public ProjectTask Save(ProjectTask entity)
         {

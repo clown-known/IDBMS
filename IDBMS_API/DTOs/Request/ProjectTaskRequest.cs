@@ -55,8 +55,6 @@ namespace IDBMS_API.DTOs.Request
 
         public Guid? PaymentStageId { get; set; }
 
-        public Guid? InteriorItemId { get; set; }
-
         public int? TaskDesignId { get; set; }
 
         public Guid? RoomId { get; set; }

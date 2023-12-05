@@ -49,9 +49,6 @@ namespace IDBMS_API.DTOs.Request
         public decimal EstimatePrice { get; set; }
 
         [Required]
-        public double LaborCost { get; set; }
-
-        [Required]
         public int InteriorItemColorId { get; set; }
 
         [Required]

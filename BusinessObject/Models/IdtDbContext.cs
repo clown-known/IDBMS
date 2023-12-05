@@ -41,6 +41,7 @@ public class IdtDbContext : DbContext
     public DbSet<UserRole> UserRoles { get; set; } = default!;
     public DbSet<BookingRequest> BookingRequests { get; set; } = default!;
     public DbSet<WarrantyClaim> WarrantyClaims { get; set; } = default!;
+    public DbSet<ItemInTask> ItemInTasks { get; set; } = default!;
 
     private static string? GetConnectionString()
     {
