@@ -3,34 +3,64 @@ using BusinessObject.Models;
 using Repository.Interfaces;
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
+using Azure.Core;
 
 namespace IDBMS_API.Services
 {
     public class WarrantyClaimService
     {
         private readonly IWarrantyClaimRepository _repository;
+        private readonly IProjectRepository _projectRepo;
 
-        public WarrantyClaimService(IWarrantyClaimRepository repository)
+        public WarrantyClaimService(IWarrantyClaimRepository repository, IProjectRepository projectRepo)
         {
             _repository = repository;
+            _projectRepo = projectRepo;
         }
 
         public IEnumerable<WarrantyClaim> GetAll()
         {
             return _repository.GetAll();
         }
+
         public WarrantyClaim? GetById(Guid id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
+
         public IEnumerable<WarrantyClaim?> GetByUserId(Guid id)
         {
             return _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
         }
+
         public IEnumerable<WarrantyClaim?> GetByProjectId(Guid id)
         {
             return _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
         }
+
+        public void UpdateProjectTotalWarrantyPaid(Guid projectId)
+        {
+            var claimsInProject = _repository.GetByProjectId(projectId);
+
+            decimal totalPaid = 0;
+
+            if (claimsInProject != null && claimsInProject.Any())
+            {
+                totalPaid = claimsInProject.Sum(claim =>
+                {
+                    if (claim != null && claim.IsDeleted != true)
+                    {
+                        return claim.TotalPaid;
+                    }
+                    return 0;
+                });
+            }
+
+            ProjectService projectService = new(_projectRepo);
+            projectService.UpdateProjectDataByWarrantyClaim(projectId, totalPaid);
+
+        }
+
         public async Task<WarrantyClaim?> CreateWarrantyClaim([FromForm]WarrantyClaimRequest request)
         {
             string link = "";
@@ -56,8 +86,12 @@ namespace IDBMS_API.Services
                 IsDeleted = false,
             };
             var wcCreated = _repository.Save(wc);
+
+            UpdateProjectTotalWarrantyPaid(request.ProjectId);
+
             return wcCreated;
         }
+
         public async void UpdateWarrantyClaim(Guid id, [FromForm] WarrantyClaimRequest request)
         {
             var wc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
@@ -79,14 +113,18 @@ namespace IDBMS_API.Services
             wc.UserId = request.UserId;
 
             _repository.Update(wc);
+
+            UpdateProjectTotalWarrantyPaid(request.ProjectId);
         }
-        public void DeleteWarrantyClaim(Guid id)
+        public void DeleteWarrantyClaim(Guid id, Guid projectId)
         {
             var wc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             wc.IsDeleted = true;
 
             _repository.Update(wc);
+
+            UpdateProjectTotalWarrantyPaid(projectId);
         }
     }
 

@@ -89,11 +89,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/isHidden")]
-        public IActionResult UpdateRoom(Guid id, bool isHidden)
+        public IActionResult UpdateRoom(Guid id, bool isHidden, Guid projectId)
         {
             try
             {
-                _service.UpdateRoomStatus(id, isHidden);
+                _service.UpdateRoomStatus(id, isHidden, projectId);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",

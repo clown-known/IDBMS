@@ -83,11 +83,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteWarrantyClaim(Guid id)
+        public IActionResult DeleteWarrantyClaim(Guid id, Guid projectId)
         {
             try
             {
-                _service.DeleteWarrantyClaim(id);
+                _service.DeleteWarrantyClaim(id, projectId);
                 var response = new ResponseMessage()
                 {
                     Message = "Delete successfully!",
