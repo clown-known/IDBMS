@@ -20,12 +20,10 @@ public class Room
     [Required]
     public double Area { get; set; }
 
-    [Required]
     [Column(TypeName = "money")]
-    public decimal PricePerArea { get; set; }
+    public decimal? PricePerArea { get; set; }
 
-    [Required]
-    public int RoomTypeId { get; set; }
+    public int? RoomTypeId { get; set; }
     public RoomType RoomType { get; set; }
 
     [Required]

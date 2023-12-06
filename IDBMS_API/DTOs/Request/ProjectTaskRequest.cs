@@ -39,8 +39,7 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public bool IsIncurred { get; set; }
 
-        [Required]
-        public DateTime StartedDate { get; set; }
+        public DateTime? StartedDate { get; set; }
 
         public DateTime? EndDate { get; set; }
 

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessObject.Enums;
 
 namespace IDBMS_API.DTOs.Request
 {
@@ -23,10 +24,14 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public double Area { get; set; }
 
-        [Required]
-        public int RoomTypeId { get; set; }
+        public int? RoomTypeId { get; set; }
 
         [Required]
         public bool IsHidden { get; set; }
+
+        [Required]
+        public Guid ProjectId { get; set; }
+
+        public Language? Language { get; set; }
     }
 }
