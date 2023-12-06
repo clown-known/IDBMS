@@ -4,6 +4,8 @@ using IDBMS_API.Constants;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
+using BusinessObject.Enums;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace IDBMS_API.Services
 {
@@ -12,12 +14,14 @@ namespace IDBMS_API.Services
         private readonly IRoomRepository _roomRepo;
         private readonly IRoomTypeRepository _roomTypeRepo;
         private readonly IProjectRepository _projectRepo;
+        private readonly IProjectTaskRepository _projectTaskRepo;
 
-        public RoomService(IRoomRepository roomRepo, IRoomTypeRepository roomTypeRepo, IProjectRepository projectRepo)
+        public RoomService(IRoomRepository roomRepo, IRoomTypeRepository roomTypeRepo, IProjectRepository projectRepo, IProjectTaskRepository projectTaskRepo)
         {
             _roomRepo = roomRepo;
             _roomTypeRepo = roomTypeRepo;
             _projectRepo = projectRepo;
+            _projectTaskRepo = projectTaskRepo;
         }
 
         public IEnumerable<Room> GetAll()
@@ -49,23 +53,47 @@ namespace IDBMS_API.Services
                 Description = request.Description,
                 UsePurpose = request.UsePurpose,
                 Area = request.Area,
-                RoomTypeId = request.RoomTypeId,
                 IsHidden = false,
             };
 
-            RoomTypeService rtService = new RoomTypeService(_roomTypeRepo);
-            var roomType = rtService.GetById(request.RoomTypeId);
+            var roomCreated = new Room();
 
-            if (roomType != null)
+            if (request.RoomTypeId != null)
             {
+                RoomTypeService rtService = new RoomTypeService(_roomTypeRepo);
+                var roomType = rtService.GetById((int)request.RoomTypeId);
                 room.PricePerArea = roomType.PricePerArea;
+                roomCreated = _roomRepo.Save(room);
 
+                ProjectTaskService taskService = new ProjectTaskService(_projectTaskRepo);
+                var task = new ProjectTaskRequest
+                {
+                    Percentage = 0,
+                    CalculationUnit = BusinessObject.Enums.CalculationUnit.Meter,
+                    PricePerUnit = roomType.PricePerArea,
+                    UnitInContract = request.Area,
+                    UnitUsed = 0,
+                    IsIncurred = false,
+                    ProjectId = request.ProjectId,
+                    RoomId = roomCreated.Id,
+                    Status = ProjectTaskStatus.Pending,
+                };
+
+                if (request.Language == Language.English)
+                {
+                    task.Name = "Decor design for " + request.UsePurpose;
+                }
+                else
+                {
+                    task.Name = "Thiết kế cho " + request.UsePurpose;
+                }
+
+                taskService.CreateProjectTask(task);
             }
-
-            var roomCreated = _roomRepo.Save(room);
-
-/*            ProjectService projectService = new ProjectService(_projectRepo, _roomRepo, _roomTypeRepo);
-            projectService.UpdateProjectEstimatePrice()*/
+            else
+            {
+                roomCreated = _roomRepo.Save(room);
+            }
 
             return roomCreated;
         }
@@ -78,15 +106,14 @@ namespace IDBMS_API.Services
             room.Description = request.Description;
             room.UsePurpose = request.UsePurpose;
             room.Area = request.Area;
-            room.RoomTypeId = request.RoomTypeId;
 
-            RoomTypeService rtService = new RoomTypeService(_roomTypeRepo);
-            var roomType = rtService.GetById(request.RoomTypeId);
-
-            if (roomType != null)
+            if (request.RoomTypeId != null)
             {
-                room.PricePerArea = roomType.PricePerArea;
+                room.RoomTypeId = request.RoomTypeId;
 
+                RoomTypeService rtService = new RoomTypeService(_roomTypeRepo);
+                var roomType = rtService.GetById((int)request.RoomTypeId);
+                room.PricePerArea = roomType.PricePerArea;
             }
 
             _roomRepo.Update(room);

@@ -11,11 +11,9 @@ namespace IDBMS_API.Services
     public class ProjectTaskService
     {
         private readonly IProjectTaskRepository _taskRepo;
-        private readonly IInteriorItemRepository _itemRepo;
-        public ProjectTaskService(IProjectTaskRepository taskRepo, IInteriorItemRepository itemRepo)
+        public ProjectTaskService(IProjectTaskRepository taskRepo)
         {
             _taskRepo = taskRepo;
-            _itemRepo = itemRepo;
         }
         public IEnumerable<ProjectTask> GetAll()
         {
