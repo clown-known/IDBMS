@@ -8,6 +8,6 @@ public enum ProjectStatus
     PendingDeposit = 3,
     Ongoing = 4,
     Suspended = 5,
-    Canceled = 6,
+    Cancelled = 6,
     Done = 7
 }

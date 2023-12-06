@@ -55,10 +55,10 @@ namespace IDBMS_API.Services
                 EndDate = request.EndDate,
                 EndTimePayment = request.EndTimePayment,
                 PenaltyFee = request.PenaltyFee,
-                EstimateBusinessDay = request.EstimateBusinessDay,
                 ProjectId = request.ProjectId,
                 IsHidden = request.IsHidden,
                 Status = request.Status,
+                EstimateBusinessDay = 0,
             };
 
             var psCreated = _stageRepo.Save(ps);
@@ -96,7 +96,6 @@ namespace IDBMS_API.Services
                     TotalContractPaid = (decimal)(stage.PricePercentage / 100) * (decimal)project.EstimatedPrice,
                     IsPrepaid = stage.IsPrepaid,
                     PricePercentage = stage.PricePercentage,
-                    EstimateBusinessDay = stage.EstimateBusinessDay,
                     ProjectId = projectId,
                     IsHidden = false,
                     Status = StageStatus.Unopen
@@ -123,7 +122,6 @@ namespace IDBMS_API.Services
             ps.EndDate = request.EndDate;
             ps.EndTimePayment = request.EndTimePayment;
             ps.PenaltyFee = request.PenaltyFee;
-            ps.EstimateBusinessDay = request.EstimateBusinessDay;
             ps.ProjectId = request.ProjectId;
             ps.IsHidden = request.IsHidden;
             ps.Status = request.Status;
@@ -135,6 +133,15 @@ namespace IDBMS_API.Services
             var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ps.IsHidden = isHidden;
+
+            _stageRepo.Update(ps);
+        }
+
+        public void UpdateStagesDataByTask(Guid id, int estimateBusinessDay)
+        {
+            var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            ps.EstimateBusinessDay = estimateBusinessDay;
 
             _stageRepo.Update(ps);
         }

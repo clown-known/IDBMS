@@ -28,6 +28,9 @@ namespace IDBMS_API.DTOs.Request
         public decimal PricePerArea { get; set; }
 
         [Required]
+        public double EstimateDayPerArea { get; set; }
+
+        [Required]
         public bool IsHidden { get; set; }
 
         [Required]

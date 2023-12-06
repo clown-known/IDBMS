@@ -38,11 +38,10 @@ public class ProjectService
             ProjectCategoryId = request.ProjectCategoryId,
             CreatedAdminUsername = request.CreatedAdminUsername,
             CreatedByAdminId = request.CreatedByAdminId,
-            EstimatedPrice = request.EstimatedPrice,
-            FinalPrice = request.FinalPrice,
-            TotalWarrantyPaid = request.TotalWarrantyPaid,
-            Area = request.Area,
-            EstimateBusinessDay = request.EstimateBusinessDay,
+            EstimatedPrice = 0,
+            FinalPrice = 0,
+            TotalWarrantyPaid = 0,
+            Area = 0,
             Language = request.Language,
             Status = request.Status,
             AdvertisementStatus = request.AdvertisementStatus,
@@ -66,11 +65,6 @@ public class ProjectService
         p.Description = request.Description;
         p.Type = request.Type;
         p.ProjectCategoryId = request.ProjectCategoryId;
-        p.EstimatedPrice = request.EstimatedPrice;
-        p.FinalPrice = request.FinalPrice;
-        p.TotalWarrantyPaid = request.TotalWarrantyPaid;
-        p.Area = request.Area;
-        p.EstimateBusinessDay = request.EstimateBusinessDay;
         p.Language = request.Language;
         p.Status = request.Status;
         p.AdvertisementStatus = request.AdvertisementStatus;
@@ -85,13 +79,14 @@ public class ProjectService
         _repository.Update(p);
     }
 
-    public void UpdateProjectDataByTask(Guid id, decimal estimatePrice, decimal finalPrice)
+    public void UpdateProjectDataByTask(Guid id, decimal estimatePrice, decimal finalPrice, int estimateBusinessDay)
     {
         var project = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
         project.EstimatedPrice = (decimal?)estimatePrice;
         project.FinalPrice = (decimal?)finalPrice;
         project.UpdatedDate = DateTime.Now;
+        project.EstimateBusinessDay = estimateBusinessDay;
 
         _repository.Update(project);
     }
