@@ -119,7 +119,7 @@ public class ProjectService
         var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         decimal totalSum = 0;
 
-        ProjectTaskService taskService = new ProjectTaskService(_taskRepo, _itemRepo);
+        ProjectTaskService taskService = new ProjectTaskService(_taskRepo);
         var tasksInProject = taskService.GetByProjectId(project.Id);
 
         if (tasksInProject != null && tasksInProject.Any())
