@@ -10,6 +10,7 @@ namespace BusinessObject.Enums
     {
         Unopen = 0, 
         Ongoing = 1,
-        Suspended = 2
+        Suspended = 2,
+        Done = 3,
     }
 }
