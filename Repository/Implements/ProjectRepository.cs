@@ -15,6 +15,9 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.Projects
+                    .Include(p => p.Transactions.Where(t => t.IsDeleted == false))
+                    .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
+                    .Include(p => p.ProjectDocuments.Where(pd => pd.IsDeleted == false))
                     .OrderByDescending(time => time.CreatedDate)
                     .ToList();
             }
@@ -31,8 +34,10 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Projects
                     .Include(pc => pc.ProjectCategory)
-                    .Include(par => par.ProjectParticipations)
+                    .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
                         .ThenInclude(u => u.User)
+                    .Include(p => p.Transactions.Where(t => t.IsDeleted == false))
+                    .Include(p => p.ProjectDocuments.Where(pd => pd.IsDeleted == false))
                     .FirstOrDefault(project => project.Id == id);
             }
             catch
@@ -48,8 +53,10 @@ namespace Repository.Implements
                 return context.Projects
                     .Include(pc => pc.ProjectCategory)
                     .Include(pc => pc.Site)
-                    .Include(par => par.ProjectParticipations)
+                    .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
                         .ThenInclude(u => u.User)
+                    .Include(p => p.Transactions.Where(t => t.IsDeleted == false))
+                    .Include(p => p.ProjectDocuments.Where(pd => pd.IsDeleted == false))
                     .FirstOrDefault(project => project.Id == id);
             }
             catch
@@ -64,6 +71,9 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.Projects
+                    .Include(p => p.Transactions.Where(t => t.IsDeleted == false))
+                    .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
+                    .Include(p => p.ProjectDocuments.Where(pd => pd.IsDeleted == false))
                     .OrderByDescending(time => time.CreatedDate)
                     .Where(p => p.SiteId == id).ToList();
             }

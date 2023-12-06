@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.TaskCategories
                     .Where(ctc=> ctc.IsDeleted == false)
+                    .Include(tc => tc.TaskDesigns.Where(td => td.IsDeleted == false))
                     .ToList()
                     .Reverse<TaskCategory>();
             }
@@ -50,7 +52,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.TaskCategories.Where(ctc => ctc.Id == id && ctc.IsDeleted == false).FirstOrDefault();
+                return context.TaskCategories
+                    .Where(ctc => ctc.Id == id && ctc.IsDeleted == false)
+                    .Include(tc => tc.TaskDesigns.Where(td => td.IsDeleted == false))
+                    .FirstOrDefault();
             }
             catch
             {

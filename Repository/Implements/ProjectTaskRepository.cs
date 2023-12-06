@@ -18,6 +18,8 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.ProjectTasks
                     .Include(c => c.TaskCategory)
+                    .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
+                    .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
                     .OrderByDescending(c => c.CreatedDate)
                     .ToList();
             }
@@ -37,6 +39,8 @@ namespace Repository.Implements
                     .Include(p => p.PaymentStage)
                     .Include(p => p.ParentTask)
                     .Include(r => r.Room)
+                    .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
+                    .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
                     .FirstOrDefault(task => task.Id == id);
             }
             catch
@@ -55,6 +59,8 @@ namespace Repository.Implements
                     .Include(p => p.PaymentStage)
                     .Include(r => r.Room)
                         .ThenInclude(f => f.Floor)
+                    .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
+                    .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
                     .Where(task => task.ProjectId == id)
                     .OrderByDescending(c => c.CreatedDate)
                     .ToList();
@@ -75,6 +81,8 @@ namespace Repository.Implements
                     .Include(p => p.PaymentStage)
                     .Include(r => r.Room)
                         .ThenInclude(f => f.Floor)
+                    .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
+                    .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
                     .Where(task => task.RoomId == id)
                     .OrderByDescending(c => c.CreatedDate)
                     .ToList();
@@ -92,6 +100,8 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.ProjectTasks
                     .Where(task => task.PaymentStageId == id)
+                    .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
+                    .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
                     .OrderByDescending(c => c.CreatedDate)
                     .ToList();
             }
@@ -109,6 +119,10 @@ namespace Repository.Implements
                 return context.ProjectTasks
                         .Include(c => c.TaskCategory)
                         .Include(p => p.PaymentStage)
+                        .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
+                        .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
+                        .Include(i => i.InteriorItem)
+                            .ThenInclude(c => c.InteriorItemCategory)
                         .Where(task => task.ProjectId == id
                             && task.InteriorItem != null
                             && task.InteriorItem.InteriorItemCategory != null
@@ -131,6 +145,8 @@ namespace Repository.Implements
                 return context.ProjectTasks
                         .Include(c => c.TaskCategory)
                         .Include(p => p.PaymentStage)
+                        .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
+                        .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
                         .Include(i => i.InteriorItem)
                             .ThenInclude(c => c.InteriorItemCategory)
                         .Where(task => task.RoomId == id
