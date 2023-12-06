@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using BusinessObject.Enums;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Azure.Core;
 
 namespace IDBMS_API.Services
 {
@@ -44,6 +45,29 @@ namespace IDBMS_API.Services
             return _roomRepo.GetByProjectId(id);
         }
 
+        public void UpdateProjectArea(Guid projectId)
+        {
+            var roomsInProject = _roomRepo.GetByProjectId(projectId);
+
+            double area = 0;
+
+            if (roomsInProject != null && roomsInProject.Any())
+            {
+                area = roomsInProject.Sum(room =>
+                {
+                    if (room != null && room.IsHidden != true)
+                    {
+                        return room.Area;
+                    }
+                    return 0;
+                });
+            }
+
+            ProjectService projectService = new(_projectRepo);
+            projectService.UpdateProjectDataByRoom(projectId, area);
+
+        }
+
         public Room? CreateRoom(RoomRequest request)
         {
             var room = new Room
@@ -65,7 +89,7 @@ namespace IDBMS_API.Services
                 room.PricePerArea = roomType.PricePerArea;
                 roomCreated = _roomRepo.Save(room);
 
-                ProjectTaskService taskService = new ProjectTaskService(_projectTaskRepo);
+                ProjectTaskService taskService = new ProjectTaskService(_projectTaskRepo, _projectRepo);
                 var task = new ProjectTaskRequest
                 {
                     Percentage = 0,
@@ -95,6 +119,8 @@ namespace IDBMS_API.Services
                 roomCreated = _roomRepo.Save(room);
             }
 
+            UpdateProjectArea(request.ProjectId);
+
             return roomCreated;
         }
 
@@ -117,15 +143,19 @@ namespace IDBMS_API.Services
             }
 
             _roomRepo.Update(room);
+
+            UpdateProjectArea(request.ProjectId);
         }
 
-        public void UpdateRoomStatus(Guid id, bool isHidden)
+        public void UpdateRoomStatus(Guid id, bool isHidden, Guid projectId)
         {
             var room = _roomRepo.GetById(id) ?? throw new Exception("This object is not found!");
 
             room.IsHidden = isHidden;
 
             _roomRepo.Update(room);
+
+            UpdateProjectArea(projectId);
         }
 
     }

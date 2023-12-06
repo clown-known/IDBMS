@@ -5,15 +5,18 @@ using BusinessObject.Models;
 using Repository.Interfaces;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Mvc;
+using DocumentFormat.OpenXml.Office2016.Excel;
 
 namespace IDBMS_API.Services
 {
     public class ProjectTaskService
     {
         private readonly IProjectTaskRepository _taskRepo;
-        public ProjectTaskService(IProjectTaskRepository taskRepo)
+        private readonly IProjectRepository _projectRepo;
+        public ProjectTaskService(IProjectTaskRepository taskRepo, IProjectRepository projectRepo)
         {
             _taskRepo = taskRepo;
+            _projectRepo = projectRepo;
         }
         public IEnumerable<ProjectTask> GetAll()
         {
@@ -38,17 +41,44 @@ namespace IDBMS_API.Services
             return _taskRepo.GetByPaymentStageId(id);
         }
 
-/*        public IEnumerable<ProjectTask?> GetSuggestionTasksByProjectId(Guid id)
+        public void UpdateProjectEstimatePrice(Guid projectId)
         {
-            return _taskRepo.GetSuggestionTasksByProjectId(id);
-        }        
-        
-        public IEnumerable<ProjectTask?> GetSuggestionTasksByRoomId(Guid id)
-        {
-            return _taskRepo.GetSuggestionTasksByRoomId(id);
-        }*/
+            var tasksInProject = _taskRepo.GetByProjectId(projectId);
 
-        public ProjectTask? CreateProjectTask(ProjectTaskRequest request)
+            decimal estimatePrice = 0;
+            decimal finalPrice = 0;
+
+            if (tasksInProject != null && tasksInProject.Any())
+            {
+                estimatePrice = tasksInProject.Sum(task =>
+                {
+                    if (task != null && task.Status != ProjectTaskStatus.Cancelled && task.IsIncurred != true)
+                    {
+                        decimal pricePerUnit = task.PricePerUnit;
+                        decimal unitUsed = (decimal)(task.UnitUsed > task.UnitInContract ? task.UnitUsed : task.UnitInContract);
+                        return pricePerUnit * unitUsed;
+                    }
+                    return 0; 
+                });
+
+                finalPrice = tasksInProject.Sum(task =>
+                {
+                    if (task != null && task.Status != ProjectTaskStatus.Cancelled && task.IsIncurred != false)
+                    {
+                        decimal pricePerUnit = task.PricePerUnit;
+                        decimal unitUsed = (decimal)(task.UnitUsed > task.UnitInContract ? task.UnitUsed : task.UnitInContract);
+                        return pricePerUnit * unitUsed;
+                    }
+                    return 0;
+                });
+            }
+
+            ProjectService projectService = new(_projectRepo);
+            projectService.UpdateProjectDataByTask(projectId, estimatePrice, finalPrice);
+
+        }
+
+    public ProjectTask? CreateProjectTask(ProjectTaskRequest request)
         {
             var ct = new ProjectTask
             {
@@ -72,6 +102,9 @@ namespace IDBMS_API.Services
                 Status = request.Status,
             };
             var ctCreated = _taskRepo.Save(ct);
+
+            UpdateProjectEstimatePrice(request.ProjectId);
+
             return ctCreated;
         }
 
@@ -93,7 +126,7 @@ namespace IDBMS_API.Services
             {
                 foreach (var task in listTask)
                 {
-                    if (task!= null && task.PaymentStageId == paymentStageId)
+                    if (task!= null && task.PaymentStageId == paymentStageId && task.Status == ProjectTaskStatus.Confirmed)
                     {
                         task.StartedDate = DateTime.Now;
                         _taskRepo.Update(task);
@@ -124,6 +157,8 @@ namespace IDBMS_API.Services
             ct.Status = request.Status;
 
             _taskRepo.Update(ct);
+
+            UpdateProjectEstimatePrice(request.ProjectId);
         }
         public void UpdateProjectTaskStatus(Guid id, ProjectTaskStatus status)
         {
@@ -132,6 +167,8 @@ namespace IDBMS_API.Services
             ct.Status = status;
 
             _taskRepo.Update(ct);
+
+            UpdateProjectEstimatePrice(ct.ProjectId);
         }
 
     }
