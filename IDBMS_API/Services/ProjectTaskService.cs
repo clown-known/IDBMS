@@ -69,8 +69,8 @@ namespace IDBMS_API.Services
                     if (task != null && task.Status != ProjectTaskStatus.Cancelled && task.IsIncurred != true)
                     {
                         decimal pricePerUnit = task.PricePerUnit;
-                        decimal unitUsed = (decimal)(task.UnitUsed > task.UnitInContract ? task.UnitUsed : task.UnitInContract);
-                        return pricePerUnit * unitUsed;
+                        double unitInContract = task.UnitInContract;
+                        return pricePerUnit * (decimal)unitInContract;
                     }
                     return 0; 
                 });
@@ -80,8 +80,8 @@ namespace IDBMS_API.Services
                     if (task != null && task.Status != ProjectTaskStatus.Cancelled)
                     {
                         decimal pricePerUnit = task.PricePerUnit;
-                        decimal unitUsed = (decimal)(task.UnitUsed > task.UnitInContract ? task.UnitUsed : task.UnitInContract);
-                        return pricePerUnit * unitUsed;
+                        double unitUsed = (task.UnitUsed > task.UnitInContract ? task.UnitUsed : task.UnitInContract);
+                        return pricePerUnit * (decimal)unitUsed;
                     }
                     return 0;
                 });
