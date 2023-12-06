@@ -47,8 +47,6 @@ namespace IDBMS_API.DTOs.Request
         [Column(TypeName = "money")]
         public decimal? PenaltyFee { get; set; }
 
-        public int? EstimateBusinessDay { get; set; }
-
         [Required]
         public Guid ProjectId { get; set; }
 

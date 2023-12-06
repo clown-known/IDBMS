@@ -50,7 +50,8 @@ namespace BusinessObject.Models
 
         public DateTime? UpdatedDate { get; set; }
 
-        public int? NoDate { get; set; }
+        [Required]
+        public int EstimateBusinessDay { get; set; }
 
         public Guid? ParentTaskId { get; set; }
         public ProjectTask? ParentTask { get; set; }

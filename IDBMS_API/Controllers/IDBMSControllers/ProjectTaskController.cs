@@ -113,11 +113,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("payment-stage/{id}")]
-        public IActionResult AssignTasksToStage(Guid id,[FromBody] List<Guid> listTaskId)
+        public IActionResult AssignTasksToStage(Guid id,[FromBody] List<Guid> listTaskId, Guid projectId)
         {
             try
             {
-                _service.AssignTasksToStage(id, listTaskId);
+                _service.AssignTasksToStage(id, listTaskId, projectId);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
@@ -135,11 +135,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("StartedDate")]
-        public IActionResult StartTasksOfStage(Guid paymentStageId)
+        public IActionResult StartTasksOfStage(Guid paymentStageId, Guid projectId)
         {
             try
             {
-                _service.StartTasksOfStage(paymentStageId);
+                _service.StartTasksOfStage(paymentStageId, projectId);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",

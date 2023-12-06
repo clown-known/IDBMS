@@ -16,14 +16,28 @@ namespace IDBMS_API.Services
         private readonly IRoomTypeRepository _roomTypeRepo;
         private readonly IProjectRepository _projectRepo;
         private readonly IProjectTaskRepository _projectTaskRepo;
+        private readonly IPaymentStageRepository _stageRepo;
+        private readonly IProjectDesignRepository _projectDesignRepo;
+        private readonly IPaymentStageDesignRepository _stageDesignRepo;
 
-        public RoomService(IRoomRepository roomRepo, IRoomTypeRepository roomTypeRepo, IProjectRepository projectRepo, IProjectTaskRepository projectTaskRepo)
+        public RoomService(
+            IRoomRepository roomRepo,
+            IRoomTypeRepository roomTypeRepo,
+            IProjectRepository projectRepo,
+            IProjectTaskRepository projectTaskRepo,
+            IPaymentStageRepository stageRepo,
+            IProjectDesignRepository projectDesignRepo,
+            IPaymentStageDesignRepository stageDesignRepo)
         {
             _roomRepo = roomRepo;
             _roomTypeRepo = roomTypeRepo;
             _projectRepo = projectRepo;
             _projectTaskRepo = projectTaskRepo;
+            _stageRepo = stageRepo;
+            _projectDesignRepo = projectDesignRepo;
+            _stageDesignRepo = stageDesignRepo;
         }
+
 
         public IEnumerable<Room> GetAll()
         {
@@ -84,12 +98,12 @@ namespace IDBMS_API.Services
 
             if (request.RoomTypeId != null)
             {
-                RoomTypeService rtService = new RoomTypeService(_roomTypeRepo);
+                RoomTypeService rtService = new(_roomTypeRepo);
                 var roomType = rtService.GetById((int)request.RoomTypeId);
                 room.PricePerArea = roomType.PricePerArea;
                 roomCreated = _roomRepo.Save(room);
 
-                ProjectTaskService taskService = new ProjectTaskService(_projectTaskRepo, _projectRepo);
+                ProjectTaskService taskService = new ProjectTaskService(_projectTaskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo);
                 var task = new ProjectTaskRequest
                 {
                     Percentage = 0,
@@ -101,6 +115,7 @@ namespace IDBMS_API.Services
                     ProjectId = request.ProjectId,
                     RoomId = roomCreated.Id,
                     Status = ProjectTaskStatus.Pending,
+                    EstimateBusinessDay = (int)(roomType.EstimateDayPerArea * roomCreated.Area),
                 };
 
                 if (request.Language == Language.English)

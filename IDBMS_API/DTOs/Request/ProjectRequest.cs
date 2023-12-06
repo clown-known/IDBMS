@@ -25,17 +25,6 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public Guid CreatedByAdminId { get; set; }
 
-        public decimal? EstimatedPrice { get; set; }
-
-        public decimal? FinalPrice { get; set; }
-
-        public decimal? TotalWarrantyPaid { get; set; }
-
-        [Required]
-        public double Area { get; set; }
-
-        public int? EstimateBusinessDay { get; set; }
-
         [Required]
         public int Language { get; set; }
 

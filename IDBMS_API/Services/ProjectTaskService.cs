@@ -13,11 +13,24 @@ namespace IDBMS_API.Services
     {
         private readonly IProjectTaskRepository _taskRepo;
         private readonly IProjectRepository _projectRepo;
-        public ProjectTaskService(IProjectTaskRepository taskRepo, IProjectRepository projectRepo)
+        private readonly IPaymentStageRepository _stageRepo;
+        private readonly IProjectDesignRepository _projectDesignRepo;
+        private readonly IPaymentStageDesignRepository _stageDesignRepo;
+
+        public ProjectTaskService(
+            IProjectTaskRepository taskRepo,
+            IProjectRepository projectRepo,
+            IPaymentStageRepository stageRepo,
+            IProjectDesignRepository projectDesignRepo,
+            IPaymentStageDesignRepository stageDesignRepo)
         {
             _taskRepo = taskRepo;
             _projectRepo = projectRepo;
+            _stageRepo = stageRepo; 
+            _projectDesignRepo = projectDesignRepo;
+            _stageDesignRepo = stageDesignRepo;
         }
+
         public IEnumerable<ProjectTask> GetAll()
         {
             return _taskRepo.GetAll();
@@ -41,12 +54,13 @@ namespace IDBMS_API.Services
             return _taskRepo.GetByPaymentStageId(id);
         }
 
-        public void UpdateProjectEstimatePrice(Guid projectId)
+        public void UpdateProjectData(Guid projectId)
         {
             var tasksInProject = _taskRepo.GetByProjectId(projectId);
 
             decimal estimatePrice = 0;
             decimal finalPrice = 0;
+            int estimateBusinessDay = 0;
 
             if (tasksInProject != null && tasksInProject.Any())
             {
@@ -63,7 +77,7 @@ namespace IDBMS_API.Services
 
                 finalPrice = tasksInProject.Sum(task =>
                 {
-                    if (task != null && task.Status != ProjectTaskStatus.Cancelled && task.IsIncurred != false)
+                    if (task != null && task.Status != ProjectTaskStatus.Cancelled)
                     {
                         decimal pricePerUnit = task.PricePerUnit;
                         decimal unitUsed = (decimal)(task.UnitUsed > task.UnitInContract ? task.UnitUsed : task.UnitInContract);
@@ -71,14 +85,49 @@ namespace IDBMS_API.Services
                     }
                     return 0;
                 });
+
+                estimateBusinessDay = tasksInProject.Sum(task =>
+                {
+                    if (task != null && task.Status != ProjectTaskStatus.Cancelled)
+                    {
+                        return task.EstimateBusinessDay;
+                    }
+                    return 0;
+                });
             }
 
             ProjectService projectService = new(_projectRepo);
-            projectService.UpdateProjectDataByTask(projectId, estimatePrice, finalPrice);
+            projectService.UpdateProjectDataByTask(projectId, estimatePrice, finalPrice, estimateBusinessDay);
 
         }
 
-    public ProjectTask? CreateProjectTask(ProjectTaskRequest request)
+        public void UpdatePaymentStageData(Guid projectId)
+        {
+            PaymentStageService stageService = new(_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo);
+            var stagesByProjectId = stageService.GetByProjectId(projectId);
+
+            foreach (var stage in stagesByProjectId)
+            {
+                var tasksInStage = _taskRepo.GetByPaymentStageId(projectId);
+                int estimateBusinessDay = 0;
+
+                if (tasksInStage != null && tasksInStage.Any())
+                {
+                    estimateBusinessDay = tasksInStage.Sum(task =>
+                    {
+                        if (task != null && task.Status != ProjectTaskStatus.Cancelled)
+                        {
+                            return task.EstimateBusinessDay;
+                        }
+                        return 0;
+                    });
+                }
+
+                stageService.UpdateStagesDataByTask(stage.Id, estimateBusinessDay);
+            }
+        }
+
+        public ProjectTask? CreateProjectTask(ProjectTaskRequest request)
         {
             var ct = new ProjectTask
             {
@@ -94,21 +143,22 @@ namespace IDBMS_API.Services
                 IsIncurred = request.IsIncurred,
                 StartedDate = request.StartedDate,
                 EndDate = request.EndDate,
-                NoDate = request.NoDate,
                 CreatedDate = DateTime.Now,
                 ProjectId = request.ProjectId,
                 PaymentStageId = request.PaymentStageId,
                 RoomId = request.RoomId,
                 Status = request.Status,
+                EstimateBusinessDay = request.EstimateBusinessDay,
             };
             var ctCreated = _taskRepo.Save(ct);
 
-            UpdateProjectEstimatePrice(request.ProjectId);
+            UpdateProjectData(request.ProjectId);
+            UpdatePaymentStageData(request.ProjectId);
 
             return ctCreated;
         }
 
-        public void AssignTasksToStage(Guid paymentStageId, List<Guid> listTaskId)
+        public void AssignTasksToStage(Guid paymentStageId, List<Guid> listTaskId, Guid projectId)
         {
                 foreach (var taskId in listTaskId)
                 {
@@ -118,8 +168,9 @@ namespace IDBMS_API.Services
 
                     _taskRepo.Update(task);
                 }
+            UpdatePaymentStageData(projectId);
         }
-        public void StartTasksOfStage(Guid paymentStageId)
+        public void StartTasksOfStage(Guid paymentStageId, Guid projectId)
         {
             var listTask = _taskRepo.GetByPaymentStageId(paymentStageId);
             if (listTask.Any())
@@ -133,6 +184,8 @@ namespace IDBMS_API.Services
                     }
                 }
             }
+
+            UpdatePaymentStageData(projectId);
         }
 
         public void UpdateProjectTask(Guid id, ProjectTaskRequest request)
@@ -150,15 +203,16 @@ namespace IDBMS_API.Services
             ct.IsIncurred = request.IsIncurred;
             ct.UpdatedDate= DateTime.Now;
             ct.EndDate = request.EndDate;
-            ct.NoDate = request.NoDate;
             ct.ProjectId = request.ProjectId;
             ct.PaymentStageId = request.PaymentStageId;
             ct.RoomId = request.RoomId;
             ct.Status = request.Status;
+            ct.EstimateBusinessDay= request.EstimateBusinessDay;
 
             _taskRepo.Update(ct);
 
-            UpdateProjectEstimatePrice(request.ProjectId);
+            UpdateProjectData(request.ProjectId);
+            UpdatePaymentStageData(request.ProjectId);
         }
         public void UpdateProjectTaskStatus(Guid id, ProjectTaskStatus status)
         {
@@ -168,7 +222,8 @@ namespace IDBMS_API.Services
 
             _taskRepo.Update(ct);
 
-            UpdateProjectEstimatePrice(ct.ProjectId);
+            UpdateProjectData(ct.ProjectId);
+            UpdatePaymentStageData(ct.ProjectId);
         }
 
     }

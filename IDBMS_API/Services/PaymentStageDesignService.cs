@@ -35,7 +35,6 @@ namespace IDBMS_API.Services
                 EnglishName= request.EnglishName,
                 Description = request.Description,
                 EnglishDescription= request.EnglishDescription,
-                EstimateBusinessDay= request.EstimateBusinessDay,
                 ProjectDesignId= request.ProjectDesignId,
                 IsDeleted = false
             };
@@ -53,7 +52,6 @@ namespace IDBMS_API.Services
             psd.EnglishName = request.EnglishName;
             psd.Description = request.Description;
             psd.EnglishDescription = request.EnglishDescription;
-            psd.EstimateBusinessDay = request.EstimateBusinessDay;
             psd.ProjectDesignId = request.ProjectDesignId;
 
             _repository.Update(psd);

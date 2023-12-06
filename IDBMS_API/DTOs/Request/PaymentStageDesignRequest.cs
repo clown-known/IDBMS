@@ -28,8 +28,6 @@ namespace IDBMS_API.DTOs.Request
 
         public string? EnglishDescription { get; set; }
 
-        public int? EstimateBusinessDay { get; set; }
-
         [Required]
         public int ProjectDesignId { get; set; }
     }
