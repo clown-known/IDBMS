@@ -14,7 +14,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.PaymentStages
-                    .OrderByDescending(time => time.StartedDate)
+                    .OrderBy(time => time.StageNo)
                     .OrderBy(ps => ps.StageNo)
                     .ToList();
             }
@@ -42,7 +42,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.PaymentStages
-                         .OrderByDescending(time => time.StartedDate)
+                         .OrderBy(time => time.StageNo)
                          .Where(stage => stage.ProjectId == id)
                          .OrderBy(stage => stage.StageNo)
                          .ToList();
