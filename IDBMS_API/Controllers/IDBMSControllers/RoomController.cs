@@ -89,7 +89,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/isHidden")]
-        public IActionResult UpdateRoom(Guid id, bool isHidden, Guid projectId)
+        public IActionResult UpdateRoomStatus(Guid id, bool isHidden, Guid projectId)
         {
             try
             {
