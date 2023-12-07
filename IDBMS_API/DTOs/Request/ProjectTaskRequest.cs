@@ -20,10 +20,6 @@ namespace IDBMS_API.DTOs.Request
         public string? Description { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(5, 2)")]
-        public decimal Percentage { get; set; }
-
-        [Required]
         public CalculationUnit CalculationUnit { get; set; }
 
         [Required]
@@ -32,9 +28,6 @@ namespace IDBMS_API.DTOs.Request
 
         [Required]
         public double UnitInContract { get; set; }
-
-        [Required]
-        public double UnitUsed { get; set; }
 
         [Required]
         public bool IsIncurred { get; set; }

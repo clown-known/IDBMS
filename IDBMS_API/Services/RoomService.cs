@@ -111,7 +111,6 @@ namespace IDBMS_API.Services
                     CalculationUnit = BusinessObject.Enums.CalculationUnit.Meter,
                     PricePerUnit = roomType.PricePerArea,
                     UnitInContract = request.Area,
-                    UnitUsed = 0,
                     IsIncurred = false,
                     ProjectId = request.ProjectId,
                     RoomId = roomCreated.Id,
