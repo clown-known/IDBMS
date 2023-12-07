@@ -100,7 +100,10 @@ namespace IDBMS_API.Services
             {
                 RoomTypeService rtService = new(_roomTypeRepo);
                 var roomType = rtService.GetById((int)request.RoomTypeId);
+
                 room.PricePerArea = roomType.PricePerArea;
+                room.RoomTypeId = request.RoomTypeId;
+
                 roomCreated = _roomRepo.Save(room);
 
                 ProjectTaskService taskService = new ProjectTaskService(_projectTaskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo);
