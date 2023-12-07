@@ -107,11 +107,9 @@ namespace IDBMS_API.Services
                 var task = new ProjectTaskRequest
                 {
                     Code = "DECOR",
-                    Percentage = 0,
                     CalculationUnit = BusinessObject.Enums.CalculationUnit.Meter,
                     PricePerUnit = roomType.PricePerArea,
                     UnitInContract = request.Area,
-                    UnitUsed = 0,
                     IsIncurred = false,
                     ProjectId = request.ProjectId,
                     RoomId = roomCreated.Id,

@@ -22,8 +22,7 @@ namespace BusinessObject.Models
         public string? Description { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(5, 2)")]
-        public decimal Percentage { get; set; }
+        public int Percentage { get; set; }
 
         [Required]
         public CalculationUnit CalculationUnit { get; set; }

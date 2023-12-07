@@ -1,28 +1,61 @@
 ﻿using IDBMS_API.DTOs.Request;
 using BusinessObject.Models;
 using Repository.Interfaces;
+using Azure.Core;
 
 namespace IDBMS_API.Services
 {
     public class TaskReportService
     {
-        private readonly ITaskReportRepository _repository;
-        public TaskReportService(ITaskReportRepository repository)
+        private readonly ITaskReportRepository _taskReportRepo;
+        private readonly IProjectTaskRepository _taskRepo;
+        private readonly IProjectRepository _projectRepo;
+        private readonly IPaymentStageRepository _stageRepo;
+        private readonly IProjectDesignRepository _projectDesignRepo;
+        private readonly IPaymentStageDesignRepository _stageDesignRepo;
+        public TaskReportService(
+            ITaskReportRepository taskReportRepo,
+            IProjectTaskRepository taskRepo,
+            IProjectRepository projectRepo,
+            IPaymentStageRepository stageRepo,
+            IProjectDesignRepository projectDesignRepo,
+            IPaymentStageDesignRepository stageDesignRepo)
         {
-            _repository = repository;
+            _taskReportRepo = taskReportRepo;
+            _taskRepo = taskRepo;
+            _projectRepo = projectRepo;
+            _stageRepo = stageRepo;
+            _projectDesignRepo = projectDesignRepo;
+            _stageDesignRepo = stageDesignRepo;
         }
         public IEnumerable<TaskReport> GetAll()
         {
-            return _repository.GetAll();
+            return _taskReportRepo.GetAll();
         }
         public TaskReport? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _taskReportRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public IEnumerable<TaskReport?> GetByTaskId(Guid id)
         {
-            return _repository.GetByTaskId(id) ?? throw new Exception("This object is not existed!");
+            return _taskReportRepo.GetByTaskId(id) ?? throw new Exception("This object is not existed!");
         }
+
+        public void UpdateTaskPercentage(Guid taskId)
+        {
+            var reportsInTask = _taskReportRepo.GetByTaskId(taskId);
+
+            if (reportsInTask != null && reportsInTask.Any())
+            {
+                var latestReport = reportsInTask.OrderByDescending(r => r.UpdatedTime ?? r.CreatedTime).FirstOrDefault();
+                if (latestReport != null)
+                {
+                    ProjectTaskService taskService = new(_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo);
+                    taskService.UpdateTaskProgress(taskId, latestReport.UnitUsed);
+                }
+            }
+        }
+
         public TaskReport? CreateTaskReport(TaskReportRequest request)
         {
             var ctr = new TaskReport
@@ -35,27 +68,34 @@ namespace IDBMS_API.Services
                 ProjectTaskId= request.ProjectTaskId,
                 IsDeleted = false,
             };
-            var ctrCreated = _repository.Save(ctr);
+            var ctrCreated = _taskReportRepo.Save(ctr);
+
+            UpdateTaskPercentage(request.ProjectTaskId);
+
             return ctrCreated;
         }
         public void UpdateTaskReport(Guid id, TaskReportRequest request)
         {
-            var ctr = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ctr = _taskReportRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ctr.Name = request.Name;
             ctr.UnitUsed = request.UnitUsed;
             ctr.Description = request.Description;
             ctr.UpdatedTime = DateTime.Now;
 
-            _repository.Update(ctr);
+            _taskReportRepo.Update(ctr);
+
+            UpdateTaskPercentage(request.ProjectTaskId);
         }
         public void DeleteTaskReport(Guid id)
         {
-            var ctr = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ctr = _taskReportRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ctr.IsDeleted = true;
 
-            _repository.Update(ctr);
+            _taskReportRepo.Update(ctr);
+
+            UpdateTaskPercentage(ctr.ProjectTaskId);
         }
     }
 

@@ -127,6 +127,16 @@ namespace IDBMS_API.Services
             }
         }
 
+        public void UpdateTaskProgress(Guid taskId, double unitUsed)
+        {
+            var ct = _taskRepo.GetById(taskId) ?? throw new Exception("This object is not existed!");
+
+            ct.UnitUsed = unitUsed;
+            ct.Percentage = (int)((unitUsed / ct.UnitInContract) * 100);
+
+            _taskRepo.Update(ct);
+        }
+
         public ProjectTask? CreateProjectTask(ProjectTaskRequest request)
         {
             var ct = new ProjectTask
@@ -135,11 +145,10 @@ namespace IDBMS_API.Services
                 Code = request.Code,
                 Name = request.Name,
                 Description = request.Description,
-                Percentage = request.Percentage,
                 CalculationUnit = request.CalculationUnit,
                 PricePerUnit = request.PricePerUnit,
                 UnitInContract = request.UnitInContract,
-                UnitUsed = request.UnitUsed,
+                UnitUsed = 0,
                 IsIncurred = request.IsIncurred,
                 StartedDate = request.StartedDate,
                 EndDate = request.EndDate,
@@ -170,6 +179,7 @@ namespace IDBMS_API.Services
                 }
             UpdatePaymentStageData(projectId);
         }
+
         public void StartTasksOfStage(Guid paymentStageId, Guid projectId)
         {
             var listTask = _taskRepo.GetByPaymentStageId(paymentStageId);
@@ -195,11 +205,9 @@ namespace IDBMS_API.Services
             ct.Code = request.Code;
             ct.Name = request.Name;
             ct.Description = request.Description;
-            ct.Percentage = request.Percentage;
             ct.CalculationUnit = request.CalculationUnit;
             ct.PricePerUnit = request.PricePerUnit;
             ct.UnitInContract = request.UnitInContract;
-            ct.UnitUsed = request.UnitUsed;
             ct.IsIncurred = request.IsIncurred;
             ct.UpdatedDate= DateTime.Now;
             ct.EndDate = request.EndDate;
