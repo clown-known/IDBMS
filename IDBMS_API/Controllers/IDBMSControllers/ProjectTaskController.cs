@@ -5,6 +5,13 @@ using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using BusinessObject.Models;
+using DocumentFormat.OpenXml.Wordprocessing;
+using IDBMS_API.Services.PaginationService;
+using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
+using DocumentFormat.OpenXml.Drawing.Spreadsheet;
+using DocumentFormat.OpenXml.EMMA;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -13,10 +20,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class ProjectTasksController : ODataController
     {
         private readonly ProjectTaskService _service;
+        private readonly PaginationService<ProjectTask> _paginationService;
 
-        public ProjectTasksController(ProjectTaskService service)
+        public ProjectTasksController(ProjectTaskService service, PaginationService<ProjectTask> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
@@ -48,10 +57,30 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }*/
 
         [EnableQuery]
-        [HttpGet("project/{id}")]
-        public IActionResult GetProjectTasksByProjectId(Guid id)
+        [HttpGet("project/{projectId}")]
+        public IActionResult GetProjectTasksByProjectId(Guid projectId, int? pageSize, int? pageNo, 
+                        string? code, string? name, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId)
         {
-            return Ok(_service.GetByProjectId(id));
+            try
+            {
+                var list = _service.GetByProjectId(projectId, code, name, stageId, taskStatus, taskCategoryId);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [EnableQuery]

@@ -1,6 +1,9 @@
-﻿using BusinessObject.Models;
+﻿using BusinessObject.Enums;
+using BusinessObject.Models;
 using IDBMS_API.DTOs.Request;
 using Repository.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace IDBMS_API.Services
 {
@@ -13,6 +16,22 @@ namespace IDBMS_API.Services
             _repository = repository;
         }
 
+        private IEnumerable<ItemInTask> Filter(IEnumerable<ItemInTask> list, int? itemCategoryId, ProjectTaskStatus? taskStatus)
+        {
+            IEnumerable<ItemInTask> filteredList = list;
+
+            if (itemCategoryId != null)
+            {
+                filteredList = filteredList.Where(item => item.InteriorItem.InteriorItemCategoryId == itemCategoryId);
+            }
+
+            if (taskStatus != null)
+            {
+                filteredList = filteredList.Where(item => item.ProjectTask.Status == taskStatus);
+            }
+
+            return filteredList;
+        }
         public IEnumerable<ItemInTask> GetAll()
         {
             return _repository.GetAll();
@@ -23,9 +42,11 @@ namespace IDBMS_API.Services
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
 
-        public IEnumerable<ItemInTask> GetByProjectId(Guid id)
+        public IEnumerable<ItemInTask> GetByProjectId(Guid id, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
-            return _repository.GetByProjectId(id);
+            var list =  _repository.GetByProjectId(id);
+
+            return Filter(list, itemCategoryId, taskStatus);
         }
 
         public IEnumerable<ItemInTask> GetByRoomId(Guid id)
