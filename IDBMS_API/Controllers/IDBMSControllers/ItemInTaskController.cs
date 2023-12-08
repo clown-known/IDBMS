@@ -1,6 +1,11 @@
-﻿using IDBMS_API.DTOs.Request;
+﻿using Azure.Core;
+using BusinessObject.Enums;
+using BusinessObject.Models;
+using DocumentFormat.OpenXml.Spreadsheet;
+using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -12,10 +17,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class ItemInTasksController : ODataController
     {
         private readonly ItemInTaskService _service;
+        private readonly PaginationService<ItemInTask> _paginationService;
 
-        public ItemInTasksController(ItemInTaskService service)
+        public ItemInTasksController(ItemInTaskService service, PaginationService<ItemInTask> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
@@ -33,10 +40,29 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [EnableQuery]
-        [HttpGet("project/{id}")]
-        public IActionResult GetItemInTaskByProjectId(Guid id)
+        [HttpGet("project/{projectId}")]
+        public IActionResult GetItemInTaskByProjectId(Guid projectId, int? pageSize, int? pageNo, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
-            return Ok(_service.GetByProjectId(id));
+            try
+            {
+                var list = _service.GetByProjectId(projectId, itemCategoryId, taskStatus);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [EnableQuery]

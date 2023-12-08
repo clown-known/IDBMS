@@ -6,6 +6,7 @@ using BusinessObject.Models;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
@@ -94,6 +95,8 @@ builder.Services.AddScoped<UserRolesService, UserRolesService>();
 builder.Services.AddScoped<BookingRequestService, BookingRequestService>();
 builder.Services.AddScoped<WarrantyClaimService, WarrantyClaimService>();
 builder.Services.AddScoped<ItemInTaskService, ItemInTaskService>();
+
+builder.Services.AddScoped(typeof(PaginationService<>), typeof(PaginationService<>));
 
 builder.Services.AddScoped<FirebaseService, FirebaseService>();
 builder.Services.AddScoped<JwtTokenSupporter, JwtTokenSupporter>();

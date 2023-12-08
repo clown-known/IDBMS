@@ -46,10 +46,11 @@ namespace API.Supporters
 
                 var jwtToken = (JwtSecurityToken) validatedToken;
                 string role = jwtToken.Claims.First(claim => claim.Type == "role").Value;
-                if (role != null) context.Items["role"] = "admin";
+                if (role.Equals("admin")) context.Items["role"] = "admin";
                 else
                 {
                     var userId = jwtToken.Claims.First(claim => claim.Type == "id").Value;
+                    if (userId == null || userId.Equals("")) return;
                     var user = userRepository.GetById(Guid.Parse(userId));
                     context.Items["User"] = user;
                 }

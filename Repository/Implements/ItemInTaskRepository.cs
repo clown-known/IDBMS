@@ -52,6 +52,7 @@ namespace Repository.Implements
                 return context.ItemInTasks
                     .Include(ItemInTask => ItemInTask.ProjectTask)
                     .Include(ItemInTask => ItemInTask.InteriorItem)
+                        .ThenInclude(category => category.InteriorItemCategory)
                     .Where(ItemInTask => ItemInTask.ProjectId == id)
                     .ToList()
                     .Reverse<ItemInTask>();

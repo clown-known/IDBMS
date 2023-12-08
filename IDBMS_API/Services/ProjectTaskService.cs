@@ -6,6 +6,9 @@ using Repository.Interfaces;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Mvc;
 using DocumentFormat.OpenXml.Office2016.Excel;
+using System.Text;
+using System.Globalization;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -31,17 +34,78 @@ namespace IDBMS_API.Services
             _stageDesignRepo = stageDesignRepo;
         }
 
+/*        private string NormalizeString(string input)
+        {
+            if (input == null)
+            {
+                return string.Empty;
+            }
+
+            input = input.Normalize(NormalizationForm.FormD);
+            StringBuilder sb = new StringBuilder();
+
+            foreach (char c in input)
+            {
+                UnicodeCategory category = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (category != UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(char.ToLower(c));
+                }
+            }
+
+            return sb.ToString();
+        }*/
+
+        public IEnumerable<ProjectTask> Filter(IEnumerable<ProjectTask> list, 
+            string? code, string? name, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId)
+        {
+            IEnumerable<ProjectTask> filteredList = list;
+
+            if (code != null)
+            {
+                filteredList = filteredList.Where(item => item.Code?.IndexOf(code, StringComparison.OrdinalIgnoreCase) >= 0);
+            }
+
+            if (name != null)
+            {
+                filteredList = filteredList.Where(item =>
+                    item.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0);
+            }
+
+            if (stageId != null)
+            {
+                filteredList = filteredList.Where(item => item.PaymentStageId == stageId);
+            }
+
+            if (taskStatus != null)
+            {
+                filteredList = filteredList.Where(item => item.Status == taskStatus);
+            }
+
+            if (taskCategoryId != null)
+            {
+                filteredList = filteredList.Where(item => item.TaskCategoryId == taskCategoryId);
+            }
+
+            return filteredList;
+        }
+        
         public IEnumerable<ProjectTask> GetAll()
         {
             return _taskRepo.GetAll();
         }
+
         public ProjectTask? GetById(Guid id)
         {
             return _taskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<ProjectTask?> GetByProjectId(Guid id)
+
+        public IEnumerable<ProjectTask?> GetByProjectId(Guid id, 
+            string? code, string? name, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId)
         {
-            return _taskRepo.GetByProjectId(id);
+            var list = _taskRepo.GetByProjectId(id);
+            
+            return Filter(list, code, name, stageId, taskStatus, taskCategoryId);
         }
 
         public IEnumerable<ProjectTask?> GetByRoomId(Guid id)
