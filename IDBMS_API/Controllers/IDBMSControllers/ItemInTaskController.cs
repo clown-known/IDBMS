@@ -2,6 +2,7 @@
 using BusinessObject.Enums;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
@@ -9,6 +10,7 @@ using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using System.Threading.Tasks;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -25,12 +27,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             _paginationService = paginationService;
         }
 
-        [EnableQuery]
+/*        [EnableQuery]
         [HttpGet]
         public IActionResult GetItemInTasks()
         {
             return Ok(_service.GetAll());
-        }
+        }*/
 
         [EnableQuery]
         [HttpGet("{id}")]
@@ -65,18 +67,37 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [EnableQuery]
+/*        [EnableQuery]
         [HttpGet("room/{id}")]
         public IActionResult GetItemInTaskByRoomId(Guid id)
         {
             return Ok(_service.GetByRoomId(id));
-        }
+        }*/
 
         [EnableQuery]
         [HttpGet("project-task/{id}")]
-        public IActionResult GetItemInTaskByTaskId(Guid id)
+        public IActionResult GetItemInTaskByTaskId(Guid id, int? pageSize, int? pageNo, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
-            return Ok(_service.GetByTaskId(id));
+            try
+            {
+                var list = _service.GetByTaskId(id, itemCategoryId, taskStatus);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
 

@@ -54,9 +54,11 @@ namespace IDBMS_API.Services
             return _repository.GetByRoomId(id);
         }
 
-        public IEnumerable<ItemInTask> GetByTaskId(Guid id)
+        public IEnumerable<ItemInTask> GetByTaskId(Guid id, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
-            return _repository.GetByTaskId(id);
+            var list = _repository.GetByTaskId(id);
+
+            return Filter(list, itemCategoryId, taskStatus);
         }
 
         public ItemInTask? CreateItemInTask(ItemInTaskRequest request)
