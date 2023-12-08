@@ -146,5 +146,26 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult DeleteItemInTask(Guid id)
+        {
+            try
+            {
+                _service.DeleteItemInTask(id);
+                var response = new ResponseMessage()
+                {
+                    Message = "Delete successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
     }
 }
