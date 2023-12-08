@@ -4,6 +4,7 @@ using IDBMS_API.DTOs.Request;
 using Repository.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -16,9 +17,16 @@ namespace IDBMS_API.Services
             _repository = repository;
         }
 
-        private IEnumerable<ItemInTask> Filter(IEnumerable<ItemInTask> list, int? itemCategoryId, ProjectTaskStatus? taskStatus)
+        private IEnumerable<ItemInTask> Filter(IEnumerable<ItemInTask> list,
+            string? name, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
             IEnumerable<ItemInTask> filteredList = list;
+
+            if (name != null)
+            {
+                filteredList = filteredList.Where(item =>
+                            (item.InteriorItem.Name != null && item.InteriorItem.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
 
             if (itemCategoryId != null)
             {
@@ -42,11 +50,11 @@ namespace IDBMS_API.Services
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
 
-        public IEnumerable<ItemInTask> GetByProjectId(Guid id, int? itemCategoryId, ProjectTaskStatus? taskStatus)
+        public IEnumerable<ItemInTask> GetByProjectId(Guid id, string? name, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
             var list =  _repository.GetByProjectId(id);
 
-            return Filter(list, itemCategoryId, taskStatus);
+            return Filter(list, name, itemCategoryId, taskStatus);
         }
 
         public IEnumerable<ItemInTask> GetByRoomId(Guid id)
@@ -54,11 +62,11 @@ namespace IDBMS_API.Services
             return _repository.GetByRoomId(id);
         }
 
-        public IEnumerable<ItemInTask> GetByTaskId(Guid id, int? itemCategoryId, ProjectTaskStatus? taskStatus)
+        public IEnumerable<ItemInTask> GetByTaskId(Guid id, string? name, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
             var list = _repository.GetByTaskId(id);
 
-            return Filter(list, itemCategoryId, taskStatus);
+            return Filter(list, name, itemCategoryId, taskStatus);
         }
 
         public ItemInTask? CreateItemInTask(ItemInTaskRequest request)
