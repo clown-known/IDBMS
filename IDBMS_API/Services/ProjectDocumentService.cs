@@ -6,6 +6,7 @@ using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 using BusinessObject.Enums;
 using UnidecodeSharpFork;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace IDBMS_API.Services
 {
@@ -49,9 +50,11 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByFilter(projectId, documentTemplateId) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<ProjectDocument?> GetByProjectId(Guid id)
+        public IEnumerable<ProjectDocument?> GetByProjectId(Guid id, ProjectDocumentCategory? category, string? name)
         {
-            return _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByProjectId(id);
+
+            return Filter(list, category, name);
         }
         public async Task<ProjectDocument?> CreateProjectDocument([FromForm] ProjectDocumentRequest request)
         {
