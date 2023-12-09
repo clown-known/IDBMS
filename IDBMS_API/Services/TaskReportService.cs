@@ -38,7 +38,7 @@ namespace IDBMS_API.Services
         }
         public IEnumerable<TaskReport?> GetByTaskId(Guid id)
         {
-            return _taskReportRepo.GetByTaskId(id) ?? throw new Exception("This object is not existed!");
+            return _taskReportRepo.GetByTaskId(id);
         }
 
         public void UpdateTaskPercentage(Guid taskId)

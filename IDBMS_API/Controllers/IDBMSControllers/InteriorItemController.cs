@@ -26,17 +26,17 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetInteriorItems(int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? cateType, int? pageSize, int? pageNo)
+        public IActionResult GetInteriorItems(int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? itemType, int? pageSize, int? pageNo)
         {
-            var list = _service.GetAll(itemCategoryId, status, codeOrName, cateType);
+            var list = _service.GetAll(itemCategoryId, status, codeOrName, itemType);
 
             return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
         [EnableQuery]
         [HttpGet("interior-item-category/{id}")]
-        public IActionResult GetInteriorItemsByCategory(int id, int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? cateType, int? pageSize, int? pageNo)
+        public IActionResult GetInteriorItemsByCategory(int id, int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? itemType, int? pageSize, int? pageNo)
         {
-            var list = _service.GetByCategory(id, itemCategoryId, status, codeOrName, cateType);
+            var list = _service.GetByCategory(id, itemCategoryId, status, codeOrName, itemType);
 
             return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }

@@ -16,13 +16,18 @@ public class ProjectService
     }
 
     private IEnumerable<Project> Filter(IEnumerable<Project> list,
-            ProjectType? status, string? name)
+            ProjectType? type, ProjectStatus? status, string? name)
     {
         IEnumerable<Project> filteredList = list;
 
+        if (type != null)
+        {
+            filteredList = filteredList.Where(item => item.Type == type);
+        }
+
         if (status != null)
         {
-            filteredList = filteredList.Where(item => item.Type == status);
+            filteredList = filteredList.Where(item => item.Status == status);
         }
 
         if (name != null)
@@ -33,22 +38,22 @@ public class ProjectService
         return filteredList;
     }
 
-    public IEnumerable<Project> GetAll(ProjectType? status, string? name)
+    public IEnumerable<Project> GetAll(ProjectType? type, ProjectStatus? status, string? name)
     {
         var list = _repository.GetAll();
 
-        return Filter(list, status, name);
+        return Filter(list, type, status, name);
     }
 
     public Project? GetById(Guid id)
     {
         return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
     }    
-    public IEnumerable<Project> GetBySiteId(Guid id, ProjectType? status, string? name)
+    public IEnumerable<Project> GetBySiteId(Guid id, ProjectType? type, ProjectStatus? status, string? name)
     {
         var list = _repository.GetBySiteId(id) ?? throw new Exception("This object is not found!");
 
-        return Filter(list, status, name);
+        return Filter(list, type, status, name);
     }
 
     public Project? CreateProject(ProjectRequest request)

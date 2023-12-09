@@ -28,9 +28,9 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetProjects(int? pageSize, int? pageNo, ProjectType? status, string? name)
+        public IActionResult GetProjects(int? pageSize, int? pageNo, ProjectType? type, ProjectStatus? status, string? name)
         {
-            var list = _service.GetAll(status, name);
+            var list = _service.GetAll(type, status, name);
 
             return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
@@ -44,9 +44,9 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("site/{id}")]
-        public IActionResult GetProjectsBySiteId(Guid id, int? pageSize, int? pageNo, ProjectType? status, string? name)
+        public IActionResult GetProjectsBySiteId(Guid id, int? pageSize, int? pageNo, ProjectType? type, ProjectStatus? status, string? name)
         {
-            var list = _service.GetBySiteId(id, status, name);
+            var list = _service.GetBySiteId(id, type, status, name);
 
             return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
