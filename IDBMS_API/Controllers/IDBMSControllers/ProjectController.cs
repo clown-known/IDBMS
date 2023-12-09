@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Repository.Interfaces;
 using System;
+using BusinessObject.Models;
+using IDBMS_API.Services.PaginationService;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -16,17 +18,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class ProjectsController : ODataController
     {
         private readonly ProjectService _service;
+        private readonly PaginationService<Project> _paginationService;
 
-        public ProjectsController(ProjectService service)
+        public ProjectsController(ProjectService service, PaginationService<Project> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetProjects()
+        public IActionResult GetProjects(int? pageSize, int? pageNo, ProjectType? status, string? name)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(status, name);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
 
         [EnableQuery]
@@ -38,9 +44,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("site/{id}")]
-        public IActionResult GetProjectsBySiteId(Guid id)
+        public IActionResult GetProjectsBySiteId(Guid id, int? pageSize, int? pageNo, ProjectType? status, string? name)
         {
-            return Ok(_service.GetBySiteId(id));
+            var list = _service.GetBySiteId(id, status, name);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
 
         [HttpPost]

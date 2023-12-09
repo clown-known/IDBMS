@@ -4,6 +4,8 @@ using Repository.Implements;
 using Repository.Interfaces;
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
+using BusinessObject.Enums;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace IDBMS_API.Services
 {
@@ -14,9 +16,30 @@ namespace IDBMS_API.Services
         {
             _repository = repository;
         }
-        public IEnumerable<InteriorItemCategory> GetAll()
+
+        private IEnumerable<InteriorItemCategory> Filter(IEnumerable<InteriorItemCategory> list,
+           InteriorItemType? type, string? name)
         {
-            return _repository.GetAll();
+            IEnumerable<InteriorItemCategory> filteredList = list;
+
+            if (type != null)
+            {
+                filteredList = filteredList.Where(item => item.InteriorItemType == type);
+            }
+
+            if (name != null)
+            {
+                filteredList = filteredList.Where(item => item.Name == name);
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<InteriorItemCategory> GetAll(InteriorItemType? type, string? name)
+        {
+            var list = _repository.GetAll();
+
+            return Filter(list, type, name);
         }
         public InteriorItemCategory? GetById(int id)
         {

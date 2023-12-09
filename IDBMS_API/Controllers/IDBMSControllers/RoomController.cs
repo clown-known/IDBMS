@@ -1,7 +1,10 @@
 ﻿using Azure.Core;
+using BusinessObject.Models;
+using DocumentFormat.OpenXml.Wordprocessing;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -15,17 +18,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class RoomsController : ODataController
     {
         private readonly RoomService _service;
+        private readonly PaginationService<Room> _paginationService;
 
-        public RoomsController(RoomService service)
+        public RoomsController(RoomService service, PaginationService<Room> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetRooms()
+        public IActionResult GetRooms(string? usePurpose, bool? isHidden, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(usePurpose, isHidden);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
 
         [EnableQuery]
@@ -38,9 +45,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("floor/{id}")]
-        public IActionResult GetRoomsByFloorId( Guid id)
+        public IActionResult GetRoomsByFloorId(Guid id, string? usePurpose, bool? isHidden, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetByFloorId(id));
+            var list = _service.GetByFloorId(id, usePurpose, isHidden);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
 
         [HttpPost]

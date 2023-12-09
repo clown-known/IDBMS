@@ -1,7 +1,10 @@
 ﻿using Azure.Core;
+using BusinessObject.Enums;
+using BusinessObject.Models;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -14,17 +17,22 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class TaskCategoriesController : ODataController
     {
         private readonly TaskCategoryService _service;
+        private readonly PaginationService<TaskCategory> _paginationService;
 
-        public TaskCategoriesController(TaskCategoryService service)
+
+        public TaskCategoriesController(TaskCategoryService service, PaginationService<TaskCategory> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetTaskCategories()
+        public IActionResult GetTaskCategories(ProjectType? type, string? name, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(type, name);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
 
         [HttpPost]

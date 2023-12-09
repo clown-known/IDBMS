@@ -2,6 +2,7 @@
 using BusinessObject.Models;
 using Repository.Interfaces;
 using BusinessObject.Enums;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -13,9 +14,27 @@ namespace IDBMS_API.Services
         {
             _siteRepo = siteRepo;
         }
-        public IEnumerable<Site> GetAll()
+
+        private IEnumerable<Site> Filter(IEnumerable<Site> list,
+            string? nameOrAddress)
         {
-            return _siteRepo.GetAll();
+            IEnumerable<Site> filteredList = list;
+
+            if (nameOrAddress != null)
+            {
+                filteredList = filteredList.Where(item =>
+                            (item.Address != null && item.Address.Unidecode().IndexOf(nameOrAddress.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0) ||
+                            (item.Name != null && item.Name.Unidecode().IndexOf(nameOrAddress.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<Site> GetAll(string? nameOrAddress)
+        {
+            var list = _siteRepo.GetAll();
+
+            return Filter(list, nameOrAddress);
         }
         public Site? GetById(Guid id)
         {

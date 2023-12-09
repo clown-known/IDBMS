@@ -1,25 +1,48 @@
 ﻿using BLL.Services;
+using BusinessObject.Enums;
 using BusinessObject.Models;
 using IDBMS_API.DTOs.Request;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interfaces;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
     public class ProjectCategoryService
     {
-        private readonly IProjectCategoryRepository projectCategoryRepository;
-        public ProjectCategoryService (IProjectCategoryRepository projectCategoryRepository)
+        private readonly IProjectCategoryRepository _repository;
+        public ProjectCategoryService (IProjectCategoryRepository repository)
         {
-            this.projectCategoryRepository = projectCategoryRepository;
+            _repository = repository;
         }
-        public IEnumerable<ProjectCategory> GetAll()
+
+        public IEnumerable<ProjectCategory> Filter(IEnumerable<ProjectCategory> list,
+           bool? isHidden, string? name)
         {
-            return projectCategoryRepository.GetAll();
+            IEnumerable<ProjectCategory> filteredList = list;
+
+            if (isHidden != null)
+            {
+                filteredList = filteredList.Where(item => item.IsHidden == isHidden);
+            }
+
+            if (name != null)
+            {
+                filteredList = filteredList.Where(item => (item.Name != null && item.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<ProjectCategory> GetAll(bool? isHidden, string? name)
+        {
+            var list = _repository.GetAll();
+
+            return Filter(list, isHidden, name);
         }
         public ProjectCategory? GetById(int id)
         {
-            return projectCategoryRepository.GetById(id);
+            return _repository.GetById(id);
         }
         public async Task<ProjectCategory?> CreateProjectCategory([FromForm] ProjectCategoryRequest projectCategory)
         {
@@ -33,27 +56,27 @@ namespace IDBMS_API.Services
                 IsHidden = false,
             };
 
-            var pcCreated = projectCategoryRepository.Save(pc);
+            var pcCreated = _repository.Save(pc);
             return pcCreated;
         }
         public async void UpdateProjectCategory(int id, [FromForm] ProjectCategoryRequest projectCategory)
         {
             FirebaseService s = new FirebaseService();
             string link = await s.UploadImage(projectCategory.IconImage);
-            var pc = projectCategoryRepository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var pc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
             pc.Name = projectCategory.Name;
             pc.EnglishName = projectCategory.EnglishName;
             pc.IconImageUrl = link;
             
-            projectCategoryRepository.Update(pc);
+            _repository.Update(pc);
         }
         public void UpdateProjectCategoryStatus(int id, bool isHidden)
         {
-            var pc = projectCategoryRepository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var pc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             pc.IsHidden = isHidden;
 
-            projectCategoryRepository.Update(pc);
+            _repository.Update(pc);
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using IDBMS_API.DTOs.Request;
+﻿using BusinessObject.Models;
+using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -12,30 +14,38 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class WarrantyClaimsController : ODataController
     {
         private readonly WarrantyClaimService _service;
+        private readonly PaginationService<WarrantyClaim> _paginationService;
 
-        public WarrantyClaimsController(WarrantyClaimService service)
+        public WarrantyClaimsController(WarrantyClaimService service, PaginationService<WarrantyClaim> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetWarrantyClaims()
+        public IActionResult GetWarrantyClaims(bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(isCompanyCover, name);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
 
         [EnableQuery]
         [HttpGet("user/{id}")]
-        public IActionResult GetWarrantyClaimsByUserId(Guid id)
+        public IActionResult GetWarrantyClaimsByUserId(Guid id, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetByUserId(id));
+            var list = _service.GetByUserId(id, isCompanyCover, name);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
         [EnableQuery]
         [HttpGet("project/{id}")]
-        public IActionResult GetWarrantyClaimsByProjectId(Guid id)
+        public IActionResult GetWarrantyClaimsByProjectId(Guid id, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetByProjectId(id));
+            var list = _service.GetByUserId(id, isCompanyCover, name);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
         [HttpPost]
         public IActionResult CreateWarrantyClaim([FromBody][FromForm] WarrantyClaimRequest request)

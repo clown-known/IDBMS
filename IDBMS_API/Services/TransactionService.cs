@@ -4,6 +4,7 @@ using BusinessObject.Models;
 using Repository.Interfaces;
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -14,21 +15,46 @@ namespace IDBMS_API.Services
         {
             _repository = repository;
         }
-        public IEnumerable<Transaction> GetAll()
+
+        public IEnumerable<Transaction> Filter(IEnumerable<Transaction> list,
+            TransactionType? type, TransactionStatus? status)
         {
-            return _repository.GetAll();
+            IEnumerable<Transaction> filteredList = list;
+
+            if (type != null)
+            {
+                filteredList = filteredList.Where(item => item.Type == type);
+            }
+
+            if (status != null)
+            {
+                filteredList = filteredList.Where(item => item.Status == status);
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<Transaction> GetAll(TransactionType? type, TransactionStatus? status)
+        {
+            var list = _repository.GetAll();
+
+            return Filter(list, type, status);
         }
         public Transaction? GetById(Guid id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<Transaction?> GetByProjectId(Guid id)
+        public IEnumerable<Transaction?> GetByProjectId(Guid id, TransactionType? type, TransactionStatus? status)
         {
-            return _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+
+            return Filter(list, type, status);
         }
-        public IEnumerable<Transaction?> GetByUserId(Guid id)
+        public IEnumerable<Transaction?> GetByUserId(Guid id, TransactionType? type, TransactionStatus? status)
         {
-            return _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
+
+            return Filter(list, type, status);
         }
         public async Task<Transaction?> CreateTransaction([FromForm] TransactionRequest request)
         {
