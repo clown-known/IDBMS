@@ -7,6 +7,7 @@ using Repository.Interfaces;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -17,13 +18,39 @@ namespace IDBMS_API.Services
         {
             this._repository = _repository;
         }
+
+        public IEnumerable<BookingRequest> Filter(IEnumerable<BookingRequest> list,
+           ProjectType? type, BookingRequestStatus? status, string? contactName)
+        {
+            IEnumerable<BookingRequest> filteredList = list;
+
+            if (type != null)
+            {
+                filteredList = filteredList.Where(item => item.ProjectType == type);
+            }
+
+            if (status != null)
+            {
+                filteredList = filteredList.Where(item => item.Status == status);
+            }
+
+            if (contactName != null)
+            {
+                filteredList = filteredList.Where(item => (item.ContactName != null && item.ContactName.Unidecode().IndexOf(contactName.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            return filteredList;
+        }
+
         public BookingRequest? GetById(Guid id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<BookingRequest> GetAll()
+        public IEnumerable<BookingRequest> GetAll(ProjectType? type, BookingRequestStatus? status, string? contactName)
         {
-            return _repository.GetAll();
+            var list = _repository.GetAll();
+
+            return Filter(list, type, status, contactName);
         }
         public BookingRequest? CreateBookingRequest([FromForm] BookingRequestRequest BookingRequest)
         {

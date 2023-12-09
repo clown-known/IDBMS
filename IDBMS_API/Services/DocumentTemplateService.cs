@@ -2,6 +2,8 @@
 using BusinessObject.Models;
 using Repository.Implements;
 using Repository.Interfaces;
+using BusinessObject.Enums;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -12,9 +14,30 @@ namespace IDBMS_API.Services
         {
             _repository = repository;
         }
-        public IEnumerable<ProjectDocumentTemplate> GetAll()
+
+        public IEnumerable<ProjectDocumentTemplate> Filter(IEnumerable<ProjectDocumentTemplate> list,
+           DocumentTemplateType? type, string? name)
         {
-            return _repository.GetAll();
+            IEnumerable<ProjectDocumentTemplate> filteredList = list;
+
+            if (type != null)
+            {
+                filteredList = filteredList.Where(item => item.Type == type);
+            }
+
+            if (name != null)
+            {
+                filteredList = filteredList.Where(item => (item.Name != null && item.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<ProjectDocumentTemplate> GetAll(DocumentTemplateType? type, string? name)
+        {
+            var list = _repository.GetAll();
+
+            return Filter(list, type, name);
         }
         public ProjectDocumentTemplate? GetById(int id)
         {

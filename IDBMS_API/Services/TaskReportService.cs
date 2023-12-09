@@ -2,6 +2,8 @@
 using BusinessObject.Models;
 using Repository.Interfaces;
 using Azure.Core;
+using BusinessObject.Enums;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -28,17 +30,35 @@ namespace IDBMS_API.Services
             _projectDesignRepo = projectDesignRepo;
             _stageDesignRepo = stageDesignRepo;
         }
-        public IEnumerable<TaskReport> GetAll()
+
+        public IEnumerable<TaskReport> Filter(IEnumerable<TaskReport> list,
+           string? name)
         {
-            return _taskReportRepo.GetAll();
+            IEnumerable<TaskReport> filteredList = list;
+
+            if (name != null)
+            {
+                filteredList = filteredList.Where(item => (item.Name != null && item.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<TaskReport> GetAll(string? name)
+        {
+            var list = _taskReportRepo.GetAll();
+
+            return Filter(list, name);
         }
         public TaskReport? GetById(Guid id)
         {
             return _taskReportRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<TaskReport?> GetByTaskId(Guid id)
+        public IEnumerable<TaskReport?> GetByTaskId(Guid id, string? name)
         {
-            return _taskReportRepo.GetByTaskId(id);
+            var list = _taskReportRepo.GetByTaskId(id) ?? throw new Exception("This object is not existed!");
+
+            return Filter(list, name);
         }
 
         public void UpdateTaskPercentage(Guid taskId)

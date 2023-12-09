@@ -2,6 +2,8 @@
 using BusinessObject.Models;
 using Repository.Implements;
 using Repository.Interfaces;
+using BusinessObject.Enums;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -11,14 +13,32 @@ namespace IDBMS_API.Services
         public PaymentStageDesignService(IPaymentStageDesignRepository repository)
         {
             _repository = repository;
-        }   
-        public IEnumerable<PaymentStageDesign> GetAll()
-        {
-            return _repository.GetAll();
         }
-        public IEnumerable<PaymentStageDesign> GetByProjectDesignId(int id)
+
+        public IEnumerable<PaymentStageDesign> Filter(IEnumerable<PaymentStageDesign> list,
+           string? name)
         {
-            return _repository.GetByProjectDesignId(id) ?? throw new Exception("This object is not existed!");
+            IEnumerable<PaymentStageDesign> filteredList = list;
+
+            if (name != null)
+            {
+                filteredList = filteredList.Where(item => (item.Name != null && item.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<PaymentStageDesign> GetAll(string? name)
+        {
+            var list = _repository.GetAll();
+
+            return Filter(list, name);
+        }
+        public IEnumerable<PaymentStageDesign> GetByProjectDesignId(int id, string? name)
+        {
+            var list =_repository.GetByProjectDesignId(id) ?? throw new Exception("This object is not existed!");
+
+            return Filter(list, name);
         }
         public PaymentStageDesign? GetById(int id)
         {

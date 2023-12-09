@@ -1,12 +1,17 @@
 ﻿using API.Services;
 using BusinessObject.Enums;
+using BusinessObject.Models;
+using DocumentFormat.OpenXml.Drawing.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Request.AccountRequest;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using System.Threading.Tasks;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -15,17 +20,38 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class UsersController : ODataController
     {
         private readonly UserService _service;
+        private readonly PaginationService<User> _paginationService;
 
-        public UsersController(UserService service)
+        public UsersController(UserService service, PaginationService<User> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetUsers()
+        public IActionResult GetUsers(string? nameOrEmail, UserStatus? status, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            try
+            {
+                var list = _service.GetAll(nameOrEmail, status);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [EnableQuery]

@@ -169,7 +169,7 @@ namespace IDBMS_API.Services
         public void UpdatePaymentStageData(Guid projectId)
         {
             PaymentStageService stageService = new(_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo);
-            var stagesByProjectId = stageService.GetByProjectId(projectId);
+            var stagesByProjectId = stageService.GetByProjectId(projectId, null, null);
 
             foreach (var stage in stagesByProjectId)
             {

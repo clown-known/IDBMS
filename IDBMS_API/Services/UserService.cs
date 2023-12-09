@@ -13,6 +13,7 @@ using System.Net.Mail;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using BusinessObject.Enums;
+using UnidecodeSharpFork;
 
 namespace API.Services
 {
@@ -25,13 +26,36 @@ namespace API.Services
             this._repository = _repository;
             this.jwtTokenSupporter = jwtTokenSupporter;
         }
+
+        public IEnumerable<User> Filter(IEnumerable<User> list,
+           string? nameOrEmail, UserStatus? status)
+        {
+            IEnumerable<User> filteredList = list;
+
+            if (nameOrEmail != null)
+            {
+                filteredList = filteredList.Where(item =>
+                            (item.Name != null && item.Name.Unidecode().IndexOf(nameOrEmail.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0) ||
+                            (item.Email != null && item.Email.Unidecode().IndexOf(nameOrEmail.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            if (status != null)
+            {
+                filteredList = filteredList.Where(item => item.Status == status);
+            }
+
+            return filteredList;
+        }
+
         public User? GetById(Guid id)
         {
             return _repository.GetById(id);
         }
-        public IEnumerable<User> GetAll()
+        public IEnumerable<User> GetAll(string? nameOrEmail, UserStatus? status)
         {
-            return _repository.GetAll();
+            var list = _repository.GetAll();    
+
+            return Filter(list, nameOrEmail, status);
         }
 
         public (string? token, User? user) Login(string email, string password)
