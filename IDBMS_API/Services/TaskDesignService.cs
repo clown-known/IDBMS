@@ -15,18 +15,15 @@ namespace IDBMS_API.Services
         }
 
         public IEnumerable<TaskDesign> Filter(IEnumerable<TaskDesign> list,
-            string? code, string? name, int? taskCategoryId)
+            string? codeOrName, int? taskCategoryId)
         {
             IEnumerable<TaskDesign> filteredList = list;
 
-            if (code != null)
+            if (codeOrName != null)
             {
-                filteredList = filteredList.Where(item => (item.Name != null && item.Name.Unidecode().IndexOf(code.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
-            }
-
-            if (name != null)
-            {
-                filteredList = filteredList.Where(item => (item.Name != null && item.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+                filteredList = filteredList.Where(item =>
+                            (item.Code != null && item.Code.Unidecode().IndexOf(codeOrName.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0) ||
+                            (item.Name != null && item.Name.Unidecode().IndexOf(codeOrName.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
             }
 
             if (taskCategoryId != null)
@@ -37,11 +34,11 @@ namespace IDBMS_API.Services
             return filteredList;
         }
 
-        public IEnumerable<TaskDesign> GetAll(string? code, string? name, int? taskCategoryId)
+        public IEnumerable<TaskDesign> GetAll(string? codeOrName, int? taskCategoryId)
         {
             var list = _repository.GetAll();
 
-            return Filter(list, code, name, taskCategoryId);
+            return Filter(list, codeOrName, taskCategoryId);
         }
         public TaskDesign? GetById(int id)
         {

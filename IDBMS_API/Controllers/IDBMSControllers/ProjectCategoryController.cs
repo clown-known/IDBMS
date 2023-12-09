@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Repository.Interfaces;
 using BusinessObject.Models;
 using IDBMS_API.Services.PaginationService;
+using DocumentFormat.OpenXml.Drawing.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.Threading.Tasks;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -28,9 +31,26 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetProjectCategories(bool? isHidden, string? name, int? pageSize, int? pageNo)
         {
-            var list = _service.GetAll(isHidden, name);
+            try
+            {
+                var list = _service.GetAll(isHidden, name);
 
-            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
         [EnableQuery]
         [HttpGet("{id}")]

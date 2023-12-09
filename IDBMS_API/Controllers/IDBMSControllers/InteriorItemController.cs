@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using BusinessObject.Models;
 using IDBMS_API.Services.PaginationService;
+using DocumentFormat.OpenXml.Drawing.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.Threading.Tasks;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -28,17 +31,51 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetInteriorItems(int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? itemType, int? pageSize, int? pageNo)
         {
-            var list = _service.GetAll(itemCategoryId, status, codeOrName, itemType);
+            try
+            {
+                var list = _service.GetAll(itemCategoryId, status, codeOrName, itemType);
 
-            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
         [EnableQuery]
         [HttpGet("interior-item-category/{id}")]
         public IActionResult GetInteriorItemsByCategory(int id, int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? itemType, int? pageSize, int? pageNo)
         {
-            var list = _service.GetByCategory(id, itemCategoryId, status, codeOrName, itemType);
+            try
+            {
+                var list = _service.GetByCategory(id, itemCategoryId, status, codeOrName, itemType);
 
-            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
         [HttpPost]
         public IActionResult CreateInteriorItem([FromBody][FromForm] InteriorItemRequest request)

@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using BusinessObject.Models;
+using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Repository.Interfaces;
 using System;
+using System.Threading.Tasks;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -30,9 +32,26 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetRooms(string? usePurpose, bool? isHidden, int? pageSize, int? pageNo)
         {
-            var list = _service.GetAll(usePurpose, isHidden);
+            try
+            {
+                var list = _service.GetAll(usePurpose, isHidden);
 
-            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [EnableQuery]
@@ -47,9 +66,26 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("floor/{id}")]
         public IActionResult GetRoomsByFloorId(Guid id, string? usePurpose, bool? isHidden, int? pageSize, int? pageNo)
         {
-            var list = _service.GetByFloorId(id, usePurpose, isHidden);
+            try
+            {
+                var list = _service.GetByFloorId(id, usePurpose, isHidden);
 
-            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [HttpPost]
