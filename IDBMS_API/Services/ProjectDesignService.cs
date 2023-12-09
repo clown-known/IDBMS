@@ -2,6 +2,7 @@
 using BusinessObject.Enums;
 using BusinessObject.Models;
 using Repository.Interfaces;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -12,9 +13,35 @@ namespace IDBMS_API.Services
         {
             _repository = repository;
         }
-        public IEnumerable<ProjectDesign> GetAll()
+
+        public IEnumerable<ProjectDesign> Filter(IEnumerable<ProjectDesign> list,
+            ProjectType? type, string? name, bool? isHidden)
         {
-            return _repository.GetAll();
+            IEnumerable<ProjectDesign> filteredList = list;
+
+            if (type != null)
+            {
+                filteredList = filteredList.Where(item => item.ProjectType == type);
+            }
+
+            if (name != null)
+            {
+                filteredList = filteredList.Where(item => (item.Name != null && item.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            if (isHidden != null)
+            {
+                filteredList = filteredList.Where(item => item.IsHidden == isHidden);
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<ProjectDesign> GetAll(ProjectType? type, string? name, bool? isHidden)
+        {
+            var list = _repository.GetAll();
+
+            return Filter(list, type, name, isHidden);
         }
         public IEnumerable<ProjectDesign> GetByType(ProjectType type)
         {

@@ -1,6 +1,8 @@
 ﻿using Azure.Core;
+using BusinessObject.Models;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -13,17 +15,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class RoomTypesController : ODataController
     {
         private readonly RoomTypeService _service;
+        private readonly PaginationService<RoomType> _paginationService;
 
-        public RoomTypesController(RoomTypeService service)
+        public RoomTypesController(RoomTypeService service, PaginationService<RoomType> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetRoomTypes()
+        public IActionResult GetRoomTypes(bool? isHidden, string? name, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(isHidden, name);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
 
         [HttpPost]

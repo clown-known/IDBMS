@@ -4,6 +4,8 @@ using Repository.Interfaces;
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 using Azure.Core;
+using BusinessObject.Enums;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -18,9 +20,29 @@ namespace IDBMS_API.Services
             _projectRepo = projectRepo;
         }
 
-        public IEnumerable<WarrantyClaim> GetAll()
+        public IEnumerable<WarrantyClaim> Filter(IEnumerable<WarrantyClaim> list,
+            bool? isCompanyCover, string? name)
         {
-            return _repository.GetAll();
+            IEnumerable<WarrantyClaim> filteredList = list;
+
+            if (isCompanyCover != null)
+            {
+                filteredList = filteredList.Where(item => item.IsCompanyCover == isCompanyCover);
+            }
+
+            if (name != null)
+            {
+                filteredList = filteredList.Where(item => (item.Name != null && item.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<WarrantyClaim> GetAll(bool? isCompanyCover, string? name)
+        {
+            var list = _repository.GetAll();
+
+            return Filter(list, isCompanyCover, name);
         }
 
         public WarrantyClaim? GetById(Guid id)
@@ -28,14 +50,18 @@ namespace IDBMS_API.Services
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
 
-        public IEnumerable<WarrantyClaim?> GetByUserId(Guid id)
+        public IEnumerable<WarrantyClaim?> GetByUserId(Guid id, bool? isCompanyCover, string? name)
         {
-            return _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
+
+            return Filter(list, isCompanyCover, name);
         }
 
-        public IEnumerable<WarrantyClaim?> GetByProjectId(Guid id)
+        public IEnumerable<WarrantyClaim?> GetByProjectId(Guid id, bool? isCompanyCover, string? name)
         {
-            return _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+
+            return Filter(list, isCompanyCover, name);
         }
 
         public void UpdateProjectTotalWarrantyPaid(Guid projectId)

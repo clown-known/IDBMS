@@ -1,9 +1,12 @@
 ﻿using Azure;
 using Azure.Core;
 using BusinessObject.Enums;
+using BusinessObject.Models;
+using DocumentFormat.OpenXml.Wordprocessing;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -16,31 +19,39 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class ProjectParticipationsController : ODataController
     {
         private readonly ProjectParticipationService _service;
+        private readonly PaginationService<ProjectParticipation> _paginationService;
 
-        public ProjectParticipationsController(ProjectParticipationService service)
+        public ProjectParticipationsController(ProjectParticipationService service, PaginationService<ProjectParticipation> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetParticipations()
+        public IActionResult GetParticipations(ParticipationRole? role, string? username, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(role, username);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
 
         [EnableQuery]
         [HttpGet("user/{id}")]
-        public IActionResult GetParticipationsByUserId(Guid projectId, Guid id)
+        public IActionResult GetParticipationsByUserId(Guid id, ParticipationRole? role, string? username, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetByUserId(id));
+            var list = _service.GetByUserId(id, role, username) ?? throw new Exception("This object is not existed!");
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
 
         [EnableQuery]
         [HttpGet("project/{id}")]
-        public IActionResult GetParticipationsByProjectId(Guid projectId, Guid id)
+        public IActionResult GetParticipationsByProjectId(Guid id, ParticipationRole? role, string? username, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetByProjectId(id));
+            var list = _service.GetByProjectId(id, role, username) ?? throw new Exception("This object is not existed!");
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
 
         [HttpPost]

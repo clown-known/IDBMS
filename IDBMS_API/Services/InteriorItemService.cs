@@ -6,6 +6,8 @@ using Repository.Interfaces;
 using BLL.Services;
 using Microsoft.AspNetCore.OData.Formatter.Wrapper;
 using Microsoft.AspNetCore.Mvc;
+using UnidecodeSharpFork;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace IDBMS_API.Services
 {
@@ -16,17 +18,52 @@ namespace IDBMS_API.Services
         {
             _repository = repository;
         }
-        public IEnumerable<InteriorItem> GetAll()
+
+        private IEnumerable<InteriorItem> Filter(IEnumerable<InteriorItem?> list,
+            int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? cateType)
         {
-            return _repository.GetAll();
+            IEnumerable<InteriorItem> filteredList = list;
+            
+            if (itemCategoryId != null)
+            {
+                filteredList = filteredList.Where(item => item.InteriorItemCategoryId == itemCategoryId);
+            }
+
+            if (status != null)
+            {
+                filteredList = filteredList.Where(item => item.Status == status);
+            }
+
+            if (codeOrName != null)
+            {
+                filteredList = filteredList.Where(item =>
+                           (item.Code != null && item.Code.IndexOf(codeOrName, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                           (item.Name != null && item.Name.Unidecode().IndexOf(codeOrName.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            if (cateType != null)
+            {
+                filteredList = filteredList.Where(item => item.InteriorItemCategory.InteriorItemType == cateType);
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<InteriorItem> GetAll(int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? cateType)
+        {
+            var list = _repository.GetAll();
+
+            return Filter(list, itemCategoryId, status, codeOrName, cateType);
         }
         public InteriorItem? GetById(Guid id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<InteriorItem?> GetByCategory(int id)
+        public IEnumerable<InteriorItem?> GetByCategory(int id, int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? cateType)
         {
-            return _repository.GetByCategory(id) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByCategory(id) ?? throw new Exception("This object is not existed!");
+
+            return Filter(list, itemCategoryId, status, codeOrName, cateType);
         }
         public async Task<InteriorItem?> CreateInteriorItem([FromForm] InteriorItemRequest request)
         {

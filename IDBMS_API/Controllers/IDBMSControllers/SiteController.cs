@@ -1,6 +1,8 @@
-﻿using IDBMS_API.DTOs.Request;
+﻿using BusinessObject.Models;
+using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -12,17 +14,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class SitesController : ODataController
     {
         private readonly SiteService _service;
+        private readonly PaginationService<Site> _paginationService;
 
-        public SitesController(SiteService service)
+        public SitesController(SiteService service, PaginationService<Site> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetSites()
+        public IActionResult GetSites(string? nameOrAddress, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(nameOrAddress);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
 
         [EnableQuery]

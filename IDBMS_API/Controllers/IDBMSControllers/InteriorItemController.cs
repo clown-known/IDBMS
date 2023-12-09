@@ -6,6 +6,8 @@ using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using BusinessObject.Models;
+using IDBMS_API.Services.PaginationService;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -14,23 +16,29 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class InteriorItemsController : ODataController
     {
         private readonly InteriorItemService _service;
+        private readonly PaginationService<InteriorItem> _paginationService;
 
-        public InteriorItemsController(InteriorItemService service)
+        public InteriorItemsController(InteriorItemService service, PaginationService<InteriorItem> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetInteriorItems()
+        public IActionResult GetInteriorItems(int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? cateType, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(itemCategoryId, status, codeOrName, cateType);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
         [EnableQuery]
         [HttpGet("interior-item-category/{id}")]
-        public IActionResult GetInteriorItemsByCategory(int id)
+        public IActionResult GetInteriorItemsByCategory(int id, int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? cateType, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetByCategory(id));
+            var list = _service.GetByCategory(id, itemCategoryId, status, codeOrName, cateType);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
         [HttpPost]
         public IActionResult CreateInteriorItem([FromBody][FromForm] InteriorItemRequest request)
