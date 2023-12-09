@@ -57,19 +57,15 @@ namespace IDBMS_API.Services
         }*/
 
         public IEnumerable<ProjectTask> Filter(IEnumerable<ProjectTask> list, 
-            string? code, string? name, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId)
+            string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId)
         {
             IEnumerable<ProjectTask> filteredList = list;
 
-            if (code != null)
-            {
-                filteredList = filteredList.Where(item => item.Code?.IndexOf(code, StringComparison.OrdinalIgnoreCase) >= 0);
-            }
-
-            if (name != null)
+            if (codeOrName != null)
             {
                 filteredList = filteredList.Where(item =>
-                    item.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0);
+                            (item.Code != null && item.Code.IndexOf(codeOrName, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                            (item.Name != null && item.Name.Unidecode().IndexOf(codeOrName.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
             }
 
             if (stageId != null)
@@ -87,6 +83,11 @@ namespace IDBMS_API.Services
                 filteredList = filteredList.Where(item => item.TaskCategoryId == taskCategoryId);
             }
 
+            if (roomId != null)
+            {
+                filteredList = filteredList.Where(item => item.RoomId == roomId);
+            }
+
             return filteredList;
         }
         
@@ -101,11 +102,11 @@ namespace IDBMS_API.Services
         }
 
         public IEnumerable<ProjectTask?> GetByProjectId(Guid id, 
-            string? code, string? name, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId)
+            string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId)
         {
             var list = _taskRepo.GetByProjectId(id);
             
-            return Filter(list, code, name, stageId, taskStatus, taskCategoryId);
+            return Filter(list, codeOrName, stageId, taskStatus, taskCategoryId, roomId);
         }
 
         public IEnumerable<ProjectTask?> GetByRoomId(Guid id)

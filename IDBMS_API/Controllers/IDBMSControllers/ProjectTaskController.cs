@@ -59,11 +59,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("project/{projectId}")]
         public IActionResult GetProjectTasksByProjectId(Guid projectId, int? pageSize, int? pageNo, 
-                        string? code, string? name, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId)
+                        string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId)
         {
             try
             {
-                var list = _service.GetByProjectId(projectId, code, name, stageId, taskStatus, taskCategoryId);
+                var list = _service.GetByProjectId(projectId, codeOrName, stageId, taskStatus, taskCategoryId, roomId);
 
                 var response = new ResponseMessage()
                 {
@@ -83,7 +83,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [EnableQuery]
+        /*[EnableQuery]
         [HttpGet("room/{id}")]
         public IActionResult GetProjectTasksByRoomId(Guid id)
         {
@@ -95,7 +95,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         public IActionResult GetProjectTasksByPaymentStageId(Guid id)
         {
             return Ok(_service.GetByPaymentStageId(id));
-        }
+        }*/
+
         [HttpPost]
         public IActionResult CreateProjectTask([FromBody] ProjectTaskRequest request)
         {

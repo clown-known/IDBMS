@@ -117,8 +117,8 @@ namespace IDBMS_API.Services
                     ProjectId = request.ProjectId,
                     RoomId = roomCreated.Id,
                     Status = ProjectTaskStatus.Pending,
-                    EstimateBusinessDay = (int)(roomType.EstimateDayPerArea * roomCreated.Area),
-                };
+                    EstimateBusinessDay = (int)Math.Ceiling(roomType.EstimateDayPerArea * roomCreated.Area),
+            };
 
                 if (request.Language == Language.English)
                 {
