@@ -1,6 +1,9 @@
-﻿using IDBMS_API.DTOs.Request;
+﻿using BusinessObject.Enums;
+using BusinessObject.Models;
+using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -12,24 +15,30 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class InteriorItemColorsController : ODataController
     {
         private readonly InteriorItemColorService _service;
+        private readonly PaginationService<InteriorItemColor> _paginationService;
 
-        public InteriorItemColorsController(InteriorItemColorService service)
+        public InteriorItemColorsController(InteriorItemColorService service, PaginationService<InteriorItemColor> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetInteriorItemColors()
+        public IActionResult GetInteriorItemColors(ColorType? type, string? name, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(type, name);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
         //guest
         [EnableQuery]
         [HttpGet("interior-item-category/{id}")]
-        public IActionResult GetInteriorItemColorsByCategoryId(int id)
+        public IActionResult GetInteriorItemColorsByCategoryId(int id, ColorType? type, string? name, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetByCategoryId(id));
+            var list = _service.GetByCategoryId(id, type, name);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
         [HttpPost]
         public IActionResult CreateInteriorItemColor([FromBody] InteriorItemColorRequest request)

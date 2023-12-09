@@ -5,6 +5,7 @@ using Repository.Interfaces;
 using System.Text.RegularExpressions;
 using BusinessObject.Enums;
 using Microsoft.AspNetCore.Mvc;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -16,19 +17,43 @@ namespace IDBMS_API.Services
             _repository = repository;
         }
 
-        public IEnumerable<ProjectParticipation> GetAll()
+        public IEnumerable<ProjectParticipation> Filter(IEnumerable<ProjectParticipation> list,
+            ParticipationRole? role, string? username)
         {
-            return _repository.GetAll();
+            IEnumerable<ProjectParticipation> filteredList = list;
+            
+            if (role != null)
+            {
+                filteredList = filteredList.Where(item => item.Role == role);
+            }
+
+            if (username != null)
+            {
+                filteredList = filteredList.Where(item => (item.User.Name != null && item.User.Name.Unidecode().IndexOf(username.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            return filteredList;
         }
 
-        public IEnumerable<ProjectParticipation> GetByUserId(Guid id)
+        public IEnumerable<ProjectParticipation> GetAll(ParticipationRole? role, string? username)
         {
-            return _repository.GetByUserId(id);
+            var list = _repository.GetAll();
+
+            return Filter(list, role, username);
         }
 
-        public IEnumerable<ProjectParticipation> GetByProjectId(Guid id)
+        public IEnumerable<ProjectParticipation> GetByUserId(Guid id, ParticipationRole? role, string? username)
         {
-            return _repository.GetByProjectId(id);
+            var list = _repository.GetByUserId(id);
+
+            return Filter(list, role, username);
+        }
+
+        public IEnumerable<ProjectParticipation> GetByProjectId(Guid id, ParticipationRole? role, string? username)
+        {
+            var list = _repository.GetByProjectId(id);
+
+            return Filter(list, role, username);
         }
 
         public ProjectParticipation? CreateParticipation(ProjectParticipationRequest request)

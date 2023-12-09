@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Repository.Interfaces;
+using BusinessObject.Models;
+using IDBMS_API.Services.PaginationService;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -14,17 +16,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class ProjectCategoriesController : ODataController
     {
         private readonly ProjectCategoryService _service;
+        private readonly PaginationService<ProjectCategory> _paginationService;
 
-        public ProjectCategoriesController(ProjectCategoryService service)
+        public ProjectCategoriesController(ProjectCategoryService service, PaginationService<ProjectCategory> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetProjectCategories()
+        public IActionResult GetProjectCategories(bool? isHidden, string? name, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(isHidden, name);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
         [EnableQuery]
         [HttpGet("{id}")]

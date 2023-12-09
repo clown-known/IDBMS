@@ -1,6 +1,8 @@
 ﻿using IDBMS_API.DTOs.Request;
 using BusinessObject.Models;
 using Repository.Interfaces;
+using BusinessObject.Enums;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -11,9 +13,35 @@ namespace IDBMS_API.Services
         {
             _repository = repository;
         }
-        public IEnumerable<TaskDesign> GetAll()
+
+        public IEnumerable<TaskDesign> Filter(IEnumerable<TaskDesign> list,
+            string? code, string? name, int? taskCategoryId)
         {
-            return _repository.GetAll();
+            IEnumerable<TaskDesign> filteredList = list;
+
+            if (code != null)
+            {
+                filteredList = filteredList.Where(item => (item.Name != null && item.Name.Unidecode().IndexOf(code.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            if (name != null)
+            {
+                filteredList = filteredList.Where(item => (item.Name != null && item.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            if (taskCategoryId != null)
+            {
+                filteredList = filteredList.Where(item => item.TaskCategoryId == taskCategoryId);
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<TaskDesign> GetAll(string? code, string? name, int? taskCategoryId)
+        {
+            var list = _repository.GetAll();
+
+            return Filter(list, code, name, taskCategoryId);
         }
         public TaskDesign? GetById(int id)
         {

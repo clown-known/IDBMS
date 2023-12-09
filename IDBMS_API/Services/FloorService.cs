@@ -4,6 +4,8 @@ using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using DocumentFormat.OpenXml.Wordprocessing;
+using BusinessObject.Enums;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -16,9 +18,30 @@ namespace IDBMS_API.Services
             _floorRepo = floorRepo;
         }
 
-        public IEnumerable<Floor> GetAll()
+        private IEnumerable<Floor> Filter(IEnumerable<Floor> list,
+            int? noOfFloor, string? usePurpose)
         {
-            return _floorRepo.GetAll();
+            IEnumerable<Floor> filteredList = list;
+
+            if (noOfFloor != null)
+            {
+                filteredList = filteredList.Where(item => item.FloorNo == noOfFloor);
+               
+            }
+            else
+            {
+                filteredList = filteredList.Where(item =>
+                           (item.UsePurpose != null && item.UsePurpose.Unidecode().IndexOf(usePurpose.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<Floor> GetAll(int? noOfFloor, string? usePurpose)
+        {
+            var list = _floorRepo.GetAll();
+
+            return Filter(list, noOfFloor, usePurpose);
         }
 
         public Floor? GetById(Guid id)
@@ -26,9 +49,11 @@ namespace IDBMS_API.Services
             return _floorRepo.GetById(id) ?? throw new Exception("This object is not found!");
         }
 
-        public IEnumerable<Floor> GetByProjectId(Guid id)
+        public IEnumerable<Floor> GetByProjectId(Guid id, int? noOfFloor, string? usePurpose)
         {
-            return _floorRepo.GetByProjectId(id);
+            var list = _floorRepo.GetByProjectId(id) ?? throw new Exception("This object is not found!");
+
+            return Filter(list, noOfFloor, usePurpose);
         }
 
         public Floor? CreateFloor(FloorRequest request)

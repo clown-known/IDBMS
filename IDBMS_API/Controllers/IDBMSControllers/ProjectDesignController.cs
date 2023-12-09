@@ -1,6 +1,9 @@
-﻿using IDBMS_API.DTOs.Request;
+﻿using BusinessObject.Enums;
+using BusinessObject.Models;
+using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -12,17 +15,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class ProjectDesignsController : ODataController
     {
         private readonly ProjectDesignService _service;
+        private readonly PaginationService<ProjectDesign> _paginationService;
 
-        public ProjectDesignsController(ProjectDesignService service)
+        public ProjectDesignsController(ProjectDesignService service, PaginationService<ProjectDesign> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetProjectDesigns()
+        public IActionResult GetProjectDesigns(ProjectType? type, string? name, bool? isHidden, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(type, name, isHidden);
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
 
         [HttpPost]

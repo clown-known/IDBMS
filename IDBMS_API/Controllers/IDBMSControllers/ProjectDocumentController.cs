@@ -1,7 +1,10 @@
 ﻿using Azure.Core;
+using BusinessObject.Enums;
+using BusinessObject.Models;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -13,17 +16,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class ProjectDocumentsController : ODataController
     {
         private readonly ProjectDocumentService _service;
+        private readonly PaginationService<ProjectDocument> _paginationService;
 
-        public ProjectDocumentsController(ProjectDocumentService service)
+        public ProjectDocumentsController(ProjectDocumentService service, PaginationService<ProjectDocument> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetProjectDocuments()
+        public IActionResult GetProjectDocuments(ProjectDocumentCategory? category, string? name, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(category, name);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
         [EnableQuery]
         [HttpGet("document-template/{id}")]

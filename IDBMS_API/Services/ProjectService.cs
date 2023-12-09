@@ -4,6 +4,7 @@ using IDBMS_API.DTOs.Request;
 using IDBMS_API.Services;
 using Repository.Interfaces;
 using Microsoft.OData.Edm;
+using UnidecodeSharpFork;
 
 public class ProjectService
 {
@@ -14,18 +15,40 @@ public class ProjectService
         _repository = repository;
     }
 
-    public IEnumerable<Project> GetAll()
+    private IEnumerable<Project> Filter(IEnumerable<Project> list,
+            ProjectType? status, string? name)
     {
-        return _repository.GetAll();
+        IEnumerable<Project> filteredList = list;
+
+        if (status != null)
+        {
+            filteredList = filteredList.Where(item => item.Type == status);
+        }
+
+        if (name != null)
+        {
+            filteredList = filteredList.Where(item => (item.Name != null && item.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+        }
+
+        return filteredList;
+    }
+
+    public IEnumerable<Project> GetAll(ProjectType? status, string? name)
+    {
+        var list = _repository.GetAll();
+
+        return Filter(list, status, name);
     }
 
     public Project? GetById(Guid id)
     {
         return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
     }    
-    public IEnumerable<Project> GetBySiteId(Guid id)
+    public IEnumerable<Project> GetBySiteId(Guid id, ProjectType? status, string? name)
     {
-        return _repository.GetBySiteId(id) ?? throw new Exception("This object is not existed!");
+        var list = _repository.GetBySiteId(id) ?? throw new Exception("This object is not found!");
+
+        return Filter(list, status, name);
     }
 
     public Project? CreateProject(ProjectRequest request)

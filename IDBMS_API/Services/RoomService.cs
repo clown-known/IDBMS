@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using BusinessObject.Enums;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Azure.Core;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -38,10 +39,29 @@ namespace IDBMS_API.Services
             _stageDesignRepo = stageDesignRepo;
         }
 
-
-        public IEnumerable<Room> GetAll()
+        private IEnumerable<Room> Filter(IEnumerable<Room> list,
+            string? usePurpose, bool? isHidden)
         {
-            return _roomRepo.GetAll();
+            IEnumerable<Room> filteredList = list;
+
+            if (usePurpose != null)
+            {
+                filteredList = filteredList.Where(item => item.UsePurpose.Unidecode().IndexOf(usePurpose.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0);
+            }
+
+            if (isHidden != null)
+            {
+                filteredList = filteredList.Where(item => item.IsHidden == isHidden);
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<Room> GetAll(string? usePurpose, bool? isHidden)
+        {
+            var list = _roomRepo.GetAll();
+
+            return Filter(list, usePurpose, isHidden);
         }
 
         public Room? GetById(Guid id)
@@ -49,14 +69,18 @@ namespace IDBMS_API.Services
             return _roomRepo.GetById(id) ?? throw new Exception("This object is not found!");
         }
 
-        public IEnumerable<Room> GetByFloorId(Guid id)
+        public IEnumerable<Room> GetByFloorId(Guid id, string? usePurpose, bool? isHidden)
         {
-            return _roomRepo.GetByFloorId(id);
+            var list = _roomRepo.GetByFloorId(id) ?? throw new Exception("This object is not found!");
+
+            return Filter(list, usePurpose, isHidden);
         }
         
-        public IEnumerable<Room> GetByProjectId(Guid id)
+        public IEnumerable<Room> GetByProjectId(Guid id, string? usePurpose, bool? isHidden)
         {
-            return _roomRepo.GetByProjectId(id);
+            var list = _roomRepo.GetByProjectId(id);
+
+            return Filter(list, usePurpose, isHidden);
         }
 
         public void UpdateProjectArea(Guid projectId)

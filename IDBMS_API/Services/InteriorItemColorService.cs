@@ -2,6 +2,8 @@
 using BusinessObject.Models;
 using Repository.Implements;
 using Repository.Interfaces;
+using BusinessObject.Enums;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -12,17 +14,40 @@ namespace IDBMS_API.Services
         {
             _repository = repository;
         }
-        public IEnumerable<InteriorItemColor> GetAll()
+
+        private IEnumerable<InteriorItemColor> Filter(IEnumerable<InteriorItemColor> list,
+            ColorType? type, string? name)
         {
-            return _repository.GetAll();
+            IEnumerable<InteriorItemColor> filteredList = list;
+
+            if (type != null)
+            {
+                filteredList = filteredList.Where(item => item.Type == type);
+            }
+
+            if (name != null)
+            {
+                filteredList = filteredList.Where(item => item.Name == name);
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<InteriorItemColor> GetAll(ColorType? type, string? name)
+        {
+            var list = _repository.GetAll();
+
+            return Filter(list, type, name);
         }
         public InteriorItemColor? GetById(int id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<InteriorItemColor?> GetByCategoryId(int id)
+        public IEnumerable<InteriorItemColor?> GetByCategoryId(int id, ColorType? type, string? name)
         {
-            return _repository.GetByCategoryId(id) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByCategoryId(id) ?? throw new Exception("This object is not existed!");
+
+            return Filter(list, type, name);
         }
         public InteriorItemColor? CreateInteriorItemColor(InteriorItemColorRequest request)
         {

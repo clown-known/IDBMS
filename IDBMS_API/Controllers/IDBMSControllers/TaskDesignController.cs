@@ -1,6 +1,8 @@
-﻿using IDBMS_API.DTOs.Request;
+﻿using BusinessObject.Models;
+using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -12,17 +14,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class TaskDesignsController : ODataController
     {
         private readonly TaskDesignService _service;
+        private readonly PaginationService<TaskDesign> _paginationService;
 
-        public TaskDesignsController(TaskDesignService service)
+        public TaskDesignsController(TaskDesignService service, PaginationService<TaskDesign> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetTaskDesigns()
+        public IActionResult GetTaskDesigns(string? code, string? name, int? taskCategoryId, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(code, name, taskCategoryId);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
 
         [HttpPost]

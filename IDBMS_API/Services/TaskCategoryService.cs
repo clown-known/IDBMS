@@ -3,6 +3,8 @@ using BusinessObject.Models;
 using Repository.Interfaces;
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
+using BusinessObject.Enums;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -14,9 +16,30 @@ namespace IDBMS_API.Services
         {
             _repository = repository;
         }
-        public IEnumerable<TaskCategory> GetAll()
+
+        public IEnumerable<TaskCategory> Filter(IEnumerable<TaskCategory> list,
+            ProjectType? type, string? name)
         {
-            return _repository.GetAll();
+            IEnumerable<TaskCategory> filteredList = list;
+
+            if (type != null)
+            {
+                filteredList = filteredList.Where(item => item.ProjectType == type);
+            }
+
+            if (name != null)
+            {
+                filteredList = filteredList.Where(item => (item.Name != null && item.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<TaskCategory> GetAll(ProjectType? type, string? name)
+        {
+            var list = _repository.GetAll();
+
+            return Filter(list, type, name);
         }
         public TaskCategory? GetById(int id)
         {

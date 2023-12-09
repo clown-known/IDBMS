@@ -1,6 +1,10 @@
-﻿using IDBMS_API.DTOs.Request;
+﻿using BusinessObject.Enums;
+using BusinessObject.Models;
+using DocumentFormat.OpenXml.Wordprocessing;
+using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -12,17 +16,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class InteriorItemCategoriesController : ODataController
     {
         private readonly InteriorItemCategoryService _service;
+        private readonly PaginationService<InteriorItemCategory> _paginationService;
 
-        public InteriorItemCategoriesController(InteriorItemCategoryService service)
+        public InteriorItemCategoriesController(InteriorItemCategoryService service, PaginationService<InteriorItemCategory> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetInteriorItemCategories()
+        public IActionResult GetInteriorItemCategories(InteriorItemType? type, string? name, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(type, name);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
 
         [HttpPost]

@@ -6,6 +6,8 @@ using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using BusinessObject.Models;
+using IDBMS_API.Services.PaginationService;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -14,17 +16,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class TransactionsController : ODataController
     {
         private readonly TransactionService _service;
+        private readonly PaginationService<Transaction> _paginationService;
 
-        public TransactionsController(TransactionService service)
+        public TransactionsController(TransactionService service, PaginationService<Transaction> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetTransactions()
+        public IActionResult GetTransactions(TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            var list = _service.GetAll(type, status); 
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
         //admin, owner
         [EnableQuery]
@@ -36,16 +42,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //cus
         [EnableQuery]
         [HttpGet("user/{id}")]
-        public IActionResult GetTransactionsByUserId(Guid id)
+        public IActionResult GetTransactionsByUserId(Guid id, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetByUserId(id));
+            var list = _service.GetByUserId(id, type, status);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
         //admin, owner
         [EnableQuery]
         [HttpGet("project/{id}")]
-        public IActionResult GetTransactionsByProjectId(Guid id)
+        public IActionResult GetTransactionsByProjectId(Guid id, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetByProjectId(id));
+            var list = _service.GetByProjectId(id, type, status);
+
+            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
         }
         [HttpPost]
         public IActionResult CreateTransaction([FromBody][FromForm] TransactionRequest request)
