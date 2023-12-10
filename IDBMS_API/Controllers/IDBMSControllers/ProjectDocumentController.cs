@@ -31,9 +31,26 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetProjectDocuments(ProjectDocumentCategory? category, string? name, int? pageSize, int? pageNo)
         {
-            var list = _service.GetAll(category, name);
+            try
+            {
+                var list = _service.GetAll(category, name);
 
-            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
         [EnableQuery]
         [HttpGet("document-template/{id}")]

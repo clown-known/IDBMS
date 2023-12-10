@@ -4,6 +4,9 @@ using Repository.Interfaces;
 using Repository.Implements;
 
 using IDBMS_API.DTOs.Request;
+using BusinessObject.Enums;
+using UnidecodeSharpFork;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace IDBMS_API.Services
 {
@@ -16,17 +19,35 @@ namespace IDBMS_API.Services
             _repository = notificationRepository;
             _userRepository = userRepository;
         }
+
+        public IEnumerable<Notification> Filter(IEnumerable<Notification> list,
+           NotificationCategory? category)
+        {
+            IEnumerable<Notification> filteredList = list;
+ 
+            if (category != null)
+            {
+                filteredList = filteredList.Where(item => item.Category == category);
+            }
+
+            return filteredList;
+        }
+
         public Notification? GetById(Guid id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<Notification> GetByUserId (Guid userId)
+        public IEnumerable<Notification> GetByUserId (Guid userId, NotificationCategory? category)
         {
-            return _repository.GetByUserId(userId) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByUserId(userId) ?? throw new Exception("This object is not existed!");
+
+            return Filter(list, category);
         }
-        public IEnumerable<Notification> GetAll()
+        public IEnumerable<Notification> GetAll(NotificationCategory? category)
         {
-            return _repository.GetAll();
+            var list = _repository.GetAll();
+
+            return Filter(list, category);
         }
         public Notification? CreateNotificatonByUserId(NotificationRequest noti, Guid userId)
         {

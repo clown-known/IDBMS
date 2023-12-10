@@ -1,9 +1,14 @@
-﻿using IDBMS_API.DTOs.Request;
+﻿using BusinessObject.Models;
+using DocumentFormat.OpenXml.Drawing.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
+using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using System.Threading.Tasks;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -12,17 +17,38 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class TaskReportsController : ODataController
     {
         private readonly TaskReportService _service;
+        private readonly PaginationService<TaskReport> _paginationService;
 
-        public TaskReportsController(TaskReportService service)
+        public TaskReportsController(TaskReportService service, PaginationService<TaskReport> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetTaskReports()
+        public IActionResult GetTaskReports(string? name, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            try
+            {
+                var list = _service.GetAll(name);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [EnableQuery]
@@ -34,9 +60,28 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("project-task/{id}")]
-        public IActionResult GetTaskReportsByProjectTaskId(Guid id)
+        public IActionResult GetTaskReportsByProjectTaskId(Guid id, string? name, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetByTaskId(id));
+            try
+            {
+                var list = _service.GetByTaskId(id, name);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [HttpPost]
