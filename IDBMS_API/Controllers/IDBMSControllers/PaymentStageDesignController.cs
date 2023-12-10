@@ -1,8 +1,14 @@
-﻿using IDBMS_API.DTOs.Request;
+﻿using BusinessObject.Models;
+using DocumentFormat.OpenXml.Drawing.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
+using IDBMS_API.DTOs.Request;
+using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using System.Threading.Tasks;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -11,24 +17,63 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class PaymentStageDesignsController : ODataController
     {
         private readonly PaymentStageDesignService _service;
+        private readonly PaginationService<PaymentStageDesign> _paginationService;
 
-        public PaymentStageDesignsController(PaymentStageDesignService service)
+        public PaymentStageDesignsController(PaymentStageDesignService service, PaginationService<PaymentStageDesign> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
-
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetPaymentStageDesigns()
+        public IActionResult GetPaymentStageDesigns(string? name, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            try
+            {
+                var list = _service.GetAll(name);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [EnableQuery]
         [HttpGet("project-design/{id}")]
-        public IActionResult GetPaymentStageDesignsByProjectDesignId(int id)
+        public IActionResult GetPaymentStageDesignsByProjectDesignId(int id, string? name, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetByProjectDesignId(id));
+            try
+            {
+                var list = _service.GetByProjectDesignId(id, name);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
         [HttpPost]
         public IActionResult CreatePaymentStageDesign([FromBody] PaymentStageDesignRequest request)

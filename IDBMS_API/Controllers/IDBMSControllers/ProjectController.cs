@@ -10,6 +10,9 @@ using Repository.Interfaces;
 using System;
 using BusinessObject.Models;
 using IDBMS_API.Services.PaginationService;
+using DocumentFormat.OpenXml.Drawing.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.Threading.Tasks;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -30,9 +33,26 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet]
         public IActionResult GetProjects(int? pageSize, int? pageNo, ProjectType? type, ProjectStatus? status, string? name)
         {
-            var list = _service.GetAll(type, status, name);
+            try
+            {
+                var list = _service.GetAll(type, status, name);
 
-            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [EnableQuery]
@@ -46,9 +66,26 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("site/{id}")]
         public IActionResult GetProjectsBySiteId(Guid id, int? pageSize, int? pageNo, ProjectType? type, ProjectStatus? status, string? name)
         {
-            var list = _service.GetBySiteId(id, type, status, name);
+            try
+            {
+                var list = _service.GetBySiteId(id, type, status, name);
 
-            return Ok(_paginationService.PaginateList(list, pageSize, pageNo));
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [HttpPost]

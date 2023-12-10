@@ -18,7 +18,7 @@ namespace IDBMS_API.Services
         }
 
         public IEnumerable<ProjectParticipation> Filter(IEnumerable<ProjectParticipation> list,
-            ParticipationRole? role, string? username)
+            ParticipationRole? role, string? name)
         {
             IEnumerable<ProjectParticipation> filteredList = list;
             
@@ -27,9 +27,9 @@ namespace IDBMS_API.Services
                 filteredList = filteredList.Where(item => item.Role == role);
             }
 
-            if (username != null)
+            if (name != null)
             {
-                filteredList = filteredList.Where(item => (item.User.Name != null && item.User.Name.Unidecode().IndexOf(username.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+                filteredList = filteredList.Where(item => (item.User.Name != null && item.User.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
             }
 
             return filteredList;

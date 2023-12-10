@@ -5,6 +5,7 @@ using DocumentFormat.OpenXml.Office2016.Excel;
 using Repository.Interfaces;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using BusinessObject.Enums;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -26,17 +27,40 @@ namespace IDBMS_API.Services
             _projectDesignRepo = projectDesignRepo;
             _stageDesignRepo = stageDesignRepo;
         }
-        public IEnumerable<PaymentStage> GetAll()
+
+        public IEnumerable<PaymentStage> Filter(IEnumerable<PaymentStage> list,
+           StageStatus? status, string? name)
         {
-            return _stageRepo.GetAll();
+            IEnumerable<PaymentStage> filteredList = list;
+
+            if (status != null)
+            {
+                filteredList = filteredList.Where(item => item.Status == status);
+            }
+
+            if (name != null)
+            {
+                filteredList = filteredList.Where(item => (item.Name != null && item.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            return filteredList;
+        }
+
+        public IEnumerable<PaymentStage> GetAll(StageStatus? status, string? name)
+        {
+            var list = _stageRepo.GetAll();
+
+            return Filter(list, status, name);
         }
         public PaymentStage? GetById(Guid id)
         {
             return _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<PaymentStage?> GetByProjectId(Guid projectId)
+        public IEnumerable<PaymentStage?> GetByProjectId(Guid projectId, StageStatus? status, string? name)
         {
-            return _stageRepo.GetByProjectId(projectId) ?? throw new Exception("This object is not existed!");
+            var list = _stageRepo.GetByProjectId(projectId) ?? throw new Exception("This object is not existed!");
+
+            return Filter(list, status, name);
         }
         public PaymentStage? CreatePaymentStage(PaymentStageRequest request)
         {
@@ -82,7 +106,7 @@ namespace IDBMS_API.Services
             }
 
             PaymentStageDesignService pmDesignService = new PaymentStageDesignService(_stageDesignRepo);
-            var pmDesigns = pmDesignService.GetByProjectDesignId(selectedDesign.Id);
+            var pmDesigns = pmDesignService.GetByProjectDesignId(selectedDesign.Id, null);
 
             foreach (var stage in pmDesigns)
             {
