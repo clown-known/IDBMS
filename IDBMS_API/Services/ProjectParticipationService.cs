@@ -35,25 +35,25 @@ namespace IDBMS_API.Services
             return filteredList;
         }
 
-        public IEnumerable<ProjectParticipation> GetAll(ParticipationRole? role, string? username)
+        public IEnumerable<ProjectParticipation> GetAll(ParticipationRole? role, string? name)
         {
             var list = _repository.GetAll();
 
-            return Filter(list, role, username);
+            return Filter(list, role, name);
         }
 
-        public IEnumerable<ProjectParticipation> GetByUserId(Guid id, ParticipationRole? role, string? username)
+        public IEnumerable<ProjectParticipation> GetByUserId(Guid id, ParticipationRole? role, string? name)
         {
             var list = _repository.GetByUserId(id);
 
-            return Filter(list, role, username);
+            return Filter(list, role, name);
         }
 
-        public IEnumerable<ProjectParticipation> GetByProjectId(Guid id, ParticipationRole? role, string? username)
+        public IEnumerable<ProjectParticipation> GetByProjectId(Guid id, ParticipationRole? role, string? name)
         {
             var list = _repository.GetByProjectId(id);
 
-            return Filter(list, role, username);
+            return Filter(list, role, name);
         }
 
         public ProjectParticipation? CreateParticipation(ProjectParticipationRequest request)
