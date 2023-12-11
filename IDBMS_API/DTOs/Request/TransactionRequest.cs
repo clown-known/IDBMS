@@ -20,11 +20,12 @@ namespace IDBMS_API.DTOs.Request
         [Column(TypeName = "money")]
         public decimal Amount { get; set; }
 
-        [Required]
         public string? Note { get; set; }
 
         [Required]
-        public Guid UserId { get; set; }
+        public string PayerName { get; set; }
+
+        public Guid? UserId { get; set; }
 
         [Required]
         public Guid ProjectId { get; set; }
@@ -32,7 +33,6 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public TransactionStatus Status { get; set; }
 
-        [Required]
-        public IFormFile TransactionReceiptImage { get; set; } = default!;
+        public IFormFile? TransactionReceiptImage { get; set; } = default!;
     }
 }

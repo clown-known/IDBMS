@@ -82,7 +82,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var list = _service.GetByUserId(id, isCompanyCover, name);
+                var list = _service.GetByProjectId(id, isCompanyCover, name);
 
                 var response = new ResponseMessage()
                 {
