@@ -54,7 +54,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateRoomType([FromBody][FromForm] RoomTypeRequest request)
+        public IActionResult CreateRoomType([FromForm][FromBody] RoomTypeRequest request)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateRoomType(int id, [FromBody][FromForm] RoomTypeRequest request)
+        public IActionResult UpdateRoomType(int id, [FromForm][FromBody] RoomTypeRequest request)
         {
             try
             {

@@ -56,7 +56,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateTaskCategory([FromBody][FromForm] TaskCategoryRequest request)
+        public IActionResult CreateTaskCategory([FromForm][FromBody] TaskCategoryRequest request)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateTaskCategory(int id, [FromBody][FromForm] TaskCategoryRequest request)
+        public IActionResult UpdateTaskCategory(int id, [FromForm][FromBody] TaskCategoryRequest request)
         {
             try
             {

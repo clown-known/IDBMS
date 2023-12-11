@@ -112,7 +112,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost]
-        public IActionResult CreateTransaction([FromBody][FromForm] TransactionRequest request)
+        public IActionResult CreateTransaction([FromForm][FromBody] TransactionRequest request)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateTransaction(Guid id, [FromBody][FromForm] TransactionRequest request)
+        public IActionResult UpdateTransaction(Guid id, [FromForm][FromBody] TransactionRequest request)
         {
             try
             {

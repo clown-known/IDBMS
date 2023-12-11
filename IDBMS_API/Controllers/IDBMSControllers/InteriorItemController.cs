@@ -85,7 +85,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateInteriorItem([FromBody][FromForm] InteriorItemRequest request)
+        public IActionResult CreateInteriorItem([FromForm][FromBody] InteriorItemRequest request)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateInteriorItem(Guid id, [FromBody][FromForm] InteriorItemRequest request)
+        public IActionResult UpdateInteriorItem(Guid id, [FromForm][FromBody] InteriorItemRequest request)
         {
             try
             {

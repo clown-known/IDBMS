@@ -102,7 +102,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost]
-        public IActionResult CreateWarrantyClaim([FromBody][FromForm] WarrantyClaimRequest request)
+        public IActionResult CreateWarrantyClaim([FromForm][FromBody] WarrantyClaimRequest request)
         {
                 try
                 {
@@ -125,7 +125,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateWarrantyClaim(Guid id, [FromBody][FromForm] WarrantyClaimRequest request)
+        public IActionResult UpdateWarrantyClaim(Guid id, [FromForm][FromBody] WarrantyClaimRequest request)
         {
             try
             {
