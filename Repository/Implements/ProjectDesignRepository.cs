@@ -23,9 +23,10 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.ProjectDesigns
+                    .OrderBy(x => x.ProjectType)
+                    .ThenBy(x => x.MinBudget)
                     .Include(pd => pd.PaymentStageDesigns.Where(psd => psd.IsDeleted == false))
-                    .ToList()
-                    .Reverse<ProjectDesign>();
+                    .ToList();
             }
             catch
             {
@@ -41,9 +42,10 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.ProjectDesigns
                     .Where(pd => pd.ProjectType == type)
+                    .OrderBy(x => x.ProjectType)
+                    .ThenBy(x => x.MinBudget)
                     .Include(pd => pd.PaymentStageDesigns.Where(psd => psd.IsDeleted == false))
-                    .ToList()
-                    .Reverse<ProjectDesign>();
+                    .ToList();
             }
             catch
             {
