@@ -77,6 +77,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
+        [EnableQuery]
+        [HttpGet("{id}")]
+        public IActionResult GetInteriorItemById(Guid id)
+        {
+            return Ok(_service.GetById(id));
+        }
+
         [HttpPost]
         public IActionResult CreateInteriorItem([FromBody][FromForm] InteriorItemRequest request)
         {
