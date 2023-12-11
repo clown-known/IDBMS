@@ -29,11 +29,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetTransactions(TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
+        public IActionResult GetTransactions(string? payerName,TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetAll(type, status);
+                var list = _service.GetAll(payerName, type, status);
 
                 var response = new ResponseMessage()
                 {
@@ -62,11 +62,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //cus
         [EnableQuery]
         [HttpGet("user/{id}")]
-        public IActionResult GetTransactionsByUserId(Guid id, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
+        public IActionResult GetTransactionsByUserId(Guid id, string? payerName, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetByUserId(id, type, status);
+                var list = _service.GetByUserId(id, payerName, type, status);
 
                 var response = new ResponseMessage()
                 {
@@ -88,11 +88,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //admin, owner
         [EnableQuery]
         [HttpGet("project/{id}")]
-        public IActionResult GetTransactionsByProjectId(Guid id, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
+        public IActionResult GetTransactionsByProjectId(Guid id, string? payerName, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetByProjectId(id, type, status);
+                var list = _service.GetByProjectId(id, payerName, type, status);
 
                 var response = new ResponseMessage()
                 {
@@ -112,7 +112,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost]
-        public IActionResult CreateTransaction([FromBody][FromForm] TransactionRequest request)
+        public IActionResult CreateTransaction([FromForm][FromBody] TransactionRequest request)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateTransaction(Guid id, [FromBody][FromForm] TransactionRequest request)
+        public IActionResult UpdateTransaction(Guid id, [FromForm][FromBody] TransactionRequest request)
         {
             try
             {

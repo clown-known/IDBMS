@@ -5,6 +5,7 @@ using Repository.Interfaces;
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 using UnidecodeSharpFork;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace IDBMS_API.Services
 {
@@ -16,10 +17,16 @@ namespace IDBMS_API.Services
             _repository = repository;
         }
 
-        public IEnumerable<Transaction> Filter(IEnumerable<Transaction> list,
-            TransactionType? type, TransactionStatus? status)
+        public IEnumerable<Transaction> Filter(IEnumerable<Transaction> list, 
+            string? payerName, TransactionType? type, TransactionStatus? status)
         {
             IEnumerable<Transaction> filteredList = list;
+
+            if (payerName != null)
+            {
+                filteredList = filteredList.Where(item => (item.PayerName != null && item.PayerName.Unidecode().IndexOf(payerName.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+
+            }
 
             if (type != null)
             {
@@ -34,32 +41,30 @@ namespace IDBMS_API.Services
             return filteredList;
         }
 
-        public IEnumerable<Transaction> GetAll(TransactionType? type, TransactionStatus? status)
+        public IEnumerable<Transaction> GetAll(string? payerName, TransactionType? type, TransactionStatus? status)
         {
             var list = _repository.GetAll();
 
-            return Filter(list, type, status);
+            return Filter(list, payerName, type, status);
         }
         public Transaction? GetById(Guid id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<Transaction?> GetByProjectId(Guid id, TransactionType? type, TransactionStatus? status)
+        public IEnumerable<Transaction?> GetByProjectId(Guid id, string? payerName, TransactionType? type, TransactionStatus? status)
         {
             var list = _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
 
-            return Filter(list, type, status);
+            return Filter(list, payerName, type, status);
         }
-        public IEnumerable<Transaction?> GetByUserId(Guid id, TransactionType? type, TransactionStatus? status)
+        public IEnumerable<Transaction?> GetByUserId(Guid id, string? payerName, TransactionType? type, TransactionStatus? status)
         {
             var list = _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
 
-            return Filter(list, type, status);
+            return Filter(list, payerName, type, status);
         }
         public async Task<Transaction?> CreateTransaction([FromForm] TransactionRequest request)
         {
-            FirebaseService s = new FirebaseService();
-            string link = await s.UploadTransactionImage(request.TransactionReceiptImage);
             var trans = new Transaction
             {
                 Id = Guid.NewGuid(),
@@ -71,22 +76,38 @@ namespace IDBMS_API.Services
                 ProjectId = request.ProjectId,
                 Status = request.Status,
                 IsDeleted = false,
-                TransactionReceiptImageUrl = link,
+                PayerName = request.PayerName,
             };
+
+            if (request.TransactionReceiptImage != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadTransactionImage(request.TransactionReceiptImage);
+
+                trans.TransactionReceiptImageUrl = link;
+            }
+
             var transCreated = _repository.Save(trans);
             return transCreated;
         }
         public async void UpdateTransaction(Guid id, TransactionRequest request)
         {
             var trans = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            FirebaseService s = new FirebaseService();
-            string link = await s.UploadTransactionImage(request.TransactionReceiptImage);
+
+            if (request.TransactionReceiptImage != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadTransactionImage(request.TransactionReceiptImage);
+
+                trans.TransactionReceiptImageUrl = link;
+            }
+
             trans.Type = request.Type;
             trans.Amount = request.Amount;
             trans.Note = request.Note;
             trans.UserId = request.UserId;
             trans.ProjectId = request.ProjectId;
-            trans.TransactionReceiptImageUrl = link;
+            trans.PayerName = request.PayerName;
 
             _repository.Update(trans);
         }

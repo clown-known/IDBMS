@@ -67,15 +67,12 @@ namespace IDBMS_API.Services
         }
         public async Task<InteriorItem?> CreateInteriorItem([FromForm] InteriorItemRequest request)
         {
-            FirebaseService s = new FirebaseService();
-            string link = await s.UploadInteriorItemImage(request.Image);
             var ii = new InteriorItem
             {
                 Id = Guid.NewGuid(),
                 Code = request.Code,
                 Name = request.Name,
                 EnglishName = request.EnglishName,
-                ImageUrl = link,
                 Length = request.Length,
                 Width = request.Width,
                 Height = request.Height,
@@ -93,18 +90,24 @@ namespace IDBMS_API.Services
                 CreatedDate = DateTime.Now,
             };
 
+            if (request.Image != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadInteriorItemImage(request.Image);
+
+                ii.ImageUrl = link;
+            }
+
             var iiCreated = _repository.Save(ii);
             return iiCreated;
         }
         public async void UpdateInteriorItem(Guid id, [FromForm] InteriorItemRequest request)
         {
             var ii = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            FirebaseService s = new FirebaseService();
-            string link = await s.UploadInteriorItemImage(request.Image);
+
             ii.Code = request.Code;
             ii.Name = request.Name;
             ii.EnglishName = request.EnglishName;
-            ii.ImageUrl = link;
             ii.Length = request.Length;
             ii.Width = request.Width;
             ii.Height = request.Height;
@@ -118,6 +121,14 @@ namespace IDBMS_API.Services
             ii.InteriorItemCategoryId = request.InteriorItemCategoryId;
             ii.Status = request.Status;
             ii.ParentItemId = request.ParentItemId;
+
+            if (request.Image != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadInteriorItemImage(request.Image);
+
+                ii.ImageUrl = link;
+            }
 
             _repository.Update(ii);
         }

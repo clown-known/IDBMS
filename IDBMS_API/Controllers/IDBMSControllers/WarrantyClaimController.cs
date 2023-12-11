@@ -82,7 +82,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var list = _service.GetByUserId(id, isCompanyCover, name);
+                var list = _service.GetByProjectId(id, isCompanyCover, name);
 
                 var response = new ResponseMessage()
                 {
@@ -102,7 +102,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost]
-        public IActionResult CreateWarrantyClaim([FromBody][FromForm] WarrantyClaimRequest request)
+        public IActionResult CreateWarrantyClaim([FromForm][FromBody] WarrantyClaimRequest request)
         {
                 try
                 {
@@ -125,7 +125,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateWarrantyClaim(Guid id, [FromBody][FromForm] WarrantyClaimRequest request)
+        public IActionResult UpdateWarrantyClaim(Guid id, [FromForm][FromBody] WarrantyClaimRequest request)
         {
             try
             {

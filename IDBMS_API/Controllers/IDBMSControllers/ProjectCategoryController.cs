@@ -60,7 +60,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateProjectCategory([FromBody][FromForm] ProjectCategoryRequest request)
+        public IActionResult CreateProjectCategory([FromForm][FromBody] ProjectCategoryRequest request)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateProjectCategory(int id, [FromBody][FromForm] ProjectCategoryRequest request)
+        public IActionResult UpdateProjectCategory(int id, [FromForm][FromBody] ProjectCategoryRequest request)
         {
             try
             {

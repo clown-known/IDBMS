@@ -16,15 +16,16 @@ public class Transaction
     [Column(TypeName = "money")]
     public decimal Amount { get; set; }
 
+    public string? Note { get; set; }    
+    
     [Required]
-    public string? Note { get; set; }
+    public string PayerName { get; set; }
 
     [Required]
     public DateTime CreatedDate { get; set; }
 
-    [Required]
-    public Guid UserId { get; set; }
-    public User User { get; set; }
+    public Guid? UserId { get; set; }
+    public User? User { get; set; }
 
     [Required]
     public Guid ProjectId { get; set; }
@@ -39,6 +40,5 @@ public class Transaction
     [Required]
     public bool IsDeleted { get; set; }
 
-    [Required]
-    public string TransactionReceiptImageUrl { get; set; } = default!;
+    public string? TransactionReceiptImageUrl { get; set; } = default!;
 }
