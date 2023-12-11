@@ -28,7 +28,8 @@ namespace IDBMS_API.Services
                 filteredList = filteredList.Where(item => item.FloorNo == noOfFloor);
                
             }
-            else
+
+            if (usePurpose != null)
             {
                 filteredList = filteredList.Where(item =>
                            (item.UsePurpose != null && item.UsePurpose.Unidecode().IndexOf(usePurpose.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));

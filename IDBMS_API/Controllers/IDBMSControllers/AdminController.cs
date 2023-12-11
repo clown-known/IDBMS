@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Repository.Interfaces;
 using DocumentFormat.OpenXml.Office2016.Excel;
+using DocumentFormat.OpenXml.Wordprocessing;
+using IDBMS_API.Services.PaginationService;
+using BusinessObject.Enums;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -16,15 +19,38 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class AdminsController : ODataController
     {
         private readonly AdminService _service;
-        public AdminsController(AdminService service)
+        private readonly PaginationService<Admin> _paginationService;
+
+        public AdminsController(AdminService service, PaginationService<Admin> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
         }
+
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetAdmins()
+        public IActionResult GetAdmins(string? searchValue, AdminStatus? status, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            try
+            {
+                var list = _service.GetAll(searchValue, status);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [EnableQuery]

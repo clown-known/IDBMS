@@ -6,6 +6,8 @@ using IDBMS_API.Supporters.Utils;
 using IDBMS_API.Constants;
 using IDBMS_API.DTOs.Request.AccountRequest;
 using System.Text.RegularExpressions;
+using UnidecodeSharpFork;
+using BusinessObject.Enums;
 
 namespace IDBMS_API.Services
 {
@@ -18,6 +20,28 @@ namespace IDBMS_API.Services
             _repository = repository;
             this.jwtTokenSupporter = jwtTokenSupporter;
         }
+
+        private IEnumerable<Admin> Filter(IEnumerable<Admin> list,
+            string? search, AdminStatus? status)
+        {
+            IEnumerable<Admin> filteredList = list;
+
+            if (search != null)
+            {
+                filteredList = filteredList.Where(item =>
+                            (item.Email != null && item.Email.Unidecode().IndexOf(search.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0) ||
+                            (item.Username != null && item.Username.Unidecode().IndexOf(search.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0) ||
+                            (item.Name != null && item.Name.Unidecode().IndexOf(search.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            if (status != null)
+            {
+                filteredList = filteredList.Where(item => item.Status == status);
+            }
+
+            return filteredList;
+        }
+
         public (string? token, Admin? admin) Login(string username, string password)
         {
             var admin = _repository.GetByUsername(username);
@@ -37,9 +61,11 @@ namespace IDBMS_API.Services
             }
             return (null, null);
         }
-        public IEnumerable<Admin> GetAll()
+        public IEnumerable<Admin> GetAll(string? search, AdminStatus? status)
         {
-            return _repository.GetAll();
+            var list = _repository.GetAll();
+
+            return Filter(list, search, status);
         }
         public Admin? GetById(Guid id)
         {
