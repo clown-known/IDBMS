@@ -35,7 +35,7 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
         }
     }
 
-    public ProjectParticipation? Save(ProjectParticipation entity)
+    public ProjectParticipation Save(ProjectParticipation entity)
     {
         try
         {
