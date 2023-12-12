@@ -109,6 +109,7 @@ namespace IDBMS_API.Services
                 PasswordSalt = passwordSalt,
                 IsDeleted = false,
                 CreatorId = request.CreatorId,
+                Status = AdminStatus.Unverified,
             };
             var adminCreated = _repository.Save(admin);
             return adminCreated;
