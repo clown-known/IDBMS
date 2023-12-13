@@ -135,21 +135,21 @@ namespace API.Supporters.JwtAuthSupport
                 }
                 if (Policy != null && Policy == "Architect")
                 {
-                    bool accepted = user.UserRoles.Where(r => r.Role == BusinessObject.Enums.CompanyRole.Architect) != null;
+                    bool accepted = user != null && user.Role == BusinessObject.Enums.CompanyRole.Architect;
                     if (!accepted)
                         context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
 
                 }
                 if (Policy != null && Policy == "ConstructionManager")
                 {
-                    bool accepted = user.UserRoles.Where(r => r.Role == BusinessObject.Enums.CompanyRole.ConstructionManager) != null;
+                    bool accepted = user != null && user.Role == BusinessObject.Enums.CompanyRole.ConstructionManager;
                     if (!accepted)
                         context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
 
                 }
                 if (Policy != null && Policy == "ParticipationIgnoreViewerAccess")
                 {
-                    bool accepted = user.UserRoles.Where(r => r.Role == BusinessObject.Enums.CompanyRole.ConstructionManager) != null;
+                    bool accepted = user != null && user.Role == BusinessObject.Enums.CompanyRole.ConstructionManager;
                     if (!accepted)
                         context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
 

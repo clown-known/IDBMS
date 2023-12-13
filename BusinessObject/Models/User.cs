@@ -50,6 +50,9 @@ public class User
     public Language Language { get; set; } = default!;
 
     [Required]
+    public CompanyRole Role { get; set; }
+
+    [Required]
     public UserStatus Status { get; set; }
 
     [JsonIgnore]
@@ -64,7 +67,6 @@ public class User
     public List<InteriorItemBookmark> InteriorItemBookmarks { get; set; } = new();
     public List<Notification> Notifications { get; set; } = new();
     public List<Transaction> Transactions { get; set; } = new();
-    public List<UserRole> UserRoles { get; set; } = new();
     public List<ProjectParticipation> Participations { get; set; } = new();
     public List<AuthenticationCode> AuthenticationCodes { get; set; } = new();
     public List<BookingRequest> BookingRequests { get; set; } = new();

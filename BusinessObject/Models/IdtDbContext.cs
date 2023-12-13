@@ -38,7 +38,6 @@ public class IdtDbContext : DbContext
     public DbSet<Site> Sites { get; set; } = default!;
     public DbSet<Transaction> Transactions { get; set; } = default!;
     public DbSet<User> Users { get; set; } = default!;
-    public DbSet<UserRole> UserRoles { get; set; } = default!;
     public DbSet<BookingRequest> BookingRequests { get; set; } = default!;
     public DbSet<WarrantyClaim> WarrantyClaims { get; set; } = default!;
     public DbSet<ItemInTask> ItemInTasks { get; set; } = default!;
@@ -166,8 +165,8 @@ public class IdtDbContext : DbContext
             .Property(transaction => transaction.Type)
             .HasConversion<int>();
 
-        modelBuilder.Entity<UserRole>()
-            .Property(userRole => userRole.Role)
+        modelBuilder.Entity<User>()
+            .Property(user => user.Role)
             .HasConversion<int>();
 
         modelBuilder.Entity<User>()
