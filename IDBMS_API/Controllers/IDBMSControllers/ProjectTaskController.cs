@@ -45,11 +45,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("project/{projectId}")]
         public IActionResult GetProjectTasksByProjectId(Guid projectId, int? pageSize, int? pageNo, 
-                        string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId)
+                        string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId, 
+                        bool includeRoomIdFilter, bool includeStageIdFilter)
         {
             try
             {
-                var list = _service.GetByProjectId(projectId, codeOrName, stageId, taskStatus, taskCategoryId, roomId);
+                var list = _service.GetByProjectId(projectId, codeOrName, stageId, taskStatus, taskCategoryId, roomId, 
+                    includeRoomIdFilter, includeStageIdFilter);
 
                 var response = new ResponseMessage()
                 {
@@ -72,11 +74,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("ids")]
         public IActionResult GetAllProjectTaskIdByFilter(Guid projectId, int? pageSize, int? pageNo,
-                string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId)
+                string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId, 
+                bool includeRoomIdFilter, bool includeStageIdFilter)
         {
             try
             {
-                var list = _service.GetAllProjectTaskIdByFilter(projectId, codeOrName, stageId, taskStatus, taskCategoryId, roomId);
+                var list = _service.GetAllProjectTaskIdByFilter(projectId, codeOrName, stageId, taskStatus, taskCategoryId, roomId, 
+                    includeRoomIdFilter, includeStageIdFilter);
 
                 var response = new ResponseMessage()
                 {
