@@ -23,12 +23,6 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public string Password { get; set; } = default!;
 
-        [Required]
-        public AdminStatus Status { get; set; }
-
-        [Required]
-        public bool IsDeleted { get; set; }
-
         public Guid? CreatorId { get; set; }
     }
 }
