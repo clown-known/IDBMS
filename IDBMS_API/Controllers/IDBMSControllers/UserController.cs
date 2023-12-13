@@ -127,5 +127,27 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
+
+        [HttpPut("{id}/role")]
+        public IActionResult UpdateUserRole(Guid id, CompanyRole role)
+        {
+            try
+            {
+                _service.UpdateUserRole(id, role);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
     }
 }

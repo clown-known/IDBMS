@@ -15,7 +15,6 @@ public class UserRepository : IUserRepository
         {
             using var context = new IdtDbContext();
             return context.Users
-                .Include(ur => ur.UserRoles)
                 .Include(u => u.Comments.Where(cmt => cmt.IsDeleted ==false))
                 .Include(u => u.Transactions.Where(trans => trans.IsDeleted == false))
                 .Include(u => u.Participations.Where(p => p.IsDeleted == false))

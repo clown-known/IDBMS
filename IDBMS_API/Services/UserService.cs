@@ -104,6 +104,7 @@ namespace API.Services
                 ExternalId = request.ExternalId,
                 CompanyName = request.CompanyName,
                 JobPosition = request.JobPosition,
+                Role= request.Role,
             };
 
             var userCreated = _repository.Save(user);
@@ -146,6 +147,7 @@ namespace API.Services
             user.ExternalId= request.ExternalId;
             user.CompanyName = request.CompanyName;
             user.JobPosition = request.JobPosition;
+            user.Role = request.Role;
 
             _repository.Update(user);
         }
@@ -170,6 +172,15 @@ namespace API.Services
             var user = _repository.GetById(id) ?? throw new Exception("User not existed");
 
             user.Status= status;
+
+            _repository.Update(user);
+        }
+
+        public void UpdateUserRole(Guid id, CompanyRole role)
+        {
+            var user = _repository.GetById(id) ?? throw new Exception("User not existed");
+
+            user.Role = role;
 
             _repository.Update(user);
         }
