@@ -89,10 +89,18 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             {
                 var list = _service.GetByProjectId(id, role, name);
 
+                var paginatedList = list.Where(item => item.Role != ParticipationRole.ProductOwner &&
+                                                item.Role != ParticipationRole.ProjectManager).ToList();
+
                 var response = new ResponseMessage()
                 {
                     Message = "Get successfully!",
-                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                    Data = new
+                    {
+                        PaginatedList = _paginationService.PaginateList(paginatedList, pageSize, pageNo),
+                        ProductOwner = list.FirstOrDefault(item => item.Role == ParticipationRole.ProductOwner),
+                        ProjectManager = list.FirstOrDefault(item => item.Role == ParticipationRole.ProjectManager)
+                    }
                 };
 
                 return Ok(response);
@@ -153,11 +161,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateParticipation(Guid projectId, [FromBody] ProjectParticipationRequest request)
+        public IActionResult UpdateParticipation(Guid projectId, Guid id, [FromBody] ProjectParticipationRequest request)
         {
             try
             {
-                _service.UpdateParticipation(request);
+                _service.UpdateParticipation(id, request);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
