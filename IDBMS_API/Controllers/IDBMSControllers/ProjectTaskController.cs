@@ -42,20 +42,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(_service.GetById(id));
         }
 
-        /*[EnableQuery]
-        [HttpGet("project/{id}/interior-items")]
-        public IActionResult GetSuggestionTasksByProjectId(Guid id)
-        {
-            return Ok(_service.GetSuggestionTasksByProjectId(id));
-        }
-
-        [EnableQuery]
-        [HttpGet("room/{id}/interior-items")]
-        public IActionResult GetSuggestionTasksByRoomId(Guid id)
-        {
-            return Ok(_service.GetSuggestionTasksByRoomId(id));
-        }*/
-
         [EnableQuery]
         [HttpGet("project/{projectId}")]
         public IActionResult GetProjectTasksByProjectId(Guid projectId, int? pageSize, int? pageNo, 
@@ -69,6 +55,33 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 {
                     Message = "Get successfully!",
                     Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [EnableQuery]
+        [HttpGet("ids")]
+        public IActionResult GetAllProjectTaskIdByFilter(Guid projectId, int? pageSize, int? pageNo,
+                string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId)
+        {
+            try
+            {
+                var list = _service.GetAllProjectTaskIdByFilter(projectId, codeOrName, stageId, taskStatus, taskCategoryId, roomId);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = list
                 };
 
                 return Ok(response);

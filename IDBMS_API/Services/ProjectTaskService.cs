@@ -9,6 +9,7 @@ using DocumentFormat.OpenXml.Office2016.Excel;
 using System.Text;
 using System.Globalization;
 using UnidecodeSharpFork;
+using System.Linq;
 
 namespace IDBMS_API.Services
 {
@@ -33,28 +34,6 @@ namespace IDBMS_API.Services
             _projectDesignRepo = projectDesignRepo;
             _stageDesignRepo = stageDesignRepo;
         }
-
-/*        private string NormalizeString(string input)
-        {
-            if (input == null)
-            {
-                return string.Empty;
-            }
-
-            input = input.Normalize(NormalizationForm.FormD);
-            StringBuilder sb = new StringBuilder();
-
-            foreach (char c in input)
-            {
-                UnicodeCategory category = CharUnicodeInfo.GetUnicodeCategory(c);
-                if (category != UnicodeCategory.NonSpacingMark)
-                {
-                    sb.Append(char.ToLower(c));
-                }
-            }
-
-            return sb.ToString();
-        }*/
 
         public IEnumerable<ProjectTask> Filter(IEnumerable<ProjectTask> list, 
             string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId)
@@ -107,6 +86,18 @@ namespace IDBMS_API.Services
             var list = _taskRepo.GetByProjectId(id);
             
             return Filter(list, codeOrName, stageId, taskStatus, taskCategoryId, roomId);
+        }
+
+        public IEnumerable<Guid> GetAllProjectTaskIdByFilter(Guid projectId,
+            string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId)
+        {
+            var list = _taskRepo.GetByProjectId(projectId);
+
+            var filteredList = Filter(list, codeOrName, stageId, taskStatus, taskCategoryId, roomId);
+
+            var filteredIds = filteredList.Select(item => item.Id).ToList();
+
+            return filteredIds;
         }
 
         public IEnumerable<ProjectTask?> GetByRoomId(Guid id)
