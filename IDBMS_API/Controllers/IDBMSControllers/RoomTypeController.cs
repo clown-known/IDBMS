@@ -28,6 +28,30 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [EnableQuery]
+        [HttpGet("{id}")]
+        public IActionResult GetRoomTypeById(int id)
+        {
+            try
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _service.GetById(id),
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [EnableQuery]
         [HttpGet]
         public IActionResult GetRoomTypes(bool? isHidden, string? name, int? pageSize, int? pageNo)
         {
