@@ -34,7 +34,7 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public Guid ProjectId { get; set; }
 
-        [Required]
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
+
     }
 }

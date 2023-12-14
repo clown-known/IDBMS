@@ -75,6 +75,31 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
+
+        [EnableQuery]
+        [HttpGet("{id}")]
+        public IActionResult GetPaymentStageDesignById(int id)
+        {
+            try
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _service.GetById(id),
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
         [HttpPost]
         public IActionResult CreatePaymentStageDesign([FromBody] PaymentStageDesignRequest request)
         {
