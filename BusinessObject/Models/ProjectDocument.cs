@@ -13,8 +13,7 @@ public class ProjectDocument
 
     public string? Description { get; set; }
 
-    [Required]
-    public string Url { get; set; } = default!;
+    public string? Url { get; set; } = default!;
 
     [Required]
     public DateTime CreatedDate { get; set; }

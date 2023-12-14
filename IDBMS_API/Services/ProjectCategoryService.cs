@@ -1,4 +1,5 @@
-﻿using BLL.Services;
+﻿using Azure.Core;
+using BLL.Services;
 using BusinessObject.Enums;
 using BusinessObject.Models;
 using IDBMS_API.DTOs.Request;
@@ -46,27 +47,38 @@ namespace IDBMS_API.Services
         }
         public async Task<ProjectCategory?> CreateProjectCategory([FromForm] ProjectCategoryRequest projectCategory)
         {
-            FirebaseService s = new FirebaseService();
-            string link = await s.UploadImage(projectCategory.IconImage);
             var pc = new ProjectCategory
             {
                 Name = projectCategory.Name,
                 EnglishName = projectCategory.EnglishName,
-                IconImageUrl = link,
                 IsHidden = false,
             };
+
+            if (projectCategory.IconImage != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadImage(projectCategory.IconImage);
+
+                pc.IconImageUrl = link;
+            }
 
             var pcCreated = _repository.Save(pc);
             return pcCreated;
         }
         public async void UpdateProjectCategory(int id, [FromForm] ProjectCategoryRequest projectCategory)
         {
-            FirebaseService s = new FirebaseService();
-            string link = await s.UploadImage(projectCategory.IconImage);
             var pc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            if (projectCategory.IconImage != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadImage(projectCategory.IconImage);
+
+                pc.IconImageUrl = link;
+            }
+
             pc.Name = projectCategory.Name;
             pc.EnglishName = projectCategory.EnglishName;
-            pc.IconImageUrl = link;
             
             _repository.Update(pc);
         }

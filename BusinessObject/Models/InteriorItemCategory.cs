@@ -17,11 +17,9 @@ public class InteriorItemCategory
 
     public string? EnglishDescription { get; set; }
 
-    [Required]
-    public string BannerImageUrl { get; set; } = default!;
+    public string? BannerImageUrl { get; set; } = default!;
 
-    [Required]
-    public string IconImageUrl { get; set; } = default!;
+    public string? IconImageUrl { get; set; } = default!;
 
     [Required]
     public InteriorItemType InteriorItemType { get; set; }

@@ -58,14 +58,11 @@ namespace IDBMS_API.Services
         }
         public async Task<ProjectDocument?> CreateProjectDocument([FromForm] ProjectDocumentRequest request)
         {
-            FirebaseService s = new FirebaseService();
-            string link = await s.UploadDocument(request.file,request.ProjectId);
             var pd = new ProjectDocument
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
                 Description = request.Description,
-                Url = link,
                 CreatedDate = DateTime.Now,
                 Category = request.Category,
                 ProjectId = request.ProjectId,
@@ -74,6 +71,14 @@ namespace IDBMS_API.Services
                 IsDeleted = false,
             };
 
+            if (request.file != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadDocument(request.file, request.ProjectId);
+
+                pd.Url = link;
+            }
+
             var pdCreated = _repository.Save(pd);
             return pdCreated;
         }
@@ -81,11 +86,17 @@ namespace IDBMS_API.Services
         public async void UpdateProjectDocument(Guid id, [FromForm] ProjectDocumentRequest request)
         {
             var pd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            FirebaseService s = new FirebaseService();
-            string link = await s.UploadDocument(request.file, request.ProjectId);
+
+            if (request.file != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadDocument(request.file, request.ProjectId);
+
+                pd.Url = link;
+            }
+
             pd.Name = request.Name;
             pd.Description = request.Description;
-            pd.Url = link;
             pd.CreatedDate = DateTime.Now;
             pd.Category = request.Category;
             pd.ProjectId = request.ProjectId;

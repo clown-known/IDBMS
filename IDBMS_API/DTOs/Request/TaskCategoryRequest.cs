@@ -22,7 +22,6 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public ProjectType ProjectType { get; set; }
 
-        [Required]
-        public IFormFile IconImage { get; set; } = default!;
+        public IFormFile? IconImage { get; set; } = default!;
     }
 }
