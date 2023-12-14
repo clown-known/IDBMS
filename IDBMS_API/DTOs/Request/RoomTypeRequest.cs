@@ -16,8 +16,7 @@ namespace IDBMS_API.DTOs.Request
 
         public string? EnglishName { get; set; }
 
-        [Required]
-        public IFormFile Image { get; set; } = default!;
+        public IFormFile? Image { get; set; } = default!;
 
         public string? Description { get; set; }
 
@@ -33,7 +32,6 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public bool IsHidden { get; set; }
 
-        [Required]
-        public IFormFile IconImage { get; set; } = default!;
+        public IFormFile? IconImage { get; set; } = default!;
     }
 }

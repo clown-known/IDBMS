@@ -13,8 +13,7 @@ public class RoomType
 
     public string? EnglishName { get; set; }
 
-    [Required]
-    public string ImageUrl { get; set; } = default!;
+    public string? ImageUrl { get; set; } = default!;
 
     public string? Description { get; set; }
 
@@ -30,8 +29,7 @@ public class RoomType
     [Required]
     public bool IsHidden { get; set; }
 
-    [Required]
-    public string IconImageUrl { get; set; } = default!;
+    public string? IconImageUrl { get; set; } = default!;
 
     public List<Room> Rooms { get; set; } = new();
 }

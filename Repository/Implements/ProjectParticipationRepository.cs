@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using BusinessObject.Enums;
+using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 
@@ -28,6 +29,36 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
         {
             using var context = new IdtDbContext();
             return context.ProjectParticipations.Where(p=>p.Id == id && p.IsDeleted == false).FirstOrDefault();
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
+    public ProjectParticipation? GetProjectOwnerByProjectId(Guid id)
+    {
+        try
+        {
+            using var context = new IdtDbContext();
+            return context.ProjectParticipations
+                    .Include(u => u.User)
+                    .FirstOrDefault(item => item.ProjectId == id && item.Role == ParticipationRole.ProductOwner && item.IsDeleted == false);
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
+    public ProjectParticipation? GetProjectManagerByProjectId(Guid id)
+    {
+        try
+        {
+            using var context = new IdtDbContext();
+            return context.ProjectParticipations
+                    .Include(u => u.User)
+                    .FirstOrDefault(item => item.ProjectId == id && item.Role == ParticipationRole.ProjectManager && item.IsDeleted == false);
         }
         catch
         {
@@ -80,6 +111,25 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
             throw;
         }
     }
+
+    public IEnumerable<ProjectParticipation> GetProjectMemberByProjectId(Guid id)
+    {
+        try
+        {
+            using var context = new IdtDbContext();
+            return context.ProjectParticipations
+                .OrderBy(p => p.Role)
+                .Include(u => u.User)
+                .Where(u => u.ProjectId.Equals(id) && u.IsDeleted == false 
+                            && u.Role != ParticipationRole.ProjectManager && u.Role != ParticipationRole.ProductOwner)
+                .ToList();
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
     public IEnumerable<ProjectParticipation> GetByUserId(Guid id)
     {
         try

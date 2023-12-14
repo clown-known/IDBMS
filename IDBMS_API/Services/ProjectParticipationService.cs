@@ -49,11 +49,21 @@ namespace IDBMS_API.Services
             return Filter(list, role, name);
         }
 
-        public IEnumerable<ProjectParticipation> GetByProjectId(Guid id, ParticipationRole? role, string? name)
+        public IEnumerable<ProjectParticipation> GetProjectMemberByProjectId(Guid id, ParticipationRole? role, string? name)
         {
-            var list = _repository.GetByProjectId(id);
+            var list = _repository.GetProjectMemberByProjectId(id);
 
             return Filter(list, role, name);
+        }
+
+        public ProjectParticipation? GetProjectManagerByProjectId(Guid id)
+        {
+            return _repository.GetProjectManagerByProjectId(id);
+        }
+
+        public ProjectParticipation? GetProjectOwnerByProjectId(Guid id)
+        {
+            return _repository.GetProjectOwnerByProjectId(id);
         }
 
         public ProjectParticipation? CreateParticipation(ProjectParticipationRequest request)

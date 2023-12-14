@@ -82,24 +82,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [EnableQuery]
-        [HttpGet("project/{id}")]
-        public IActionResult GetParticipationsByProjectId(Guid id, ParticipationRole? role, string? name, int? pageSize, int? pageNo)
+        [HttpGet("project/{projectId}")]
+        public IActionResult GetParticipationsByProjectId(Guid projectId, ParticipationRole? role, string? name, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetByProjectId(id, role, name);
-
-                var paginatedList = list.Where(item => item.Role != ParticipationRole.ProductOwner &&
-                                                item.Role != ParticipationRole.ProjectManager).ToList();
+                var list = _service.GetProjectMemberByProjectId(projectId, role, name);
 
                 var response = new ResponseMessage()
                 {
                     Message = "Get successfully!",
                     Data = new
                     {
-                        PaginatedList = _paginationService.PaginateList(paginatedList, pageSize, pageNo),
-                        ProductOwner = list.FirstOrDefault(item => item.Role == ParticipationRole.ProductOwner),
-                        ProjectManager = list.FirstOrDefault(item => item.Role == ParticipationRole.ProjectManager)
+                        PaginatedList = _paginationService.PaginateList(list, pageSize, pageNo),
+                        ProductOwner = _service.GetProjectOwnerByProjectId(projectId),
+                        ProjectManager = _service.GetProjectManagerByProjectId(projectId),
                     }
                 };
 
