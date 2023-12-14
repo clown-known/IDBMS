@@ -143,10 +143,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                _service.CreateParticipationsByRole(request);
+                var result = _service.CreateParticipationsByRole(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",
+                    Data = result,
                 };
                 return Ok(response);
             }

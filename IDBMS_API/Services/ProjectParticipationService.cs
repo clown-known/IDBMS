@@ -71,8 +71,9 @@ namespace IDBMS_API.Services
             return pCreated;
         }
 
-        public void CreateParticipationsByRole(CreateParticipationListRequest request)
+        public List<ProjectParticipation?> CreateParticipationsByRole(CreateParticipationListRequest request)
         {
+            List<ProjectParticipation?> list = new List<ProjectParticipation?>();
             if (request.Role == ParticipationRole.ProjectManager || request.Role == ParticipationRole.ProductOwner)
                 throw new Exception("Only creating 1 Project Manager or 1 Project Owner!");
             foreach (var userId in request.ListUserId)
@@ -87,7 +88,9 @@ namespace IDBMS_API.Services
                 };
 
                 var pCreated = _repository.Save(p);
+                list.Add(pCreated);
             }
+            return list;
         }
         
         public void UpdateParticipation(Guid id, ProjectParticipationRequest request)
