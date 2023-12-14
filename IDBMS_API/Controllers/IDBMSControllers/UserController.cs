@@ -30,11 +30,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetUsers(string? nameOrEmail, UserStatus? status, int? pageSize, int? pageNo)
+        public IActionResult GetUsers(string? nameOrEmail, CompanyRole? role, UserStatus? status, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetAll(nameOrEmail, status);
+                var list = _service.GetAll(nameOrEmail, role, status);
 
                 var response = new ResponseMessage()
                 {
