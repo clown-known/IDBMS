@@ -22,6 +22,11 @@ namespace IDBMS_API.Services
             return _repository.GetByUserId(userId) ?? throw new Exception("This object is not existed!");
         }
 
+        public InteriorItemBookmark GetById(Guid id)
+        {
+            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+        }
+
         public InteriorItemBookmark? CreateInteriorItemBookmark(InteriorItemBookmarkRequest request)
         {
             var iib = new InteriorItemBookmark

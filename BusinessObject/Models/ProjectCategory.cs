@@ -12,8 +12,7 @@ public class ProjectCategory
 
     public string? EnglishName { get; set; }
 
-    [Required]
-    public string IconImageUrl { get; set; } = default!;
+    public string? IconImageUrl { get; set; } = default!;
 
     [Required]
     public bool IsHidden { get; set; }

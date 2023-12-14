@@ -20,11 +20,9 @@ namespace IDBMS_API.DTOs.Request
 
         public string? EnglishDescription { get; set; }
 
-        [Required]
-        public IFormFile BannerImage { get; set; } = default!;
+        public IFormFile? BannerImage { get; set; } = default!;
 
-        [Required]
-        public IFormFile IconImage { get; set; } = default!;
+        public IFormFile? IconImage { get; set; } = default!;
 
         [Required]
         public InteriorItemType InteriorItemType { get; set; }
