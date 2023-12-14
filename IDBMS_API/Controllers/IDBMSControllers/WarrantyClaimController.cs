@@ -104,7 +104,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        public IActionResult GetRoomTypeById(Guid id)
+        public IActionResult GetWarrantyClaimById(Guid id)
         {
             try
             {
