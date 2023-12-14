@@ -78,11 +78,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateRoomType([FromForm][FromBody] RoomTypeRequest request)
+        public async Task<IActionResult> CreateRoomType([FromForm][FromBody] RoomTypeRequest request)
         {
             try
             {
-                var res = _service.CreateRoomType(request);
+                var res = await _service.CreateRoomType(request);
                 if (res == null)
                 {
                     return BadRequest("Failed to create object");

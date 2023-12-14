@@ -56,11 +56,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateTaskCategory([FromForm][FromBody] TaskCategoryRequest request)
+        public async Task<IActionResult> CreateTaskCategory([FromForm][FromBody] TaskCategoryRequest request)
         {
             try
             {
-                var result = _service.CreateTaskCategory(request);
+                var result = await _service.CreateTaskCategory(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",

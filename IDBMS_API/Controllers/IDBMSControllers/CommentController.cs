@@ -41,11 +41,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             return Ok(_service.GetByProjectId(id));
         }
         [HttpPost]
-        public IActionResult CreateComment([FromForm][FromBody] CommentRequest request)
+        public async Task<IActionResult> CreateComment([FromForm][FromBody] CommentRequest request)
         {
             try
             {
-                var result = _service.CreateComment(request);
+                var result = await _service.CreateComment(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",

@@ -20,27 +20,33 @@ namespace BLL.Services
         }
         public async Task<string> UploadImage(IFormFile file)
         {
-            if (file != null && file.Length != 0)
+            try
+            {
+                if (file != null && file.Length != 0)
+                {
+
+                    string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+
+                    var storageClient = new FirebaseStorage(_storageBucket);
+                    using (var stream = file.OpenReadStream())
+                    {
+                        stream.Position = 0; // Reset the stream position
+
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await stream.CopyToAsync(memoryStream);
+                            memoryStream.Position = 0;
+                            await storageClient.Child("images").Child(fileName).PutAsync(memoryStream);
+                        }
+                    }
+
+                    FirebaseStorageReference starsRef = storageClient.Child("images/" + fileName);
+                    string link = await starsRef.GetDownloadUrlAsync();
+                    return link;
+                }
+            }catch(Exception e)
             {
 
-                string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-
-                var storageClient = new FirebaseStorage(_storageBucket);
-                using (var stream = file.OpenReadStream())
-                {
-                    stream.Position = 0; // Reset the stream position
-
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await stream.CopyToAsync(memoryStream);
-                        memoryStream.Position = 0;
-                        await storageClient.Child("images").Child(fileName).PutAsync(memoryStream);
-                    }
-                }
-
-                FirebaseStorageReference starsRef = storageClient.Child("images/" + fileName);
-                string link = await starsRef.GetDownloadUrlAsync();
-                return link;
             }
             return null;
         }

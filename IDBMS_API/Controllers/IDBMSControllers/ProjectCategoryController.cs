@@ -60,11 +60,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateProjectCategory([FromForm][FromBody] ProjectCategoryRequest request)
+        public async Task<IActionResult> CreateProjectCategory([FromForm][FromBody] ProjectCategoryRequest request)
         {
             try
             {
-                var result = _service.CreateProjectCategory(request);
+                var result = await _service.CreateProjectCategory(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",

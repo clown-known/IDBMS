@@ -85,11 +85,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateInteriorItem([FromForm][FromBody] InteriorItemRequest request)
+        public async Task<IActionResult> CreateInteriorItem([FromForm][FromBody] InteriorItemRequest request)
         {
             try
             {
-                var result = _service.CreateInteriorItem(request);
+                var result = await _service.CreateInteriorItem(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",

@@ -86,11 +86,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateProjectDocument([FromForm][FromBody] ProjectDocumentRequest request)
+        public async Task<IActionResult> CreateProjectDocument([FromForm][FromBody] ProjectDocumentRequest request)
         {
             try
             {
-                var result = _service.CreateProjectDocument(request);
+                var result = await _service.CreateProjectDocument(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",
