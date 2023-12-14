@@ -28,7 +28,7 @@ namespace API.Services
         }
 
         public IEnumerable<User> Filter(IEnumerable<User> list,
-           string? nameOrEmail, UserStatus? status)
+           string? nameOrEmail, CompanyRole? role , UserStatus? status)
         {
             IEnumerable<User> filteredList = list;
 
@@ -37,6 +37,11 @@ namespace API.Services
                 filteredList = filteredList.Where(item =>
                             (item.Name != null && item.Name.Unidecode().IndexOf(nameOrEmail.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0) ||
                             (item.Email != null && item.Email.Unidecode().IndexOf(nameOrEmail.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            if (role != null)
+            {
+                filteredList = filteredList.Where(item => item.Role == role);
             }
 
             if (status != null)
@@ -51,11 +56,11 @@ namespace API.Services
         {
             return _repository.GetById(id);
         }
-        public IEnumerable<User> GetAll(string? nameOrEmail, UserStatus? status)
+        public IEnumerable<User> GetAll(string? nameOrEmail, CompanyRole? role, UserStatus? status)
         {
             var list = _repository.GetAll();    
 
-            return Filter(list, nameOrEmail, status);
+            return Filter(list, nameOrEmail, role, status);
         }
 
         public (string? token, User? user) Login(string email, string password)

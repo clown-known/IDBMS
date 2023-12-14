@@ -25,8 +25,7 @@ namespace BusinessObject.Models
         [Required]
         public ProjectType ProjectType { get; set; }
 
-        [Required]
-        public string IconImageUrl { get; set; } = default!;
+        public string? IconImageUrl { get; set; } = default!;
 
         [Required]
         public bool IsDeleted { get; set; }

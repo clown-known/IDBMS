@@ -13,11 +13,13 @@ namespace IDBMS_API.Services
     {
         private readonly IWarrantyClaimRepository _repository;
         private readonly IProjectRepository _projectRepo;
+        private readonly IProjectParticipationRepository _projectParticipationRepo;
 
-        public WarrantyClaimService(IWarrantyClaimRepository repository, IProjectRepository projectRepo)
+        public WarrantyClaimService(IWarrantyClaimRepository repository, IProjectRepository projectRepo, IProjectParticipationRepository projectParticipationRepo)
         {
             _repository = repository;
             _projectRepo = projectRepo;
+            _projectParticipationRepo = projectParticipationRepo;
         }
 
         public IEnumerable<WarrantyClaim> Filter(IEnumerable<WarrantyClaim> list,
@@ -90,6 +92,12 @@ namespace IDBMS_API.Services
         public async Task<WarrantyClaim?> CreateWarrantyClaim([FromForm]WarrantyClaimRequest request)
         {
             string link = "";
+            var participations = _projectParticipationRepo.GetByProjectId(request.ProjectId); 
+            foreach (var parti in participations) 
+            {
+                if (parti.Role == 0) request.UserId = parti.UserId;
+            }
+
             if(request.ConfirmationDocument != null)
             {
                 FirebaseService s = new FirebaseService();

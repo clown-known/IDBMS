@@ -31,6 +31,31 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             return Ok(_service.GetByTaskReportId(id));
         }
+
+        [EnableQuery]
+        [HttpGet("{id}")]
+        public IActionResult GetTaskDocumentById(Guid id)
+        {
+            try
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _service.GetById(id),
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
         [HttpPost]
         public IActionResult CreateTaskDocument([FromBody] TaskDocumentRequest request)
         {

@@ -77,11 +77,29 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
+
         [EnableQuery]
         [HttpGet("{id}")]
         public IActionResult GetInteriorItemById(Guid id)
         {
-            return Ok(_service.GetById(id));
+            try
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _service.GetById(id),
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [HttpPost]

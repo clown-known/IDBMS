@@ -46,40 +46,66 @@ namespace IDBMS_API.Services
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public async Task<InteriorItemCategory?> CreateInteriorItemCategory([FromForm] InteriorItemCategoryRequest request)
-        {
-            FirebaseService s = new FirebaseService();
-            string BannerImageUrl = await s.UploadImage(request.IconImage);
-            string IconImageUrl = await s.UploadImage(request.IconImage);
+        {  
             var iic = new InteriorItemCategory
             {
                 Name = request.Name,
                 EnglishName = request.EnglishName,
                 Description = request.Description,
                 EnglishDescription = request.EnglishDescription,
-                BannerImageUrl = BannerImageUrl,
-                IconImageUrl = IconImageUrl,
                 InteriorItemType = request.InteriorItemType,
                 ParentCategoryId = request.ParentCategoryId,
                 IsDeleted = false,
             };
+
+            if (request.BannerImage != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadImage(request.BannerImage);
+
+                iic.BannerImageUrl = link;
+            }
+
+            if (request.IconImage != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadImage(request.IconImage);
+
+                iic.IconImageUrl = link;
+            }
 
             var iicCreated = _repository.Save(iic);
             return iicCreated;
         }
         public async void UpdateInteriorItemCategory(int id, [FromForm] InteriorItemCategoryRequest request)
         {
-            FirebaseService s = new FirebaseService();
-            string BannerImageUrl = await s.UploadImage(request.IconImage);
-            string IconImageUrl = await s.UploadImage(request.IconImage);
             var iic = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            if (request.BannerImage != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadImage(request.BannerImage);
+
+                iic.BannerImageUrl = link;
+            }
+
+            if (request.IconImage != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadImage(request.IconImage);
+
+                iic.IconImageUrl = link;
+            }
+
             iic.Name = request.Name;
             iic.EnglishName = request.EnglishName;
             iic.Description = request.Description;
             iic.EnglishDescription = request.EnglishDescription;
-            iic.BannerImageUrl = BannerImageUrl;
-            iic.IconImageUrl = IconImageUrl; 
+
             iic.InteriorItemType = request.InteriorItemType; 
             iic.ParentCategoryId = request.ParentCategoryId;
+
+            
 
             _repository.Update(iic);
         }

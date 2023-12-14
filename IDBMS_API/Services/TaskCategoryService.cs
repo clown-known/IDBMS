@@ -47,8 +47,6 @@ namespace IDBMS_API.Services
         }
         public async Task<TaskCategory?> CreateTaskCategory([FromForm] TaskCategoryRequest request)
         {
-            FirebaseService s = new FirebaseService();
-            string link = await s.UploadImage(request.IconImage);
             var ctc = new TaskCategory
             {
                 Name = request.Name,
@@ -56,23 +54,37 @@ namespace IDBMS_API.Services
                 Description = request.Description,
                 EnglishDescription = request.EnglishDescription,
                 ProjectType = request.ProjectType,
-                IconImageUrl = link,
                 IsDeleted = false,
             };
+
+            if (request.IconImage != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadImage(request.IconImage);
+
+                ctc.IconImageUrl = link;
+            }
+
             var ctcCreated = _repository.Save(ctc);
             return ctcCreated;
         }
         public async void UpdateTaskCategory(int id, [FromForm]TaskCategoryRequest request)
         {
             var ctc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            FirebaseService s = new FirebaseService();
-            string link = await s.UploadImage(request.IconImage);
+
+            if (request.IconImage != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadImage(request.IconImage);
+
+                ctc.IconImageUrl = link;
+            }
+
             ctc.Name = request.Name;
             ctc.EnglishName = request.EnglishName;
             ctc.Description = request.Description;
             ctc.EnglishDescription = request.EnglishDescription;
             ctc.ProjectType = request.ProjectType;
-            ctc.IconImageUrl = link;
 
             _repository.Update(ctc);
         }
