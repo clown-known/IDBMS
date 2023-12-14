@@ -101,7 +101,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateRoomType(id, request);
-                return Ok();
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -115,7 +119,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateRoomTypeStatus(id, isHidden);
-                return Ok();
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
