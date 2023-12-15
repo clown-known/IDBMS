@@ -56,6 +56,7 @@ namespace Repository.Implements
                     .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
                     //.Include(p => p.ProjectDocuments.Where(pd => pd.IsDeleted == false))
                     .Include(pc => pc.ProjectCategory)
+                    .Include(pc => pc.Site)
                     .OrderByDescending(time => time.CreatedDate)
                     .Where(p => p.Status == ProjectStatus.Done && p.AdvertisementStatus != AdvertisementStatus.NotAllowed)
                     .ToList();
