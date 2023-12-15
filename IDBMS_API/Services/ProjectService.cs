@@ -147,13 +147,4 @@ public class ProjectService
 
         _repository.Update(project);
     }
-
-    public void UpdateProjectAdvertisementStatus(Guid id, AdvertisementStatus status)
-    {
-        var project = _repository.GetById(id) ?? throw new Exception("Not existed");
-
-        project.AdvertisementStatus = status;
-
-        _repository.Update(project);
-    }
 }

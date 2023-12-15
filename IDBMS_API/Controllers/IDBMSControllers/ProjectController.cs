@@ -106,7 +106,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult BookDecorProject([FromBody] ProjectRequest request)
+        public IActionResult BookProject([FromBody] ProjectRequest request)
         {
             try
             {
@@ -172,26 +172,5 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpPut("{id}/isAdvertisement")]
-        public IActionResult UpdateProjectAdvertisementStatus(Guid id, AdvertisementStatus status)
-        {
-            try
-            {
-                _service.UpdateProjectAdvertisementStatus(id, status);
-                var response = new ResponseMessage()
-                {
-                    Message = "Update successfully!",
-                };
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var response = new ResponseMessage()
-                {
-                    Message = $"Error: {ex.Message}"
-                };
-                return BadRequest(response);
-            }
-        }
     }
 }

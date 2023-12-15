@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using BusinessObject.Enums;
+using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
@@ -45,6 +46,26 @@ namespace Repository.Implements
                 throw;
             }
         }
+
+        public IEnumerable<Project> GetAdvertisementAllowedProjects()
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Projects
+                    .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
+                    //.Include(p => p.ProjectDocuments.Where(pd => pd.IsDeleted == false))
+                    .Include(pc => pc.ProjectCategory)
+                    .OrderByDescending(time => time.CreatedDate)
+                    .Where(p => p.Status == ProjectStatus.Done && p.AdvertisementStatus != AdvertisementStatus.NotAllowed)
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public Project? GetByIdWithSite(Guid id)
         {
             try
