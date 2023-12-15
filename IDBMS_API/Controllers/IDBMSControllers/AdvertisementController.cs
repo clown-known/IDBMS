@@ -154,11 +154,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{projectId}/advertisementDescription")]
-        public IActionResult UpdateAdvertisementDescription(Guid projectId, [FromBody] string description)
+        public IActionResult UpdateAdvertisementDescription(Guid projectId, [FromForm][FromBody] AdvertisementDescriptionRequest request)
         {
             try
             {
-                _service.UpdateAdvertisementDescription(projectId, description);
+                _service.UpdateAdvertisementDescription(projectId, request);
 
                 var response = new ResponseMessage()
                 {

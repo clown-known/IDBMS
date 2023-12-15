@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Repository.Interfaces;
 using System.Runtime.Intrinsics.Arm;
 using UnidecodeSharpFork;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace IDBMS_API.Services
 {
@@ -130,11 +131,19 @@ namespace IDBMS_API.Services
             _documentRepo.Update(pd);
         }
 
-        public void UpdateAdvertisementDescription(Guid projectId, string description)
+        public async void UpdateAdvertisementDescription(Guid projectId, [FromForm] AdvertisementDescriptionRequest request)
         {
             var p = _projectRepo.GetById(projectId) ?? throw new Exception("This object is not existed!");
 
-            p.AdvertisementDescription = description;
+            p.AdvertisementDescription = request.Description;
+
+            if (request.RepresentImage != null)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = await s.UploadDocument(request.RepresentImage, projectId);
+
+                p.RepresentImageUrl = link;
+            }
 
             _projectRepo.Update(p);
         }
