@@ -16,6 +16,8 @@ public class Project
 
     public string? AdvertisementDescription { get; set; }
 
+    public string? RepresentImageUrl { get; set; }
+
     [Required]
     public ProjectType Type { get; set; }
 
