@@ -14,6 +14,8 @@ public class Project
 
     public string? Description { get; set; }
 
+    public string? AdvertisementDescription { get; set; }
+
     [Required]
     public ProjectType Type { get; set; }
 
