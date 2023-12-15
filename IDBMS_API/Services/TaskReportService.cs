@@ -15,13 +15,15 @@ namespace IDBMS_API.Services
         private readonly IPaymentStageRepository _stageRepo;
         private readonly IProjectDesignRepository _projectDesignRepo;
         private readonly IPaymentStageDesignRepository _stageDesignRepo;
+        private readonly TaskDocumentService documentService;
         public TaskReportService(
             ITaskReportRepository taskReportRepo,
             IProjectTaskRepository taskRepo,
             IProjectRepository projectRepo,
             IPaymentStageRepository stageRepo,
             IProjectDesignRepository projectDesignRepo,
-            IPaymentStageDesignRepository stageDesignRepo)
+            IPaymentStageDesignRepository stageDesignRepo,
+            TaskDocumentService documentService)
         {
             _taskReportRepo = taskReportRepo;
             _taskRepo = taskRepo;
@@ -29,6 +31,7 @@ namespace IDBMS_API.Services
             _stageRepo = stageRepo;
             _projectDesignRepo = projectDesignRepo;
             _stageDesignRepo = stageDesignRepo;
+            this.documentService = documentService;
         }
 
         public IEnumerable<TaskReport> Filter(IEnumerable<TaskReport> list,
@@ -76,7 +79,7 @@ namespace IDBMS_API.Services
             }
         }
 
-        public TaskReport? CreateTaskReport(TaskReportRequest request)
+        public async Task<TaskReport?> CreateTaskReport(Guid projectId,TaskReportRequest request)
         {
             var ctr = new TaskReport
             {
@@ -89,7 +92,11 @@ namespace IDBMS_API.Services
                 IsDeleted = false,
             };
             var ctrCreated = _taskReportRepo.Save(ctr);
-
+            if(request.documentList!=null)
+            foreach (var report in request.documentList)
+            {
+                await this.documentService.CreateTaskDocument(projectId,report);
+            }
             UpdateTaskPercentage(request.ProjectTaskId);
 
             return ctrCreated;

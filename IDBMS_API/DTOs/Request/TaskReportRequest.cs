@@ -21,5 +21,6 @@ namespace IDBMS_API.DTOs.Request
 
         [Required]
         public Guid ProjectTaskId { get; set; }
+        public List<TaskDocumentRequest>? documentList { get; set; }
     }
 }

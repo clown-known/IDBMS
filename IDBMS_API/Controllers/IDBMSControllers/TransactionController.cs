@@ -129,11 +129,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost]
-        public IActionResult CreateTransaction([FromForm][FromBody] TransactionRequest request)
+        public async Task<IActionResult> CreateTransaction([FromForm][FromBody] TransactionRequest request)
         {
             try
             {
-                var result = _service.CreateTransaction(request);
+                var result = await _service.CreateTransaction(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",

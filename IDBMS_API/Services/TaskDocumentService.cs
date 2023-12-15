@@ -1,6 +1,7 @@
 ﻿using IDBMS_API.DTOs.Request;
 using BusinessObject.Models;
 using Repository.Interfaces;
+using BLL.Services;
 
 namespace IDBMS_API.Services
 {
@@ -25,14 +26,20 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByTaskReportId(id) ?? throw new Exception("This object is not existed!");
         }
-        public TaskDocument? CreateTaskDocument(TaskDocumentRequest request)
+        public async Task<TaskDocument?> CreateTaskDocument(Guid projectId,TaskDocumentRequest request)
         {
+            string link = "";
+            if(request.Document != null)
+            {
+                FirebaseService s = new FirebaseService();
+                link = await s.UploadDocument(request.Document,projectId);
+            }
             var td = new TaskDocument
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
                 Description = request.Description,
-                Document = request.Document,
+                Document = link,
                 TaskReportId = request.TaskReportId,
                 IsDeleted = false,
             };

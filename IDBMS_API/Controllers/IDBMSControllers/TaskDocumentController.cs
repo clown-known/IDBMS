@@ -57,13 +57,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateTaskDocument([FromBody] TaskDocumentRequest request)
+        public IActionResult CreateTaskDocument(Guid projectId,[FromBody] TaskDocumentRequest request)
         {
             try
             {
                 try
                 {
-                    var result = _service.CreateTaskDocument(request);
+                    var result = _service.CreateTaskDocument(projectId,request);
                     var response = new ResponseMessage()
                     {
                         Message = "Create successfully!",
