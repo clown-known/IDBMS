@@ -99,7 +99,6 @@ namespace IDBMS_API.Services
             pd.Description = request.Description;
             pd.CreatedDate = DateTime.Now;
             pd.Category = request.Category;
-            pd.ProjectId = request.ProjectId;
             pd.ProjectDocumentTemplateId = request.ProjectDocumentTemplateId;
             pd.IsPublicAdvertisement = request.IsPublicAdvertisement;
 
