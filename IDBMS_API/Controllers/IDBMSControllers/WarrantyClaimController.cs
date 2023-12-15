@@ -127,11 +127,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateWarrantyClaim([FromForm][FromBody] WarrantyClaimRequest request)
+        public async Task<IActionResult> CreateWarrantyClaim([FromForm][FromBody] WarrantyClaimRequest request)
         {
                 try
                 {
-                    var result = _service.CreateWarrantyClaim(request);
+                    var result = await _service.CreateWarrantyClaim(request);
                     var response = new ResponseMessage()
                     {
                         Message = "Create successfully!",

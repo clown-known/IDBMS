@@ -102,11 +102,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateTaskReport([FromBody] TaskReportRequest request)
+        public async Task<IActionResult> CreateTaskReport(Guid projectId,[FromBody] TaskReportRequest request)
         {
             try
             {
-                var result = _service.CreateTaskReport(request);
+                var result = await _service.CreateTaskReport(projectId,request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",

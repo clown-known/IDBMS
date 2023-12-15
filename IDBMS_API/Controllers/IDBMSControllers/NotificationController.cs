@@ -191,11 +191,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("is-seen/user/{id}")]
-        public IActionResult UpdateIsSeenByUser(Guid userId)
+        public IActionResult UpdateIsSeenByUser(Guid id)
         {
             try
             {
-                _service.UpdateIsSeenByUserId(userId);
+                _service.UpdateIsSeenByUserId(id);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",

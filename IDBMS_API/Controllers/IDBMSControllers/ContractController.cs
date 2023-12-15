@@ -49,7 +49,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             var response = contractService.GetDataForCustomerContract(projectId);
             return Ok(response);
         }
-        [HttpPost("pploadContract")]
+        [HttpPost("uploadContract")]
         public async Task<IActionResult> UploadContract(Guid projectId, [FromForm]IFormFile file)
         {
             if ( await contractService.UploadContract(projectId, file) == false) return BadRequest();
