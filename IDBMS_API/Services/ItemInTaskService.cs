@@ -18,14 +18,15 @@ namespace IDBMS_API.Services
         }
 
         private IEnumerable<ItemInTask> Filter(IEnumerable<ItemInTask> list,
-            string? name, int? itemCategoryId, ProjectTaskStatus? taskStatus)
+            string? itemCodeOrName, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
             IEnumerable<ItemInTask> filteredList = list;
 
-            if (name != null)
+            if (itemCodeOrName != null)
             {
                 filteredList = filteredList.Where(item =>
-                            (item.InteriorItem.Name != null && item.InteriorItem.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+                            (item.InteriorItem.Code != null && item.InteriorItem.Code.Unidecode().IndexOf(itemCodeOrName.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0) ||
+                            (item.InteriorItem.Name != null && item.InteriorItem.Name.Unidecode().IndexOf(itemCodeOrName.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
             }
 
             if (itemCategoryId != null)
@@ -50,11 +51,11 @@ namespace IDBMS_API.Services
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
 
-        public IEnumerable<ItemInTask> GetByProjectId(Guid id, string? name, int? itemCategoryId, ProjectTaskStatus? taskStatus)
+        public IEnumerable<ItemInTask> GetByProjectId(Guid id, string? itemCodeOrName, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
             var list =  _repository.GetByProjectId(id);
 
-            return Filter(list, name, itemCategoryId, taskStatus);
+            return Filter(list, itemCodeOrName, itemCategoryId, taskStatus);
         }
 
         public IEnumerable<ItemInTask> GetByRoomId(Guid id)
@@ -62,11 +63,11 @@ namespace IDBMS_API.Services
             return _repository.GetByRoomId(id);
         }
 
-        public IEnumerable<ItemInTask> GetByTaskId(Guid id, string? name, int? itemCategoryId, ProjectTaskStatus? taskStatus)
+        public IEnumerable<ItemInTask> GetByTaskId(Guid id, string? itemCodeOrName, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
             var list = _repository.GetByTaskId(id);
 
-            return Filter(list, name, itemCategoryId, taskStatus);
+            return Filter(list, itemCodeOrName, itemCategoryId, taskStatus);
         }
 
         public ItemInTask? CreateItemInTask(ItemInTaskRequest request)

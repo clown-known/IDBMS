@@ -78,11 +78,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("project-task/{id}")]
         public IActionResult GetItemInTaskByTaskId(Guid id, 
-            string? name, int? pageSize, int? pageNo, int? itemCategoryId, ProjectTaskStatus? taskStatus)
+            string? itemCodeOrName, int? pageSize, int? pageNo, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
             try
             {
-                var list = _service.GetByTaskId(id, name, itemCategoryId, taskStatus);
+                var list = _service.GetByTaskId(id, itemCodeOrName, itemCategoryId, taskStatus);
 
                 var response = new ResponseMessage()
                 {
