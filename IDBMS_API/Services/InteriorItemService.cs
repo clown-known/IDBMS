@@ -37,7 +37,7 @@ namespace IDBMS_API.Services
             if (codeOrName != null)
             {
                 filteredList = filteredList.Where(item =>
-                           (item.Code != null && item.Code.IndexOf(codeOrName, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                           (item.Code != null && item.Code.Unidecode().IndexOf(codeOrName.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0) ||
                            (item.Name != null && item.Name.Unidecode().IndexOf(codeOrName.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
             }
 

@@ -71,6 +71,7 @@ namespace Repository.Implements
                 return context.ItemInTasks
                     .Include(ItemInTask => ItemInTask.ProjectTask)
                     .Include(ItemInTask => ItemInTask.InteriorItem)
+                        .ThenInclude(category => category.InteriorItemCategory)
                     .Where(item => item.ProjectTask != null && item.ProjectTask.RoomId == id)
                     .ToList()
                     .Reverse<ItemInTask>();
@@ -87,7 +88,9 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.ItemInTasks
+                    .Include(ItemInTask => ItemInTask.ProjectTask)
                     .Include(ItemInTask => ItemInTask.InteriorItem)
+                        .ThenInclude(category => category.InteriorItemCategory)
                     .Where(ItemInTask => ItemInTask.ProjectTaskId == id)
                     .ToList()
                     .Reverse<ItemInTask>();
