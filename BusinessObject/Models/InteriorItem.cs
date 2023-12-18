@@ -50,9 +50,8 @@ public class InteriorItem
     public int? InteriorItemColorId { get; set; }
     public InteriorItemColor? InteriorItemColor { get; set; }
     
-    [Required]
-    public int InteriorItemCategoryId { get; set; }
-    public InteriorItemCategory InteriorItemCategory { get; set; }
+    public int? InteriorItemCategoryId { get; set; }
+    public InteriorItemCategory? InteriorItemCategory { get; set; }
 
     [Required]
     public InteriorItemStatus Status { get; set; }
