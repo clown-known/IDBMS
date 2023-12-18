@@ -104,11 +104,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
 
         [HttpPost]
-        public IActionResult CreateItemInTask([FromBody] ItemInTaskRequest request)
+        public async Task<IActionResult> CreateItemInTask([FromForm][FromBody] ItemInTaskRequest request)
         {
             try
             {
-                var result = _service.CreateItemInTask(request);
+                var result = await _service.CreateItemInTask(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",
@@ -126,12 +126,34 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateItemInTask(Guid id, [FromBody] ItemInTaskRequest request)
+        [HttpPost("project-task/{id}")]
+        public async Task<IActionResult> CreateItemsByTaskId([FromForm][FromBody] List<ItemInTaskRequest> request)
         {
             try
             {
-                _service.UpdateItemInTask(id, request);
+                await _service.CreateItemsByTaskId(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateItemInTask(Guid id, [FromForm][FromBody] ItemInTaskRequest request)
+        {
+            try
+            {
+                await _service.UpdateItemInTask(id, request);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
