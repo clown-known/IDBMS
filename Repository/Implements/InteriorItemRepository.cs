@@ -31,7 +31,9 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.InteriorItems.FirstOrDefault(ii => ii.Id == id && ii.IsDeleted == false);
+                return context.InteriorItems
+                    .Include(u => u.InteriorItemCategory)
+                    .FirstOrDefault(ii => ii.Id == id && ii.IsDeleted == false);
             }
             catch
             {
@@ -45,6 +47,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.InteriorItems
                     .Where(ii => ii.InteriorItemCategoryId == id && ii.IsDeleted == false)
+                    .Include(u => u.InteriorItemCategory)
                     .OrderByDescending(ii => ii.CreatedDate)
                     .ToList();
             }
