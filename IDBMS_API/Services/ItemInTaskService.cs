@@ -1,6 +1,7 @@
 ﻿using BusinessObject.Enums;
 using BusinessObject.Models;
 using IDBMS_API.DTOs.Request;
+using Microsoft.AspNetCore.Mvc;
 using Repository.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,11 +11,13 @@ namespace IDBMS_API.Services
 {
     public class ItemInTaskService
     {
-        private readonly IItemInTaskRepository _repository;
+        private readonly IItemInTaskRepository _itemInTaskRepo;
+        private readonly IInteriorItemRepository _itemRepo;
 
-        public ItemInTaskService(IItemInTaskRepository repository)
+        public ItemInTaskService(IItemInTaskRepository itemInTaskRepo, IInteriorItemRepository itemRepo)
         {
-            _repository = repository;
+            _itemInTaskRepo = itemInTaskRepo;
+            _itemRepo = itemRepo;
         }
 
         private IEnumerable<ItemInTask> Filter(IEnumerable<ItemInTask> list,
@@ -43,34 +46,34 @@ namespace IDBMS_API.Services
         }
         public IEnumerable<ItemInTask> GetAll()
         {
-            return _repository.GetAll();
+            return _itemInTaskRepo.GetAll();
         }
 
         public ItemInTask? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _itemInTaskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
 
         public IEnumerable<ItemInTask> GetByProjectId(Guid id, string? itemCodeOrName, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
-            var list =  _repository.GetByProjectId(id);
+            var list =  _itemInTaskRepo.GetByProjectId(id);
 
             return Filter(list, itemCodeOrName, itemCategoryId, taskStatus);
         }
 
         public IEnumerable<ItemInTask> GetByRoomId(Guid id)
         {
-            return _repository.GetByRoomId(id);
+            return _itemInTaskRepo.GetByRoomId(id);
         }
 
         public IEnumerable<ItemInTask> GetByTaskId(Guid id, string? itemCodeOrName, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
-            var list = _repository.GetByTaskId(id);
+            var list = _itemInTaskRepo.GetByTaskId(id);
 
             return Filter(list, itemCodeOrName, itemCategoryId, taskStatus);
         }
 
-        public ItemInTask? CreateItemInTask(ItemInTaskRequest request)
+        public async Task<ItemInTask?> CreateItemInTask([FromForm] ItemInTaskRequest request)
         {
             var itemInTask = new ItemInTask
             {
@@ -79,30 +82,109 @@ namespace IDBMS_API.Services
                 Quantity= request.Quantity,
                 ProjectId= request.ProjectId,
                 ProjectTaskId= request.ProjectTaskId,
-                InteriorItemId= request.InteriorItemId,
             };
-            var itemInTaskCreated = _repository.Save(itemInTask);
+
+            if (request.InteriorItemId.HasValue)
+            {
+                itemInTask.InteriorItemId = request.InteriorItemId.Value;
+            }
+
+            if (request.newItem != null)
+            {
+                InteriorItemService itemService = new(_itemRepo);
+
+                var newItem = await itemService.CreateInteriorItem(request.newItem);
+
+                if (newItem != null)
+                {
+                    itemInTask.InteriorItemId = newItem.Id;
+                }
+                else
+                {
+                    throw new Exception("Create new item fail!");
+                }
+            }
+
+            var itemInTaskCreated = _itemInTaskRepo.Save(itemInTask);
             return itemInTaskCreated;
         }
 
-        public void UpdateItemInTask(Guid id, ItemInTaskRequest request)
+        public async Task CreateItemsByTaskId([FromForm] List<ItemInTaskRequest> request)
         {
-            var itemInTask = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            foreach (var itemInTask in request)
+            {
+                var newCreate = new ItemInTask
+                {
+                    Id = Guid.NewGuid(),
+                    EstimatePrice = itemInTask.EstimatePrice,
+                    Quantity = itemInTask.Quantity,
+                    ProjectId = itemInTask.ProjectId,
+                    ProjectTaskId = itemInTask.ProjectTaskId,
+                };
+
+                if (itemInTask.InteriorItemId.HasValue)
+                {
+                    newCreate.InteriorItemId = itemInTask.InteriorItemId.Value;
+                }
+
+                if (itemInTask.newItem != null)
+                {
+                    InteriorItemService itemService = new(_itemRepo);
+
+                    var newItem = await itemService.CreateInteriorItem(itemInTask.newItem);
+
+                    if (newItem != null)
+                    {
+                        newCreate.InteriorItemId = newItem.Id;
+                    }
+                    else
+                    {
+                        throw new Exception("Create new item fail!");
+                    }
+                }
+
+                _itemInTaskRepo.Save(newCreate);
+            }
+        }
+
+        public async Task UpdateItemInTask(Guid id, [FromForm] ItemInTaskRequest request)
+        {
+            var itemInTask = _itemInTaskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             itemInTask.EstimatePrice = request.EstimatePrice;
             itemInTask.Quantity = request.Quantity;
             itemInTask.ProjectTaskId = request.ProjectTaskId;
             itemInTask.ProjectId = request.ProjectId;
-            itemInTask.InteriorItemId = request.InteriorItemId;
 
-            _repository.Update(itemInTask);
+            if (request.InteriorItemId.HasValue)
+            {
+                itemInTask.InteriorItemId = request.InteriorItemId.Value;
+            }
+
+            if (request.newItem != null)
+            {
+                InteriorItemService itemService = new(_itemRepo);
+
+                var newItem = await itemService.CreateInteriorItem(request.newItem);
+
+                if (newItem != null)
+                {
+                    itemInTask.InteriorItemId = newItem.Id;
+                }
+                else
+                {
+                    throw new Exception("Create new item fail!");
+                }
+            }
+
+            _itemInTaskRepo.Update(itemInTask);
         }
 
         public void DeleteItemInTask(Guid id)
         {
-            var itemInTask = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var itemInTask = _itemInTaskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
-            _repository.DeleteById(id);
+            _itemInTaskRepo.DeleteById(id);
         }
     }
 }
