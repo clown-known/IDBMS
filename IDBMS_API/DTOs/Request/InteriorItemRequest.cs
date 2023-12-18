@@ -47,11 +47,9 @@ namespace IDBMS_API.DTOs.Request
         [Column(TypeName = "money")]
         public decimal EstimatePrice { get; set; }
 
-        [Required]
-        public int InteriorItemColorId { get; set; }
+        public int? InteriorItemColorId { get; set; }
 
-        [Required]
-        public int InteriorItemCategoryId { get; set; }
+        public int? InteriorItemCategoryId { get; set; }
 
         [Required]
         public InteriorItemStatus Status { get; set; }
