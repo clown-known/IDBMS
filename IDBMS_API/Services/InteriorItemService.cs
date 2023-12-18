@@ -90,6 +90,11 @@ namespace IDBMS_API.Services
                 CreatedDate = DateTime.Now,
             };
 
+            if (request.InteriorItemCategoryId == null)
+            {
+                ii.InteriorItemCategoryId = 12;
+            }
+
             if (request.Image != null)
             {
                 FirebaseService s = new FirebaseService();
