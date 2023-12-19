@@ -5,8 +5,6 @@ namespace IDBMS_API.DTOs.Request
 {
     public class ItemInTaskRequest
     {
-        public decimal? EstimatePrice { get; set; }
-
         [Required]
         public int Quantity { get; set; }
 

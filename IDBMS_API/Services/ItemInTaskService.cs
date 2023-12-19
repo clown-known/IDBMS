@@ -78,7 +78,6 @@ namespace IDBMS_API.Services
             var itemInTask = new ItemInTask
             {
                 Id = Guid.NewGuid(),
-                EstimatePrice = request.EstimatePrice,
                 Quantity= request.Quantity,
                 ProjectId= request.ProjectId,
                 ProjectTaskId= request.ProjectTaskId,
@@ -86,7 +85,11 @@ namespace IDBMS_API.Services
 
             if (request.InteriorItemId.HasValue)
             {
+                InteriorItemService itemService = new(_itemRepo);
+                var item = itemService.GetById(request.InteriorItemId.Value);
+
                 itemInTask.InteriorItemId = request.InteriorItemId.Value;
+                itemInTask.EstimatePrice = item.EstimatePrice;
             }
 
             if (request.newItem != null)
@@ -98,6 +101,7 @@ namespace IDBMS_API.Services
                 if (newItem != null)
                 {
                     itemInTask.InteriorItemId = newItem.Id;
+                    itemInTask.EstimatePrice = newItem.EstimatePrice;
                 }
                 else
                 {
@@ -116,7 +120,6 @@ namespace IDBMS_API.Services
                 var newCreate = new ItemInTask
                 {
                     Id = Guid.NewGuid(),
-                    EstimatePrice = itemInTask.EstimatePrice,
                     Quantity = itemInTask.Quantity,
                     ProjectId = itemInTask.ProjectId,
                     ProjectTaskId = itemInTask.ProjectTaskId,
@@ -124,7 +127,11 @@ namespace IDBMS_API.Services
 
                 if (itemInTask.InteriorItemId.HasValue)
                 {
+                    InteriorItemService itemService = new(_itemRepo);
+                    var item = itemService.GetById(itemInTask.InteriorItemId.Value);
+
                     newCreate.InteriorItemId = itemInTask.InteriorItemId.Value;
+                    newCreate.EstimatePrice = item.EstimatePrice;
                 }
 
                 if (itemInTask.newItem != null)
@@ -136,6 +143,7 @@ namespace IDBMS_API.Services
                     if (newItem != null)
                     {
                         newCreate.InteriorItemId = newItem.Id;
+                        newCreate.EstimatePrice = newItem.EstimatePrice;
                     }
                     else
                     {
@@ -151,14 +159,17 @@ namespace IDBMS_API.Services
         {
             var itemInTask = _itemInTaskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
-            itemInTask.EstimatePrice = request.EstimatePrice;
             itemInTask.Quantity = request.Quantity;
             itemInTask.ProjectTaskId = request.ProjectTaskId;
             itemInTask.ProjectId = request.ProjectId;
 
             if (request.InteriorItemId.HasValue)
             {
+                InteriorItemService itemService = new(_itemRepo);
+                var item = itemService.GetById(request.InteriorItemId.Value);
+
                 itemInTask.InteriorItemId = request.InteriorItemId.Value;
+                itemInTask.EstimatePrice = item.EstimatePrice;
             }
 
             if (request.newItem != null)
@@ -170,6 +181,7 @@ namespace IDBMS_API.Services
                 if (newItem != null)
                 {
                     itemInTask.InteriorItemId = newItem.Id;
+                    itemInTask.EstimatePrice = newItem.EstimatePrice;
                 }
                 else
                 {
