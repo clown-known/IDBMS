@@ -77,7 +77,7 @@ namespace IDBMS_API.Services
             var iicCreated = _repository.Save(iic);
             return iicCreated;
         }
-        public async void UpdateInteriorItemCategory(int id, [FromForm] InteriorItemCategoryRequest request)
+        public async Task UpdateInteriorItemCategory(int id, [FromForm] InteriorItemCategoryRequest request)
         {
             var iic = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
