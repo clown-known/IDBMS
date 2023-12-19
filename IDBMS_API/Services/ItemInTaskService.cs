@@ -91,12 +91,13 @@ namespace IDBMS_API.Services
                 itemInTask.InteriorItemId = request.InteriorItemId.Value;
                 itemInTask.EstimatePrice = item.EstimatePrice;
             }
-
-            if (request.newItem != null)
+            else
             {
+                if (request.InteriorItem == null) throw new Exception("New item null!");
+
                 InteriorItemService itemService = new(_itemRepo);
 
-                var newItem = await itemService.CreateInteriorItem(request.newItem);
+                var newItem = await itemService.CreateInteriorItem(request.InteriorItem);
 
                 if (newItem != null)
                 {
@@ -132,13 +133,14 @@ namespace IDBMS_API.Services
 
                     newCreate.InteriorItemId = itemInTask.InteriorItemId.Value;
                     newCreate.EstimatePrice = item.EstimatePrice;
-                }
-
-                if (itemInTask.newItem != null)
+                } 
+                else
                 {
+                    if (itemInTask.InteriorItem == null) throw new Exception("New item null!");
+
                     InteriorItemService itemService = new(_itemRepo);
 
-                    var newItem = await itemService.CreateInteriorItem(itemInTask.newItem);
+                    var newItem = await itemService.CreateInteriorItem(itemInTask.InteriorItem);
 
                     if (newItem != null)
                     {
@@ -171,12 +173,13 @@ namespace IDBMS_API.Services
                 itemInTask.InteriorItemId = request.InteriorItemId.Value;
                 itemInTask.EstimatePrice = item.EstimatePrice;
             }
-
-            if (request.newItem != null)
+            else
             {
+                if (request.InteriorItem == null) throw new Exception("New item null!");
+
                 InteriorItemService itemService = new(_itemRepo);
 
-                var newItem = await itemService.CreateInteriorItem(request.newItem);
+                var newItem = await itemService.CreateInteriorItem(request.InteriorItem);
 
                 if (newItem != null)
                 {

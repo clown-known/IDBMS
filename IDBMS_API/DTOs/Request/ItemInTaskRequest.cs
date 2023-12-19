@@ -15,6 +15,6 @@ namespace IDBMS_API.DTOs.Request
         public Guid ProjectTaskId { get; set; }
 
         public Guid? InteriorItemId { get; set; }
-        public InteriorItemRequest? newItem { get; set; }
+        public InteriorItemRequest? InteriorItem { get; set; }
     }
 }
