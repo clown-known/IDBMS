@@ -1,5 +1,9 @@
-﻿using IDBMS_API.DTOs.Request;
+﻿using BusinessObject.Models;
+using DocumentFormat.OpenXml.Wordprocessing;
+using IDBMS_API.DTOs.Request;
+using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
+using IDBMS_API.Services.PaginationService;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -14,46 +18,155 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             this.contractService = contractService;
         }
-        [HttpGet("downLoadContract")]
+        [HttpGet("{projectId}/download")]
         public async Task<IActionResult> Index(Guid projectid)
         {
-            byte[] file = await contractService.DownloadContract(projectid);
-            string fileName = "Contract-"+projectid.ToString()+".docx";
-            return File(file, "application/octet-stream", fileName);
+            try
+            {
+                byte[] file = await contractService.DownloadContract(projectid);
+                string fileName = "Contract-" + projectid.ToString() + ".docx";
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Download successfully!",
+                    Data = File(file, "application/octet-stream", fileName),
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
-        [HttpPost("generateForCompany")]
+        [HttpPost("company")]
         public async Task<IActionResult> GenContractForCompany(ContractRequest request)
         {
-            byte[] file = await contractService.GenNewConstractForCompany(request);
-            //string fileName = "Contract-"+projectid.ToString()+".docx";
-            string fileName = "Contract.docx";
-            return File(file, "application/octet-stream", fileName);
+            try
+            {
+                byte[] file = await contractService.GenNewConstractForCompany(request);
+                //string fileName = "Contract-"+projectid.ToString()+".docx";
+                string fileName = "Contract.docx";
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Generate successfully!",
+                    Data = File(file, "application/octet-stream", fileName),
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
-        [HttpPost("getDataForCompany")]
+        [HttpGet("{projectId}/company")]
         public async Task<IActionResult> GetDataForCompany(Guid projectId)
         {
-            var response = contractService.GetDataForCompanyContract(projectId);
-            return Ok(response);
+            try
+            {
+                var result = contractService.GetDataForCompanyContract(projectId);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = result,
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
-        [HttpPost("generateForCustomer")]
+        [HttpPost("customer")]
         public async Task<IActionResult> GenContractForCustomer(ContractForCustomerRequest request)
         {
-            byte[] file = await contractService.GenNewConstractForCustomer(request);
-            //string fileName = "Contract-"+projectid.ToString()+".docx";
-            string fileName = "Contract.docx";
-            return File(file, "application/octet-stream", fileName);
+            try
+            {
+                byte[] file = await contractService.GenNewConstractForCustomer(request);
+                //string fileName = "Contract-"+projectid.ToString()+".docx";
+                string fileName = "Contract.docx";
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Generate successfully!",
+                    Data = File(file, "application/octet-stream", fileName),
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
-        [HttpPost("getDataForCustomer")]
+        [HttpGet("{projectId}/customer")]
         public async Task<IActionResult> GetDataForCustomer(Guid projectId)
         {
-            var response = contractService.GetDataForCustomerContract(projectId);
-            return Ok(response);
+            try
+            {
+                var result = contractService.GetDataForCustomerContract(projectId);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = result,
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
-        [HttpPost("uploadContract")]
+        [HttpPost("{projectId}/upload")]
         public async Task<IActionResult> UploadContract(Guid projectId, [FromForm]IFormFile file)
         {
-            if ( await contractService.UploadContract(projectId, file) == false) return BadRequest();
-            return Ok();
+            try
+            {
+                var result = await contractService.UploadContract(projectId, file);
+
+                if (result == false) throw new Exception("Upload contract return false, upload failed!");
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Upload successfully!",
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
     }
 }
