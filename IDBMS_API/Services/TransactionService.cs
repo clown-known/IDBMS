@@ -90,6 +90,28 @@ namespace IDBMS_API.Services
             var transCreated = _repository.Save(trans);
             return transCreated;
         }
+
+        public async Task<Transaction?> CreateTransactionByWarrantyClaim(Guid warrantyClaimId, [FromForm] TransactionRequest request)
+        {
+            var trans = new Transaction
+            {
+                Id = Guid.NewGuid(),
+                Type = TransactionType.Warranty,
+                Amount = request.Amount,
+                Note = request.Note,
+                CreatedDate = DateTime.Now,
+                UserId = request.UserId,
+                ProjectId = request.ProjectId,
+                Status = TransactionStatus.Success,
+                IsDeleted = false,
+                PayerName = "Công ty IDT Décor",
+                WarrantyClaimId = warrantyClaimId,
+            };
+
+            var transCreated = _repository.Save(trans);
+            return transCreated;
+        }
+
         public async void UpdateTransaction(Guid id, TransactionRequest request)
         {
             var trans = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
