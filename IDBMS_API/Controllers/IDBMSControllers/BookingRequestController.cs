@@ -85,11 +85,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/process")]
-        public IActionResult ProcessBookingRequest(Guid id, [FromBody] string adminReply)
+        public IActionResult ProcessBookingRequest(Guid id, BookingRequestStatus status, [FromBody] string adminReply)
         {
             try
             {
-                _service.ProcessBookingRequest(id, adminReply);
+                _service.ProcessBookingRequest(id, status, adminReply);
                 return Ok();
             }
             catch (Exception ex)

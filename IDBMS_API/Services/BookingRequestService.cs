@@ -99,12 +99,13 @@ namespace IDBMS_API.Services
             _repository.Update(br);
         }
 
-        public void ProcessBookingRequest(Guid id, string adminReply)
+        public void ProcessBookingRequest(Guid id, BookingRequestStatus status, string adminReply)
         {
             var br = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             br.UpdatedDate = DateTime.Now;
             br.AdminReply = adminReply;
+            br.Status = status;
 
             _repository.Update(br);
         }
