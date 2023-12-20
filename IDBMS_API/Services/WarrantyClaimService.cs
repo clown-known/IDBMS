@@ -14,12 +14,15 @@ namespace IDBMS_API.Services
         private readonly IWarrantyClaimRepository _repository;
         private readonly IProjectRepository _projectRepo;
         private readonly IProjectParticipationRepository _projectParticipationRepo;
+        private readonly ITransactionRepository _transactionRepo;
 
-        public WarrantyClaimService(IWarrantyClaimRepository repository, IProjectRepository projectRepo, IProjectParticipationRepository projectParticipationRepo)
+        public WarrantyClaimService(IWarrantyClaimRepository repository, IProjectRepository projectRepo, 
+                    IProjectParticipationRepository projectParticipationRepo, ITransactionRepository transactionRepo)
         {
             _repository = repository;
             _projectRepo = projectRepo;
             _projectParticipationRepo = projectParticipationRepo;
+            _transactionRepo = transactionRepo;
         }
 
         public IEnumerable<WarrantyClaim> Filter(IEnumerable<WarrantyClaim> list,
@@ -91,18 +94,17 @@ namespace IDBMS_API.Services
 
         public async Task<WarrantyClaim?> CreateWarrantyClaim([FromForm]WarrantyClaimRequest request)
         {
-            string link = "";
-            var participations = _projectParticipationRepo.GetByProjectId(request.ProjectId); 
-            foreach (var parti in participations) 
-            {
-                if (parti.Role == 0) request.UserId = parti.UserId;
-            }
 
-            if(request.ConfirmationDocument != null)
+            var projectOwner = _projectParticipationRepo.GetProjectOwnerByProjectId(request.ProjectId);
+
+            string link = "";
+
+            if (request.ConfirmationDocument != null)
             {
                 FirebaseService s = new FirebaseService();
                 link = await s.UploadDocument(request.ConfirmationDocument,request.ProjectId);
             }
+
             var wc = new WarrantyClaim
             {
                 Id = Guid.NewGuid(),
@@ -116,12 +118,26 @@ namespace IDBMS_API.Services
                 EndDate = request.EndDate,
                 ConfirmationDocument = link,
                 ProjectId = request.ProjectId,
-                UserId = request.UserId,
+                UserId = projectOwner == null ? null : projectOwner.UserId,
                 IsDeleted = false,
             };
             var wcCreated = _repository.Save(wc);
 
             UpdateProjectTotalWarrantyPaid(request.ProjectId);
+
+            if (wcCreated != null)
+            {
+                var newTrans = new TransactionRequest
+                {
+                    Amount = wcCreated.IsCompanyCover ? 0 : wcCreated.TotalPaid,
+                    UserId = wcCreated.UserId,
+                    Note = wcCreated.Name,
+                    ProjectId = wcCreated.ProjectId,
+                };
+
+                TransactionService transactionService = new (_transactionRepo);
+                await transactionService.CreateTransactionByWarrantyClaim(wcCreated.Id, newTrans);
+            }
 
             return wcCreated;
         }
@@ -143,8 +159,6 @@ namespace IDBMS_API.Services
             wc.IsCompanyCover = request.IsCompanyCover;
             wc.EndDate = request.EndDate;
             wc.ConfirmationDocument = link;
-            wc.ProjectId = request.ProjectId;
-            wc.UserId = request.UserId;
 
             _repository.Update(wc);
 
