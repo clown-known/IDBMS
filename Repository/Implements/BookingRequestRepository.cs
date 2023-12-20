@@ -22,7 +22,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.BookingRequests
                     .Where(br => br.IsDeleted == false)
-                    .OrderByDescending(br => br.CreatedDate)  
+                    .OrderByDescending(br => br.UpdatedDate ?? br.CreatedDate)
                     .ToList();
             }
             catch
