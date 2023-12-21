@@ -77,11 +77,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateInteriorItemCategory([FromForm][FromBody] InteriorItemCategoryRequest request)
+        public async Task<IActionResult> CreateInteriorItemCategory([FromForm][FromBody] InteriorItemCategoryRequest request)
         {
             try
             {
-                var result = _service.CreateInteriorItemCategory(request);
+                var result = await _service.CreateInteriorItemCategory(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",
@@ -100,11 +100,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateInteriorItemCategory(int id, [FromForm][FromBody] InteriorItemCategoryRequest request)
+        public async Task<IActionResult> UpdateInteriorItemCategory(int id, [FromForm][FromBody] InteriorItemCategoryRequest request)
         {
             try
             {
-                _service.UpdateInteriorItemCategory(id, request);
+                await _service.UpdateInteriorItemCategory(id, request);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
