@@ -93,7 +93,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
-        [HttpPost("customer")]
+        [HttpPost("individual")]
         public async Task<IActionResult> GenContractForCustomer(ContractForCustomerRequest request)
         {
             try
@@ -119,7 +119,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
-        [HttpGet("{projectId}/customer")]
+        [HttpGet("{projectId}/individual")]
         public async Task<IActionResult> GetDataForCustomer(Guid projectId)
         {
             try
