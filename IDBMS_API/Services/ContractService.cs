@@ -28,9 +28,7 @@ namespace IDBMS_API.Services
         }
         public async Task<byte[]> GenNewConstractForCompany(ContractRequest request)
         {
-
             _dataSample = await firebaseService.DownloadFile("ContractForCompany.docx", null, FileType.Contract, true);
-            ProjectDocumentTemplate template = templateRepository.getByType(DocumentTemplateType.Contract);
             _file = FileSupporter.GenContractForCompanyFileBytes(_dataSample, request);
             return _file;
 
@@ -38,11 +36,9 @@ namespace IDBMS_API.Services
         public async Task<byte[]> GenNewConstractForCustomer(ContractForCustomerRequest request)
         {
             
-                _dataSample = await firebaseService.DownloadFile("ContractForCustomer.docx", null, FileType.Contract, true);
-                ProjectDocumentTemplate template = templateRepository.getByType(DocumentTemplateType.Contract);
-                _file =  FileSupporter.GenContractForCustomerFileBytes(_dataSample,request);
-                return _file;
-            
+            _dataSample = await firebaseService.DownloadFile("ContractForCustomer.docx", null, FileType.Contract, true);
+            _file =  FileSupporter.GenContractForCustomerFileBytes(_dataSample,request);
+            return _file; 
         }
         public ContractForCompanyResponse GetDataForCompanyContract(Guid projectid)
         {
