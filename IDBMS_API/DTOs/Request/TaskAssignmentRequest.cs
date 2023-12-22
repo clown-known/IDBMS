@@ -11,12 +11,9 @@ namespace IDBMS_API.DTOs.Request
     public class TaskAssignmentRequest
     {
         [Required]
-        public Guid UserId { get; set; }
+        public List<Guid> ProjectParticipationId { get; set; }
 
         [Required]
-        public Guid ProjectParticipationId { get; set; }
-
-        [Required]
-        public Guid ProjectTaskId { get; set; }
+        public List<Guid> ProjectTaskId { get; set; }
     }
 }

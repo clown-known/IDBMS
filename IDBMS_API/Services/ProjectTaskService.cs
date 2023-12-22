@@ -37,7 +37,7 @@ namespace IDBMS_API.Services
 
         public IEnumerable<ProjectTask> Filter(IEnumerable<ProjectTask> list, 
             string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId, 
-            bool includeRoomIdFilter, bool includeStageIdFilter)
+            bool includeRoomIdFilter, bool includeStageIdFilter, Guid? participationId)
         {
             IEnumerable<ProjectTask> filteredList = list;
 
@@ -63,6 +63,11 @@ namespace IDBMS_API.Services
                 filteredList = filteredList.Where(item => item.TaskCategoryId == taskCategoryId);
             }
 
+            if (participationId != null)
+            {
+                filteredList = filteredList.Where(item => item.TaskAssignments.Any(a => a.ProjectParticipationId == participationId)).ToList();
+            }
+
             if (includeRoomIdFilter)
             {
                 filteredList = filteredList.Where(item => item.RoomId == roomId);
@@ -83,20 +88,20 @@ namespace IDBMS_API.Services
 
         public IEnumerable<ProjectTask?> GetByProjectId(Guid id, 
             string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId, 
-            bool includeRoomIdFilter, bool includeStageIdFilter)
+            bool includeRoomIdFilter, bool includeStageIdFilter, Guid? participationId)
         {
             var list = _taskRepo.GetByProjectId(id);
             
-            return Filter(list, codeOrName, stageId, taskStatus, taskCategoryId, roomId, includeRoomIdFilter, includeStageIdFilter);
+            return Filter(list, codeOrName, stageId, taskStatus, taskCategoryId, roomId, includeRoomIdFilter, includeStageIdFilter, participationId);
         }
 
         public IEnumerable<Guid> GetAllProjectTaskIdByFilter(Guid projectId,
             string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId, 
-            bool includeRoomIdFilter, bool includeStageIdFilter)
+            bool includeRoomIdFilter, bool includeStageIdFilter, Guid? participationId)
         {
             var list = _taskRepo.GetByProjectId(projectId);
 
-            var filteredList = Filter(list, codeOrName, stageId, taskStatus, taskCategoryId, roomId, includeRoomIdFilter, includeStageIdFilter);
+            var filteredList = Filter(list, codeOrName, stageId, taskStatus, taskCategoryId, roomId, includeRoomIdFilter, includeStageIdFilter, participationId);
 
             var filteredIds = filteredList.Select(item => item.Id).ToList();
 

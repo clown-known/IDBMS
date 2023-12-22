@@ -34,34 +34,89 @@ namespace IDBMS_API.Services
 
             return Filter(list, name);
         }
+
         public TaskAssignment? GetById(Guid id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
+
         public IEnumerable<TaskAssignment?> GetByProjectId(Guid id, string? name)
         {
             var list = _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
 
             return Filter(list, name);
         }
+
         public IEnumerable<TaskAssignment?> GetByUserId(Guid id, string? name)
         {
             var list = _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
 
             return Filter(list, name);
         }
-        public TaskAssignment? CreateTaskAssignment(TaskAssignmentRequest request)
-        {
-            var ta = new TaskAssignment
-            {
-                Id = Guid.NewGuid(),
-                ProjectParticipationId = request.ProjectParticipationId,
-                ProjectTaskId = request.ProjectTaskId,
-                CreatedDate = DateTime.Now,
-            };
 
-            var taCreated = _repository.Save(ta);
-            return taCreated;        
+        public IEnumerable<TaskAssignment?> GetByTaskId(Guid id, string? name)
+        {
+            var list = _repository.GetByTaskId(id) ?? throw new Exception("This object is not existed!");
+
+            return Filter(list, name);
+        }
+
+        public void CreateTaskAssignment(TaskAssignmentRequest request)
+        {
+            foreach (var taskId in request.ProjectTaskId)
+            {
+                var listAssignment = GetByTaskId(taskId, null);
+
+                foreach (var participationId in request.ProjectParticipationId)
+                {
+                    //check participation exist
+                    if (!listAssignment.Any(a => a.ProjectParticipationId == participationId))
+                    {
+                        var ta = new TaskAssignment
+                        {
+                            Id = Guid.NewGuid(),
+                            ProjectParticipationId = participationId,
+                            ProjectTaskId = taskId,
+                            CreatedDate = DateTime.Now,
+                        };
+
+                        _repository.Save(ta);
+                    }
+                }
+            }
+        }
+
+        public TaskAssignment? UpdateTaskAssignmentByTaskId(Guid taskId, List<Guid> request)
+        {
+            var listAssignment = GetByTaskId(taskId, null);
+
+            foreach (var assignment in listAssignment)
+            {
+                //check deleted
+                if (!request.Any(a=> a == assignment.ProjectParticipationId))
+                {
+                    DeleteTaskAssignment(assignment.Id);
+                }
+            }
+
+            foreach (var participationId in request)
+            {
+                //check participation exist
+                if (!listAssignment.Any(a => a.ProjectParticipationId == participationId))
+                {
+                    var ta = new TaskAssignment
+                    {
+                        Id = Guid.NewGuid(),
+                        ProjectParticipationId = participationId,
+                        ProjectTaskId = taskId,
+                        CreatedDate = DateTime.Now,
+                    };
+
+                    _repository.Save(ta);
+                }
+            }
+
+            return null;
         }
 
         public void DeleteTaskAssignment(Guid id)

@@ -11,6 +11,7 @@ namespace Repository.Interfaces
     {
         IEnumerable<TaskAssignment?> GetByProjectId(Guid id);
         IEnumerable<TaskAssignment?> GetByUserId(Guid id);
+        IEnumerable<TaskAssignment?> GetByTaskId(Guid id);
 
     }
 }
