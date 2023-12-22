@@ -2,7 +2,9 @@
 
 public enum NotificationCategory
 {
-    System = 0,
-    Admin = 1,
-    Project = 2,
+    SystemMessage = 0,
+    AdminMessage = 1,
+    ProjectNotice = 2,
+    ProjectWarning = 3,
+    ProjectUpdate = 4,
 }
