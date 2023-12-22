@@ -63,12 +63,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("project/{projectId}")]
         public IActionResult GetProjectTasksByProjectId(Guid projectId, int? pageSize, int? pageNo, 
                         string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId, 
-                        bool includeRoomIdFilter, bool includeStageIdFilter)
+                        bool includeRoomIdFilter, bool includeStageIdFilter, Guid? participationId)
         {
             try
             {
                 var list = _service.GetByProjectId(projectId, codeOrName, stageId, taskStatus, taskCategoryId, roomId, 
-                    includeRoomIdFilter, includeStageIdFilter);
+                    includeRoomIdFilter, includeStageIdFilter, participationId);
 
                 var response = new ResponseMessage()
                 {
@@ -92,12 +92,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [HttpGet("ids")]
         public IActionResult GetAllProjectTaskIdByFilter(Guid projectId, int? pageSize, int? pageNo,
                 string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId, 
-                bool includeRoomIdFilter, bool includeStageIdFilter)
+                bool includeRoomIdFilter, bool includeStageIdFilter, Guid? participationId)
         {
             try
             {
                 var list = _service.GetAllProjectTaskIdByFilter(projectId, codeOrName, stageId, taskStatus, taskCategoryId, roomId, 
-                    includeRoomIdFilter, includeStageIdFilter);
+                    includeRoomIdFilter, includeStageIdFilter, participationId);
 
                 var response = new ResponseMessage()
                 {

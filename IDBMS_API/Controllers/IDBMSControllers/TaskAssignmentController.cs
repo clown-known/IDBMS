@@ -106,11 +106,10 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
                 try
                 {
-                    var result = _service.CreateTaskAssignment(request);
+                    _service.CreateTaskAssignment(request);
                     var response = new ResponseMessage()
                     {
                         Message = "Create successfully!",
-                        Data = result
                     };
                     return Ok(response);
                 }
@@ -122,6 +121,28 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                     };
                     return BadRequest(response);
                 }  
+        }
+
+        [HttpPut("project-task/{id}")]
+        public IActionResult UpdateTaskAssignment(Guid id, [FromBody] List<Guid> request)
+        {
+            try
+            {
+                _service.UpdateTaskAssignmentByTaskId(id, request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [HttpDelete("{id}")]

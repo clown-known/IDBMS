@@ -73,6 +73,24 @@ namespace Repository.Implements
                 throw;
             }
         }
+
+        public IEnumerable<TaskAssignment?> GetByTaskId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.TaskAssignments
+                    .Include(ta => ta.ProjectParticipation)
+                    .Where(ta => ta.ProjectTaskId == id)
+                    .OrderByDescending(a => a.CreatedDate)
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public TaskAssignment? Save(TaskAssignment entity)
         {
             try

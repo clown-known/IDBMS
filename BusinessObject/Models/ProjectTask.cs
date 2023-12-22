@@ -76,6 +76,7 @@ namespace BusinessObject.Models
         public List<Comment> Comments { get; set; } = new();
         public List<TaskReport> TaskReports { get; set; } = new();
         public List<ItemInTask> ItemInTasks { get; set; } = new();
+        public List<TaskAssignment> TaskAssignments { get; set; } = new();
     }
 }
 
