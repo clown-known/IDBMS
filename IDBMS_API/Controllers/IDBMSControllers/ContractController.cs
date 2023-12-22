@@ -102,13 +102,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 //string fileName = "Contract-"+projectid.ToString()+".docx";
                 string fileName = "Contract.docx";
 
-                //var response = new ResponseMessage()
-                //{
-                //    Message = "Generate successfully!",
-                //    Data = File(file, "application/octet-stream", fileName),
-                //};
+                var response = new ResponseMessage()
+                {
+                    Message = "Generate successfully!",
+                    Data = File(file, "application/octet-stream", fileName),
+                };
 
-                return File(file, "application/octet-stream", fileName);
+                return Ok(response);
             }
             catch (Exception ex)
             {
