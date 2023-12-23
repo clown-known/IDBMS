@@ -82,7 +82,7 @@ namespace IDBMS_API.Services
 
             psd.IsDeleted= true;
 
-            _repository.Save(psd);
+            _repository.Update(psd);
         }
     }
 }
