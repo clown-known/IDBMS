@@ -31,43 +31,81 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByProjectId(dprId) ?? throw new Exception("This object is not existed!");
         }
-        public async Task<Comment?> CreateComment([FromForm] CommentRequest comment)
+        public async Task<Comment?> CreateComment([FromForm] CommentRequest request)
         {
-            FirebaseService s = new FirebaseService();
-            string link = "";
-            if (comment.File != null) { 
-                link = await s.UploadCommentFile(comment.File,comment.ProjectId,comment.ProjectTaskId); 
-            }
+
             var cmt = new Comment
             {
                 Id = Guid.NewGuid(),
-                Content = comment.Content,
-                ProjectTaskId = comment.ProjectTaskId,
-                ProjectId = comment.ProjectId,
-                UserId = comment.UserId,
-                FileUrl = link,
+                ProjectTaskId = request.ProjectTaskId,
+                ProjectId = request.ProjectId,
+                UserId = request.UserId,
                 CreatedTime = DateTime.Now,
                 Status = CommentStatus.Sent,
             };
+
+            if (request.Type == CommentType.Text)
+            {
+                cmt.Type= CommentType.Text;
+                cmt.Content = request.Content;
+            }
+
+            if (request.Type == CommentType.File)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = "";
+                if (request.File != null)
+                {
+                    link = await s.UploadCommentFile(request.File, request.ProjectId, request.ProjectTaskId);
+                }
+
+                cmt.Type = CommentType.File;
+                cmt.FileUrl= link;
+            }
+
+            if (request.Type == CommentType.ItemSuggestion)
+            {
+                cmt.Type = CommentType.ItemSuggestion;
+                cmt.ItemId = request.ItemId;
+            }
+
             var cmtCreated = _repository.Save(cmt);
             return cmtCreated;
         }
-        public async void UpdateComment(Guid id, [FromForm] CommentRequest comment)
+        public async void UpdateComment(Guid id, [FromForm] CommentRequest request)
         {
             var cmt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            FirebaseService s = new FirebaseService();
-            string link = "";
-            if (comment.File != null)
-            {
-                link = await s.UploadCommentFile(comment.File, comment.ProjectId, comment.ProjectTaskId);
-            }
-            cmt.Content = comment.Content;
-            cmt.ProjectTaskId = comment.ProjectTaskId;
-            cmt.ProjectId = comment.ProjectId;
-            cmt.UserId = comment.UserId;
-            cmt.FileUrl = link;
+
+            cmt.ProjectTaskId = request.ProjectTaskId;
+            cmt.ProjectId = request.ProjectId;
+            cmt.UserId = request.UserId;
             cmt.LastModifiedTime = DateTime.Now;
             cmt.Status = CommentStatus.Edited;
+
+            if (request.Type == CommentType.Text)
+            {
+                cmt.Type = CommentType.Text;
+                cmt.Content = request.Content;
+            }
+
+            if (request.Type == CommentType.File)
+            {
+                FirebaseService s = new FirebaseService();
+                string link = "";
+                if (request.File != null)
+                {
+                    link = await s.UploadCommentFile(request.File, request.ProjectId, request.ProjectTaskId);
+                }
+
+                cmt.Type = CommentType.File;
+                cmt.FileUrl = link;
+            }
+
+            if (request.Type == CommentType.ItemSuggestion)
+            {
+                cmt.Type = CommentType.ItemSuggestion;
+                cmt.ItemId = request.ItemId;
+            }
 
             _repository.Update(cmt);
         }
