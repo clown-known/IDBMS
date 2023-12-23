@@ -95,6 +95,10 @@ public class IdtDbContext : DbContext
         
         modelBuilder.Entity<Comment>()
             .Property(comment => comment.Status)
+            .HasConversion<int>();        
+        
+        modelBuilder.Entity<Comment>()
+            .Property(comment => comment.Type)
             .HasConversion<int>();
 
         modelBuilder.Entity<ProjectDesign>()
