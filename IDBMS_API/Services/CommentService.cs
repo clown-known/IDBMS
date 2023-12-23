@@ -5,6 +5,7 @@ using Repository.Implements;
 using Repository.Interfaces;
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -15,21 +16,55 @@ namespace IDBMS_API.Services
         {
             _repository = repository;
         }
+
+        public IEnumerable<Comment> Filter(IEnumerable<Comment> list, CommentType? type, CommentStatus? status, string? content)
+        {
+            IEnumerable<Comment> filteredList = list;
+
+            if (type != null)
+            {
+                filteredList = filteredList.Where(comment => comment.Type == type);
+            }
+
+            if (status != null)
+            {
+                filteredList = filteredList.Where(comment => comment.Status == status);
+            }
+
+            if (content != null)
+            {
+                filteredList = filteredList
+                    .Where(comment =>
+                        comment.Content != null &&
+                        comment.Content.Unidecode().IndexOf(content.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0);
+            }
+
+            return filteredList;
+        }
+
+
         public IEnumerable<Comment> GetAll()
         {
             return _repository.GetAll();
         }
+
         public Comment? GetById(Guid id)
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<Comment?> GetByProjectTaskId(Guid ctId)
+
+        public IEnumerable<Comment?> GetByProjectTaskId(Guid id, CommentType? type, CommentStatus? status, string? content)
         {
-            return _repository.GetByTaskId(ctId) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByTaskId(id);
+
+            return Filter(list, type, status, content);
         }
-        public IEnumerable<Comment?> GetByProjectId(Guid dprId)
+
+        public IEnumerable<Comment?> GetByProjectId(Guid id, CommentType? type, CommentStatus? status, string? content)
         {
-            return _repository.GetByProjectId(dprId) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByProjectId(id);
+
+            return Filter(list, type, status, content);
         }
         public async Task<Comment?> CreateComment([FromForm] CommentRequest request)
         {

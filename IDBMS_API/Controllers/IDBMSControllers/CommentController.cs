@@ -6,6 +6,8 @@ using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using BusinessObject.Models;
+using IDBMS_API.Services.PaginationService;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -14,31 +16,89 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class CommentsController : ODataController
     {
         private readonly CommentService _service;
+        private readonly PaginationService<Comment> _paginationService;
 
-        public CommentsController(CommentService service)
+        public CommentsController(CommentService service, PaginationService<Comment> paginationService)
         {
             _service = service;
+            _paginationService = paginationService;
+
         }
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetComments()
+        public IActionResult GetComments(int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetAll());
+            try
+            {
+                var list = _service.GetAll();
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
         //permission
         [EnableQuery]
         [HttpGet("project-task/{id}")]
-        public IActionResult GetCommentsProjectTaskId(Guid id)
+        public IActionResult GetCommentsProjectTaskId(Guid id, CommentType? type, CommentStatus? status, string? content, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetByProjectTaskId(id));
+            var list = _service.GetByProjectTaskId(id, type, status, content);
+            try
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
         //permission
         [EnableQuery]
         [HttpGet("project/{id}")]
-        public IActionResult GetCommentsProjectId(Guid id)
+        public IActionResult GetCommentsProjectId(Guid id, CommentType? type, CommentStatus? status, string? content, int? pageSize, int? pageNo)
         {
-            return Ok(_service.GetByProjectId(id));
+            var list = _service.GetByProjectId(id, type, status, content);
+            try
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [EnableQuery]
