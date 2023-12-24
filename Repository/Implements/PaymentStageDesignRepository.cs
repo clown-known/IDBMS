@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.PaymentStageDesigns
                     .Where(psd=> psd.IsDeleted == false)
+                    .Include(psd => psd.ProjectDesign)
                     .OrderBy(psd=>psd.StageNo)
                     .ToList();
             }
@@ -52,6 +54,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.PaymentStageDesigns
                     .Where(psd => psd.ProjectDesignId == id && psd.IsDeleted == false)
+                    .Include(psd => psd.ProjectDesign)
                     .OrderBy(psd => psd.StageNo)
                     .ToList();
             }
@@ -66,7 +69,10 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.PaymentStageDesigns.Where(psd => psd.Id == id && psd.IsDeleted == false).FirstOrDefault();
+                return context.PaymentStageDesigns
+                    .Where(psd => psd.Id == id && psd.IsDeleted == false)
+                    .Include(psd => psd.ProjectDesign)
+                    .FirstOrDefault();
             }
             catch
             {
