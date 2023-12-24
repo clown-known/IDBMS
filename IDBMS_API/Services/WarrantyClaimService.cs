@@ -145,12 +145,14 @@ namespace IDBMS_API.Services
         public async void UpdateWarrantyClaim(Guid id, [FromForm] WarrantyClaimRequest request)
         {
             var wc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
-            string link = wc.ConfirmationDocument;
+
             if (request.ConfirmationDocument != null)
             {
                 FirebaseService s = new FirebaseService();
-                link = await s.UploadDocument(request.ConfirmationDocument, request.ProjectId);
+                string link = await s.UploadDocument(request.ConfirmationDocument, request.ProjectId);
+                wc.ConfirmationDocument = link;
             }
+
             wc.Name = request.Name;
             wc.Reason = request.Reason;
             wc.Solution = request.Solution;
@@ -158,7 +160,6 @@ namespace IDBMS_API.Services
             wc.TotalPaid = request.TotalPaid;
             wc.IsCompanyCover = request.IsCompanyCover;
             wc.EndDate = request.EndDate;
-            wc.ConfirmationDocument = link;
 
             _repository.Update(wc);
 
@@ -171,6 +172,8 @@ namespace IDBMS_API.Services
             wc.IsDeleted = true;
 
             _repository.Update(wc);
+
+            TransactionService transactionService = new (_transactionRepo);
 
             UpdateProjectTotalWarrantyPaid(projectId);
         }
