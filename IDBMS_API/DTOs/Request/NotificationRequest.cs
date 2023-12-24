@@ -16,8 +16,6 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public string Content { get; set; } = default!;
 
-        public string? Link { get; set; } = default!;
-        [Required]
-        public List<Guid> listUserId { get; set; }
+        public List<Guid>? ListUserId { get; set; }
     }
 }

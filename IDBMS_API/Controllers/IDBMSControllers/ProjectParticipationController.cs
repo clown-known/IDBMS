@@ -112,6 +112,32 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
+        [EnableQuery]
+        [HttpGet("project/{projectId}/users")]
+        public IActionResult GetUsersByParticipationInProject(Guid projectId)
+        {
+            try
+            {
+                var list = _service.GetUsersByParticipationInProject(projectId);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = list
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
         [HttpPost]
         public IActionResult CreateParticipation([FromBody] ProjectParticipationRequest request)
         {
