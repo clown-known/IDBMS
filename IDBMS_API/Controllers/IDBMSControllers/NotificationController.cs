@@ -104,11 +104,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        public IActionResult CreateNotificationsForAllUsers([FromBody] NotificationRequest request)
+        public IActionResult CreateNotificationsForAllCustomers([FromBody] NotificationRequest request)
         {
             try
             {
-                _service.CreateNotificatonsForAllUsers(request);
+                _service.CreateNotificatonsForAllCustomers(request);
 
                 var response = new ResponseMessage()
                 {
@@ -125,34 +125,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
-        [HttpPost("user/{userId}")]
-        public IActionResult CreateNotificationForUser(Guid userId, [FromBody] NotificationRequest request)
+
+        [HttpPost("projects/{projectId}")]
+        public IActionResult CreateNotificationForProject(Guid projectId, [FromBody] NotificationRequest request)
         {
             try
             {
-                var result = _service.CreateNotificatonByUserId(request, userId);
-                var response = new ResponseMessage()
-                {
-                    Message = "Create successfully!",
-                    Data = result
-                };
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var response = new ResponseMessage()
-                {
-                    Message = $"Error: {ex.Message}"
-                };
-                return BadRequest(response);
-            }
-        }
-        [HttpPost("users")]
-        public IActionResult CreateNotificationForUsers([FromBody] NotificationRequest request)
-        {
-            try
-            {
-                _service.CreateNotificatonForUsers(request, request.listUserId);
+                _service.CreateNotificatonForProject(projectId, request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!"

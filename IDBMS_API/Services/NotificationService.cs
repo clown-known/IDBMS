@@ -14,10 +14,13 @@ namespace IDBMS_API.Services
     {
         private readonly INotificationRepository _repository;
         private readonly IUserRepository _userRepository;
-        public NotificationService(INotificationRepository notificationRepository, IUserRepository userRepository)
+        private readonly IConfiguration _configuration;
+
+        public NotificationService(INotificationRepository notificationRepository, IUserRepository userRepository, IConfiguration configuration)
         {
             _repository = notificationRepository;
             _userRepository = userRepository;
+            _configuration = configuration;
         }
 
         public IEnumerable<Notification> Filter(IEnumerable<Notification> list,
@@ -49,22 +52,8 @@ namespace IDBMS_API.Services
 
             return Filter(list, category);
         }
-        public Notification? CreateNotificatonByUserId(NotificationRequest noti, Guid userId)
-        {
-            var user = _userRepository.GetById(userId) ?? throw new Exception("This object is not existed!");
-            var notification = new Notification
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                Category = noti.Category,
-                Content = noti.Content,
-                Link = noti.Link,
-                IsSeen = false,
-            };
-            var notiCreated = _repository.Save(notification);
-            return notiCreated;
-        }
-        public void CreateNotificatonsForAllUsers(NotificationRequest noti)
+
+        public void CreateNotificatonsForAllCustomers(NotificationRequest request)
         {
             var users = _userRepository.GetAll();
             var idList = users.Select(n => n.Id).ToList();
@@ -75,9 +64,9 @@ namespace IDBMS_API.Services
                 {
                     Id = Guid.NewGuid(),
                     UserId = userId,
-                    Category = noti.Category,
-                    Content = noti.Content,
-                    Link = noti.Link,
+                    Category = request.Category,
+                    Content = request.Content,
+                    CreatedDate= DateTime.Now,
                     IsSeen = false,
                 };
 
@@ -85,11 +74,12 @@ namespace IDBMS_API.Services
             }
 
         }
-        public void CreateNotificatonForUsers(NotificationRequest noti, List<Guid> listUserId)
+        public void CreateNotificatonForProject(Guid projectId, NotificationRequest request)
         {
-            if (listUserId == null) throw new Exception("List user is null!");
+            var managementWebClientURL = _configuration["ManagementWebClientURL"];
+            var projectLink = $"{managementWebClientURL}/projects/{projectId}";
 
-            foreach (var userId in listUserId)
+            foreach (var userId in request.ListUserId)
             {
                 var user = _userRepository.GetById(userId) ?? throw new Exception($"User with user id {userId} is not existed!");
 
@@ -97,9 +87,10 @@ namespace IDBMS_API.Services
                 {
                     Id = Guid.NewGuid(),
                     UserId = user.Id,
-                    Category = noti.Category,
-                    Content = noti.Content,
-                    Link = noti.Link,
+                    Category = request.Category,
+                    Content = request.Content,
+                    Link= projectLink,
+                    CreatedDate = DateTime.Now,
                     IsSeen = false,
                 };
 
@@ -109,22 +100,22 @@ namespace IDBMS_API.Services
 
         public void UpdateIsSeenById(Guid id)
         {
-            var noti = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var request = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
-            noti.IsSeen = true;
+            request.IsSeen = true;
 
-            _repository.Update(noti);
+            _repository.Update(request);
         }
 
         public void UpdateIsSeenByUserId(Guid userId)
         {
             var listNotiByUserId = _repository.GetByUserId(userId);
 
-            foreach (var noti in listNotiByUserId)
+            foreach (var request in listNotiByUserId)
             {
-                noti.IsSeen = true;
+                request.IsSeen = true;
 
-                _repository.Update(noti);
+                _repository.Update(request);
             }
         }
     }

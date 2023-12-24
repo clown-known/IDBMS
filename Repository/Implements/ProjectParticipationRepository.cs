@@ -130,6 +130,24 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
         }
     }
 
+    public IEnumerable<ProjectParticipation> GetUsersByParticipationInProject(Guid id)
+    {
+        try
+        {
+            using var context = new IdtDbContext();
+            return context.ProjectParticipations
+                .OrderBy(p => p.Role == ParticipationRole.ProductOwner || p.Role == ParticipationRole.ProjectManager ? 0 : p.Role)
+                    .ThenBy(p => p.Role)
+                .Include(u => u.User)
+                .Where(u => u.ProjectId.Equals(id) && u.IsDeleted == false)
+                .ToList();
+        }
+        catch
+        {
+            throw;
+        }
+    }
+    
     public IEnumerable<ProjectParticipation> GetByUserId(Guid id)
     {
         try
