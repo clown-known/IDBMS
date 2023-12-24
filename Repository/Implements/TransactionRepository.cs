@@ -71,6 +71,23 @@ namespace Repository.Implements
                 throw;
             }
         }
+
+        public IEnumerable<Transaction?> GetByWarrantyId(Guid id)
+        {
+
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Transactions
+                    .OrderByDescending(time => time.CreatedDate)
+                    .Where(trans => trans.WarrantyClaimId == id && trans.IsDeleted == false).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public Transaction? Save(Transaction entity)
         {
             try

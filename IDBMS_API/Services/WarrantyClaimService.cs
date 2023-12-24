@@ -174,6 +174,7 @@ namespace IDBMS_API.Services
             _repository.Update(wc);
 
             TransactionService transactionService = new (_transactionRepo);
+            transactionService.DeleteTransactionsByWarrantyId(id);
 
             UpdateProjectTotalWarrantyPaid(projectId);
         }

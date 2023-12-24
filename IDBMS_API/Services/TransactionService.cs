@@ -149,5 +149,15 @@ namespace IDBMS_API.Services
 
             _repository.Update(trans);
         }
+
+        public void DeleteTransactionsByWarrantyId(Guid id)
+        {
+            var list = _repository.GetByWarrantyId(id);
+
+            foreach (var trans in list)
+            {
+                DeleteTransactionById(trans.Id);
+            }
+        }
     }
 }
