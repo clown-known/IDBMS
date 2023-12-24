@@ -141,7 +141,7 @@ namespace IDBMS_API.Services
 
             _repository.Update(trans);
         }
-        public void DeleteTransactionStatus(Guid id)
+        public void DeleteTransactionById(Guid id)
         {
             var trans = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 

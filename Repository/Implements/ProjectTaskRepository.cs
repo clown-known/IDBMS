@@ -20,6 +20,7 @@ namespace Repository.Implements
                     .Include(c => c.TaskCategory)
                     .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
                     .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
+                    .Include(pt => pt.TaskAssignments)
                     .OrderByDescending(c => c.CreatedDate)
                     .ToList();
             }

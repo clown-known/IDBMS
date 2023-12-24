@@ -63,9 +63,10 @@ namespace IDBMS_API.Supporters.File
         }
         public static byte[] GenContractForCustomerFileBytes(byte[] docxBytes, ContractForCustomerRequest request)
         {
-            using (MemoryStream stream = new MemoryStream(docxBytes))
+            using (MemoryStream stream = new MemoryStream())
             {
-                using (WordprocessingDocument doc = WordprocessingDocument.Open(stream, true))
+                stream.Write(docxBytes, 0, docxBytes.Length);
+                using (WordprocessingDocument doc = WordprocessingDocument.Open(stream,true ))
                 {
                     DateTime time = DateTime.Now;
                     string stringDate = time.Day.ToString() + "/" + time.Month.ToString() + "/" + time.Year.ToString();
@@ -102,8 +103,9 @@ namespace IDBMS_API.Supporters.File
                     FindAndReplaceText(doc, "[EstimateBusinessDay]", request.EstimateDays.ToString());
                     doc.Save();
                 }
+                stream.Position = 0;
+                return stream.ToArray();
             }
-            return docxBytes;
         }
         static private string DateParse(DateTime input)
         {
