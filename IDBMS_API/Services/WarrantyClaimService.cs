@@ -146,6 +146,9 @@ namespace IDBMS_API.Services
         {
             var wc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
+            decimal transactionBeforeUpdated = wc.IsCompanyCover ? 0 : wc.TotalPaid;
+            decimal transactionAfterUpdated = request.IsCompanyCover ? 0 : request.TotalPaid;
+
             if (request.ConfirmationDocument != null)
             {
                 FirebaseService s = new FirebaseService();
@@ -162,6 +165,23 @@ namespace IDBMS_API.Services
             wc.EndDate = request.EndDate;
 
             _repository.Update(wc);
+
+            if (transactionAfterUpdated != transactionBeforeUpdated)
+            {
+                decimal difference = transactionAfterUpdated - transactionBeforeUpdated;
+
+                var newTrans = new TransactionRequest
+                {
+                    Amount = difference,
+                    UserId = wc.UserId,
+                    Note = $"{wc.Name} ({DateTime.Now.ToString("dd/MM/yyyy")})",
+                    ProjectId = wc.ProjectId,
+                };
+
+                TransactionService transactionService = new(_transactionRepo);
+                await transactionService.CreateTransactionByWarrantyClaim(wc.Id, newTrans);
+
+            }
 
             UpdateProjectTotalWarrantyPaid(request.ProjectId);
         }
