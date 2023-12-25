@@ -14,6 +14,11 @@ namespace IDBMS_API.Services
         private readonly IPaymentStageDesignRepository _stageDesignRepo;
         private readonly ITaskDocumentRepository _taskDocumentRepo;
 
+        private readonly IFloorRepository _floorRepo;
+        private readonly IRoomRepository _roomRepo;
+        private readonly IRoomTypeRepository _roomTypeRepo;
+        private readonly IProjectTaskRepository _projectTaskRepo;
+
         public DashboardService(
                 IProjectRepository projectRepo,
                 ITaskReportRepository taskReportRepo,
@@ -34,10 +39,10 @@ namespace IDBMS_API.Services
 
         public DashboardReponse? GetDashboardData()
         {
-            ProjectService projectService = new (_projectRepo);
+            ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
             var recentProjects = projectService.GetRecentProjects().Take(5).ToList();
 
-            TaskReportService taskReportService = new (_taskReportRepo, _taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _taskDocumentRepo);
+            TaskReportService taskReportService = new (_taskReportRepo, _taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _taskDocumentRepo, _floorRepo, _roomRepo, _roomTypeRepo);
             var recentReports = taskReportService.GetRecentReports().Take(5).ToList();
 
             var dashboardData = new DashboardReponse

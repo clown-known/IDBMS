@@ -20,19 +20,27 @@ namespace IDBMS_API.Services
         private readonly IPaymentStageRepository _stageRepo;
         private readonly IProjectDesignRepository _projectDesignRepo;
         private readonly IPaymentStageDesignRepository _stageDesignRepo;
-
+        private readonly IFloorRepository _floorRepo;
+        private readonly IRoomRepository _roomRepo;
+        private readonly IRoomTypeRepository _roomTypeRepo;
         public ProjectTaskService(
-            IProjectTaskRepository taskRepo,
-            IProjectRepository projectRepo,
-            IPaymentStageRepository stageRepo,
-            IProjectDesignRepository projectDesignRepo,
-            IPaymentStageDesignRepository stageDesignRepo)
+                IProjectTaskRepository taskRepo,
+                IProjectRepository projectRepo,
+                IPaymentStageRepository stageRepo,
+                IProjectDesignRepository projectDesignRepo,
+                IPaymentStageDesignRepository stageDesignRepo,
+                IFloorRepository floorRepo,
+                IRoomRepository roomRepo,
+                IRoomTypeRepository roomTypeRepo)
         {
             _taskRepo = taskRepo;
             _projectRepo = projectRepo;
-            _stageRepo = stageRepo; 
+            _stageRepo = stageRepo;
             _projectDesignRepo = projectDesignRepo;
             _stageDesignRepo = stageDesignRepo;
+            _floorRepo = floorRepo;
+            _roomRepo = roomRepo;
+            _roomTypeRepo = roomTypeRepo;
         }
 
         public IEnumerable<ProjectTask> Filter(IEnumerable<ProjectTask> list, 
@@ -160,7 +168,7 @@ namespace IDBMS_API.Services
                 });
             }
 
-            ProjectService projectService = new(_projectRepo);
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
             projectService.UpdateProjectDataByTask(projectId, estimatePrice, finalPrice, estimateBusinessDay);
 
         }

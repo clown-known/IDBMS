@@ -17,15 +17,21 @@ namespace IDBMS_API.Services
         private readonly IProjectDesignRepository _projectDesignRepo;
         private readonly IPaymentStageDesignRepository _stageDesignRepo;
         private readonly ITaskDocumentRepository _taskDocumentRepo;
+        private readonly IFloorRepository _floorRepo;
+        private readonly IRoomRepository _roomRepo;
+        private readonly IRoomTypeRepository _roomTypeRepo;
 
         public TaskReportService(
-            ITaskReportRepository taskReportRepo,
-            IProjectTaskRepository taskRepo,
-            IProjectRepository projectRepo,
-            IPaymentStageRepository stageRepo,
-            IProjectDesignRepository projectDesignRepo,
-            IPaymentStageDesignRepository stageDesignRepo,
-            ITaskDocumentRepository taskDocumentRepo)
+                ITaskReportRepository taskReportRepo,
+                IProjectTaskRepository taskRepo,
+                IProjectRepository projectRepo,
+                IPaymentStageRepository stageRepo,
+                IProjectDesignRepository projectDesignRepo,
+                IPaymentStageDesignRepository stageDesignRepo,
+                ITaskDocumentRepository taskDocumentRepo,
+                IFloorRepository floorRepo,
+                IRoomRepository roomRepo,
+                IRoomTypeRepository roomTypeRepo)
         {
             _taskReportRepo = taskReportRepo;
             _taskRepo = taskRepo;
@@ -34,6 +40,9 @@ namespace IDBMS_API.Services
             _projectDesignRepo = projectDesignRepo;
             _stageDesignRepo = stageDesignRepo;
             _taskDocumentRepo = taskDocumentRepo;
+            _floorRepo = floorRepo;
+            _roomRepo = roomRepo;
+            _roomTypeRepo = roomTypeRepo;
         }
 
         public IEnumerable<TaskReport> Filter(IEnumerable<TaskReport> list,
@@ -82,7 +91,7 @@ namespace IDBMS_API.Services
                 var latestReport = reportsInTask.OrderByDescending(r => r.UpdatedTime ?? r.CreatedTime).FirstOrDefault();
                 if (latestReport != null)
                 {
-                    ProjectTaskService taskService = new(_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo);
+                    ProjectTaskService taskService = new(_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo);
                     taskService.UpdateTaskProgress(taskId, latestReport.UnitUsed);
                 }
             }

@@ -12,9 +12,31 @@ namespace IDBMS_API.Services
     public class FloorService
     {
         private readonly IFloorRepository _floorRepo;
+        private readonly IRoomRepository _roomRepo;
+        private readonly IRoomTypeRepository _roomTypeRepo;
+        private readonly IProjectTaskRepository _projectTaskRepo;
+        private readonly IPaymentStageRepository _stageRepo;
+        private readonly IProjectDesignRepository _projectDesignRepo;
+        private readonly IPaymentStageDesignRepository _stageDesignRepo;
+        private readonly IProjectRepository _projectRepo;
 
-        public FloorService(IFloorRepository floorRepo)
+        public FloorService(
+            IProjectRepository projectRepo,
+            IRoomRepository roomRepo,
+            IRoomTypeRepository roomTypeRepo,
+            IProjectTaskRepository projectTaskRepo,
+            IPaymentStageRepository stageRepo,
+            IProjectDesignRepository projectDesignRepo,
+            IPaymentStageDesignRepository stageDesignRepo,
+            IFloorRepository floorRepo)
         {
+            _projectRepo = projectRepo;
+            _roomRepo = roomRepo;
+            _roomTypeRepo = roomTypeRepo;
+            _projectTaskRepo = projectTaskRepo;
+            _stageRepo = stageRepo;
+            _projectDesignRepo = projectDesignRepo;
+            _stageDesignRepo = stageDesignRepo;
             _floorRepo = floorRepo;
         }
 
@@ -71,6 +93,26 @@ namespace IDBMS_API.Services
 
             var floorCreated = _floorRepo.Save(floor);
             return floorCreated;
+        }
+
+        public void DuplicateFloorsByProjectId(Guid createdId, Guid basedOnId)
+        {
+            var floors = _floorRepo.GetByProjectId(basedOnId);
+
+            foreach (var floor in floors)
+            {
+                var floorRequest = new FloorRequest
+                {
+                    Description= floor.Description,
+                    FloorNo = floor.FloorNo,
+                    ProjectId = createdId,
+                    UsePurpose = floor.UsePurpose,
+                };
+                var createdFloor = CreateFloor(floorRequest);
+
+                RoomService roomService = new RoomService(_roomRepo, _roomTypeRepo, _projectRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
+                roomService.DuplicateRoomsByFloorId(createdFloor.Id, floor.Id, createdId);
+            }
         }
 
         public void UpdateFloor(Guid id, FloorRequest request)
