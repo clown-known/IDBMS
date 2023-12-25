@@ -11,5 +11,6 @@ namespace Repository.Interfaces
     {
         IEnumerable<Transaction?> GetByProjectId(Guid id);
         IEnumerable<Transaction?> GetByUserId(Guid id);
+        IEnumerable<Transaction?> GetByWarrantyId(Guid id);
     }
 }
