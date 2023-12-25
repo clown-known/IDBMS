@@ -42,7 +42,7 @@ namespace Repository.Implements
                 throw;
             }
         }
-        public IEnumerable<TaskReport?> GetByTaskId(Guid id)
+        public IEnumerable<TaskReport> GetByTaskId(Guid id)
         {
             try
             {
@@ -58,7 +58,24 @@ namespace Repository.Implements
                 throw;
             }
         }
-        
+        public IEnumerable<TaskReport> GetRecentReports()
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.TaskReports
+                    .OrderByDescending(time => time.UpdatedTime ?? time.CreatedTime)
+                        .ThenByDescending(time => time.CreatedTime)
+                    .Include(report => report.ProjectTask)
+                        .ThenInclude(ta => ta.TaskAssignments)
+                    .Where(report => report.IsDeleted == false).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public TaskReport Save(TaskReport entity)
         {
             try

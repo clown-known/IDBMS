@@ -5,6 +5,7 @@ using IDBMS_API.Services;
 using Repository.Interfaces;
 using Microsoft.OData.Edm;
 using UnidecodeSharpFork;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 public class ProjectService
 {
@@ -54,6 +55,11 @@ public class ProjectService
         var list = _repository.GetBySiteId(id) ?? throw new Exception("This object is not found!");
 
         return Filter(list, type, status, name);
+    }
+
+    public IEnumerable<Project> GetRecentProjects()
+    {
+        return _repository.GetRecentProjects();
     }
 
     public Project? CreateProject(ProjectRequest request)
@@ -144,6 +150,7 @@ public class ProjectService
         var project = _repository.GetById(id) ?? throw new Exception("Not existed");
 
         project.Status = status;
+        project.UpdatedDate = DateTime.Now;
 
         _repository.Update(project);
     }

@@ -4,6 +4,7 @@ using Repository.Interfaces;
 using Azure.Core;
 using BusinessObject.Enums;
 using UnidecodeSharpFork;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace IDBMS_API.Services
 {
@@ -15,7 +16,8 @@ namespace IDBMS_API.Services
         private readonly IPaymentStageRepository _stageRepo;
         private readonly IProjectDesignRepository _projectDesignRepo;
         private readonly IPaymentStageDesignRepository _stageDesignRepo;
-        private readonly TaskDocumentService documentService;
+        private readonly ITaskDocumentRepository _taskDocumentRepo;
+
         public TaskReportService(
             ITaskReportRepository taskReportRepo,
             IProjectTaskRepository taskRepo,
@@ -23,7 +25,7 @@ namespace IDBMS_API.Services
             IPaymentStageRepository stageRepo,
             IProjectDesignRepository projectDesignRepo,
             IPaymentStageDesignRepository stageDesignRepo,
-            TaskDocumentService documentService)
+            ITaskDocumentRepository taskDocumentRepo)
         {
             _taskReportRepo = taskReportRepo;
             _taskRepo = taskRepo;
@@ -31,7 +33,7 @@ namespace IDBMS_API.Services
             _stageRepo = stageRepo;
             _projectDesignRepo = projectDesignRepo;
             _stageDesignRepo = stageDesignRepo;
-            this.documentService = documentService;
+            _taskDocumentRepo = taskDocumentRepo;
         }
 
         public IEnumerable<TaskReport> Filter(IEnumerable<TaskReport> list,
@@ -53,15 +55,22 @@ namespace IDBMS_API.Services
 
             return Filter(list, name);
         }
+
         public TaskReport? GetById(Guid id)
         {
             return _taskReportRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<TaskReport?> GetByTaskId(Guid id, string? name)
+
+        public IEnumerable<TaskReport> GetByTaskId(Guid id, string? name)
         {
             var list = _taskReportRepo.GetByTaskId(id) ?? throw new Exception("This object is not existed!");
 
             return Filter(list, name);
+        }
+
+        public IEnumerable<TaskReport> GetRecentReports()
+        {
+            return _taskReportRepo.GetRecentReports();
         }
 
         public void UpdateTaskPercentage(Guid taskId)
@@ -95,7 +104,8 @@ namespace IDBMS_API.Services
             if(request.documentList!=null)
             foreach (var report in request.documentList)
             {
-                await this.documentService.CreateTaskDocument(projectId,report);
+                    TaskDocumentService documentService = new (_taskDocumentRepo);
+                    await documentService.CreateTaskDocument(projectId,report);
             }
             UpdateTaskPercentage(request.ProjectTaskId);
 

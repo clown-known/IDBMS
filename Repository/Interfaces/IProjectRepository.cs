@@ -7,5 +7,6 @@ public interface IProjectRepository : ICrudBaseRepository<Project, Guid>
 {
     IEnumerable<Project> GetBySiteId(Guid id);
     IEnumerable<Project> GetAdvertisementAllowedProjects();
-    public Project? GetByIdWithSite(Guid id);
+    IEnumerable<Project> GetRecentProjects();
+    Project? GetByIdWithSite(Guid id);
 }

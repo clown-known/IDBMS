@@ -11,4 +11,3 @@ namespace IDBMS_API.DTOs.Request.AccountRequest
         public string GoogleToken { get; set; } = default!;
     }
 }
-}
