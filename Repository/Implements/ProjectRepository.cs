@@ -87,6 +87,25 @@ namespace Repository.Implements
             }
         }
 
+        public IEnumerable<Project> GetRecentProjects()
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Projects
+                    .Include(pc => pc.ProjectCategory)
+                    .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
+                        .ThenInclude(u => u.User)
+                    .OrderByDescending(time => time.UpdatedDate ?? time.CreatedDate)
+                        .ThenByDescending(time => time.CreatedDate)
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public IEnumerable<Project> GetBySiteId(Guid id)
         {
             try

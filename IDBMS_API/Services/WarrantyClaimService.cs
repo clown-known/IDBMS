@@ -11,18 +11,42 @@ namespace IDBMS_API.Services
 {
     public class WarrantyClaimService
     {
-        private readonly IWarrantyClaimRepository _repository;
+        private readonly IWarrantyClaimRepository _warrantyRepo;
         private readonly IProjectRepository _projectRepo;
         private readonly IProjectParticipationRepository _projectParticipationRepo;
         private readonly ITransactionRepository _transactionRepo;
+        private readonly IFloorRepository _floorRepo;
+        private readonly IRoomRepository _roomRepo;
+        private readonly IRoomTypeRepository _roomTypeRepo;
+        private readonly IProjectTaskRepository _projectTaskRepo;
+        private readonly IPaymentStageRepository _stageRepo;
+        private readonly IProjectDesignRepository _projectDesignRepo;
+        private readonly IPaymentStageDesignRepository _stageDesignRepo;
 
-        public WarrantyClaimService(IWarrantyClaimRepository repository, IProjectRepository projectRepo, 
-                    IProjectParticipationRepository projectParticipationRepo, ITransactionRepository transactionRepo)
+        public WarrantyClaimService(
+                IWarrantyClaimRepository warrantyRepo,
+                IProjectRepository projectRepo,
+                IProjectParticipationRepository projectParticipationRepo,
+                ITransactionRepository transactionRepo,
+                IFloorRepository floorRepo,
+                IRoomRepository roomRepo,
+                IRoomTypeRepository roomTypeRepo,
+                IProjectTaskRepository projectTaskRepo,
+                IPaymentStageRepository stageRepo,
+                IProjectDesignRepository projectDesignRepo,
+                IPaymentStageDesignRepository stageDesignRepo)
         {
-            _repository = repository;
+            _warrantyRepo = warrantyRepo;
             _projectRepo = projectRepo;
             _projectParticipationRepo = projectParticipationRepo;
             _transactionRepo = transactionRepo;
+            _floorRepo = floorRepo;
+            _roomRepo = roomRepo;
+            _roomTypeRepo = roomTypeRepo;
+            _projectTaskRepo = projectTaskRepo;
+            _stageRepo = stageRepo;
+            _projectDesignRepo = projectDesignRepo;
+            _stageDesignRepo = stageDesignRepo;
         }
 
         public IEnumerable<WarrantyClaim> Filter(IEnumerable<WarrantyClaim> list,
@@ -45,33 +69,33 @@ namespace IDBMS_API.Services
 
         public IEnumerable<WarrantyClaim> GetAll(bool? isCompanyCover, string? name)
         {
-            var list = _repository.GetAll();
+            var list = _warrantyRepo.GetAll();
 
             return Filter(list, isCompanyCover, name);
         }
 
         public WarrantyClaim? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _warrantyRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
 
         public IEnumerable<WarrantyClaim?> GetByUserId(Guid id, bool? isCompanyCover, string? name)
         {
-            var list = _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
+            var list = _warrantyRepo.GetByUserId(id) ?? throw new Exception("This object is not existed!");
 
             return Filter(list, isCompanyCover, name);
         }
 
         public IEnumerable<WarrantyClaim?> GetByProjectId(Guid id, bool? isCompanyCover, string? name)
         {
-            var list = _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+            var list = _warrantyRepo.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
 
             return Filter(list, isCompanyCover, name);
         }
 
         public void UpdateProjectTotalWarrantyPaid(Guid projectId)
         {
-            var claimsInProject = _repository.GetByProjectId(projectId);
+            var claimsInProject = _warrantyRepo.GetByProjectId(projectId);
 
             decimal totalPaid = 0;
 
@@ -87,7 +111,7 @@ namespace IDBMS_API.Services
                 });
             }
 
-            ProjectService projectService = new(_projectRepo);
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
             projectService.UpdateProjectDataByWarrantyClaim(projectId, totalPaid);
 
         }
@@ -121,7 +145,7 @@ namespace IDBMS_API.Services
                 UserId = projectOwner == null ? null : projectOwner.UserId,
                 IsDeleted = false,
             };
-            var wcCreated = _repository.Save(wc);
+            var wcCreated = _warrantyRepo.Save(wc);
 
             UpdateProjectTotalWarrantyPaid(request.ProjectId);
 
@@ -144,7 +168,10 @@ namespace IDBMS_API.Services
 
         public async void UpdateWarrantyClaim(Guid id, [FromForm] WarrantyClaimRequest request)
         {
-            var wc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var wc = _warrantyRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            decimal transactionBeforeUpdated = wc.IsCompanyCover ? 0 : wc.TotalPaid;
+            decimal transactionAfterUpdated = request.IsCompanyCover ? 0 : request.TotalPaid;
 
             if (request.ConfirmationDocument != null)
             {
@@ -161,17 +188,34 @@ namespace IDBMS_API.Services
             wc.IsCompanyCover = request.IsCompanyCover;
             wc.EndDate = request.EndDate;
 
-            _repository.Update(wc);
+            _warrantyRepo.Update(wc);
+
+            if (transactionAfterUpdated != transactionBeforeUpdated)
+            {
+                decimal difference = transactionAfterUpdated - transactionBeforeUpdated;
+
+                var newTrans = new TransactionRequest
+                {
+                    Amount = difference,
+                    UserId = wc.UserId,
+                    Note = $"{wc.Name} ({DateTime.Now.ToString("dd/MM/yyyy")})",
+                    ProjectId = wc.ProjectId,
+                };
+
+                TransactionService transactionService = new(_transactionRepo);
+                await transactionService.CreateTransactionByWarrantyClaim(wc.Id, newTrans);
+
+            }
 
             UpdateProjectTotalWarrantyPaid(request.ProjectId);
         }
         public void DeleteWarrantyClaim(Guid id, Guid projectId)
         {
-            var wc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var wc = _warrantyRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             wc.IsDeleted = true;
 
-            _repository.Update(wc);
+            _warrantyRepo.Update(wc);
 
             TransactionService transactionService = new (_transactionRepo);
             transactionService.DeleteTransactionsByWarrantyId(id);

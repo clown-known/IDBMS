@@ -95,6 +95,7 @@ builder.Services.AddScoped<WarrantyClaimService, WarrantyClaimService>();
 builder.Services.AddScoped<ItemInTaskService, ItemInTaskService>();
 
 builder.Services.AddScoped<AdvertisementService, AdvertisementService>();
+builder.Services.AddScoped<DashboardService, DashboardService>();
 
 builder.Services.AddScoped(typeof(PaginationService<>), typeof(PaginationService<>));
 

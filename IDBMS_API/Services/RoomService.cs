@@ -8,6 +8,7 @@ using BusinessObject.Enums;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Azure.Core;
 using UnidecodeSharpFork;
+using DocumentFormat.OpenXml.Office2016.Excel;
 
 namespace IDBMS_API.Services
 {
@@ -20,6 +21,7 @@ namespace IDBMS_API.Services
         private readonly IPaymentStageRepository _stageRepo;
         private readonly IProjectDesignRepository _projectDesignRepo;
         private readonly IPaymentStageDesignRepository _stageDesignRepo;
+        private readonly IFloorRepository _floorRepo;
 
         public RoomService(
             IRoomRepository roomRepo,
@@ -28,7 +30,8 @@ namespace IDBMS_API.Services
             IProjectTaskRepository projectTaskRepo,
             IPaymentStageRepository stageRepo,
             IProjectDesignRepository projectDesignRepo,
-            IPaymentStageDesignRepository stageDesignRepo)
+            IPaymentStageDesignRepository stageDesignRepo,
+            IFloorRepository floorRepo)
         {
             _roomRepo = roomRepo;
             _roomTypeRepo = roomTypeRepo;
@@ -37,6 +40,7 @@ namespace IDBMS_API.Services
             _stageRepo = stageRepo;
             _projectDesignRepo = projectDesignRepo;
             _stageDesignRepo = stageDesignRepo;
+            _floorRepo = floorRepo;
         }
 
         private IEnumerable<Room> Filter(IEnumerable<Room> list,
@@ -101,7 +105,7 @@ namespace IDBMS_API.Services
                 });
             }
 
-            ProjectService projectService = new(_projectRepo);
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
             projectService.UpdateProjectDataByRoom(projectId, area);
 
         }
@@ -130,7 +134,7 @@ namespace IDBMS_API.Services
 
                 roomCreated = _roomRepo.Save(room);
 
-                ProjectTaskService taskService = new ProjectTaskService(_projectTaskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo);
+                ProjectTaskService taskService = new ProjectTaskService(_projectTaskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo);
                 var task = new ProjectTaskRequest
                 {
                     Code = "DECOR",
@@ -163,6 +167,26 @@ namespace IDBMS_API.Services
             UpdateProjectArea(request.ProjectId);
 
             return roomCreated;
+        }
+
+        public void DuplicateRoomsByFloorId(Guid createdId, Guid basedOnId, Guid projectId)
+        {
+            var rooms = _roomRepo.GetByFloorId(basedOnId).Where(r=> r.IsHidden == false);
+
+            foreach (var room in rooms)
+            {
+                var roomRequest = new RoomRequest
+                {
+                    Area= room.Area,
+                    Description= room.Description,
+                    FloorId= createdId,
+                    IsHidden= room.IsHidden,
+                    UsePurpose = room.UsePurpose,
+                    ProjectId= projectId
+                };
+
+                CreateRoom(roomRequest);
+            }
         }
 
         public void UpdateRoom(Guid id, RoomRequest request)

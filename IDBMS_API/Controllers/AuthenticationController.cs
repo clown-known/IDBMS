@@ -60,6 +60,39 @@ namespace API.Controllers
                 return BadRequest(response);
             }
         }
+
+/*        [HttpPost("loginByGoogle")]
+        public IActionResult LoginByGoogle(LoginByGoogleRequest request)
+        {
+            try
+            {
+                var (token, user) = userService.LoginByGoogle(request.Email, request.GoogleToken);
+                var response = new ResponseMessage();
+                if (token == null)
+                {
+                    response.Message = "Incorrect email or password!";
+                    return BadRequest(response);
+                }
+
+                response.Message = "Login successfully!";
+                response.Data = new
+                {
+                    Token = token,
+                    user.Name,
+                    user.Id,
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }*/
+
         [HttpPost("admin/login")]
         public IActionResult LoginAdmin(AdminLoginRequest request)
         {

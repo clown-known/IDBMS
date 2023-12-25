@@ -5,14 +5,37 @@ using IDBMS_API.Services;
 using Repository.Interfaces;
 using Microsoft.OData.Edm;
 using UnidecodeSharpFork;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 public class ProjectService
 {
-    private readonly IProjectRepository _repository;
+    private readonly IProjectRepository _projectRepo;
+    private readonly IFloorRepository _floorRepo;
+    private readonly IRoomRepository _roomRepo;
+    private readonly IRoomTypeRepository _roomTypeRepo;
+    private readonly IProjectTaskRepository _projectTaskRepo;
+    private readonly IPaymentStageRepository _stageRepo;
+    private readonly IProjectDesignRepository _projectDesignRepo;
+    private readonly IPaymentStageDesignRepository _stageDesignRepo;
 
-    public ProjectService(IProjectRepository repository)
+    public ProjectService(
+            IProjectRepository projectRepo,
+            IRoomRepository roomRepo,
+            IRoomTypeRepository roomTypeRepo,
+            IProjectTaskRepository projectTaskRepo,
+            IPaymentStageRepository stageRepo,
+            IProjectDesignRepository projectDesignRepo,
+            IPaymentStageDesignRepository stageDesignRepo,
+            IFloorRepository floorRepo)
     {
-        _repository = repository;
+        _projectRepo = projectRepo;
+        _roomRepo = roomRepo;
+        _roomTypeRepo = roomTypeRepo;
+        _projectTaskRepo = projectTaskRepo;
+        _stageRepo = stageRepo;
+        _projectDesignRepo = projectDesignRepo;
+        _stageDesignRepo = stageDesignRepo;
+        _floorRepo = floorRepo;
     }
 
     private IEnumerable<Project> Filter(IEnumerable<Project> list,
@@ -40,20 +63,25 @@ public class ProjectService
 
     public IEnumerable<Project> GetAll(ProjectType? type, ProjectStatus? status, string? name)
     {
-        var list = _repository.GetAll();
+        var list = _projectRepo.GetAll();
 
         return Filter(list, type, status, name);
     }
 
     public Project? GetById(Guid id)
     {
-        return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+        return _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
     }    
     public IEnumerable<Project> GetBySiteId(Guid id, ProjectType? type, ProjectStatus? status, string? name)
     {
-        var list = _repository.GetBySiteId(id) ?? throw new Exception("This object is not found!");
+        var list = _projectRepo.GetBySiteId(id) ?? throw new Exception("This object is not found!");
 
         return Filter(list, type, status, name);
+    }
+
+    public IEnumerable<Project> GetRecentProjects()
+    {
+        return _projectRepo.GetRecentProjects();
     }
 
     public Project? CreateProject(ProjectRequest request)
@@ -77,17 +105,24 @@ public class ProjectService
             CreatedDate = DateTime.Now 
         };
 
-        if (newProject.Type == ProjectType.Construction)
+        if (request.Type == ProjectType.Construction && request.BasedOnDecorProjectId != null)
         {
             newProject.BasedOnDecorProjectId = request.BasedOnDecorProjectId;
+
+            var createdProject = _projectRepo.Save(newProject);
+
+            FloorService floorService = new (_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
+            floorService.DuplicateFloorsByProjectId(createdProject.Id, request.BasedOnDecorProjectId.Value);
+
+            return createdProject;
         }
 
-        return _repository.Save(newProject);
+        return _projectRepo.Save(newProject);
     }
 
     public void UpdateProject(Guid id, ProjectRequest request)
     {
-        var p = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+        var p = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
         p.Name = request.Name;
         p.Description = request.Description;
@@ -99,52 +134,48 @@ public class ProjectService
         p.SiteId= request.SiteId;
         p.UpdatedDate = DateTime.Now;
 
-        if (p.Type == ProjectType.Construction)
-        {
-            p.BasedOnDecorProjectId = request.BasedOnDecorProjectId;
-        }
-
-        _repository.Update(p);
+        _projectRepo.Update(p);
     }
 
     public void UpdateProjectDataByTask(Guid id, decimal estimatePrice, decimal finalPrice, int estimateBusinessDay)
     {
-        var project = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
         project.EstimatedPrice = (decimal?)estimatePrice;
         project.FinalPrice = (decimal?)finalPrice;
         project.UpdatedDate = DateTime.Now;
         project.EstimateBusinessDay = estimateBusinessDay;
 
-        _repository.Update(project);
+        _projectRepo.Update(project);
     }
 
     public void UpdateProjectDataByRoom(Guid id, double totalArea)
     {
-        var project = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
         project.Area = (double)totalArea;
         project.UpdatedDate = DateTime.Now;
 
-        _repository.Update(project);
+        _projectRepo.Update(project);
     }
 
     public void UpdateProjectDataByWarrantyClaim(Guid id, decimal totalWarrantyPaid)
     {
-        var project = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
         project.TotalWarrantyPaid = totalWarrantyPaid;
         project.UpdatedDate = DateTime.Now;
 
-        _repository.Update(project);
+        _projectRepo.Update(project);
     }
 
     public void UpdateProjectStatus(Guid id, ProjectStatus status)
     {
-        var project = _repository.GetById(id) ?? throw new Exception("Not existed");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("Not existed");
 
         project.Status = status;
+        project.UpdatedDate = DateTime.Now;
 
-        _repository.Update(project);
+        _projectRepo.Update(project);
     }
 }

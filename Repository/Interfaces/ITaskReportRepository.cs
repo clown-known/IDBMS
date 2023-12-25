@@ -9,6 +9,7 @@ namespace Repository.Interfaces
 {
     public interface ITaskReportRepository : ICrudBaseRepository<TaskReport, Guid>
     {
-        IEnumerable<TaskReport?> GetByTaskId(Guid id);
+        IEnumerable<TaskReport> GetByTaskId(Guid id);
+        IEnumerable<TaskReport> GetRecentReports();
     }
 }
