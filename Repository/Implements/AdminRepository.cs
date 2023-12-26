@@ -17,6 +17,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.Admins
+                            .Where(a => a.IsDeleted == false)
                             .Include(a => a.Creator)
                             .ToList()
                             .Reverse<Admin>();
