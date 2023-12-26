@@ -195,6 +195,15 @@ namespace IDBMS_API.Services
             _itemInTaskRepo.Update(itemInTask);
         }
 
+        public void UpdateItemInTaskQuantity(Guid id, int quantity)
+        {
+            var itemInTask = _itemInTaskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            itemInTask.Quantity = quantity;
+
+            _itemInTaskRepo.Update(itemInTask);
+        }
+
         public void DeleteItemInTask(Guid id)
         {
             var itemInTask = _itemInTaskRepo.GetById(id) ?? throw new Exception("This object is not existed!");

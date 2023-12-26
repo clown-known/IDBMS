@@ -170,6 +170,28 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
+        [HttpPut("{id}/quantity")]
+        public IActionResult UpdateItemInTaskQuantity(Guid id, int quantity)
+        {
+            try
+            {
+                _service.UpdateItemInTaskQuantity(id, quantity);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
         [HttpDelete("{id}")]
         public IActionResult DeleteItemInTask(Guid id)
         {
