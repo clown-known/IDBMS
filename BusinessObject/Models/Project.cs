@@ -28,14 +28,14 @@ public class Project
     [Required]
     public DateTime CreatedDate { get; set; }
 
+    public DateTime? UpdatedDate { get; set; }
+
     [Required]
     public string CreatedAdminUsername { get; set; } = default!;
 
     [Required]
     public Guid CreatedByAdminId { get; set; }
     public Admin CreatedByAdmin { get; set; }
-
-    public DateTime? UpdatedDate { get; set; }
 
     [Column(TypeName = "money")]
     public decimal? EstimatedPrice { get; set; }
@@ -45,6 +45,13 @@ public class Project
 
     [Column(TypeName = "money")]
     public decimal? TotalWarrantyPaid { get; set; }
+
+    [Required]
+    [Column(TypeName = "money")]
+    public decimal AmountPaid { get; set; }    
+    
+    [Column(TypeName = "money")]
+    public decimal? TotalPenaltyFee { get; set; }
 
     [Required]
     public double Area { get; set; }

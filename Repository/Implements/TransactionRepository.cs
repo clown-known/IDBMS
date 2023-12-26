@@ -20,6 +20,7 @@ namespace Repository.Implements
                 return context.Transactions.OrderByDescending(time => time.CreatedDate)
                     .Include(u => u.User)
                     .Include(p => p.Project)
+                    .Where(trans => trans.IsDeleted == false)
                     .ToList();
             }
             catch
@@ -41,7 +42,7 @@ namespace Repository.Implements
                 throw;
             }
         }
-        public IEnumerable<Transaction?> GetByProjectId(Guid id)
+        public IEnumerable<Transaction> GetByProjectId(Guid id)
         {
 
             try
@@ -56,7 +57,7 @@ namespace Repository.Implements
                 throw;
             }
         }
-        public IEnumerable<Transaction?> GetByUserId(Guid id)
+        public IEnumerable<Transaction> GetByUserId(Guid id)
         {
 
             try
@@ -72,7 +73,7 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<Transaction?> GetByWarrantyId(Guid id)
+        public IEnumerable<Transaction> GetByWarrantyId(Guid id)
         {
 
             try

@@ -28,7 +28,7 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
         try
         {
             using var context = new IdtDbContext();
-            return context.ProjectParticipations.Where(p=>p.Id == id && p.IsDeleted == false).FirstOrDefault();
+            return context.ProjectParticipations.FirstOrDefault(p => p.Id == id && p.IsDeleted == false);
         }
         catch
         {

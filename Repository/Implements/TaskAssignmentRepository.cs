@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using BusinessObject.Enums;
+using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
@@ -40,7 +41,7 @@ namespace Repository.Implements
                 throw;
             }
         }
-        public IEnumerable<TaskAssignment?> GetByProjectId(Guid id)
+        public IEnumerable<TaskAssignment> GetByProjectId(Guid id)
         {
             try
             {
@@ -57,7 +58,7 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<TaskAssignment?> GetByUserId(Guid id)
+        public IEnumerable<TaskAssignment> GetByUserId(Guid id)
         {
             try
             {
@@ -74,7 +75,7 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<TaskAssignment?> GetByTaskId(Guid id)
+        public IEnumerable<TaskAssignment> GetByTaskId(Guid id)
         {
             try
             {
@@ -82,6 +83,24 @@ namespace Repository.Implements
                 return context.TaskAssignments
                     .Include(ta => ta.ProjectParticipation)
                     .Where(ta => ta.ProjectTaskId == id)
+                    .OrderByDescending(a => a.CreatedDate)
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }        
+        
+        public IEnumerable<TaskAssignment> GetByParticipationId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.TaskAssignments
+                    .Include(ta => ta.ProjectParticipation)
+                    .Include(ta => ta.ProjectTask)
+                    .Where(ta => ta.ProjectParticipationId == id && ta.ProjectTask.Status != ProjectTaskStatus.Done)
                     .OrderByDescending(a => a.CreatedDate)
                     .ToList();
             }

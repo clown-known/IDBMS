@@ -84,6 +84,21 @@ public class ProjectService
         return _projectRepo.GetRecentProjects();
     }
 
+    public IEnumerable<Project> GetRecentProjectsByUserId(Guid id)
+    {
+        return _projectRepo.GetRecentProjectsByUserId(id);
+    }
+
+    public IEnumerable<Project> GetOngoingProjects()
+    {
+        return _projectRepo.GetOngoingProjects();
+    }    
+    
+    public IEnumerable<Project> GetOngoingProjectsByUserId(Guid id)
+    {
+        return _projectRepo.GetOngoingProjectsByUserId(id);
+    }
+
     public Project? CreateProject(ProjectRequest request)
     {
         var newProject = new Project
@@ -97,6 +112,7 @@ public class ProjectService
             EstimatedPrice = 0,
             FinalPrice = 0,
             TotalWarrantyPaid = 0,
+            AmountPaid= 0,
             Area = 0,
             Language = request.Language,
             Status = request.Status,
@@ -141,8 +157,8 @@ public class ProjectService
     {
         var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
-        project.EstimatedPrice = (decimal?)estimatePrice;
-        project.FinalPrice = (decimal?)finalPrice;
+        project.EstimatedPrice = estimatePrice;
+        project.FinalPrice = finalPrice;
         project.UpdatedDate = DateTime.Now;
         project.EstimateBusinessDay = estimateBusinessDay;
 
@@ -164,6 +180,26 @@ public class ProjectService
         var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
         project.TotalWarrantyPaid = totalWarrantyPaid;
+        project.UpdatedDate = DateTime.Now;
+
+        _projectRepo.Update(project);
+    }
+
+    public void UpdateProjectAmountPaid(Guid id, decimal totalPaid)
+    {
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+
+        project.AmountPaid = totalPaid;
+        project.UpdatedDate = DateTime.Now;
+
+        _projectRepo.Update(project);
+    }
+
+    public void UpdateProjectTotalPenaltyFee(Guid id, decimal totalPenaltyFee)
+    {
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+
+        project.TotalPenaltyFee = totalPenaltyFee;
         project.UpdatedDate = DateTime.Now;
 
         _projectRepo.Update(project);

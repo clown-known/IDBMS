@@ -37,16 +37,44 @@ namespace IDBMS_API.Services
             _taskDocumentRepo = taskDocumentRepo;
         }
 
-        public DashboardReponse? GetDashboardData()
+        public DashboardReponse? GetDashboardDataByAdmin()
         {
             ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
             var recentProjects = projectService.GetRecentProjects().Take(5).ToList();
+            var numOngoingProjects = projectService.GetOngoingProjects().Count();
 
             TaskReportService taskReportService = new (_taskReportRepo, _taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _taskDocumentRepo, _floorRepo, _roomRepo, _roomTypeRepo);
             var recentReports = taskReportService.GetRecentReports().Take(5).ToList();
 
+            ProjectTaskService taskService = new ProjectTaskService(_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            var numOngoingTasks = taskService.GetOngoingTasks().Count();
+
             var dashboardData = new DashboardReponse
             {
+                numOngoingProjects= numOngoingProjects,
+                numOngoingTasks = numOngoingTasks,
+                recentProjects = (List<Project>)recentProjects,
+                recentReports = (List<TaskReport>)recentReports,
+            };
+            return dashboardData;
+        }
+
+        public DashboardReponse? GetDashboardDataByUserId(Guid id)
+        {
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
+            var recentProjects = projectService.GetRecentProjectsByUserId(id).Take(5).ToList();
+            var numOngoingProjects = projectService.GetOngoingProjectsByUserId(id).Count();
+
+            TaskReportService taskReportService = new(_taskReportRepo, _taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _taskDocumentRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            var recentReports = taskReportService.GetRecentReportsByUserId(id).Take(5).ToList();
+
+            ProjectTaskService taskService = new ProjectTaskService(_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            var numOngoingTasks = taskService.GetOngoingTasksByUserId(id).Count();
+
+            var dashboardData = new DashboardReponse
+            {
+                numOngoingProjects = numOngoingProjects,
+                numOngoingTasks = numOngoingTasks,
                 recentProjects = (List<Project>)recentProjects,
                 recentReports = (List<TaskReport>)recentReports,
             };

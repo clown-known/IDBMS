@@ -104,6 +104,71 @@ namespace Repository.Implements
             {
                 throw;
             }
+        }        
+        
+        public IEnumerable<Project> GetRecentProjectsByUserId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Projects
+                    .Include(pc => pc.ProjectCategory)
+                    .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
+                        .ThenInclude(u => u.User)
+                    .OrderByDescending(time => time.UpdatedDate ?? time.CreatedDate)
+                        .ThenByDescending(time => time.CreatedDate)
+                    .Where(p => p.ProjectParticipations.Any(pp => pp.UserId == id))
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<Project> GetOngoingProjects()
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Projects
+                    .Include(pc => pc.ProjectCategory)
+                    .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
+                        .ThenInclude(u => u.User)
+                    .OrderByDescending(time => time.UpdatedDate ?? time.CreatedDate)
+                        .ThenByDescending(time => time.CreatedDate)
+                    .Where(p => p.Status == ProjectStatus.Negotiating && 
+                                p.Status == ProjectStatus.Ongoing &&
+                                p.Status == ProjectStatus.PendingDeposit)
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }        
+        
+        public IEnumerable<Project> GetOngoingProjectsByUserId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Projects
+                    .Include(pc => pc.ProjectCategory)
+                    .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
+                        .ThenInclude(u => u.User)
+                    .OrderByDescending(time => time.UpdatedDate ?? time.CreatedDate)
+                        .ThenByDescending(time => time.CreatedDate)
+                    .Where(p => p.Status == ProjectStatus.Negotiating && 
+                                p.Status == ProjectStatus.Ongoing &&
+                                p.Status == ProjectStatus.PendingDeposit &&
+                                p.ProjectParticipations.Any(pp => pp.UserId == id))
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public IEnumerable<Project> GetBySiteId(Guid id)

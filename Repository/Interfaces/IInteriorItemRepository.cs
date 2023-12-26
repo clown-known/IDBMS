@@ -9,6 +9,6 @@ namespace Repository.Interfaces
 {
     public interface IInteriorItemRepository : ICrudBaseRepository<InteriorItem, Guid>
     {
-        IEnumerable<InteriorItem?> GetByCategory(int id);
+        IEnumerable<InteriorItem> GetByCategory(int id);
     }
 }

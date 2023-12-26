@@ -48,7 +48,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Rooms
                     .Include(f => f.Floor)
-                    .Where(room => room.Floor != null && room.Floor.ProjectId == id && room.IsHidden == false)
+                    .Where(room => room.Floor != null && room.Floor.ProjectId == id)
                     .ToList()
                     .Reverse<Room>();
             }

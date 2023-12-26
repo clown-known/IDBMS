@@ -19,7 +19,7 @@ namespace IDBMS_API.Services
             _repository = repository;
         }
 
-        private IEnumerable<InteriorItem> Filter(IEnumerable<InteriorItem?> list,
+        private IEnumerable<InteriorItem> Filter(IEnumerable<InteriorItem> list,
             int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? itemType)
         {
             IEnumerable<InteriorItem> filteredList = list;
@@ -59,7 +59,7 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<InteriorItem?> GetByCategory(int id, int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? itemType)
+        public IEnumerable<InteriorItem> GetByCategory(int id, int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? itemType)
         {
             var list = _repository.GetByCategory(id) ?? throw new Exception("This object is not existed!");
 

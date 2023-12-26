@@ -82,6 +82,11 @@ namespace IDBMS_API.Services
             return _taskReportRepo.GetRecentReports();
         }
 
+        public IEnumerable<TaskReport> GetRecentReportsByUserId(Guid id)
+        {
+            return _taskReportRepo.GetRecentReportsByUserId(id);
+        }
+
         public void UpdateTaskPercentage(Guid taskId)
         {
             var reportsInTask = _taskReportRepo.GetByTaskId(taskId);

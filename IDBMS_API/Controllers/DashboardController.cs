@@ -20,7 +20,7 @@ namespace IDBMS_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetDashboardData()
+        public IActionResult GetDashboardDataByAdmin()
         {
             try
             {
@@ -28,7 +28,31 @@ namespace IDBMS_API.Controllers
                 var response = new ResponseMessage()
                 {
                     Message = "Get successfully!",
-                    Data = _service.GetDashboardData(),
+                    Data = _service.GetDashboardDataByAdmin(),
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [HttpGet("userId")]
+        public IActionResult GetDashboardDataByEngineerId(Guid userId)
+        {
+            try
+            {
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _service.GetDashboardDataByUserId(userId),
                 };
 
                 return Ok(response);

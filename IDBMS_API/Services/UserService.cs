@@ -96,7 +96,6 @@ namespace API.Services
             var user = new User()
             {
                 Address = request.Address,
-                Balance = 0,
                 CreatedDate = DateTime.UtcNow,
                 Language = request.Language,
                 DateOfBirth = request.DateOfBirth,
@@ -142,7 +141,6 @@ namespace API.Services
             var user = _repository.GetById(userId) ?? throw new Exception("User not existed");
 
             user.Address = request.Address;
-            user.Balance = 0;
             user.UpdatedDate = DateTime.UtcNow;
             user.Language = request.Language;
             user.DateOfBirth= request.DateOfBirth;

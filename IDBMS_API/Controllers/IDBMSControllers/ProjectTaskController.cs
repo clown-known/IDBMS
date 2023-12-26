@@ -117,20 +117,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        /*[EnableQuery]
-        [HttpGet("room/{id}")]
-        public IActionResult GetProjectTasksByRoomId(Guid id)
-        {
-            return Ok(_service.GetByRoomId(id));
-        }
-
-        [EnableQuery]
-        [HttpGet("payment-stage/{id}")]
-        public IActionResult GetProjectTasksByPaymentStageId(Guid id)
-        {
-            return Ok(_service.GetByPaymentStageId(id));
-        }*/
-
         [HttpPost]
         public IActionResult CreateProjectTask([FromBody] ProjectTaskRequest request)
         {
@@ -182,28 +168,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.AssignTasksToStage(id, listTaskId, projectId);
-                var response = new ResponseMessage()
-                {
-                    Message = "Update successfully!",
-                };
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var response = new ResponseMessage()
-                {
-                    Message = $"Error: {ex.Message}"
-                };
-                return BadRequest(response);
-            }
-        }
-
-        [HttpPut("StartedDate")]
-        public IActionResult StartTasksOfStage(Guid paymentStageId, Guid projectId)
-        {
-            try
-            {
-                _service.StartTasksOfStage(paymentStageId, projectId);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",

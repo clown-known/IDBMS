@@ -40,7 +40,7 @@ namespace Repository.Implements
                 throw;
             }
         }
-        public IEnumerable<InteriorItem?> GetByCategory(int id)
+        public IEnumerable<InteriorItem> GetByCategory(int id)
         {
             try
             {
