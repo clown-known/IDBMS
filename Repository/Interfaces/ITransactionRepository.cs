@@ -9,8 +9,8 @@ namespace Repository.Interfaces
 {
     public interface ITransactionRepository : ICrudBaseRepository<Transaction, Guid>
     {
-        IEnumerable<Transaction?> GetByProjectId(Guid id);
-        IEnumerable<Transaction?> GetByUserId(Guid id);
-        IEnumerable<Transaction?> GetByWarrantyId(Guid id);
+        IEnumerable<Transaction> GetByProjectId(Guid id);
+        IEnumerable<Transaction> GetByUserId(Guid id);
+        IEnumerable<Transaction> GetByWarrantyId(Guid id);
     }
 }

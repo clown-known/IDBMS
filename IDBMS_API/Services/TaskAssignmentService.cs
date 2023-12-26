@@ -3,6 +3,7 @@ using BusinessObject.Models;
 using Repository.Interfaces;
 using BusinessObject.Enums;
 using UnidecodeSharpFork;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace IDBMS_API.Services
 {
@@ -40,21 +41,21 @@ namespace IDBMS_API.Services
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
 
-        public IEnumerable<TaskAssignment?> GetByProjectId(Guid id, string? name)
+        public IEnumerable<TaskAssignment> GetByProjectId(Guid id, string? name)
         {
             var list = _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
 
             return Filter(list, name);
         }
 
-        public IEnumerable<TaskAssignment?> GetByUserId(Guid id, string? name)
+        public IEnumerable<TaskAssignment> GetByUserId(Guid id, string? name)
         {
             var list = _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
 
             return Filter(list, name);
         }
 
-        public IEnumerable<TaskAssignment?> GetByTaskId(Guid id, string? name)
+        public IEnumerable<TaskAssignment> GetByTaskId(Guid id, string? name)
         {
             var list = _repository.GetByTaskId(id) ?? throw new Exception("This object is not existed!");
 
@@ -124,6 +125,16 @@ namespace IDBMS_API.Services
             var ta = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
             _repository.DeleteById(id);
+        }
+
+        public void DeleteTaskAssignmentByParticipationId(Guid participationId)
+        {
+            var list = _repository.GetByParticipationId(participationId);
+
+            foreach (var assignment in list)
+            {
+                _repository.DeleteById(assignment.Id);
+            }
         }
     }
 

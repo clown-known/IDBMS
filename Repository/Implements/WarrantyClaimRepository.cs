@@ -44,7 +44,7 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<WarrantyClaim?> GetByUserId(Guid id)
+        public IEnumerable<WarrantyClaim> GetByUserId(Guid id)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<WarrantyClaim?> GetByProjectId(Guid id)
+        public IEnumerable<WarrantyClaim> GetByProjectId(Guid id)
         {
             try
             {

@@ -74,6 +74,27 @@ namespace Repository.Implements
             {
                 throw;
             }
+        }        
+        
+        public IEnumerable<TaskReport> GetRecentReportsByUserId(Guid id)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.TaskReports
+                    .OrderByDescending(time => time.UpdatedTime ?? time.CreatedTime)
+                        .ThenByDescending(time => time.CreatedTime)
+                    .Include(report => report.ProjectTask)
+                        .ThenInclude(ta => ta.TaskAssignments)
+                            .ThenInclude(ta => ta.ProjectParticipation)
+                    .Where(report => report.IsDeleted == false && 
+                        report.ProjectTask.TaskAssignments.Any(ta => ta.ProjectParticipation.UserId == id))
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public TaskReport Save(TaskReport entity)

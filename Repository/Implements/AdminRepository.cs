@@ -18,6 +18,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Admins
                             .Include(a => a.Creator)
+                            .Where(a => a.IsDeleted == false)
                             .ToList()
                             .Reverse<Admin>();
             }
@@ -33,7 +34,7 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Admins.Where(a => a.Id == id).FirstOrDefault();
+                return context.Admins.Where(a => a.Id == id && a.IsDeleted == false).FirstOrDefault();
             }
             catch
             {

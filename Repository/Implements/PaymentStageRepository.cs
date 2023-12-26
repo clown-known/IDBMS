@@ -14,8 +14,8 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.PaymentStages
-                    .OrderBy(time => time.StageNo)
                     .OrderBy(ps => ps.StageNo)
+                    .Where(stage => stage.IsDeleted == false)
                     .ToList();
             }
             catch
@@ -29,21 +29,20 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.PaymentStages.FirstOrDefault(stage => stage.Id == id);
+                return context.PaymentStages.FirstOrDefault(stage => stage.Id == id && stage.IsDeleted == false);
             }
             catch
             {
                 throw;
             }
         }
-        public IEnumerable<PaymentStage?> GetByProjectId(Guid id)
+        public IEnumerable<PaymentStage> GetByProjectId(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
                 return context.PaymentStages
-                         .OrderBy(time => time.StageNo)
-                         .Where(stage => stage.ProjectId == id)
+                         .Where(stage => stage.ProjectId == id && stage.IsDeleted == false)
                          .OrderBy(stage => stage.StageNo)
                          .ToList();
             }

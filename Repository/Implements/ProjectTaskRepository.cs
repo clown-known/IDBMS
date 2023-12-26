@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using BusinessObject.Enums;
+using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
@@ -50,7 +51,7 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<ProjectTask?> GetByProjectId(Guid id)
+        public IEnumerable<ProjectTask> GetByProjectId(Guid id)
         {
             try
             {
@@ -72,7 +73,7 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<ProjectTask?> GetByRoomId(Guid id)
+        public IEnumerable<ProjectTask> GetByRoomId(Guid id)
         {
             try
             {
@@ -94,13 +95,13 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<ProjectTask?> GetByPaymentStageId(Guid id)
+        public IEnumerable<ProjectTask> GetByPaymentStageId(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
                 return context.ProjectTasks
-                    .Where(task => task.PaymentStageId == id)
+                    .Where(task => task.PaymentStageId != null && task.PaymentStageId == id)
                     .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
                     .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
                     .OrderByDescending(c => c.CreatedDate)
@@ -112,25 +113,17 @@ namespace Repository.Implements
             }
         }
 
-        /*public IEnumerable<ProjectTask?> GetSuggestionTasksByProjectId(Guid id)
+        public IEnumerable<ProjectTask> GetOngoingTasks()
         {
             try
             {
                 using var context = new IdtDbContext();
                 return context.ProjectTasks
-                        .Include(c => c.TaskCategory)
-                        .Include(p => p.PaymentStage)
-                        .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
-                        .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
-                        .Include(i => i.InteriorItem)
-                            .ThenInclude(c => c.InteriorItemCategory)
-                        .Where(task => task.ProjectId == id
-                            && task.InteriorItem != null
-                            && task.InteriorItem.InteriorItemCategory != null
-                            && (task.InteriorItem.InteriorItemCategory.InteriorItemType == BusinessObject.Enums.InteriorItemType.Furniture
-                            || task.InteriorItem.InteriorItemCategory.InteriorItemType == BusinessObject.Enums.InteriorItemType.CustomFurniture))
-                        .OrderByDescending(c => c.CreatedDate)
-                        .ToList();
+                    .Where(task => task.Status == ProjectTaskStatus.Ongoing)
+                    .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
+                    .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
+                    .OrderByDescending(c => c.UpdatedDate ?? c.CreatedDate)
+                    .ToList();
             }
             catch
             {
@@ -138,31 +131,26 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<ProjectTask?> GetSuggestionTasksByRoomId(Guid id)
+        public IEnumerable<ProjectTask> GetOngoingTasksByUserId(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
                 return context.ProjectTasks
-                        .Include(c => c.TaskCategory)
-                        .Include(p => p.PaymentStage)
-                        .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
-                        .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
-                        .Include(i => i.InteriorItem)
-                            .ThenInclude(c => c.InteriorItemCategory)
-                        .Where(task => task.RoomId == id
-                            && task.InteriorItem != null
-                            && task.InteriorItem.InteriorItemCategory != null
-                            && (task.InteriorItem.InteriorItemCategory.InteriorItemType == BusinessObject.Enums.InteriorItemType.Furniture
-                            || task.InteriorItem.InteriorItemCategory.InteriorItemType == BusinessObject.Enums.InteriorItemType.CustomFurniture))
-                        .OrderByDescending(c => c.CreatedDate)
-                        .ToList();
+                    .Include(pt => pt.TaskAssignments)
+                        .ThenInclude(ta => ta.ProjectParticipation)
+                    .Where(task => task.TaskAssignments.Any(ta => ta.ProjectParticipation.UserId == id) && 
+                                    task.Status == ProjectTaskStatus.Ongoing)
+                    .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
+                    .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
+                    .OrderByDescending(c => c.UpdatedDate ?? c.CreatedDate)
+                    .ToList();
             }
             catch
             {
                 throw;
             }
-        }*/
+        }
 
         public ProjectTask Save(ProjectTask entity)
         {

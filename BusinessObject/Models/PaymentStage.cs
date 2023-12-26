@@ -18,7 +18,10 @@ public class PaymentStage
     public string? Description { get; set; }
 
     [Required]
-    public bool IsPaid { get; set; }
+    public bool IsContractAmountPaid { get; set; }
+
+    [Required]
+    public bool IsIncurredAmountPaid { get; set; }
 
     [Required]
     [Column(TypeName = "money")]
@@ -32,8 +35,6 @@ public class PaymentStage
 
     [Required]
     public double PricePercentage { get; set; }
-
-    public DateTime? PaidDate { get; set; }
 
     public DateTime? StartedDate { get; set; }
 
@@ -51,7 +52,7 @@ public class PaymentStage
     public Project Project { get; set; }
 
     [Required]
-    public bool IsHidden { get; set; }
+    public bool IsDeleted { get; set; }
 
     [Required]
     public StageStatus Status { get; set; }

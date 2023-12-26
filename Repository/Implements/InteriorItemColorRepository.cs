@@ -39,7 +39,7 @@ namespace Repository.Implements
                 throw;
             }
         }
-        public IEnumerable<InteriorItemColor?> GetByCategoryId(int id)
+        public IEnumerable<InteriorItemColor> GetByCategoryId(int id)
         {
             try
             {

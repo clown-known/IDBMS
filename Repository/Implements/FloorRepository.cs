@@ -33,7 +33,7 @@ namespace Repository.Implements
                 return context.Floors
                     .Include(r => r.Rooms.Where(r => r.IsHidden != true))
                         .ThenInclude(rt => rt.RoomType)
-                    .FirstOrDefault(floor => floor.Id == id);
+                    .FirstOrDefault(floor => floor.Id == id && floor.IsDeleted == false);
             }
             catch
             {

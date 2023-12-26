@@ -11,5 +11,6 @@ namespace Repository.Interfaces
     {
         IEnumerable<TaskReport> GetByTaskId(Guid id);
         IEnumerable<TaskReport> GetRecentReports();
+        IEnumerable<TaskReport> GetRecentReportsByUserId(Guid id);
     }
 }

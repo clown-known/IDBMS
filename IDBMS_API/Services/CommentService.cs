@@ -53,14 +53,14 @@ namespace IDBMS_API.Services
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
 
-        public IEnumerable<Comment?> GetByProjectTaskId(Guid id, CommentType? type, CommentStatus? status, string? content)
+        public IEnumerable<Comment> GetByProjectTaskId(Guid id, CommentType? type, CommentStatus? status, string? content)
         {
             var list = _repository.GetByTaskId(id);
 
             return Filter(list, type, status, content);
         }
 
-        public IEnumerable<Comment?> GetByProjectId(Guid id, CommentType? type, CommentStatus? status, string? content)
+        public IEnumerable<Comment> GetByProjectId(Guid id, CommentType? type, CommentStatus? status, string? content)
         {
             var list = _repository.GetByProjectId(id);
 

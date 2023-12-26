@@ -30,14 +30,14 @@ namespace Repository.Implements
             try
             {
                 using var context = new IdtDbContext();
-                return context.Comments.FirstOrDefault(comment => comment.Id == id );
+                return context.Comments.FirstOrDefault(comment => comment.Id == id && comment.IsDeleted == false);
             }
             catch
             {
                 throw;
             }
         }
-        public IEnumerable<Comment?> GetByTaskId(Guid id)
+        public IEnumerable<Comment> GetByTaskId(Guid id)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace Repository.Implements
                 throw;
             }
         }
-        public IEnumerable<Comment?> GetByProjectId(Guid id)
+        public IEnumerable<Comment> GetByProjectId(Guid id)
         {
             try
             {

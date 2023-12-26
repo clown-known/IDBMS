@@ -169,12 +169,100 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpPut("{id}/isHidden")]
-        public IActionResult UpdatePaymentStageStatus(Guid id, bool isHidden)
+        [HttpPut("{id}/start")]
+        public IActionResult StartStage(Guid id)
         {
             try
             {
-                _service.UpdatePaymentStageStatus(id, isHidden);
+                _service.StartStage(id);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [HttpPut("{id}/end")]
+        public IActionResult CloseStage(Guid id)
+        {
+            try
+            {
+                _service.CloseStage(id);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [HttpPut("{id}/status")]
+        public IActionResult UpdateStageStatus(Guid id, StageStatus status)
+        {
+            try
+            {
+                _service.UpdateStageStatus(id, status);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [HttpPut("{id}/penaltyFee")]
+        public IActionResult UpdateStagePenaltyFee(Guid id, decimal penaltyFee)
+        {
+            try
+            {
+                _service.UpdateStagePenaltyFee(id, penaltyFee);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult UpdatePaymentStageStatus(Guid id)
+        {
+            try
+            {
+                _service.DeletePaymentStage(id);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",

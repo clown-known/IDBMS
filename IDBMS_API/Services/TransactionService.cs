@@ -11,10 +11,36 @@ namespace IDBMS_API.Services
 {
     public class TransactionService
     {
-        private readonly ITransactionRepository _repository;
-        public TransactionService(ITransactionRepository repository)
+        private readonly ITransactionRepository _transactionRepo;
+        private readonly IPaymentStageRepository _stageRepo;
+        private readonly IProjectRepository _projectRepo;
+        private readonly IProjectDesignRepository _projectDesignRepo;
+        private readonly IPaymentStageDesignRepository _stageDesignRepo;
+        private readonly IProjectTaskRepository _taskRepo;
+        private readonly IFloorRepository _floorRepo;
+        private readonly IRoomRepository _roomRepo;
+        private readonly IRoomTypeRepository _roomTypeRepo;
+
+        public TransactionService(
+                ITransactionRepository transactionRepo,
+                IPaymentStageRepository stageRepo,
+                IProjectRepository projectRepo,
+                IProjectDesignRepository projectDesignRepo,
+                IPaymentStageDesignRepository stageDesignRepo,
+                IProjectTaskRepository taskRepo,
+                IFloorRepository floorRepo,
+                IRoomRepository roomRepo,
+                IRoomTypeRepository roomTypeRepo)
         {
-            _repository = repository;
+            _transactionRepo = transactionRepo;
+            _stageRepo = stageRepo;
+            _projectRepo = projectRepo;
+            _projectDesignRepo = projectDesignRepo;
+            _stageDesignRepo = stageDesignRepo;
+            _taskRepo = taskRepo;
+            _floorRepo = floorRepo;
+            _roomRepo = roomRepo;
+            _roomTypeRepo = roomTypeRepo;
         }
 
         public IEnumerable<Transaction> Filter(IEnumerable<Transaction> list, 
@@ -43,26 +69,29 @@ namespace IDBMS_API.Services
 
         public IEnumerable<Transaction> GetAll(string? payerName, TransactionType? type, TransactionStatus? status)
         {
-            var list = _repository.GetAll();
+            var list = _transactionRepo.GetAll();
 
             return Filter(list, payerName, type, status);
         }
         public Transaction? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _transactionRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<Transaction?> GetByProjectId(Guid id, string? payerName, TransactionType? type, TransactionStatus? status)
+
+        public IEnumerable<Transaction> GetByProjectId(Guid id, string? payerName, TransactionType? type, TransactionStatus? status)
         {
-            var list = _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+            var list = _transactionRepo.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
 
             return Filter(list, payerName, type, status);
         }
-        public IEnumerable<Transaction?> GetByUserId(Guid id, string? payerName, TransactionType? type, TransactionStatus? status)
+
+        public IEnumerable<Transaction> GetByUserId(Guid id, string? payerName, TransactionType? type, TransactionStatus? status)
         {
-            var list = _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
+            var list = _transactionRepo.GetByUserId(id) ?? throw new Exception("This object is not existed!");
 
             return Filter(list, payerName, type, status);
         }
+
         public async Task<Transaction?> CreateTransaction([FromForm] TransactionRequest request)
         {
             var trans = new Transaction
@@ -87,11 +116,14 @@ namespace IDBMS_API.Services
                 trans.TransactionReceiptImageUrl = link;
             }
 
-            var transCreated = _repository.Save(trans);
+            var transCreated = _transactionRepo.Save(trans);
+
+            UpdateTotalPaidByProjectId(trans.ProjectId);
+
             return transCreated;
         }
 
-        public async Task<Transaction?> CreateTransactionByWarrantyClaim(Guid warrantyClaimId, [FromForm] TransactionRequest request)
+        public Transaction? CreateTransactionByWarrantyClaim(Guid warrantyClaimId, [FromForm] TransactionRequest request)
         {
             var trans = new Transaction
             {
@@ -108,13 +140,16 @@ namespace IDBMS_API.Services
                 WarrantyClaimId = warrantyClaimId,
             };
 
-            var transCreated = _repository.Save(trans);
+            var transCreated = _transactionRepo.Save(trans);
+
+            UpdateTotalPaidByProjectId(trans.ProjectId);
+
             return transCreated;
         }
 
         public async void UpdateTransaction(Guid id, TransactionRequest request)
         {
-            var trans = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var trans = _transactionRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             if (request.TransactionReceiptImage != null)
             {
@@ -131,33 +166,58 @@ namespace IDBMS_API.Services
             trans.ProjectId = request.ProjectId;
             trans.PayerName = request.PayerName;
 
-            _repository.Update(trans);
+            _transactionRepo.Update(trans);
+
+            UpdateTotalPaidByProjectId(trans.ProjectId);
         }
+
         public void UpdateTransactionStatus(Guid id, TransactionStatus status)
         {
-            var trans = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var trans = _transactionRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             trans.Status = status;
 
-            _repository.Update(trans);
+            _transactionRepo.Update(trans);
+
+            UpdateTotalPaidByProjectId(trans.ProjectId);
         }
+
+        public void UpdateTotalPaidByProjectId(Guid projectId)
+        {
+            var listTransaction = _transactionRepo
+                                    .GetByProjectId(projectId)
+                                    .Where(transaction => transaction.Status == TransactionStatus.Success);
+
+            decimal totalPaid = listTransaction.Sum(transaction => transaction.Amount);
+
+            PaymentStageService stageService = new (_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            stageService.UpdateStagePaid(projectId, totalPaid);
+
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
+            projectService.UpdateProjectAmountPaid(projectId, totalPaid);
+        }
+
         public void DeleteTransactionById(Guid id)
         {
-            var trans = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var trans = _transactionRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             trans.IsDeleted = true;
 
-            _repository.Update(trans);
+            _transactionRepo.Update(trans);
+
+            UpdateTotalPaidByProjectId(trans.ProjectId);
         }
 
-        public void DeleteTransactionsByWarrantyId(Guid id)
+        public void DeleteTransactionsByWarrantyId(Guid warrantyId, Guid projectId)
         {
-            var list = _repository.GetByWarrantyId(id);
+            var list = _transactionRepo.GetByWarrantyId(warrantyId);
 
             foreach (var trans in list)
             {
                 DeleteTransactionById(trans.Id);
             }
+
+            UpdateTotalPaidByProjectId(projectId);
         }
     }
 }

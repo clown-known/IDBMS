@@ -40,7 +40,7 @@ namespace Repository.Implements
             }
         }
 
-        public IEnumerable<TaskDocument?> GetByTaskReportId(Guid id)
+        public IEnumerable<TaskDocument> GetByTaskReportId(Guid id)
         {
             try
             {

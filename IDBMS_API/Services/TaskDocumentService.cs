@@ -22,7 +22,7 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<TaskDocument?> GetByTaskReportId(Guid id)
+        public IEnumerable<TaskDocument> GetByTaskReportId(Guid id)
         {
             return _repository.GetByTaskReportId(id) ?? throw new Exception("This object is not existed!");
         }

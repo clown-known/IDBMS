@@ -11,10 +11,12 @@ namespace IDBMS_API.Services
 {
     public class ProjectParticipationService
     {
-        private readonly IProjectParticipationRepository _repository;
-        public ProjectParticipationService(IProjectParticipationRepository repository)
+        private readonly IProjectParticipationRepository _participationRepo;
+        private readonly ITaskAssignmentRepository _assignmentRepo;
+        public ProjectParticipationService(IProjectParticipationRepository participationRepo, ITaskAssignmentRepository assignmentRepo)
         {
-            _repository = repository;
+            _participationRepo = participationRepo;
+            _assignmentRepo = assignmentRepo;
         }
 
         public IEnumerable<ProjectParticipation> Filter(IEnumerable<ProjectParticipation> list,
@@ -37,40 +39,40 @@ namespace IDBMS_API.Services
 
         public IEnumerable<ProjectParticipation> GetAll(ParticipationRole? role, string? name)
         {
-            var list = _repository.GetAll();
+            var list = _participationRepo.GetAll();
 
             return Filter(list, role, name);
         }
 
         public IEnumerable<ProjectParticipation> GetByUserId(Guid id, ParticipationRole? role, string? name)
         {
-            var list = _repository.GetByUserId(id);
+            var list = _participationRepo.GetByUserId(id);
 
             return Filter(list, role, name);
         }
 
         public IEnumerable<ProjectParticipation> GetUsersByParticipationInProject(Guid projectId)
         {
-            var list = _repository.GetUsersByParticipationInProject(projectId);
+            var list = _participationRepo.GetUsersByParticipationInProject(projectId);
 
             return list;
         }
 
         public IEnumerable<ProjectParticipation> GetProjectMemberByProjectId(Guid id, ParticipationRole? role, string? name)
         {
-            var list = _repository.GetProjectMemberByProjectId(id);
+            var list = _participationRepo.GetProjectMemberByProjectId(id);
 
             return Filter(list, role, name);
         }
 
         public ProjectParticipation? GetProjectManagerByProjectId(Guid id)
         {
-            return _repository.GetProjectManagerByProjectId(id);
+            return _participationRepo.GetProjectManagerByProjectId(id);
         }
 
         public ProjectParticipation? GetProjectOwnerByProjectId(Guid id)
         {
-            return _repository.GetProjectOwnerByProjectId(id);
+            return _participationRepo.GetProjectOwnerByProjectId(id);
         }
 
         public ProjectParticipation? CreateParticipation(ProjectParticipationRequest request)
@@ -84,7 +86,7 @@ namespace IDBMS_API.Services
                 IsDeleted = false,
             };
 
-            var pCreated = _repository.Save(p);
+            var pCreated = _participationRepo.Save(p);
             return pCreated;
         }
 
@@ -104,7 +106,7 @@ namespace IDBMS_API.Services
                     IsDeleted = false,
                 };
 
-                var pCreated = _repository.Save(p);
+                var pCreated = _participationRepo.Save(p);
                 list.Add(pCreated);
             }
             return list;
@@ -112,22 +114,24 @@ namespace IDBMS_API.Services
         
         public void UpdateParticipation(Guid id, ProjectParticipationRequest request)
         {
-            var p = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var p = _participationRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             p.UserId = request.UserId;
             p.Role = request.Role;
 
-            _repository.Update(p);
+            _participationRepo.Update(p);
         }
 
         public void DeleteParticipation(Guid id)
         {
-
-            var p = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var p = _participationRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             p.IsDeleted = true;
 
-            _repository.Update(p);
+            _participationRepo.Update(p);
+
+            TaskAssignmentService assignmentService = new TaskAssignmentService(_assignmentRepo);
+            assignmentService.DeleteTaskAssignmentByParticipationId(id);
         }
     }
 }

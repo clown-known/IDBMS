@@ -43,7 +43,7 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<InteriorItemColor?> GetByCategoryId(int id, ColorType? type, string? name)
+        public IEnumerable<InteriorItemColor> GetByCategoryId(int id, ColorType? type, string? name)
         {
             var list = _repository.GetByCategoryId(id) ?? throw new Exception("This object is not existed!");
 

@@ -116,14 +116,24 @@ namespace IDBMS_API.Services
             return filteredIds;
         }
 
-        public IEnumerable<ProjectTask?> GetByRoomId(Guid id)
+        public IEnumerable<ProjectTask> GetByRoomId(Guid id)
         {
             return _taskRepo.GetByRoomId(id);
         }
 
-        public IEnumerable<ProjectTask?> GetByPaymentStageId(Guid id)
+        public IEnumerable<ProjectTask> GetByPaymentStageId(Guid id)
         {
             return _taskRepo.GetByPaymentStageId(id);
+        }
+
+        public IEnumerable<ProjectTask> GetOngoingTasks()
+        {
+            return _taskRepo.GetOngoingTasks();
+        }
+
+        public IEnumerable<ProjectTask> GetOngoingTasksByUserId(Guid id)
+        {
+            return _taskRepo.GetOngoingTasksByUserId(id);
         }
 
         public void UpdateProjectData(Guid projectId)
@@ -138,7 +148,7 @@ namespace IDBMS_API.Services
             {
                 estimatePrice = tasksInProject.Sum(task =>
                 {
-                    if (task != null && task.Status != ProjectTaskStatus.Cancelled && task.IsIncurred != true)
+                    if (task != null && task.Status != ProjectTaskStatus.Cancelled)
                     {
                         decimal pricePerUnit = task.PricePerUnit;
                         double unitInContract = task.UnitInContract;
@@ -168,20 +178,23 @@ namespace IDBMS_API.Services
                 });
             }
 
-            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
+            ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
             projectService.UpdateProjectDataByTask(projectId, estimatePrice, finalPrice, estimateBusinessDay);
 
+            PaymentStageService stageService = new(_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            stageService.UpdateStagesTotalContractPaid(projectId, estimatePrice);
         }
 
         public void UpdatePaymentStageData(Guid projectId)
         {
-            PaymentStageService stageService = new(_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo);
+            PaymentStageService stageService = new (_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo);
             var stagesByProjectId = stageService.GetByProjectId(projectId, null, null);
 
             foreach (var stage in stagesByProjectId)
             {
-                var tasksInStage = _taskRepo.GetByPaymentStageId(projectId);
+                var tasksInStage = _taskRepo.GetByPaymentStageId(stage.Id);
                 int estimateBusinessDay = 0;
+                decimal totalIncurredPaid = 0;
 
                 if (tasksInStage != null && tasksInStage.Any())
                 {
@@ -193,9 +206,21 @@ namespace IDBMS_API.Services
                         }
                         return 0;
                     });
+
+                    totalIncurredPaid = tasksInStage.Sum(task =>
+                    {
+                        if (task != null && task.Status != ProjectTaskStatus.Cancelled && task.IsIncurred == true)
+                        {
+                            decimal pricePerUnit = task.PricePerUnit;
+                            double unitIncurred = task.UnitUsed - task.UnitInContract;
+                            return pricePerUnit * (decimal)(unitIncurred > 0 ? unitIncurred : 0);
+                        }
+                        return 0;
+                    });
                 }
 
-                stageService.UpdateStagesDataByTask(stage.Id, estimateBusinessDay);
+                stageService.UpdateStageEstimateBusinessDay(stage.Id, estimateBusinessDay);
+                stageService.UpdateStageTotalIncurredPaid(stage.Id, totalIncurredPaid);
             }
         }
 
@@ -206,7 +231,27 @@ namespace IDBMS_API.Services
             ct.UnitUsed = unitUsed;
             ct.Percentage = (int)((unitUsed / ct.UnitInContract) * 100);
 
+            if (unitUsed > ct.UnitInContract)
+                ct.IsIncurred = true;
+
             _taskRepo.Update(ct);
+
+            UpdateProjectData(ct.ProjectId);
+            UpdatePaymentStageData(ct.ProjectId);
+        }        
+        
+        public void UpdateTasksInDeletedStage(Guid stageId, Guid projectId)
+        {
+            var listTask = _taskRepo.GetByPaymentStageId(stageId);
+
+            foreach (var task in listTask)
+            {
+                task.PaymentStageId = null;
+
+                _taskRepo.Update(task);
+            }
+
+            UpdatePaymentStageData(projectId);
         }
 
         public ProjectTask? CreateProjectTask(ProjectTaskRequest request)

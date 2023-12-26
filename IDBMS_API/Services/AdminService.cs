@@ -121,7 +121,6 @@ namespace IDBMS_API.Services
             PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             admin.Name = request.Name;
-            admin.Username = request.Username;
             admin.Email = request.Email;
             admin.PasswordHash = passwordHash;
             admin.PasswordSalt = passwordSalt;

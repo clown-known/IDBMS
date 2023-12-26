@@ -79,14 +79,14 @@ namespace IDBMS_API.Services
             return _warrantyRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
 
-        public IEnumerable<WarrantyClaim?> GetByUserId(Guid id, bool? isCompanyCover, string? name)
+        public IEnumerable<WarrantyClaim> GetByUserId(Guid id, bool? isCompanyCover, string? name)
         {
             var list = _warrantyRepo.GetByUserId(id) ?? throw new Exception("This object is not existed!");
 
             return Filter(list, isCompanyCover, name);
         }
 
-        public IEnumerable<WarrantyClaim?> GetByProjectId(Guid id, bool? isCompanyCover, string? name)
+        public IEnumerable<WarrantyClaim> GetByProjectId(Guid id, bool? isCompanyCover, string? name)
         {
             var list = _warrantyRepo.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
 
@@ -159,8 +159,8 @@ namespace IDBMS_API.Services
                     ProjectId = wcCreated.ProjectId,
                 };
 
-                TransactionService transactionService = new (_transactionRepo);
-                await transactionService.CreateTransactionByWarrantyClaim(wcCreated.Id, newTrans);
+                TransactionService transactionService = new (_transactionRepo, _stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _projectTaskRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+                transactionService.CreateTransactionByWarrantyClaim(wcCreated.Id, newTrans);
             }
 
             return wcCreated;
@@ -202,8 +202,8 @@ namespace IDBMS_API.Services
                     ProjectId = wc.ProjectId,
                 };
 
-                TransactionService transactionService = new(_transactionRepo);
-                await transactionService.CreateTransactionByWarrantyClaim(wc.Id, newTrans);
+                TransactionService transactionService = new (_transactionRepo, _stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _projectTaskRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+                transactionService.CreateTransactionByWarrantyClaim(wc.Id, newTrans);
 
             }
 
@@ -217,8 +217,8 @@ namespace IDBMS_API.Services
 
             _warrantyRepo.Update(wc);
 
-            TransactionService transactionService = new (_transactionRepo);
-            transactionService.DeleteTransactionsByWarrantyId(id);
+            TransactionService transactionService = new (_transactionRepo, _stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _projectTaskRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            transactionService.DeleteTransactionsByWarrantyId(id, projectId);
 
             UpdateProjectTotalWarrantyPaid(projectId);
         }

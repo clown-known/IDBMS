@@ -18,10 +18,6 @@ public class User
     public string? Bio { get; set; } = default!;
 
     [Required]
-    [Column(TypeName = "money")]
-    public decimal Balance { get; set; }
-
-    [Required]
     public string Address { get; set; } = default!;
 
     [Required]
