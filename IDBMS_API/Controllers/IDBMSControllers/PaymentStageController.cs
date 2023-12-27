@@ -20,11 +20,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     {
         private readonly PaymentStageService _service;
         private readonly PaginationService<PaymentStage> _paginationService;
+        private readonly PaginationService<PaymentStageResponse> _paginationResponseService;
 
-        public PaymentStagesController(PaymentStageService service, PaginationService<PaymentStage> paginationService)
+        public PaymentStagesController(PaymentStageService service, PaginationService<PaymentStage> paginationService, PaginationService<PaymentStageResponse> paginationResponseService)
         {
             _service = service;
             _paginationService = paginationService;
+            _paginationResponseService = paginationResponseService;
         }
 
         [EnableQuery]
@@ -59,12 +61,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var list = _service.GetByProjectId(id, status, name);
+                var list = _service.GetByProjectIdWithActionAllowed(id, status, name);
 
                 var response = new ResponseMessage()
                 {
                     Message = "Get successfully!",
-                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                    Data = _paginationResponseService.PaginateList(list, pageSize, pageNo)
                 };
 
                 return Ok(response);
@@ -213,12 +215,34 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpPut("{id}/status")]
-        public IActionResult UpdateStageStatus(Guid id, StageStatus status)
+        [HttpPut("{id}/suspend")]
+        public IActionResult SuspendStage(Guid id)
         {
             try
             {
-                _service.UpdateStageStatus(id, status);
+                _service.SuspendStage(id);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [HttpPut("{id}/reopen")]
+        public IActionResult ReopenStage(Guid id, [FromBody] decimal penaltyFee)
+        {
+            try
+            {
+                _service.ReopenStage(id, penaltyFee);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",

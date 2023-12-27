@@ -22,6 +22,7 @@ namespace IDBMS_API.Services
         private readonly IProjectDesignRepository _projectDesignRepo;
         private readonly IPaymentStageDesignRepository _stageDesignRepo;
         private readonly IFloorRepository _floorRepo;
+        private readonly ITransactionRepository _transactionRepo;
 
         public RoomService(
             IRoomRepository roomRepo,
@@ -31,7 +32,8 @@ namespace IDBMS_API.Services
             IPaymentStageRepository stageRepo,
             IProjectDesignRepository projectDesignRepo,
             IPaymentStageDesignRepository stageDesignRepo,
-            IFloorRepository floorRepo)
+            IFloorRepository floorRepo,
+            ITransactionRepository transactionRepo)
         {
             _roomRepo = roomRepo;
             _roomTypeRepo = roomTypeRepo;
@@ -41,6 +43,7 @@ namespace IDBMS_API.Services
             _projectDesignRepo = projectDesignRepo;
             _stageDesignRepo = stageDesignRepo;
             _floorRepo = floorRepo;
+            _transactionRepo = transactionRepo;
         }
 
         private IEnumerable<Room> Filter(IEnumerable<Room> list,
@@ -105,7 +108,7 @@ namespace IDBMS_API.Services
                 });
             }
 
-            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
             projectService.UpdateProjectDataByRoom(projectId, area);
 
         }
@@ -134,7 +137,7 @@ namespace IDBMS_API.Services
 
                 roomCreated = _roomRepo.Save(room);
 
-                ProjectTaskService taskService = new ProjectTaskService(_projectTaskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+                ProjectTaskService taskService = new ProjectTaskService(_projectTaskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
                 var task = new ProjectTaskRequest
                 {
                     Code = "DECOR",

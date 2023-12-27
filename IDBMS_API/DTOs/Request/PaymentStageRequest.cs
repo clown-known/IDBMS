@@ -21,6 +21,9 @@ namespace IDBMS_API.DTOs.Request
         public bool IsPrepaid { get; set; }
 
         [Required]
+        public bool IsWarrantyStage { get; set; }
+
+        [Required]
         public double PricePercentage { get; set; }
 
         public DateTime? EndTimePayment { get; set; }

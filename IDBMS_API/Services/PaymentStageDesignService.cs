@@ -60,6 +60,12 @@ namespace IDBMS_API.Services
             };
 
             var psdCreated = _repository.Save(psd);
+
+            if (request.IsWarrantyStage)
+            {
+                UpdateWarrantyStage(psdCreated.Id, request.ProjectDesignId);
+            }
+
             return psdCreated;
         }
         public void UpdatePaymentStageDesign(int id, PaymentStageDesignRequest request)
@@ -75,7 +81,32 @@ namespace IDBMS_API.Services
             psd.ProjectDesignId = request.ProjectDesignId;
 
             _repository.Update(psd);
+
+            if (request.IsWarrantyStage)
+            {
+                UpdateWarrantyStage(id, request.ProjectDesignId);
+            }
         }
+
+        public void UpdateWarrantyStage(int warrantyStageId, int projectId)
+        {
+            var stageList = _repository.GetByProjectDesignId(projectId);
+
+            foreach ( var stage in stageList )
+            {
+                if (stage.Id == warrantyStageId)
+                {
+                    stage.IsWarrantyStage = true;
+                }
+                else
+                {
+                    stage.IsWarrantyStage = false;
+                }
+
+                _repository.Update(stage);
+            }
+        }
+
         public void DeletePaymentStageDesign(int id)
         {
             var psd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");

@@ -23,6 +23,7 @@ namespace IDBMS_API.Services
         private readonly IFloorRepository _floorRepo;
         private readonly IRoomRepository _roomRepo;
         private readonly IRoomTypeRepository _roomTypeRepo;
+        private readonly ITransactionRepository _transactionRepo;
         public ProjectTaskService(
                 IProjectTaskRepository taskRepo,
                 IProjectRepository projectRepo,
@@ -31,7 +32,8 @@ namespace IDBMS_API.Services
                 IPaymentStageDesignRepository stageDesignRepo,
                 IFloorRepository floorRepo,
                 IRoomRepository roomRepo,
-                IRoomTypeRepository roomTypeRepo)
+                IRoomTypeRepository roomTypeRepo,
+                ITransactionRepository transactionRepo)
         {
             _taskRepo = taskRepo;
             _projectRepo = projectRepo;
@@ -41,6 +43,7 @@ namespace IDBMS_API.Services
             _floorRepo = floorRepo;
             _roomRepo = roomRepo;
             _roomTypeRepo = roomTypeRepo;
+            _transactionRepo = transactionRepo;
         }
 
         public IEnumerable<ProjectTask> Filter(IEnumerable<ProjectTask> list, 
@@ -178,16 +181,16 @@ namespace IDBMS_API.Services
                 });
             }
 
-            ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
+            ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
             projectService.UpdateProjectDataByTask(projectId, estimatePrice, finalPrice, estimateBusinessDay);
 
-            PaymentStageService stageService = new(_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            PaymentStageService stageService = new(_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
             stageService.UpdateStagesTotalContractPaid(projectId, estimatePrice);
         }
 
         public void UpdatePaymentStageData(Guid projectId)
         {
-            PaymentStageService stageService = new (_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            PaymentStageService stageService = new (_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
             var stagesByProjectId = stageService.GetByProjectId(projectId, null, null);
 
             foreach (var stage in stagesByProjectId)
