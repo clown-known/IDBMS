@@ -34,8 +34,6 @@ namespace IDBMS_API.DTOs.Request
 
         public DateTime? StartedDate { get; set; }
 
-        public DateTime? EndDate { get; set; }
-
         public int EstimateBusinessDay { get; set; }
 
         public Guid? ParentTaskId { get; set; }

@@ -157,11 +157,17 @@ namespace IDBMS_API.Services
                 IsDeleted = false,
                 Status = StageStatus.Unopen,
                 EstimateBusinessDay = 0,
+                IsWarrantyStage= request.IsWarrantyStage,
             };
 
             var psCreated = _stageRepo.Save(ps);
 
             UpdateStageNoByProjectId(request.ProjectId);
+
+            if (psCreated != null && request.IsWarrantyStage)
+            {
+                UpdateWarrantyStage(psCreated.Id, psCreated.ProjectId);
+            }
 
             return psCreated;
         }
@@ -199,10 +205,16 @@ namespace IDBMS_API.Services
                     PricePercentage = stage.PricePercentage,
                     ProjectId = projectId,
                     IsDeleted = false,
+                    IsWarrantyStage= stage.IsWarrantyStage,
                     Status = StageStatus.Unopen
                 };
 
-                _stageRepo.Save(ps);
+                var stageCreated = _stageRepo.Save(ps);
+
+                if (stageCreated != null && stageCreated.IsWarrantyStage)
+                {
+                    UpdateWarrantyStage(stageCreated.Id, stageCreated.ProjectId);
+                }
             }
         }
 
@@ -218,6 +230,7 @@ namespace IDBMS_API.Services
             ps.PricePercentage = request.PricePercentage;
             ps.EndTimePayment = request.EndTimePayment;
             ps.ProjectId = request.ProjectId;
+            ps.IsWarrantyStage = request.IsWarrantyStage;
 
             ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
             var project = projectService.GetById(request.ProjectId);
@@ -226,7 +239,31 @@ namespace IDBMS_API.Services
             
             _stageRepo.Update(ps);
 
+            if (ps.IsWarrantyStage)
+            {
+                UpdateWarrantyStage(ps.Id, ps.ProjectId);
+            }
+
             UpdateStageNoByProjectId(ps.ProjectId);
+        }
+
+        public DateTime? CalculateEndTimePayment(DateTime? startDate, DateTime? endDate, bool isPrepaid)
+        {
+            if (startDate == null || endDate == null)
+            {
+                return null;
+            }
+            else
+            {
+                if (isPrepaid)
+                {
+                    return startDate.Value.AddDays(-10);
+                }
+                else
+                {
+                    return endDate.Value.AddDays(10);
+                }
+            }
         }
 
         public void UpdateStageNoByProjectId(Guid projectId)
@@ -243,6 +280,16 @@ namespace IDBMS_API.Services
                 stage.StageNo = stageNumber++;
                 _stageRepo.Update(stage);
             }
+        }
+
+        public void UpdateStageTimeSpan(Guid stageId, DateTime? soonestStartDate, DateTime? latestEndDate)
+        {
+            var stage = _stageRepo.GetById(stageId) ?? throw new Exception("This object is not existed!");
+
+            stage.StartedDate= soonestStartDate;
+            stage.EndDate= latestEndDate;
+
+            _stageRepo.Update(stage);
         }
 
         public bool IsExceedPaymentDeadline(Guid stageId, DateTime? endTime)
@@ -282,8 +329,8 @@ namespace IDBMS_API.Services
 
             _stageRepo.Update(ps);
 
-            ProjectTaskService taskService = new (_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
-            taskService.StartTasksOfStage(id, ps.ProjectId);
+/*            ProjectTaskService taskService = new (_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
+            taskService.StartTasksOfStage(id, ps.ProjectId);*/
 
             ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
             var project = projectService.GetById(ps.ProjectId);
