@@ -10,5 +10,6 @@ namespace Repository.Interfaces
     public interface IPaymentStageRepository : ICrudBaseRepository<PaymentStage, Guid>
     {
         IEnumerable<PaymentStage> GetByProjectId(Guid id);
+        PaymentStage? GetByStageNoByProjectId(int no, Guid projectId);
     }
 }

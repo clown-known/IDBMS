@@ -30,6 +30,8 @@ public class Project
 
     public DateTime? UpdatedDate { get; set; }
 
+    public DateTime? WarrantyPeriodEndTime { get; set; }
+
     [Required]
     public string CreatedAdminUsername { get; set; } = default!;
 

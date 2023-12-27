@@ -31,7 +31,10 @@ public class PaymentStage
     public decimal? TotalIncurredPaid { get; set; }
 
     [Required]
-    public bool IsPrepaid { get; set; }
+    public bool IsPrepaid { get; set; }    
+    
+    [Required]
+    public bool IsWarrantyStage { get; set; }
 
     [Required]
     public double PricePercentage { get; set; }

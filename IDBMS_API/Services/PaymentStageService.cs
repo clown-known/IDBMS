@@ -9,6 +9,7 @@ using UnidecodeSharpFork;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Repository.Implements;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
+using IDBMS_API.DTOs.Response;
 
 namespace IDBMS_API.Services
 {
@@ -22,6 +23,7 @@ namespace IDBMS_API.Services
         private readonly IFloorRepository _floorRepo;
         private readonly IRoomRepository _roomRepo;
         private readonly IRoomTypeRepository _roomTypeRepo;
+        private readonly ITransactionRepository _transactionRepo;
 
         public PaymentStageService(
             IPaymentStageRepository stageRepo,
@@ -31,7 +33,8 @@ namespace IDBMS_API.Services
             IProjectTaskRepository taskRepo,
             IFloorRepository floorRepo,
             IRoomRepository roomRepo,
-            IRoomTypeRepository roomTypeRepo)
+            IRoomTypeRepository roomTypeRepo, 
+            ITransactionRepository transactionRepo)
         {
             _stageRepo = stageRepo;
             _projectRepo = projectRepo;
@@ -41,6 +44,7 @@ namespace IDBMS_API.Services
             _floorRepo = floorRepo;
             _roomRepo = roomRepo;
             _roomTypeRepo = roomTypeRepo;
+            _transactionRepo = transactionRepo;
         }
 
         public IEnumerable<PaymentStage> Filter(IEnumerable<PaymentStage> list,
@@ -67,19 +71,76 @@ namespace IDBMS_API.Services
 
             return Filter(list, status, name);
         }
+
         public PaymentStage? GetById(Guid id)
         {
             return _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
+
         public IEnumerable<PaymentStage> GetByProjectId(Guid projectId, StageStatus? status, string? name)
         {
-            var list = _stageRepo.GetByProjectId(projectId) ?? throw new Exception("This object is not existed!");
+            var list = _stageRepo.GetByProjectId(projectId);
 
             return Filter(list, status, name);
         }
+
+        public IEnumerable<PaymentStageResponse> GetByProjectIdWithActionAllowed(Guid projectId, StageStatus? status, string? name)
+        {
+            var stageList = _stageRepo.GetByProjectId(projectId);
+            var filteredList = Filter(stageList, status, name);
+
+            var responseStages = stageList.Select(stage => new PaymentStageResponse { Stage = stage }).ToList();
+
+            foreach (var response in responseStages)
+            {
+                var previousStage = _stageRepo.GetByStageNoByProjectId(response.Stage.StageNo - 1, projectId);
+
+                bool isCurrentStageExceedDeadline = IsExceedPaymentDeadline(response.Stage.Id, response.Stage.EndTimePayment);
+                bool isPreviousStageExceedDeadline = IsExceedPaymentDeadline(response.Stage.Id, response.Stage.EndTimePayment);
+
+                if (response.Stage.Status == StageStatus.Unopen)
+                {
+                    //check if last stage or current stage is exceed deadline
+                    if (isCurrentStageExceedDeadline || isPreviousStageExceedDeadline)
+                    {
+                        //suspend if last stage is not paid
+                        if (previousStage != null && previousStage.Status == StageStatus.Done)
+                        {
+                            response.SuspendAllowed = true;
+                        }
+                    }
+                    else
+                    {
+                        //check if current stage is first stage or last stage are done
+                        if (response.Stage.StageNo == 1 || (previousStage != null && previousStage.Status == StageStatus.Done))
+                        {
+                            response.OpenAllowed = true;
+                        }
+                    }
+                }
+
+                if (response.Stage.Status == StageStatus.Ongoing)
+                {
+                    ProjectTaskService taskService = new(_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
+                    var tasksOfStage = taskService.GetAllProjectTaskIdByFilter(response.Stage.ProjectId, null, response.Stage.Id, ProjectTaskStatus.Ongoing, null, null, false, true, null);
+
+                    if (tasksOfStage.Count() == 0)
+                        response.CloseAllowed = true;
+                }
+
+                if (response.Stage.Status == StageStatus.Suspended)
+                {
+                    response.ReopenAllowed = true;
+                }
+
+            }
+
+            return responseStages;
+        }
+
         public PaymentStage? CreatePaymentStage(PaymentStageRequest request)
         {
-            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
             var project = projectService.GetById(request.ProjectId);
 
             var ps = new PaymentStage
@@ -107,7 +168,7 @@ namespace IDBMS_API.Services
 
         public void CreatePaymentStagesByProjectDesign(Guid projectId)
         {
-            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
             var project = projectService.GetById(projectId);
 
             ProjectDesignService pjDesignService = new ProjectDesignService(_projectDesignRepo);
@@ -158,7 +219,7 @@ namespace IDBMS_API.Services
             ps.EndTimePayment = request.EndTimePayment;
             ps.ProjectId = request.ProjectId;
 
-            ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
+            ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
             var project = projectService.GetById(request.ProjectId);
 
             ps.TotalContractPaid = (decimal)(request.PricePercentage / 100) * (decimal)project.EstimatedPrice;
@@ -184,6 +245,34 @@ namespace IDBMS_API.Services
             }
         }
 
+        public bool IsExceedPaymentDeadline(Guid stageId, DateTime? endTime)
+        {
+            var stage = _stageRepo.GetById(stageId) ?? throw new Exception("This object is not existed!");
+
+            //check if incurred amount in last stage is paid or not
+            if (stage.StageNo != 1)
+            {
+                var previousStage = _stageRepo.GetByStageNoByProjectId(stage.StageNo - 1, stage.ProjectId);
+                
+                if (previousStage != null && previousStage.IsIncurredAmountPaid == false)
+                {
+                    return true;
+                }
+            }
+
+            if (stage.IsContractAmountPaid == false)
+            {
+                if (endTime.HasValue)
+                {
+                    DateTime currentDate = DateTime.Now;
+
+                    return currentDate > endTime;
+                }
+            }
+
+            return false;
+        }
+
         public void StartStage(Guid id)
         {
             var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
@@ -193,24 +282,96 @@ namespace IDBMS_API.Services
 
             _stageRepo.Update(ps);
 
-            ProjectTaskService taskService = new (_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            ProjectTaskService taskService = new (_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
             taskService.StartTasksOfStage(id, ps.ProjectId);
+
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
+            var project = projectService.GetById(ps.ProjectId);
+
+            if (project != null)
+            {
+                if (project.Status != ProjectStatus.Ongoing)
+                {
+                    projectService.UpdateProjectStatus(project.Id, ProjectStatus.Ongoing);
+                }
+            }
         }
 
         public void CloseStage(Guid id)
         {
             var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
-            ProjectTaskService taskService = new (_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            ProjectTaskService taskService = new (_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
             var tasksOfStage = taskService.GetAllProjectTaskIdByFilter(ps.ProjectId, null, id, ProjectTaskStatus.Ongoing, null, null, false, true, null);
 
             if (tasksOfStage.Count() > 0)
-                throw new Exception("Some Task in Stage is not done!");
+                throw new Exception("Some Tasks in Stage is not done!");
 
             ps.EndDate = DateTime.Now;
             ps.Status = StageStatus.Done;
 
             _stageRepo.Update(ps);
+
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
+            var project = projectService.GetById(ps.ProjectId);
+
+            if (project != null)
+            {
+                //check if next stage is exist or not
+                var nextStage = _stageRepo.GetByStageNoByProjectId(ps.StageNo + 1, project.Id);
+
+                if (nextStage == null)
+                {
+                    projectService.UpdateProjectStatus(project.Id, ProjectStatus.Done);
+                }
+                else
+                {
+                    if (nextStage.IsWarrantyStage == true)
+                    {
+                        projectService.UpdateProjectStatus(project.Id, ProjectStatus.WarrantyPending);
+                    }
+                    else
+                    {
+                        projectService.UpdateProjectStatus(project.Id, ProjectStatus.PendingDeposit);
+                    }
+                }
+            }
+        }
+
+        public void SuspendStage(Guid id)
+        {
+            var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            ps.Status = StageStatus.Suspended;
+
+            _stageRepo.Update(ps);
+
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
+            var project = projectService.GetById(ps.ProjectId);
+
+            if (project != null)
+            {
+                projectService.UpdateProjectStatus(project.Id, ProjectStatus.Suspended);
+            }
+        }        
+        
+        public void ReopenStage(Guid id, decimal penaltyFee)
+        {
+            var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+
+            ps.Status = StageStatus.Unopen;
+
+            _stageRepo.Update(ps);
+
+            UpdateStagePenaltyFee(id, penaltyFee);
+
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
+            var project = projectService.GetById(ps.ProjectId);
+
+            if (project != null)
+            {
+                projectService.UpdateProjectStatus(project.Id, ProjectStatus.PendingDeposit);
+            }
         }
 
         public void UpdateStageEstimateBusinessDay(Guid id, int estimateBusinessDay)
@@ -218,15 +379,6 @@ namespace IDBMS_API.Services
             var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ps.EstimateBusinessDay = estimateBusinessDay;
-
-            _stageRepo.Update(ps);
-        }
-
-        public void UpdateStageStatus(Guid id, StageStatus status)
-        {
-            var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
-
-            ps.Status = status;
 
             _stageRepo.Update(ps);
         }
@@ -248,8 +400,11 @@ namespace IDBMS_API.Services
 
             decimal totalPenaltyFee = stageList.Sum(stage => stage.PenaltyFee ?? 0);
 
-            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
             projectService.UpdateProjectTotalPenaltyFee(projectId, totalPenaltyFee);
+
+            TransactionService transactionService = new TransactionService(_transactionRepo, _stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            transactionService.UpdateTotalPaidByProjectId(projectId);
         }
 
         public void UpdateStagesTotalContractPaid(Guid projectId, decimal estimatePrice)
@@ -283,6 +438,9 @@ namespace IDBMS_API.Services
 
             foreach (var stage in listStages)
             {
+                stage.IsContractAmountPaid = false;
+                stage.IsIncurredAmountPaid = false;
+
                 if (remainingAmount >= stage.TotalContractPaid)
                 {
                     stage.IsContractAmountPaid = true;
@@ -293,15 +451,41 @@ namespace IDBMS_API.Services
                     break;
                 }
 
-                if (stage.TotalIncurredPaid == null)
+                if (stage.TotalIncurredPaid == null && stage.PenaltyFee == null)
                     stage.IsIncurredAmountPaid = true;
                 else
                 {
-                    if (remainingAmount >= stage.TotalIncurredPaid)
+                    var incurredTotal = stage.TotalIncurredPaid == null ? 0 : stage.TotalIncurredPaid;
+                    var penaltyFeeTotal = stage.PenaltyFee == null ? 0 : stage.PenaltyFee;
+
+                    if (remainingAmount >= incurredTotal + penaltyFeeTotal)
                     {
                         stage.IsIncurredAmountPaid = true;
-                        remainingAmount -= stage.TotalIncurredPaid.Value;
+                        remainingAmount -= incurredTotal.Value;
+                        remainingAmount -= penaltyFeeTotal.Value;
                     }
+                }
+
+                _stageRepo.Update(stage);
+            }
+        }
+
+        public void UpdateWarrantyStage(Guid warrantyStageId, Guid projectId)
+        {
+            var stageList = _stageRepo.GetByProjectId(projectId);
+
+            foreach (var stage in stageList)
+            {
+                if (stage.Id == warrantyStageId)
+                {
+                    stage.IsWarrantyStage = true;
+
+                    ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
+                    projectService.UpdateProjectWarrantyPeriodEndTime(projectId, stage.EndTimePayment);
+                }
+                else
+                {
+                    stage.IsWarrantyStage = false;
                 }
 
                 _stageRepo.Update(stage);
@@ -316,7 +500,7 @@ namespace IDBMS_API.Services
 
             _stageRepo.Update(ps);
 
-            ProjectTaskService taskService = new (_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            ProjectTaskService taskService = new (_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
             taskService.UpdateTasksInDeletedStage(id, ps.ProjectId);
 
             UpdateProjectPenaltyFeeByStages(ps.ProjectId);

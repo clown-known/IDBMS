@@ -17,6 +17,7 @@ public class ProjectService
     private readonly IPaymentStageRepository _stageRepo;
     private readonly IProjectDesignRepository _projectDesignRepo;
     private readonly IPaymentStageDesignRepository _stageDesignRepo;
+    private readonly ITransactionRepository _transactionRepo;
 
     public ProjectService(
             IProjectRepository projectRepo,
@@ -26,7 +27,8 @@ public class ProjectService
             IPaymentStageRepository stageRepo,
             IProjectDesignRepository projectDesignRepo,
             IPaymentStageDesignRepository stageDesignRepo,
-            IFloorRepository floorRepo)
+            IFloorRepository floorRepo,
+            ITransactionRepository transactionRepo)
     {
         _projectRepo = projectRepo;
         _roomRepo = roomRepo;
@@ -36,6 +38,7 @@ public class ProjectService
         _projectDesignRepo = projectDesignRepo;
         _stageDesignRepo = stageDesignRepo;
         _floorRepo = floorRepo;
+        _transactionRepo = transactionRepo;
     }
 
     private IEnumerable<Project> Filter(IEnumerable<Project> list,
@@ -127,7 +130,7 @@ public class ProjectService
 
             var createdProject = _projectRepo.Save(newProject);
 
-            FloorService floorService = new (_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
+            FloorService floorService = new (_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
             floorService.DuplicateFloorsByProjectId(createdProject.Id, request.BasedOnDecorProjectId.Value);
 
             return createdProject;
@@ -200,6 +203,16 @@ public class ProjectService
         var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
         project.TotalPenaltyFee = totalPenaltyFee;
+        project.UpdatedDate = DateTime.Now;
+
+        _projectRepo.Update(project);
+    }
+
+    public void UpdateProjectWarrantyPeriodEndTime(Guid id, DateTime? warrantyPeriodEndTime)
+    {
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+
+        project.WarrantyPeriodEndTime = warrantyPeriodEndTime;
         project.UpdatedDate = DateTime.Now;
 
         _projectRepo.Update(project);

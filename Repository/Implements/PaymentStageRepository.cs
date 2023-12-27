@@ -50,7 +50,21 @@ namespace Repository.Implements
             {
                 throw;
             }
+        }        
+        
+        public PaymentStage? GetByStageNoByProjectId(int no, Guid projectId)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.PaymentStages.FirstOrDefault(stage => stage.StageNo == no && stage.ProjectId == projectId && stage.IsDeleted == false);
+            }
+            catch
+            {
+                throw;
+            }
         }
+
         public PaymentStage Save(PaymentStage entity)
         {
             try

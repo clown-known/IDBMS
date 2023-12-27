@@ -18,6 +18,7 @@ namespace IDBMS_API.Services
         private readonly IRoomRepository _roomRepo;
         private readonly IRoomTypeRepository _roomTypeRepo;
         private readonly IProjectTaskRepository _projectTaskRepo;
+        private readonly ITransactionRepository _transactionRepo;
 
         public DashboardService(
                 IProjectRepository projectRepo,
@@ -26,7 +27,8 @@ namespace IDBMS_API.Services
                 IPaymentStageRepository stageRepo,
                 IProjectDesignRepository projectDesignRepo,
                 IPaymentStageDesignRepository stageDesignRepo,
-                ITaskDocumentRepository taskDocumentRepo)
+                ITaskDocumentRepository taskDocumentRepo,
+                ITransactionRepository transactionRepo)
         {
             _projectRepo = projectRepo;
             _taskReportRepo = taskReportRepo;
@@ -35,18 +37,19 @@ namespace IDBMS_API.Services
             _projectDesignRepo = projectDesignRepo;
             _stageDesignRepo = stageDesignRepo;
             _taskDocumentRepo = taskDocumentRepo;
+            _transactionRepo = transactionRepo;
         }
 
         public DashboardReponse? GetDashboardDataByAdmin()
         {
-            ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
+            ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
             var recentProjects = projectService.GetRecentProjects().Take(5).ToList();
             var numOngoingProjects = projectService.GetOngoingProjects().Count();
 
-            TaskReportService taskReportService = new (_taskReportRepo, _taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _taskDocumentRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            TaskReportService taskReportService = new (_taskReportRepo, _taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _taskDocumentRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
             var recentReports = taskReportService.GetRecentReports().Take(5).ToList();
 
-            ProjectTaskService taskService = new ProjectTaskService(_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            ProjectTaskService taskService = new (_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
             var numOngoingTasks = taskService.GetOngoingTasks().Count();
 
             var dashboardData = new DashboardReponse
@@ -61,14 +64,14 @@ namespace IDBMS_API.Services
 
         public DashboardReponse? GetDashboardDataByUserId(Guid id)
         {
-            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo);
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
             var recentProjects = projectService.GetRecentProjectsByUserId(id).Take(5).ToList();
             var numOngoingProjects = projectService.GetOngoingProjectsByUserId(id).Count();
 
-            TaskReportService taskReportService = new(_taskReportRepo, _taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _taskDocumentRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            TaskReportService taskReportService = new(_taskReportRepo, _taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _taskDocumentRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
             var recentReports = taskReportService.GetRecentReportsByUserId(id).Take(5).ToList();
 
-            ProjectTaskService taskService = new ProjectTaskService(_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            ProjectTaskService taskService = new (_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
             var numOngoingTasks = taskService.GetOngoingTasksByUserId(id).Count();
 
             var dashboardData = new DashboardReponse

@@ -17,6 +17,9 @@ namespace IDBMS_API.DTOs.Request
         public bool IsPrepaid { get; set; }
 
         [Required]
+        public bool IsWarrantyStage { get; set; }
+
+        [Required]
         public int StageNo { get; set; }
 
         [Required]

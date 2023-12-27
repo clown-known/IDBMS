@@ -9,5 +9,6 @@ public enum ProjectStatus
     Ongoing = 4,
     Suspended = 5,
     Cancelled = 6,
-    Done = 7
+    WarrantyPending = 7,
+    Done = 8
 }
