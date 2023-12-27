@@ -12,7 +12,6 @@ namespace IDBMS_API.DTOs.Request
 {
     public class ProjectTaskRequest
     {
-        public string? Code { get; set; }
 
         [Required]
         public string Name { get; set; } = default!;
