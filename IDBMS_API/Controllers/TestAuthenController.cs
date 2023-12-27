@@ -42,7 +42,7 @@ namespace IDBMS_API.Controllers
             return Ok(user);
         }
         [HttpPost("file")]
-        [Authorize(Policy = "ParticipationAccess")]
+        [Authorize(Policy = "owner")]
         public async Task<IActionResult> IndexAsync([FromBody][FromForm] IFormFile id)
         {
             
@@ -76,8 +76,8 @@ namespace IDBMS_API.Controllers
             return Ok();
         }
         [HttpGet("case1")]
-        [Authorize]
-        public IActionResult Case1()
+        [Authorize(Policy = "owner")]
+        public IActionResult Case1(Guid projectId)
         {
             return Ok("success");
         }
