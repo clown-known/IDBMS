@@ -71,10 +71,10 @@ namespace API.Services
             {
                 if (PasswordUtils.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 {
-                    if (user.Token != null)
-                    {
-                        return (user.Token, user);
-                    }
+                    //if (user.Token != null)
+                    //{
+                    //    return (user.Token, user);
+                    //}
 
                     var token = jwtTokenSupporter.CreateToken(user);
                     UpdateTokenForUser(user, token);
