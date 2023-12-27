@@ -26,7 +26,7 @@ namespace IDBMS_API.Services
         {
             return _repository.GetByTaskReportId(id) ?? throw new Exception("This object is not existed!");
         }
-        public async Task<TaskDocument?> CreateTaskDocument(Guid projectId,TaskDocumentRequest request)
+        public async Task<TaskDocument?> CreateTaskDocument(Guid projectId, Guid taskReportId, TaskDocumentRequest request)
         {
             string link = "";
             if(request.Document != null)
@@ -38,9 +38,8 @@ namespace IDBMS_API.Services
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
-                Description = request.Description,
                 Document = link,
-                TaskReportId = request.TaskReportId,
+                TaskReportId = taskReportId,
                 IsDeleted = false,
             };
             var tdCreated = _repository.Save(td);

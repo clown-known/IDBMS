@@ -28,15 +28,16 @@ namespace API.Services
         }
 
         public IEnumerable<User> Filter(IEnumerable<User> list,
-           string? nameOrEmail, CompanyRole? role , UserStatus? status)
+           string? searchParam, CompanyRole? role , UserStatus? status)
         {
             IEnumerable<User> filteredList = list;
 
-            if (nameOrEmail != null)
+            if (searchParam != null)
             {
                 filteredList = filteredList.Where(item =>
-                            (item.Name != null && item.Name.Unidecode().IndexOf(nameOrEmail.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0) ||
-                            (item.Email != null && item.Email.Unidecode().IndexOf(nameOrEmail.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+                            (item.Name != null && item.Name.Unidecode().IndexOf(searchParam.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0) ||
+                            (item.Email != null && item.Email.Unidecode().IndexOf(searchParam.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0) ||
+                            (item.Phone != null && item.Phone.Unidecode().IndexOf(searchParam.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
             }
 
             if (role != null)
@@ -56,11 +57,11 @@ namespace API.Services
         {
             return _repository.GetById(id);
         }
-        public IEnumerable<User> GetAll(string? nameOrEmail, CompanyRole? role, UserStatus? status)
+        public IEnumerable<User> GetAll(string? searchParam, CompanyRole? role, UserStatus? status)
         {
             var list = _repository.GetAll();    
 
-            return Filter(list, nameOrEmail, role, status);
+            return Filter(list, searchParam, role, status);
         }
 
         public (string? token, User? user) Login(string email, string password)

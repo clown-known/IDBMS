@@ -93,11 +93,12 @@ namespace IDBMS_API.Services
 
             if (reportsInTask != null && reportsInTask.Any())
             {
-                var latestReport = reportsInTask.OrderByDescending(r => r.UpdatedTime ?? r.CreatedTime).FirstOrDefault();
-                if (latestReport != null)
+                var reportWithLargestUnitUsed = reportsInTask.OrderByDescending(r => r.UnitUsed).FirstOrDefault();
+
+                if (reportWithLargestUnitUsed != null)
                 {
                     ProjectTaskService taskService = new(_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo);
-                    taskService.UpdateTaskProgress(taskId, latestReport.UnitUsed);
+                    taskService.UpdateTaskProgress(taskId, reportWithLargestUnitUsed.UnitUsed);
                 }
             }
         }
@@ -119,7 +120,7 @@ namespace IDBMS_API.Services
             foreach (var report in request.documentList)
             {
                     TaskDocumentService documentService = new (_taskDocumentRepo);
-                    await documentService.CreateTaskDocument(projectId,report);
+                    await documentService.CreateTaskDocument(projectId, ctrCreated.Id, report);
             }
             UpdateTaskPercentage(request.ProjectTaskId);
 

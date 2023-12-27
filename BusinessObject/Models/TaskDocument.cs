@@ -16,8 +16,6 @@ namespace BusinessObject.Models
         [Required]
         public string Name { get; set; } = default!;
 
-        public string? Description { get; set; }
-
         public string? Document { get; set; } = default!;
 
         [Required]

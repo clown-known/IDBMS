@@ -16,8 +16,5 @@ namespace IDBMS_API.DTOs.Request
         public string? Description { get; set; }
 
         public IFormFile? Document { get; set; } = default!;
-
-        [Required]
-        public Guid TaskReportId { get; set; }
     }
 }
