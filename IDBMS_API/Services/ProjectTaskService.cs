@@ -171,14 +171,26 @@ namespace IDBMS_API.Services
                     return 0;
                 });
 
-                estimateBusinessDay = tasksInProject.Sum(task =>
+                var soonestStartDate = tasksInProject
+                    .Where(task => task != null && task.StartedDate != null && task.Status == ProjectTaskStatus.Confirmed)
+                    .Min(task => task.StartedDate);
+
+                var latestEndDate = tasksInProject
+                    .Where(task => task != null && task.EndDate != null && task.Status == ProjectTaskStatus.Confirmed)
+                    .Max(task => task.EndDate);
+
+                if (soonestStartDate.HasValue && latestEndDate.HasValue)
                 {
-                    if (task != null && task.Status != ProjectTaskStatus.Cancelled)
+                    TimeSpan duration = latestEndDate.Value - soonestStartDate.Value;
+
+                    for (DateTime date = soonestStartDate.Value; date <= latestEndDate.Value; date = date.AddDays(1))
                     {
-                        return task.EstimateBusinessDay;
+                        if (date.DayOfWeek != DayOfWeek.Sunday)
+                        {
+                            estimateBusinessDay++;
+                        }
                     }
-                    return 0;
-                });
+                }
             }
 
             ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
@@ -193,6 +205,9 @@ namespace IDBMS_API.Services
             PaymentStageService stageService = new (_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
             var stagesByProjectId = stageService.GetByProjectId(projectId, null, null);
 
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
+            var project = projectService.GetById(projectId);
+
             foreach (var stage in stagesByProjectId)
             {
                 var tasksInStage = _taskRepo.GetByPaymentStageId(stage.Id);
@@ -201,14 +216,34 @@ namespace IDBMS_API.Services
 
                 if (tasksInStage != null && tasksInStage.Any())
                 {
-                    estimateBusinessDay = tasksInStage.Sum(task =>
+                    var soonestStartDate = tasksInStage
+                    .Where(task => task != null && task.StartedDate != null && task.Status != ProjectTaskStatus.Cancelled)
+                    .Min(task => task.StartedDate);
+
+                    var latestEndDate = tasksInStage
+                        .Where(task => task != null && task.EndDate != null && task.Status != ProjectTaskStatus.Cancelled)
+                        .Max(task => task.EndDate);
+
+                    if (soonestStartDate.HasValue && latestEndDate.HasValue)
                     {
-                        if (task != null && task.Status != ProjectTaskStatus.Cancelled)
+                        TimeSpan duration = latestEndDate.Value - soonestStartDate.Value;
+
+                        for (DateTime date = soonestStartDate.Value; date <= latestEndDate.Value; date = date.AddDays(1))
                         {
-                            return task.EstimateBusinessDay;
+                            if (date.DayOfWeek != DayOfWeek.Sunday)
+                            {
+                                estimateBusinessDay++;
+                            }
                         }
-                        return 0;
-                    });
+
+                        if (project != null && 
+                            (project.Status == ProjectStatus.Draft || 
+                            project.Status == ProjectStatus.PendingConfirmation || 
+                            project.Status == ProjectStatus.Negotiating))
+                        {
+                            stageService.UpdateStageTimeSpan(stage.Id, soonestStartDate, latestEndDate);
+                        }
+                    }
 
                     totalIncurredPaid = tasksInStage.Sum(task =>
                     {
@@ -257,6 +292,31 @@ namespace IDBMS_API.Services
             UpdatePaymentStageData(projectId);
         }
 
+        public DateTime? CalculateEndDate(DateTime? startDate, int businessDaysToAdd)
+        {
+            if (startDate == null)
+            {
+                return null;
+            }
+            else
+            {
+                DateTime endDate = startDate.GetValueOrDefault();
+
+                for (int i = 0; i < businessDaysToAdd;)
+                {
+                    endDate = endDate.AddDays(1);
+
+                    // Skip Sunday
+                    if (endDate.DayOfWeek != DayOfWeek.Sunday)
+                    {
+                        i++;
+                    }
+                }
+
+                return endDate;
+            }
+        }
+
         public ProjectTask? CreateProjectTask(ProjectTaskRequest request)
         {
             var ct = new ProjectTask
@@ -271,7 +331,7 @@ namespace IDBMS_API.Services
                 UnitUsed = 0,
                 IsIncurred = request.IsIncurred,
                 StartedDate = request.StartedDate,
-                EndDate = request.EndDate,
+                EndDate = CalculateEndDate(request.StartedDate, request.EstimateBusinessDay),
                 CreatedDate = DateTime.Now,
                 ProjectId = request.ProjectId,
                 PaymentStageId = request.PaymentStageId,
@@ -300,7 +360,7 @@ namespace IDBMS_API.Services
             UpdatePaymentStageData(projectId);
         }
 
-        public void StartTasksOfStage(Guid paymentStageId, Guid projectId)
+/*        public void StartTasksOfStage(Guid paymentStageId, Guid projectId)
         {
             var listTask = _taskRepo.GetByPaymentStageId(paymentStageId);
             if (listTask.Any())
@@ -316,7 +376,7 @@ namespace IDBMS_API.Services
             }
 
             UpdatePaymentStageData(projectId);
-        }
+        }*/
 
         public void UpdateProjectTask(Guid id, ProjectTaskRequest request)
         {
@@ -330,7 +390,7 @@ namespace IDBMS_API.Services
             ct.UnitInContract = request.UnitInContract;
             ct.IsIncurred = request.IsIncurred;
             ct.UpdatedDate= DateTime.Now;
-            ct.EndDate = request.EndDate;
+            ct.EndDate = CalculateEndDate(request.StartedDate, request.EstimateBusinessDay);
             ct.ProjectId = request.ProjectId;
             ct.PaymentStageId = request.PaymentStageId;
             ct.RoomId = request.RoomId;
@@ -348,10 +408,24 @@ namespace IDBMS_API.Services
 
             ct.Status = status;
 
+            if (status == ProjectTaskStatus.Ongoing)
+            {
+                ct.StartedDate= DateTime.Now;
+            }
+
+            if (status == ProjectTaskStatus.Done)
+            {
+                ct.EndDate = DateTime.Now;
+            }
+
             _taskRepo.Update(ct);
 
-            UpdateProjectData(ct.ProjectId);
-            UpdatePaymentStageData(ct.ProjectId);
+            if (status == ProjectTaskStatus.Cancelled)
+            {
+
+                UpdateProjectData(ct.ProjectId);
+                UpdatePaymentStageData(ct.ProjectId);
+            }
         }
 
     }

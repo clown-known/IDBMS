@@ -61,6 +61,32 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
+                var list = _service.GetByProjectId(id, status, name);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [EnableQuery]
+        [HttpGet("project/{id}/actions")]
+        public IActionResult GetPaymentStagesByProjectIdWithActions(Guid id, StageStatus? status, string? name, int? pageSize, int? pageNo)
+        {
+            try
+            {
                 var list = _service.GetByProjectIdWithActionAllowed(id, status, name);
 
                 var response = new ResponseMessage()
@@ -80,6 +106,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
+
         //permission
         [EnableQuery]
         [HttpGet("{id}")]
@@ -282,14 +309,14 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult UpdatePaymentStageStatus(Guid id)
+        public IActionResult DeletePaymentStage(Guid id)
         {
             try
             {
                 _service.DeletePaymentStage(id);
                 var response = new ResponseMessage()
                 {
-                    Message = "Update successfully!",
+                    Message = "Delete successfully!",
                 };
                 return Ok(response);
             }
