@@ -140,7 +140,6 @@ namespace IDBMS_API.Services
                 ProjectTaskService taskService = new ProjectTaskService(_projectTaskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
                 var task = new ProjectTaskRequest
                 {
-                    Code = "DECOR",
                     CalculationUnit = BusinessObject.Enums.CalculationUnit.Meter,
                     PricePerUnit = roomType.PricePerArea,
                     UnitInContract = request.Area,

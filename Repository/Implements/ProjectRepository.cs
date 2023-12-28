@@ -58,7 +58,7 @@ namespace Repository.Implements
                     .Include(pc => pc.ProjectCategory)
                     .Include(pc => pc.Site)
                     .OrderByDescending(time => time.CreatedDate)
-                    .Where(p => p.Status == ProjectStatus.Done && p.AdvertisementStatus != AdvertisementStatus.NotAllowed)
+                    .Where(p => (p.Status == ProjectStatus.Done || p.Status == ProjectStatus.WarrantyPending) && p.AdvertisementStatus != AdvertisementStatus.NotAllowed)
                     .ToList();
             }
             catch
