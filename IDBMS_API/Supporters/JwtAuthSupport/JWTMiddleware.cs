@@ -45,8 +45,8 @@ namespace API.Supporters
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken) validatedToken;
-                string role = jwtToken.Claims.First(claim => claim.Type == "role").Value;
-                if (role.Equals("admin")) context.Items["role"] = "admin";
+                var role = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "role");
+                if (role.Value.Equals("admin")) context.Items["role"] = "admin";
                 else
                 {
                     var userId = jwtToken.Claims.First(claim => claim.Type == "id").Value;

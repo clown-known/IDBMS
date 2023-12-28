@@ -61,12 +61,12 @@ namespace API.Controllers
             }
         }
 
-/*        [HttpPost("loginByGoogle")]
+        [HttpPost("loginByGoogle")]
         public IActionResult LoginByGoogle(LoginByGoogleRequest request)
         {
             try
             {
-                var (token, user) = userService.LoginByGoogle(request.Email, request.GoogleToken);
+                var (token, user) = userService.LoginByGoogle(request.Email);
                 var response = new ResponseMessage();
                 if (token == null)
                 {
@@ -91,7 +91,7 @@ namespace API.Controllers
                 };
                 return BadRequest(response);
             }
-        }*/
+        }
 
         [HttpPost("admin/login")]
         public IActionResult LoginAdmin(AdminLoginRequest request)

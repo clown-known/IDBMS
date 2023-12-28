@@ -71,15 +71,27 @@ namespace API.Services
             {
                 if (PasswordUtils.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 {
-                    if (user.Token != null)
-                    {
-                        return (user.Token, user);
-                    }
+                    //if (user.Token != null)
+                    //{
+                    //    return (user.Token, user);
+                    //}
 
                     var token = jwtTokenSupporter.CreateToken(user);
                     UpdateTokenForUser(user, token);
                     return (token, user);
                 }
+            }
+            return (null, null);
+        }
+
+        public (string? token, User? user) LoginByGoogle(string email)
+        {
+            var user = _repository.GetByEmail(email);
+            if (user != null)
+            {
+                var token = jwtTokenSupporter.CreateToken(user);
+                UpdateTokenForUser(user, token);
+               return (token, user);
             }
             return (null, null);
         }

@@ -85,7 +85,7 @@ namespace IDBMS_API.Services
 
             if (request.InteriorItemId.HasValue)
             {
-                InteriorItemService itemService = new(_itemRepo);
+                InteriorItemService itemService = new(_itemRepo, null);
                 var item = itemService.GetById(request.InteriorItemId.Value);
 
                 itemInTask.InteriorItemId = request.InteriorItemId.Value;
@@ -95,7 +95,7 @@ namespace IDBMS_API.Services
             {
                 if (request.InteriorItem == null) throw new Exception("New item null!");
 
-                InteriorItemService itemService = new(_itemRepo);
+                InteriorItemService itemService = new(_itemRepo, null);
 
                 var newItem = await itemService.CreateInteriorItem(request.InteriorItem);
 
@@ -128,7 +128,7 @@ namespace IDBMS_API.Services
 
                 if (itemInTask.InteriorItemId.HasValue)
                 {
-                    InteriorItemService itemService = new(_itemRepo);
+                    InteriorItemService itemService = new(_itemRepo, null);
                     var item = itemService.GetById(itemInTask.InteriorItemId.Value);
 
                     newCreate.InteriorItemId = itemInTask.InteriorItemId.Value;
@@ -138,7 +138,7 @@ namespace IDBMS_API.Services
                 {
                     if (itemInTask.InteriorItem == null) throw new Exception("New item null!");
 
-                    InteriorItemService itemService = new(_itemRepo);
+                    InteriorItemService itemService = new(_itemRepo, null);
 
                     var newItem = await itemService.CreateInteriorItem(itemInTask.InteriorItem);
 
@@ -167,7 +167,7 @@ namespace IDBMS_API.Services
 
             if (request.InteriorItemId.HasValue)
             {
-                InteriorItemService itemService = new(_itemRepo);
+                InteriorItemService itemService = new(_itemRepo, null);
                 var item = itemService.GetById(request.InteriorItemId.Value);
 
                 itemInTask.InteriorItemId = request.InteriorItemId.Value;
@@ -177,7 +177,7 @@ namespace IDBMS_API.Services
             {
                 if (request.InteriorItem == null) throw new Exception("New item null!");
 
-                InteriorItemService itemService = new(_itemRepo);
+                InteriorItemService itemService = new(_itemRepo, null);
 
                 var newItem = await itemService.CreateInteriorItem(request.InteriorItem);
 

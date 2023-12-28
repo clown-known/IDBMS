@@ -10,6 +10,7 @@ using System.Text;
 using System.Globalization;
 using UnidecodeSharpFork;
 using System.Linq;
+using Repository.Implements;
 
 namespace IDBMS_API.Services
 {
@@ -24,6 +25,8 @@ namespace IDBMS_API.Services
         private readonly IRoomRepository _roomRepo;
         private readonly IRoomTypeRepository _roomTypeRepo;
         private readonly ITransactionRepository _transactionRepo;
+        private readonly ITaskCategoryRepository _taskCategoryRepo = new TaskCategoryRepository();
+
         public ProjectTaskService(
                 IProjectTaskRepository taskRepo,
                 IProjectRepository projectRepo,
@@ -86,7 +89,46 @@ namespace IDBMS_API.Services
 
             return filteredList;
         }
-        
+
+        public string GenerateCode(int? id)
+        {
+            string code = String.Empty;
+            Random random = new Random();
+            if (id == null)
+            {
+                code += "KPL_KPL_";
+            }
+            else
+            {
+                var category = _taskCategoryRepo.GetById((int)id) ?? throw new Exception("This object is not existed!");
+                var type = category.ProjectType;
+
+                if (type == ProjectType.Decor)
+                {
+                    code += "TK_";
+                }
+                if (type == ProjectType.Construction)
+                {
+                    code += "XD_";
+                }
+
+                var valid = category.Name.Contains(' ');
+                if (valid)
+                {
+                    category.Name.Split(' ').ToList().ForEach(i => code += i[0].ToString().Unidecode().ToUpper());
+                    code += "_";
+                }
+                else
+                {
+                    code += category.Name.Substring(0, 2).Unidecode().ToUpper() + "_";
+                }
+            }
+
+            code += random.Next(100000, 999999);
+
+            return code;
+        }
+
         public IEnumerable<ProjectTask> GetAll()
         {
             return _taskRepo.GetAll();
@@ -319,10 +361,12 @@ namespace IDBMS_API.Services
 
         public ProjectTask? CreateProjectTask(ProjectTaskRequest request)
         {
+            var generateCode = GenerateCode(request.TaskCategoryId);
+
             var ct = new ProjectTask
             {
                 Id = Guid.NewGuid(),
-                Code = request.Code,
+                Code = generateCode,
                 Name = request.Name,
                 Description = request.Description,
                 CalculationUnit = request.CalculationUnit,
@@ -382,7 +426,6 @@ namespace IDBMS_API.Services
         {
             var ct = _taskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
-            ct.Code = request.Code;
             ct.Name = request.Name;
             ct.Description = request.Description;
             ct.CalculationUnit = request.CalculationUnit;

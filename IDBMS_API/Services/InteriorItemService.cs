@@ -14,9 +14,11 @@ namespace IDBMS_API.Services
     public class InteriorItemService
     {
         private readonly IInteriorItemRepository _repository;
-        public InteriorItemService(IInteriorItemRepository repository)
+        private readonly IInteriorItemCategoryRepository _itemCategoryrepository;
+        public InteriorItemService(IInteriorItemRepository repository, IInteriorItemCategoryRepository itemCategoryrepository)
         {
             _repository = repository;
+            _itemCategoryrepository = itemCategoryrepository;
         }
 
         private IEnumerable<InteriorItem> Filter(IEnumerable<InteriorItem> list,
@@ -49,6 +51,49 @@ namespace IDBMS_API.Services
             return filteredList;
         }
 
+        public string GenerateCode(int? id)
+        {
+            string code = String.Empty;
+            Random random = new Random();
+            if (id == null)
+            {
+                code += "KPL_KPL_";
+            }
+            else
+            {
+                var category = _itemCategoryrepository.GetById((int)id) ?? throw new Exception("This object is not existed!");
+                var type = category.InteriorItemType;
+
+                if (type == InteriorItemType.Furniture)
+                {
+                    code += "NT_";
+                }
+                if (type == InteriorItemType.Material)
+                {
+                    code += "VL_";
+                }
+                if (type == InteriorItemType.CustomFurniture)
+                {
+                    code += "NB_";
+                }
+
+                var valid = category.Name.Contains(' ');
+                if (valid)
+                {
+                    category.Name.Split(' ').ToList().ForEach(i => code += i[0].ToString().Unidecode().ToUpper());
+                    code += "_";
+                }
+                else
+                {
+                    code += category.Name.Substring(0, 2).Unidecode().ToUpper() + "_";
+                }
+            }
+            
+            code += random.Next(100000, 999999);
+
+            return code;
+        }
+
         public IEnumerable<InteriorItem> GetAll(int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? itemType)
         {
             var list = _repository.GetAll();
@@ -67,10 +112,11 @@ namespace IDBMS_API.Services
         }
         public async Task<InteriorItem?> CreateInteriorItem([FromForm] InteriorItemRequest request)
         {
+            var generateCode = GenerateCode(request.InteriorItemCategoryId);
             var ii = new InteriorItem
             {
                 Id = Guid.NewGuid(),
-                Code = request.Code,
+                Code = generateCode,
                 Name = request.Name,
                 EnglishName = request.EnglishName,
                 Length = request.Length,
@@ -110,7 +156,6 @@ namespace IDBMS_API.Services
         {
             var ii = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
-            ii.Code = request.Code;
             ii.Name = request.Name;
             ii.EnglishName = request.EnglishName;
             ii.Length = request.Length;
