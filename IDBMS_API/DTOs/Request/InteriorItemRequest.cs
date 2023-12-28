@@ -12,8 +12,6 @@ namespace IDBMS_API.DTOs.Request
 {
     public class InteriorItemRequest
     {
-        [Required]
-        public string Code { get; set; } = default!;
 
         [Required]
         public string Name { get; set; } = default!;
