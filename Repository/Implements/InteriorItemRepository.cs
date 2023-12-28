@@ -56,6 +56,22 @@ namespace Repository.Implements
                 throw;
             }
         }
+
+        public bool CheckCodeExisted(string code)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+
+                bool exists = context.InteriorItems.Any(item => item.Code.ToLower() == code.ToLower());
+
+                return exists;
+            }
+            catch
+            {
+                throw;
+            }
+        }
         public InteriorItem Save(InteriorItem entity)
         {
             try

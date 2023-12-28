@@ -10,5 +10,6 @@ namespace Repository.Interfaces
     public interface IInteriorItemRepository : ICrudBaseRepository<InteriorItem, Guid>
     {
         IEnumerable<InteriorItem> GetByCategory(int id);
+        bool CheckCodeExisted(string code);
     }
 }
