@@ -75,15 +75,60 @@ namespace IDBMS_API.Controllers
             //return File(content, "application/octet-stream", "c4d07b71-c86d-45a9-9afd-076580bf82ea.jpg");
             return Ok();
         }
-        [HttpGet("case1")]
-        [Authorize(Policy = "owner")]
-        public IActionResult Case1(Guid projectId)
+
+
+        [HttpGet("admin")]
+        [Authorize(Policy = "Admin")]
+        public IActionResult CaseAdmin(Guid projectId)
         {
             return Ok("success");
         }
-        [HttpGet("case2")]
-        [Authorize(Policy = "ParticipationAccess")]
-        public IActionResult Case2(string? id)
+
+        [HttpGet("participation")]
+        [Authorize(Policy = "Participation")]
+        public IActionResult CaseParticipation(Guid projectId)
+        {
+            return Ok("success");
+        }
+
+        [HttpGet("admin_participation")]
+        [Authorize(Policy = "Admin, Participation")]
+        public IActionResult CaseAdminParticipation(Guid projectId)
+        {
+            return Ok("success");
+        }
+
+        [HttpGet("projectmanager")]
+        [Authorize(Policy = "ProjectManager")]
+        public IActionResult CaseProjectManager(Guid projectId)
+        {
+            return Ok("success");
+        }
+
+        [HttpGet("architect")]
+        [Authorize(Policy = "Architect")]
+        public IActionResult CaseArchitect(Guid projectId)
+        {
+            return Ok("success");
+        }
+
+        [HttpGet("constructionmanager")]
+        [Authorize(Policy = "ConstructionManager")]
+        public IActionResult CaseConstructionManager(Guid projectId)
+        {
+            return Ok("success");
+        }
+
+        [HttpGet("owner")]
+        [Authorize(Policy = "Owner")]
+        public IActionResult CaseOwner(Guid projectId)
+        {
+            return Ok("success");
+        }
+
+        [HttpGet("viewer")]
+        [Authorize(Policy = "Viewer")]
+        public IActionResult CaseViewer(Guid projectId)
         {
             return Ok("success");
         }

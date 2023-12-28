@@ -3,15 +3,21 @@ using API.Supporters;
 using API.Supporters.JwtAuthSupport;
 using BLL.Services;
 using BusinessObject.Models;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using IDBMS_API.Services;
 using IDBMS_API.Services.PaginationService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OData;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using Microsoft.OpenApi.Models;
 using Repository.Implements;
 using Repository.Interfaces;
+using Swashbuckle.AspNetCore.SwaggerUI;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +31,40 @@ FirebaseApp.Create(new AppOptions()
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+//add jwt bearer to swagger
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "IDBMS API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                  {
+                    {
+                      new OpenApiSecurityScheme
+                      {
+                        Reference = new OpenApiReference
+                          {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                          },
+                          Scheme = "oauth2",
+                          Name = "Bearer",
+                          In = ParameterLocation.Header,
+                        },
+                        new List<string>()
+                      }
+                    });
+});
 
 // repository
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
@@ -126,7 +165,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "IDBMS API V1");
+    });
 }
 
 app.UseHttpsRedirection();

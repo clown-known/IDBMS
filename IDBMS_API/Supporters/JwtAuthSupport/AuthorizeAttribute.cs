@@ -50,7 +50,7 @@ namespace API.Supporters.JwtAuthSupport
                                 case "participation":
                                     accept = _participationRepository.GetByProjectId(pid).Where(p => p.UserId == user.Id).FirstOrDefault() != null;
                                     break;
-                                case "project manager":
+                                case "projectmanager":
                                     accept = _participationRepository.GetByProjectId(pid).Where(p => p.UserId == user.Id
                                                             && p.Role == BusinessObject.Enums.ParticipationRole.ProjectManager).FirstOrDefault() != null;
                                     break;
@@ -58,7 +58,7 @@ namespace API.Supporters.JwtAuthSupport
                                     accept = _participationRepository.GetByProjectId(pid).Where(p => p.UserId == user.Id
                                                             && p.Role == BusinessObject.Enums.ParticipationRole.Architect).FirstOrDefault() != null;
                                     break;
-                                case "construction manager":
+                                case "constructionmanager":
                                     accept = _taskAssignmentRepository.GetByProjectId(pid).Where(p => p.ProjectParticipation.UserId == user.Id
                                                             && p.ProjectParticipation.Role == BusinessObject.Enums.ParticipationRole.ConstructionManager).FirstOrDefault() != null;
                                     break;
