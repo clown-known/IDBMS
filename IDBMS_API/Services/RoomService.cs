@@ -23,6 +23,8 @@ namespace IDBMS_API.Services
         private readonly IPaymentStageDesignRepository _stageDesignRepo;
         private readonly IFloorRepository _floorRepo;
         private readonly ITransactionRepository _transactionRepo;
+        private readonly ITaskDesignRepository _taskDesignRepo;
+        private readonly ITaskCategoryRepository _taskCategoryRepo;
 
         public RoomService(
             IRoomRepository roomRepo,
@@ -33,7 +35,9 @@ namespace IDBMS_API.Services
             IProjectDesignRepository projectDesignRepo,
             IPaymentStageDesignRepository stageDesignRepo,
             IFloorRepository floorRepo,
-            ITransactionRepository transactionRepo)
+            ITransactionRepository transactionRepo, 
+            ITaskDesignRepository taskDesignRepo, 
+            ITaskCategoryRepository taskCategoryRepo)
         {
             _roomRepo = roomRepo;
             _roomTypeRepo = roomTypeRepo;
@@ -44,6 +48,8 @@ namespace IDBMS_API.Services
             _stageDesignRepo = stageDesignRepo;
             _floorRepo = floorRepo;
             _transactionRepo = transactionRepo;
+            _taskDesignRepo = taskDesignRepo;
+            _taskCategoryRepo = taskCategoryRepo;
         }
 
         private IEnumerable<Room> Filter(IEnumerable<Room> list,
@@ -108,7 +114,7 @@ namespace IDBMS_API.Services
                 });
             }
 
-            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
             projectService.UpdateProjectDataByRoom(projectId, area);
 
         }
@@ -137,7 +143,7 @@ namespace IDBMS_API.Services
 
                 roomCreated = _roomRepo.Save(room);
 
-                ProjectTaskService taskService = new ProjectTaskService(_projectTaskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
+                ProjectTaskService taskService = new (_projectTaskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo, _taskCategoryRepo, _taskDesignRepo);
                 var task = new ProjectTaskRequest
                 {
                     CalculationUnit = BusinessObject.Enums.CalculationUnit.Meter,
@@ -148,7 +154,7 @@ namespace IDBMS_API.Services
                     RoomId = roomCreated.Id,
                     Status = ProjectTaskStatus.Pending,
                     EstimateBusinessDay = (int)Math.Ceiling(roomType.EstimateDayPerArea * roomCreated.Area),
-            };
+                };
 
                 if (request.Language == Language.English)
                 {
@@ -159,7 +165,7 @@ namespace IDBMS_API.Services
                     task.Name = "Thiết kế cho " + request.UsePurpose;
                 }
 
-                taskService.CreateProjectTask(task);
+                taskService.CreateTasksDecor(task);
             }
             else
             {
@@ -200,13 +206,18 @@ namespace IDBMS_API.Services
             room.UsePurpose = request.UsePurpose;
             room.Area = request.Area;
 
-            if (request.RoomTypeId != null)
+            if (request.RoomTypeId != null && request.RoomTypeId != room.RoomTypeId)
             {
                 room.RoomTypeId = request.RoomTypeId;
 
-                RoomTypeService rtService = new RoomTypeService(_roomTypeRepo);
-                var roomType = rtService.GetById((int)request.RoomTypeId);
+                RoomTypeService rtService = new (_roomTypeRepo);
+                var roomType = rtService.GetById(request.RoomTypeId.Value);
                 room.PricePerArea = roomType.PricePerArea;
+
+                var estimateBusinessDay = (int)Math.Ceiling(roomType.EstimateDayPerArea * room.Area);
+
+                ProjectTaskService taskService = new(_projectTaskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo, _taskCategoryRepo, _taskDesignRepo);
+                taskService.UpdateDecorTask(id, room.PricePerArea.Value, estimateBusinessDay);
             }
 
             _roomRepo.Update(room);

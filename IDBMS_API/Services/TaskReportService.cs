@@ -21,6 +21,8 @@ namespace IDBMS_API.Services
         private readonly IRoomRepository _roomRepo;
         private readonly IRoomTypeRepository _roomTypeRepo;
         private readonly ITransactionRepository _transactionRepo;
+        private readonly ITaskDesignRepository _taskDesignRepo;
+        private readonly ITaskCategoryRepository _taskCategoryRepo;
 
         public TaskReportService(
                 ITaskReportRepository taskReportRepo,
@@ -33,7 +35,9 @@ namespace IDBMS_API.Services
                 IFloorRepository floorRepo,
                 IRoomRepository roomRepo,
                 IRoomTypeRepository roomTypeRepo,
-                ITransactionRepository transactionRepo)
+                ITransactionRepository transactionRepo,
+                ITaskDesignRepository taskDesignRepo,
+                ITaskCategoryRepository taskCategoryRepo)
         {
             _taskReportRepo = taskReportRepo;
             _taskRepo = taskRepo;
@@ -46,6 +50,8 @@ namespace IDBMS_API.Services
             _roomRepo = roomRepo;
             _roomTypeRepo = roomTypeRepo;
             _transactionRepo = transactionRepo;
+            _taskDesignRepo = taskDesignRepo;
+            _taskCategoryRepo = taskCategoryRepo;
         }
 
         public IEnumerable<TaskReport> Filter(IEnumerable<TaskReport> list,
@@ -100,7 +106,7 @@ namespace IDBMS_API.Services
 
                 if (reportWithLargestUnitUsed != null)
                 {
-                    ProjectTaskService taskService = new(_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
+                    ProjectTaskService taskService = new(_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo, _taskCategoryRepo, _taskDesignRepo);
                     taskService.UpdateTaskProgress(taskId, reportWithLargestUnitUsed.UnitUsed);
                 }
             }

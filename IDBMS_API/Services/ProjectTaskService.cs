@@ -25,7 +25,8 @@ namespace IDBMS_API.Services
         private readonly IRoomRepository _roomRepo;
         private readonly IRoomTypeRepository _roomTypeRepo;
         private readonly ITransactionRepository _transactionRepo;
-        private readonly ITaskCategoryRepository _taskCategoryRepo = new TaskCategoryRepository();
+        private readonly ITaskCategoryRepository _taskCategoryRepo;
+        private readonly ITaskDesignRepository _taskDesignRepo;
 
         public ProjectTaskService(
                 IProjectTaskRepository taskRepo,
@@ -36,7 +37,9 @@ namespace IDBMS_API.Services
                 IFloorRepository floorRepo,
                 IRoomRepository roomRepo,
                 IRoomTypeRepository roomTypeRepo,
-                ITransactionRepository transactionRepo)
+                ITransactionRepository transactionRepo,
+                ITaskCategoryRepository taskCategoryRepo,
+                ITaskDesignRepository taskDesignRepo)
         {
             _taskRepo = taskRepo;
             _projectRepo = projectRepo;
@@ -47,6 +50,8 @@ namespace IDBMS_API.Services
             _roomRepo = roomRepo;
             _roomTypeRepo = roomTypeRepo;
             _transactionRepo = transactionRepo;
+            _taskCategoryRepo = taskCategoryRepo;
+            _taskDesignRepo = taskDesignRepo;
         }
 
         public IEnumerable<ProjectTask> Filter(IEnumerable<ProjectTask> list, 
@@ -89,40 +94,41 @@ namespace IDBMS_API.Services
 
             return filteredList;
         }
+        public bool CheckCodeExisted(string code)
+        {
+            return _taskRepo.CheckCodeExisted(code);
+        }
 
-        public string GenerateCode(int? id)
+        public string GenerateCode(int? categoryId)
         {
             string code = String.Empty;
-            Random random = new Random();
-            if (id == null)
-            {
-                code += "KPL_KPL_";
-            }
-            else
-            {
-                var category = _taskCategoryRepo.GetById((int)id) ?? throw new Exception("This object is not existed!");
-                var type = category.ProjectType;
+            Random random = new ();
 
-                if (type == ProjectType.Decor)
-                {
-                    code += "TK_";
-                }
-                if (type == ProjectType.Construction)
-                {
-                    code += "XD_";
-                }
+            for (int attempt = 0; attempt < 10; attempt++)
+            {
+                // Generate the code
+                code = GenerateSingleCode(categoryId, random);
 
-                var valid = category.Name.Contains(' ');
-                if (valid)
+                
+                bool codeExistsInTask = CheckCodeExisted(code);
+
+                TaskDesignService taskDesignService = new (_taskDesignRepo, _taskCategoryRepo);
+                bool codeExistsInTaskDesign = taskDesignService.CheckCodeExisted(code);
+
+                if (codeExistsInTask == false && codeExistsInTaskDesign == false)
                 {
-                    category.Name.Split(' ').ToList().ForEach(i => code += i[0].ToString().Unidecode().ToUpper());
-                    code += "_";
-                }
-                else
-                {
-                    code += category.Name.Substring(0, 2).Unidecode().ToUpper() + "_";
+                    return code;
                 }
             }
+
+            throw new Exception("Failed to generate a unique code after 10 attempts.");
+        }
+
+        public string GenerateSingleCode(int? categoryId, Random random)
+        {
+            string code = String.Empty;
+
+            code += "CVDT_"; // cong viec dac thu
 
             code += random.Next(100000, 999999);
 
@@ -235,19 +241,19 @@ namespace IDBMS_API.Services
                 }
             }
 
-            ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
+            ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
             projectService.UpdateProjectDataByTask(projectId, estimatePrice, finalPrice, estimateBusinessDay);
 
-            PaymentStageService stageService = new(_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
+            PaymentStageService stageService = new(_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
             stageService.UpdateStagesTotalContractPaid(projectId, estimatePrice);
         }
 
         public void UpdatePaymentStageData(Guid projectId)
         {
-            PaymentStageService stageService = new (_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
+            PaymentStageService stageService = new (_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
             var stagesByProjectId = stageService.GetByProjectId(projectId, null, null);
 
-            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
             var project = projectService.GetById(projectId);
 
             foreach (var stage in stagesByProjectId)
@@ -361,12 +367,9 @@ namespace IDBMS_API.Services
 
         public ProjectTask? CreateProjectTask(ProjectTaskRequest request)
         {
-            var generateCode = GenerateCode(request.TaskCategoryId);
-
             var ct = new ProjectTask
             {
                 Id = Guid.NewGuid(),
-                Code = generateCode,
                 Name = request.Name,
                 Description = request.Description,
                 CalculationUnit = request.CalculationUnit,
@@ -383,12 +386,72 @@ namespace IDBMS_API.Services
                 Status = request.Status,
                 EstimateBusinessDay = request.EstimateBusinessDay,
             };
+
+            if (request.TaskDesignId != null)
+            {
+                ct.TaskDesignId = request.TaskDesignId;
+
+                TaskDesignService taskDesignService = new (_taskDesignRepo, _taskCategoryRepo);
+                var taskDesign = taskDesignService.GetById(ct.TaskDesignId.Value);
+
+                ct.Code = taskDesign.Code;
+            }
+            else
+            {
+                var generateCode = GenerateCode(request.TaskCategoryId);
+
+                ct.Code = generateCode;
+            }
+
             var ctCreated = _taskRepo.Save(ct);
 
             UpdateProjectData(request.ProjectId);
             UpdatePaymentStageData(request.ProjectId);
 
             return ctCreated;
+        }
+
+        public void CreateTasksDecor(ProjectTaskRequest request)
+        {
+            var task = new ProjectTask
+            {
+                Id = Guid.NewGuid(),
+                Code = "DECOR",
+                Name = request.Name,
+                Description = request.Description,
+                CalculationUnit = request.CalculationUnit,
+                PricePerUnit = request.PricePerUnit,
+                UnitInContract = request.UnitInContract,
+                UnitUsed = 0,
+                IsIncurred = request.IsIncurred,
+                StartedDate = request.StartedDate,
+                EndDate = CalculateEndDate(request.StartedDate, request.EstimateBusinessDay),
+                CreatedDate = DateTime.Now,
+                ProjectId = request.ProjectId,
+                PaymentStageId = request.PaymentStageId,
+                RoomId = request.RoomId,
+                Status = request.Status,
+                EstimateBusinessDay = request.EstimateBusinessDay,
+            };
+
+            _taskRepo.Save(task);
+
+            UpdateProjectData(request.ProjectId);
+            UpdatePaymentStageData(request.ProjectId);
+        }
+
+        public void UpdateDecorTask(Guid roomId, decimal pricePerArea, int estimateBusinessDay)
+        {
+            var decorTask = _taskRepo.GetByRoomId(roomId).FirstOrDefault(t => t.Code != null && t.Code.Equals("DECOR"));
+
+            decorTask.PricePerUnit = pricePerArea;
+            decorTask.EstimateBusinessDay= estimateBusinessDay;
+            decorTask.EndDate = CalculateEndDate(decorTask.StartedDate, decorTask.EstimateBusinessDay);
+
+            _taskRepo.Update(decorTask);
+
+            UpdateProjectData(decorTask.ProjectId);
+            UpdatePaymentStageData(decorTask.ProjectId);
         }
 
         public void AssignTasksToStage(Guid paymentStageId, List<Guid> listTaskId, Guid projectId)
@@ -433,6 +496,7 @@ namespace IDBMS_API.Services
             ct.UnitInContract = request.UnitInContract;
             ct.IsIncurred = request.IsIncurred;
             ct.UpdatedDate= DateTime.Now;
+            ct.StartedDate= request.StartedDate;
             ct.EndDate = CalculateEndDate(request.StartedDate, request.EstimateBusinessDay);
             ct.ProjectId = request.ProjectId;
             ct.PaymentStageId = request.PaymentStageId;

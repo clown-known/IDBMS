@@ -20,17 +20,21 @@ namespace IDBMS_API.Services
         private readonly IFloorRepository _floorRepo;
         private readonly IRoomRepository _roomRepo;
         private readonly IRoomTypeRepository _roomTypeRepo;
+        private readonly ITaskDesignRepository _taskDesignRepo;
+        private readonly ITaskCategoryRepository _taskCategoryRepo;
 
         public TransactionService(
-                ITransactionRepository transactionRepo,
-                IPaymentStageRepository stageRepo,
-                IProjectRepository projectRepo,
-                IProjectDesignRepository projectDesignRepo,
-                IPaymentStageDesignRepository stageDesignRepo,
-                IProjectTaskRepository taskRepo,
-                IFloorRepository floorRepo,
-                IRoomRepository roomRepo,
-                IRoomTypeRepository roomTypeRepo)
+            ITransactionRepository transactionRepo,
+            IPaymentStageRepository stageRepo,
+            IProjectRepository projectRepo,
+            IProjectDesignRepository projectDesignRepo,
+            IPaymentStageDesignRepository stageDesignRepo,
+            IProjectTaskRepository taskRepo,
+            IFloorRepository floorRepo,
+            IRoomRepository roomRepo,
+            IRoomTypeRepository roomTypeRepo,
+            ITaskDesignRepository taskDesignRepo,
+            ITaskCategoryRepository taskCategoryRepo)
         {
             _transactionRepo = transactionRepo;
             _stageRepo = stageRepo;
@@ -41,6 +45,8 @@ namespace IDBMS_API.Services
             _floorRepo = floorRepo;
             _roomRepo = roomRepo;
             _roomTypeRepo = roomTypeRepo;
+            _taskDesignRepo = taskDesignRepo;
+            _taskCategoryRepo = taskCategoryRepo;
         }
 
         public IEnumerable<Transaction> Filter(IEnumerable<Transaction> list, 
@@ -190,10 +196,10 @@ namespace IDBMS_API.Services
 
             decimal totalPaid = listTransaction.Sum(transaction => transaction.Amount);
 
-            PaymentStageService stageService = new (_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo);
+            PaymentStageService stageService = new (_stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
             stageService.UpdateStagePaid(projectId, totalPaid);
 
-            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
             projectService.UpdateProjectAmountPaid(projectId, totalPaid);
         }
 

@@ -9,5 +9,6 @@ namespace Repository.Interfaces
 {
     public interface ITaskDesignRepository : ICrudBaseRepository<TaskDesign, int>
     {
+        bool CheckCodeExisted(string code);
     }
 }

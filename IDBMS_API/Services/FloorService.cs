@@ -20,6 +20,8 @@ namespace IDBMS_API.Services
         private readonly IPaymentStageDesignRepository _stageDesignRepo;
         private readonly IProjectRepository _projectRepo;
         private readonly ITransactionRepository _transactionRepo;
+        private readonly ITaskDesignRepository _taskDesignRepo;
+        private readonly ITaskCategoryRepository _taskCategoryRepo;
 
         public FloorService(
             IProjectRepository projectRepo,
@@ -30,7 +32,9 @@ namespace IDBMS_API.Services
             IProjectDesignRepository projectDesignRepo,
             IPaymentStageDesignRepository stageDesignRepo,
             IFloorRepository floorRepo,
-            ITransactionRepository transactionRepo)
+            ITransactionRepository transactionRepo,
+            ITaskDesignRepository taskDesignRepo,
+            ITaskCategoryRepository taskCategoryRepo)
         {
             _projectRepo = projectRepo;
             _roomRepo = roomRepo;
@@ -41,6 +45,8 @@ namespace IDBMS_API.Services
             _stageDesignRepo = stageDesignRepo;
             _floorRepo = floorRepo;
             _transactionRepo = transactionRepo;
+            _taskDesignRepo = taskDesignRepo;
+            _taskCategoryRepo = taskCategoryRepo;
         }
 
         private IEnumerable<Floor> Filter(IEnumerable<Floor> list,
@@ -113,7 +119,7 @@ namespace IDBMS_API.Services
                 };
                 var createdFloor = CreateFloor(floorRequest);
 
-                RoomService roomService = new RoomService(_roomRepo, _roomTypeRepo, _projectRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
+                RoomService roomService = new RoomService(_roomRepo, _roomTypeRepo, _projectRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
                 roomService.DuplicateRoomsByFloorId(createdFloor.Id, floor.Id, createdId);
             }
         }

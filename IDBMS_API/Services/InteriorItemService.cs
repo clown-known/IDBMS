@@ -13,12 +13,12 @@ namespace IDBMS_API.Services
 {
     public class InteriorItemService
     {
-        private readonly IInteriorItemRepository _repository;
-        private readonly IInteriorItemCategoryRepository _itemCategoryrepository;
-        public InteriorItemService(IInteriorItemRepository repository, IInteriorItemCategoryRepository itemCategoryrepository)
+        private readonly IInteriorItemRepository _itemRepo;
+        private readonly IInteriorItemCategoryRepository _itemCategoryRepo;
+        public InteriorItemService(IInteriorItemRepository itemRepo, IInteriorItemCategoryRepository itemCategoryRepo)
         {
-            _repository = repository;
-            _itemCategoryrepository = itemCategoryrepository;
+            _itemRepo = itemRepo;
+            _itemCategoryRepo = itemCategoryRepo;
         }
 
         private IEnumerable<InteriorItem> Filter(IEnumerable<InteriorItem> list,
@@ -50,18 +50,45 @@ namespace IDBMS_API.Services
 
             return filteredList;
         }
+        public bool CheckCodeExisted(string code)
+        {
+            return _itemRepo.CheckCodeExisted(code);
+        }
 
-        public string GenerateCode(int? id)
+        public string GenerateCode(int? categoryId)
         {
             string code = String.Empty;
-            Random random = new Random();
-            if (id == null)
+            Random random = new ();
+
+            for (int attempt = 0; attempt < 10; attempt++)
+            {
+                // Generate the code
+                code = GenerateSingleCode(categoryId, random);
+
+
+                bool codeExists = CheckCodeExisted(code);
+
+                if (codeExists == false)
+                {
+                    return code;
+                }
+            }
+
+            throw new Exception("Failed to generate a unique code after 10 attempts.");
+        }
+
+        public string GenerateSingleCode(int? categoryId, Random random)
+        {
+            string code = String.Empty;
+
+            if (categoryId == null)
             {
                 code += "KPL_KPL_";
             }
             else
             {
-                var category = _itemCategoryrepository.GetById((int)id) ?? throw new Exception("This object is not existed!");
+                InteriorItemCategoryService itemCategoryService = new(_itemCategoryRepo);
+                var category = itemCategoryService.GetById(categoryId.Value) ?? throw new Exception("This object is not existed!");
                 var type = category.InteriorItemType;
 
                 if (type == InteriorItemType.Furniture)
@@ -96,17 +123,17 @@ namespace IDBMS_API.Services
 
         public IEnumerable<InteriorItem> GetAll(int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? itemType)
         {
-            var list = _repository.GetAll();
+            var list = _itemRepo.GetAll();
 
             return Filter(list, itemCategoryId, status, codeOrName, itemType);
         }
         public InteriorItem? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _itemRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public IEnumerable<InteriorItem> GetByCategory(int id, int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? itemType)
         {
-            var list = _repository.GetByCategory(id) ?? throw new Exception("This object is not existed!");
+            var list = _itemRepo.GetByCategory(id) ?? throw new Exception("This object is not existed!");
 
             return Filter(list, itemCategoryId, status, codeOrName, itemType);
         }
@@ -149,12 +176,12 @@ namespace IDBMS_API.Services
                 ii.ImageUrl = link;
             }
 
-            var iiCreated = _repository.Save(ii);
+            var iiCreated = _itemRepo.Save(ii);
             return iiCreated;
         }
         public async void UpdateInteriorItem(Guid id, [FromForm] InteriorItemRequest request)
         {
-            var ii = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ii = _itemRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ii.Name = request.Name;
             ii.EnglishName = request.EnglishName;
@@ -180,25 +207,25 @@ namespace IDBMS_API.Services
                 ii.ImageUrl = link;
             }
 
-            _repository.Update(ii);
+            _itemRepo.Update(ii);
         }
 
         public void UpdateInteriorItemStatus(Guid id, InteriorItemStatus status)
         {
-            var ii = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ii = _itemRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ii.Status = status;
 
-            _repository.Update(ii);
+            _itemRepo.Update(ii);
         }
 
         public void DeleteInteriorItem(Guid id)
         {
-            var ii = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ii = _itemRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             ii.IsDeleted = true;
 
-            _repository.Update(ii);
+            _itemRepo.Update(ii);
         }
     }
 }

@@ -22,19 +22,23 @@ namespace IDBMS_API.Services
         private readonly IPaymentStageRepository _stageRepo;
         private readonly IProjectDesignRepository _projectDesignRepo;
         private readonly IPaymentStageDesignRepository _stageDesignRepo;
+        private readonly ITaskDesignRepository _taskDesignRepo;
+        private readonly ITaskCategoryRepository _taskCategoryRepo;
 
         public WarrantyClaimService(
-                IWarrantyClaimRepository warrantyRepo,
-                IProjectRepository projectRepo,
-                IProjectParticipationRepository projectParticipationRepo,
-                ITransactionRepository transactionRepo,
-                IFloorRepository floorRepo,
-                IRoomRepository roomRepo,
-                IRoomTypeRepository roomTypeRepo,
-                IProjectTaskRepository projectTaskRepo,
-                IPaymentStageRepository stageRepo,
-                IProjectDesignRepository projectDesignRepo,
-                IPaymentStageDesignRepository stageDesignRepo)
+            IWarrantyClaimRepository warrantyRepo,
+            IProjectRepository projectRepo,
+            IProjectParticipationRepository projectParticipationRepo,
+            ITransactionRepository transactionRepo,
+            IFloorRepository floorRepo,
+            IRoomRepository roomRepo,
+            IRoomTypeRepository roomTypeRepo,
+            IProjectTaskRepository projectTaskRepo,
+            IPaymentStageRepository stageRepo,
+            IProjectDesignRepository projectDesignRepo,
+            IPaymentStageDesignRepository stageDesignRepo,
+            ITaskDesignRepository taskDesignRepo,
+            ITaskCategoryRepository taskCategoryRepo)
         {
             _warrantyRepo = warrantyRepo;
             _projectRepo = projectRepo;
@@ -47,7 +51,10 @@ namespace IDBMS_API.Services
             _stageRepo = stageRepo;
             _projectDesignRepo = projectDesignRepo;
             _stageDesignRepo = stageDesignRepo;
+            _taskDesignRepo = taskDesignRepo;
+            _taskCategoryRepo = taskCategoryRepo;
         }
+
 
         public IEnumerable<WarrantyClaim> Filter(IEnumerable<WarrantyClaim> list,
             bool? isCompanyCover, string? name)
@@ -111,7 +118,7 @@ namespace IDBMS_API.Services
                 });
             }
 
-            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
+            ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
             projectService.UpdateProjectDataByWarrantyClaim(projectId, totalPaid);
 
         }
@@ -159,7 +166,7 @@ namespace IDBMS_API.Services
                     ProjectId = wcCreated.ProjectId,
                 };
 
-                TransactionService transactionService = new (_transactionRepo, _stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _projectTaskRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+                TransactionService transactionService = new (_transactionRepo, _stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _projectTaskRepo, _floorRepo, _roomRepo, _roomTypeRepo, _taskDesignRepo, _taskCategoryRepo);
                 transactionService.CreateTransactionByWarrantyClaim(wcCreated.Id, newTrans);
             }
 
@@ -202,7 +209,7 @@ namespace IDBMS_API.Services
                     ProjectId = wc.ProjectId,
                 };
 
-                TransactionService transactionService = new (_transactionRepo, _stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _projectTaskRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+                TransactionService transactionService = new (_transactionRepo, _stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _projectTaskRepo, _floorRepo, _roomRepo, _roomTypeRepo, _taskDesignRepo, _taskCategoryRepo);
                 transactionService.CreateTransactionByWarrantyClaim(wc.Id, newTrans);
 
             }
@@ -217,7 +224,7 @@ namespace IDBMS_API.Services
 
             _warrantyRepo.Update(wc);
 
-            TransactionService transactionService = new (_transactionRepo, _stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _projectTaskRepo, _floorRepo, _roomRepo, _roomTypeRepo);
+            TransactionService transactionService = new (_transactionRepo, _stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _projectTaskRepo, _floorRepo, _roomRepo, _roomTypeRepo, _taskDesignRepo, _taskCategoryRepo);
             transactionService.DeleteTransactionsByWarrantyId(id, projectId);
 
             UpdateProjectTotalWarrantyPaid(projectId);

@@ -14,5 +14,7 @@ namespace Repository.Interfaces
         IEnumerable<ProjectTask> GetByPaymentStageId(Guid id);
         IEnumerable<ProjectTask> GetOngoingTasksByUserId(Guid id);
         IEnumerable<ProjectTask> GetOngoingTasks();
+
+        bool CheckCodeExisted(string code);
     }
 }

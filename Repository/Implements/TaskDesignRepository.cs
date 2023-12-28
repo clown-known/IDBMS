@@ -42,6 +42,22 @@ namespace Repository.Implements
             }
         }
 
+        public bool CheckCodeExisted(string code)
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+
+                bool exists = context.TaskDesigns.Any(task => task.Code.ToLower() == code.ToLower());
+
+                return exists;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public TaskDesign Save(TaskDesign entity)
         {
             try

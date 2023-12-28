@@ -18,17 +18,21 @@ public class ProjectService
     private readonly IProjectDesignRepository _projectDesignRepo;
     private readonly IPaymentStageDesignRepository _stageDesignRepo;
     private readonly ITransactionRepository _transactionRepo;
+    private readonly ITaskDesignRepository _taskDesignRepo;
+    private readonly ITaskCategoryRepository _taskCategoryRepo;
 
     public ProjectService(
-            IProjectRepository projectRepo,
-            IRoomRepository roomRepo,
-            IRoomTypeRepository roomTypeRepo,
-            IProjectTaskRepository projectTaskRepo,
-            IPaymentStageRepository stageRepo,
-            IProjectDesignRepository projectDesignRepo,
-            IPaymentStageDesignRepository stageDesignRepo,
-            IFloorRepository floorRepo,
-            ITransactionRepository transactionRepo)
+        IProjectRepository projectRepo,
+        IRoomRepository roomRepo,
+        IRoomTypeRepository roomTypeRepo,
+        IProjectTaskRepository projectTaskRepo,
+        IPaymentStageRepository stageRepo,
+        IProjectDesignRepository projectDesignRepo,
+        IPaymentStageDesignRepository stageDesignRepo,
+        IFloorRepository floorRepo,
+        ITransactionRepository transactionRepo,
+        ITaskDesignRepository taskDesignRepo,
+        ITaskCategoryRepository taskCategoryRepo)
     {
         _projectRepo = projectRepo;
         _roomRepo = roomRepo;
@@ -39,7 +43,10 @@ public class ProjectService
         _stageDesignRepo = stageDesignRepo;
         _floorRepo = floorRepo;
         _transactionRepo = transactionRepo;
+        _taskDesignRepo = taskDesignRepo;
+        _taskCategoryRepo = taskCategoryRepo;
     }
+
 
     private IEnumerable<Project> Filter(IEnumerable<Project> list,
             ProjectType? type, ProjectStatus? status, string? name)
@@ -130,7 +137,7 @@ public class ProjectService
 
             var createdProject = _projectRepo.Save(newProject);
 
-            FloorService floorService = new (_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo);
+            FloorService floorService = new (_projectRepo, _roomRepo, _roomTypeRepo, _projectTaskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
             floorService.DuplicateFloorsByProjectId(createdProject.Id, request.BasedOnDecorProjectId.Value);
 
             return createdProject;
