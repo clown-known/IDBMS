@@ -75,7 +75,7 @@ namespace IDBMS_API.Controllers
             //return File(content, "application/octet-stream", "c4d07b71-c86d-45a9-9afd-076580bf82ea.jpg");
             return Ok();
         }
-
+        
 
         [HttpGet("admin")]
         [Authorize(Policy = "Admin")]

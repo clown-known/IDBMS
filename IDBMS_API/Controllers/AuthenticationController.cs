@@ -66,7 +66,7 @@ namespace API.Controllers
         {
             try
             {
-                var (token, user) = userService.LoginByGoogle(request.Email);
+                var (token, user) = userService.LoginByGoogle(request);
                 var response = new ResponseMessage();
                 if (token == null)
                 {
