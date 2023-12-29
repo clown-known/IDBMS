@@ -28,11 +28,10 @@ namespace IDBMS_API.DTOs.Request.AccountRequest
         [Required]
         public string Phone { get; set; } = default!;
 
-        [Required]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         [Required]
-        public Language Language { get; set; } = default!;
+        public Language Language { get; set; }
 
         [Required]
         public CompanyRole Role { get; set; }

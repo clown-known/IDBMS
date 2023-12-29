@@ -36,14 +36,13 @@ public class User
 
     [Required]
     public DateTime CreatedDate { get; set; }
-    [Required]
-    public DateTime DateOfBirth { get; set; }
+    public DateTime? DateOfBirth { get; set; }
 
     [Required]
     public DateTime UpdatedDate { get; set; }
 
     [Required]
-    public Language Language { get; set; } = default!;
+    public Language Language { get; set; }
 
     [Required]
     public CompanyRole Role { get; set; }

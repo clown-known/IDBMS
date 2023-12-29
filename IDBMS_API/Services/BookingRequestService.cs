@@ -11,6 +11,7 @@ using UnidecodeSharpFork;
 using Azure.Core;
 using API.Services;
 using API.Supporters.JwtAuthSupport;
+using IDBMS_API.DTOs.Request.AccountRequest;
 
 namespace IDBMS_API.Services
 {
@@ -60,12 +61,6 @@ namespace IDBMS_API.Services
             UserService userService = new (_userRepo, jwtTokenSupporter);
             var user = userService.GetByEmail(request.ContactEmail);
 
-            if (user == null)
-            {
-
-            }
-            var pendingRequest = user.BookingRequests.Any(request => request.Status == BookingRequestStatus.Pending);
-            
             var br = new BookingRequest
             {
                 Id = Guid.NewGuid(),
@@ -77,16 +72,44 @@ namespace IDBMS_API.Services
                 Status = BookingRequestStatus.Pending,
                 IsDeleted = false,
                 CreatedDate= DateTime.Now,
-                AdminReply = request.AdminReply,
             };
 
-            if (user!= null)
+            if (user == null)
             {
-                br.UserId= user.Id;
+                var newUser = new CreateUserRequest
+                {
+                    Name = request.ContactName,
+                    Address = request.ContactLocation,
+                    Email= request.ContactEmail,
+                    Phone= request.ContactPhone,
+                    Language = request.Language,
+                    Role = CompanyRole.Customer,
+                };
+
+                var createdUser = userService.GenerateUser(newUser);
+
+                br.UserId = createdUser.Id;
+
+                var bookingRequestCreated = _bookingRequestRepo.Save(br);
+                return bookingRequestCreated;
+            }
+            else
+            {
+                var pendingRequest = user.BookingRequests.Any(request => request.Status == BookingRequestStatus.Pending);
+
+                if (pendingRequest == false && user.Status == UserStatus.Active)
+                {
+                    br.UserId = user.Id;
+                    var bookingRequestCreated = _bookingRequestRepo.Save(br);
+                    return bookingRequestCreated;
+                }
+                else
+                {
+                    throw new Exception("This user cannot create booking request at the moment!");
+                }
             }
 
-            var BookingRequestCreated = _bookingRequestRepo.Save(br);
-            return BookingRequestCreated;
+            return null;
         }
         public void UpdateBookingRequest(Guid id, [FromForm] BookingRequestRequest request)
         {
@@ -98,7 +121,6 @@ namespace IDBMS_API.Services
             br.ContactLocation = request.ContactLocation;
             br.Note = request.Note;
             br.UpdatedDate= DateTime.Now;
-            br.AdminReply = request.AdminReply;
 
             _bookingRequestRepo.Update(br);
         }

@@ -91,7 +91,7 @@ namespace IDBMS_API.Services
                     Address = site.Address,
                     CustomerName = owner.Name,
                     Phone = site.ContactPhone,
-                    DateOfBirth = owner.DateOfBirth,
+                    DateOfBirth = owner.DateOfBirth.Value,
                     Email = owner.Email,
                     BCompanyPhone = doc.CompanyPhone,
                     BCompanyAddress = doc.CompanyAddress,

@@ -14,6 +14,7 @@ using System.Numerics;
 using System.Text.RegularExpressions;
 using BusinessObject.Enums;
 using UnidecodeSharpFork;
+using System.Security.Cryptography;
 
 namespace API.Services
 {
@@ -134,7 +135,54 @@ namespace API.Services
             var userCreated = _repository.Save(user);
             return userCreated;
         }
-        
+
+        public static string GenerateRandomPassword(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-=_+";
+
+            using RandomNumberGenerator rng = RandomNumberGenerator.Create();
+
+            byte[] data = new byte[length];
+            rng.GetBytes(data);
+
+            // Convert bytes to characters
+            char[] password = new char[length];
+            for (int i = 0; i < length; i++)
+            {
+                password[i] = chars[data[i] % chars.Length];
+            }
+
+            return new string(password);
+        }
+
+        public User? GenerateUser(CreateUserRequest request)
+        {
+            if (_repository.GetByEmail(request.Email) != null) 
+                return null;
+
+            PasswordUtils.CreatePasswordHash(GenerateRandomPassword(8), out byte[] passwordHash, out byte[] passwordSalt);
+
+            var user = new User()
+            {
+                Address = request.Address,
+                CreatedDate = DateTime.UtcNow,
+                Language = request.Language,
+                Id = Guid.NewGuid(),
+                Email = request.Email,
+                Name = request.Name,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Phone = request.Phone,
+                Role = request.Role,
+            };
+
+            var userCreated = _repository.Save(user);
+
+            //noti user by email
+
+            return userCreated;
+        }
+
         private void TryValidateRegisterRequest(CreateUserRequest request)
         {
             if (new Regex(RegexCollector.PhoneRegex).IsMatch(request.Phone) == false)
