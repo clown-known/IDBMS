@@ -79,7 +79,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
-        public IActionResult CreateDocumentTemplate(ProjectDocumentTemplateRequest request)
+        public IActionResult CreateDocumentTemplate([FromBody] ProjectDocumentTemplateRequest request)
         {
             try
             {

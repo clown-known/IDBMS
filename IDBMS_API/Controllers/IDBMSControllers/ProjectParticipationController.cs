@@ -193,7 +193,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult UpdateParticipation(Guid id, [FromBody] ProjectParticipationRequest request)
+        public IActionResult UpdateParticipation(Guid projectId, Guid id, [FromBody] ProjectParticipationRequest request)
         {
             try
             {
@@ -216,7 +216,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult DeleteParticipation(Guid id)
+        public IActionResult DeleteParticipation(Guid projectId, Guid id)
         {
             try
             {

@@ -86,7 +86,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost("{projectId}/images")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public async Task<IActionResult> CreateCompletionImage([FromForm][FromBody] List<AdvertisementImageRequest> request)
+        public async Task<IActionResult> CreateCompletionImage(Guid projectId, [FromForm][FromBody] List<AdvertisementImageRequest> request)
         {
             try
             {
