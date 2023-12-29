@@ -57,11 +57,17 @@ namespace API.Services
         {
             return _repository.GetById(id);
         }
+
         public IEnumerable<User> GetAll(string? searchParam, CompanyRole? role, UserStatus? status)
         {
             var list = _repository.GetAll();    
 
             return Filter(list, searchParam, role, status);
+        }
+
+        public User? GetByEmail(string email)
+        {
+            return _repository.GetByEmail(email);
         }
 
         public (string? token, User? user) Login(string email, string password)
@@ -84,14 +90,15 @@ namespace API.Services
             return (null, null);
         }
 
-        public (string? token, User? user) LoginByGoogle(string email)
+        public (string? token, User? user) LoginByGoogle(LoginByGoogleRequest request)
         {
-            var user = _repository.GetByEmail(email);
-            if (user != null)
+            var user = _repository.GetByEmail(request.Email);
+
+            if (user != null && user.Status == UserStatus.Active && user.ExternalId == request.GoogleToken)
             {
                 var token = jwtTokenSupporter.CreateToken(user);
                 UpdateTokenForUser(user, token);
-               return (token, user);
+                return (token, user);
             }
             return (null, null);
         }

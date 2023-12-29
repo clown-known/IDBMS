@@ -21,8 +21,5 @@ namespace IDBMS_API.DTOs.Request
         public string? Note { get; set; } = default!;
 
         public string? AdminReply { get; set; } = default!;
-
-        [Required]
-        public Guid UserId { get; set; }
     }
 }

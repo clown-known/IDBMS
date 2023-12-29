@@ -8,15 +8,23 @@ using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using UnidecodeSharpFork;
+using Azure.Core;
+using API.Services;
+using API.Supporters.JwtAuthSupport;
 
 namespace IDBMS_API.Services
 {
     public class BookingRequestService
     {
-        private readonly IBookingRequestRepository _repository;
-        public BookingRequestService(IBookingRequestRepository _repository)
+        private readonly IBookingRequestRepository _bookingRequestRepo;
+        private readonly IUserRepository _userRepo;
+        private readonly JwtTokenSupporter jwtTokenSupporter;
+
+        public BookingRequestService(IBookingRequestRepository bookingRequestRepo, IUserRepository userRepo, JwtTokenSupporter jwtTokenSupporter)
         {
-            this._repository = _repository;
+            _bookingRequestRepo = bookingRequestRepo;
+            _userRepo = userRepo;
+            this.jwtTokenSupporter= jwtTokenSupporter;
         }
 
         public IEnumerable<BookingRequest> Filter(IEnumerable<BookingRequest> list,
@@ -39,78 +47,91 @@ namespace IDBMS_API.Services
 
         public BookingRequest? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _bookingRequestRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
         public IEnumerable<BookingRequest> GetAll(BookingRequestStatus? status, string? contactName)
         {
-            var list = _repository.GetAll();
+            var list = _bookingRequestRepo.GetAll();
 
             return Filter(list, status, contactName);
         }
-        public BookingRequest? CreateBookingRequest([FromForm] BookingRequestRequest BookingRequest)
+        public BookingRequest? CreateBookingRequest([FromForm] BookingRequestRequest request)
         {
+            UserService userService = new (_userRepo, jwtTokenSupporter);
+            var user = userService.GetByEmail(request.ContactEmail);
+
+            if (user == null)
+            {
+
+            }
+            var pendingRequest = user.BookingRequests.Any(request => request.Status == BookingRequestStatus.Pending);
+            
             var br = new BookingRequest
             {
                 Id = Guid.NewGuid(),
-                ContactName= BookingRequest.ContactName,
-                ContactEmail = BookingRequest.ContactEmail,
-                ContactPhone = BookingRequest.ContactPhone,
-                ContactLocation = BookingRequest.ContactLocation,
-                Note = BookingRequest.Note,
-                UserId = BookingRequest.UserId,
+                ContactName= request.ContactName,
+                ContactEmail = request.ContactEmail,
+                ContactPhone = request.ContactPhone,
+                ContactLocation = request.ContactLocation,
+                Note = request.Note,
                 Status = BookingRequestStatus.Pending,
                 IsDeleted = false,
                 CreatedDate= DateTime.Now,
-                AdminReply = BookingRequest.AdminReply,
+                AdminReply = request.AdminReply,
             };
 
-            var BookingRequestCreated = _repository.Save(br);
+            if (user!= null)
+            {
+                br.UserId= user.Id;
+            }
+
+            var BookingRequestCreated = _bookingRequestRepo.Save(br);
             return BookingRequestCreated;
         }
-        public void UpdateBookingRequest(Guid id, [FromForm] BookingRequestRequest BookingRequest)
+        public void UpdateBookingRequest(Guid id, [FromForm] BookingRequestRequest request)
         {
-            var br = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
-            br.ContactName = BookingRequest.ContactName;
-            br.ContactEmail = BookingRequest.ContactEmail;
-            br.ContactPhone = BookingRequest.ContactPhone;
-            br.ContactLocation = BookingRequest.ContactLocation;
-            br.Note = BookingRequest.Note;
+            br.ContactName = request.ContactName;
+            br.ContactEmail = request.ContactEmail;
+            br.ContactPhone = request.ContactPhone;
+            br.ContactLocation = request.ContactLocation;
+            br.Note = request.Note;
             br.UpdatedDate= DateTime.Now;
-            br.AdminReply = BookingRequest.AdminReply;
+            br.AdminReply = request.AdminReply;
 
-            _repository.Update(br);
+            _bookingRequestRepo.Update(br);
         }
 
         public void UpdateBookingRequestStatus(Guid id, BookingRequestStatus status)
         {
-            var br = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             br.Status = status;
             br.UpdatedDate = DateTime.Now;
 
-            _repository.Update(br);
+            _bookingRequestRepo.Update(br);
         }
 
         public void ProcessBookingRequest(Guid id, BookingRequestStatus status, string adminReply)
         {
-            var br = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             br.UpdatedDate = DateTime.Now;
             br.AdminReply = adminReply;
             br.Status = status;
 
-            _repository.Update(br);
+            _bookingRequestRepo.Update(br);
         }
 
         public void DeleteBookingRequest(Guid id)
         {
-            var br = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
             br.IsDeleted = true;
             br.UpdatedDate = DateTime.Now;
 
-            _repository.Update(br);
+            _bookingRequestRepo.Update(br);
         }
     }
 }

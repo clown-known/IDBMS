@@ -105,7 +105,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //admin, owner
         [EnableQuery]
         [HttpGet("project/{id}")]
-        public IActionResult GetTransactionsByProjectId(Guid id, string? payerName, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
+        public IActionResult GetTransactionsByProjectId(Guid id, Guid projectId, string? payerName, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
             try
             {
