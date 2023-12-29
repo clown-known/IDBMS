@@ -1,4 +1,5 @@
-﻿using Azure;
+﻿using API.Supporters.JwtAuthSupport;
+using Azure;
 using Azure.Core;
 using BusinessObject.Enums;
 using BusinessObject.Models;
@@ -31,6 +32,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetParticipations(ParticipationRole? role, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -57,6 +59,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("user/{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetParticipationsByUserId(Guid id, ParticipationRole? role, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -83,6 +86,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("project/{projectId}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetParticipationsByProjectId(Guid projectId, ParticipationRole? role, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -114,6 +118,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("project/{projectId}/users")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetUsersByParticipationInProject(Guid projectId)
         {
             try
@@ -139,6 +144,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult CreateParticipation([FromBody] ProjectParticipationRequest request)
         {
             try
@@ -162,6 +168,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost("employees")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult CreateParticipationsByRole([FromBody] CreateParticipationListRequest request)
         {
             try
@@ -185,7 +192,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateParticipation(Guid projectId, Guid id, [FromBody] ProjectParticipationRequest request)
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        public IActionResult UpdateParticipation(Guid id, [FromBody] ProjectParticipationRequest request)
         {
             try
             {
@@ -207,7 +215,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteParticipation(Guid projectId, Guid id)
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        public IActionResult DeleteParticipation(Guid id)
         {
             try
             {

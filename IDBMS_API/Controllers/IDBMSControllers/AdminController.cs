@@ -11,6 +11,7 @@ using DocumentFormat.OpenXml.Office2016.Excel;
 using DocumentFormat.OpenXml.Wordprocessing;
 using IDBMS_API.Services.PaginationService;
 using BusinessObject.Enums;
+using API.Supporters.JwtAuthSupport;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -29,6 +30,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin")]
         public IActionResult GetAdmins(string? searchValue, AdminStatus? status, int? pageSize, int? pageNo)
         {
             try
@@ -55,6 +57,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin")]
         public IActionResult GetAdminById(Guid id)
         {
             try
@@ -78,6 +81,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("username")]
+        [Authorize(Policy = "Admin")]
         public IActionResult CheckUsernameExist(string username)
         {
             try
@@ -101,6 +105,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin")]
         public IActionResult CreateAdmin([FromBody] AdminRequest request)
         {
             try
@@ -123,6 +128,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin")]
         public IActionResult UpdateAdmin(Guid id, [FromBody] AdminRequest request)
         {
             try
@@ -144,6 +150,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin")]
         public IActionResult DeleteAdmin(Guid id)
         {
             try

@@ -13,6 +13,7 @@ using IDBMS_API.Services.PaginationService;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Threading.Tasks;
+using API.Supporters.JwtAuthSupport;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -31,6 +32,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetProjects(int? pageSize, int? pageNo, ProjectType? type, ProjectStatus? status, string? name)
         {
             try
@@ -57,6 +59,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetProjectById(Guid id)
         {
             try
@@ -81,6 +84,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("site/{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetProjectsBySiteId(Guid id, int? pageSize, int? pageNo, ProjectType? type, ProjectStatus? status, string? name)
         {
             try
@@ -106,6 +110,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation")]
         public IActionResult BookProject([FromBody] ProjectRequest request)
         {
             try
@@ -129,6 +134,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult UpdateProject(Guid id, [FromBody] ProjectRequest request)
         {
             try
@@ -151,6 +157,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/status")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult UpdateProjectStatus(Guid id, ProjectStatus status)
         {
             try

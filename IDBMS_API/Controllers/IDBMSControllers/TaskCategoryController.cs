@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using API.Supporters.JwtAuthSupport;
+using Azure.Core;
 using BusinessObject.Enums;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
@@ -80,6 +81,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation")]
         public async Task<IActionResult> CreateTaskCategory([FromForm][FromBody] TaskCategoryRequest request)
         {
             try
@@ -103,6 +105,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin, Participation")]
         public IActionResult UpdateTaskCategory(int id, [FromForm][FromBody] TaskCategoryRequest request)
         {
             try
@@ -125,6 +128,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin, Participation")]
         public IActionResult UpdateTaskCategoryStatus(int id)
         {
             try

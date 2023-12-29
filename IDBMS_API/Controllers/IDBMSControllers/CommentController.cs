@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using BusinessObject.Models;
 using IDBMS_API.Services.PaginationService;
+using API.Supporters.JwtAuthSupport;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -27,6 +28,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner, Viewer")]
         public IActionResult GetComments(int? pageSize, int? pageNo)
         {
             try
@@ -53,6 +55,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //permission
         [EnableQuery]
         [HttpGet("project-task/{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner, Viewer")]
         public IActionResult GetCommentsProjectTaskId(Guid id, CommentType? type, CommentStatus? status, string? content, int? pageSize, int? pageNo)
         {
             var list = _service.GetByProjectTaskId(id, type, status, content);
@@ -78,9 +81,10 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //permission
         [EnableQuery]
         [HttpGet("project/{id}")]
-        public IActionResult GetCommentsProjectId(Guid id, CommentType? type, CommentStatus? status, string? content, int? pageSize, int? pageNo)
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner, Viewer")]
+        public IActionResult GetCommentsProjectId(Guid projectId, CommentType? type, CommentStatus? status, string? content, int? pageSize, int? pageNo)
         {
-            var list = _service.GetByProjectId(id, type, status, content);
+            var list = _service.GetByProjectId(projectId, type, status, content);
             try
             {
                 var response = new ResponseMessage()
@@ -103,6 +107,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner")]
         public IActionResult GetCommentById(Guid id)
         {
             try
@@ -126,6 +131,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner")]
         public async Task<IActionResult> CreateComment([FromForm][FromBody] CommentRequest request)
         {
             try
@@ -149,6 +155,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner")]
         public IActionResult UpdateComment(Guid id, [FromForm][FromBody] CommentRequest request)
         {
             try
@@ -171,6 +178,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/status")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner")]
         public IActionResult UpdateCommentStatus(Guid id, CommentStatus status)
         {
             try
@@ -193,6 +201,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner")]
         public IActionResult DeleteComment(Guid id)
         {
             try

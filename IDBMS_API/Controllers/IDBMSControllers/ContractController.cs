@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using API.Supporters.JwtAuthSupport;
+using BusinessObject.Models;
 using DocumentFormat.OpenXml.Wordprocessing;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
@@ -19,6 +20,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             this.contractService = contractService;
         }
         [HttpGet("{projectId}/download")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Owner")]
         public async Task<IActionResult> Index(Guid projectid)
         {
             try
@@ -44,6 +46,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost("company")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> GenContractForCompany(ContractRequest request)
         {
             try
@@ -70,6 +73,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpGet("{projectId}/company")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Owner")]
         public async Task<IActionResult> GetDataForCompany(Guid projectId)
         {
             try
@@ -94,6 +98,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost("individual")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> GenContractForCustomer(ContractForCustomerRequest request)
         {
             try
@@ -120,6 +125,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpGet("{projectId}/individual")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Owner")]
         public async Task<IActionResult> GetDataForCustomer(Guid projectId)
         {
             try
@@ -144,6 +150,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost("{projectId}/upload")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Owner")]
         public async Task<IActionResult> UploadContract(Guid projectId, [FromForm]IFormFile file)
         {
             try

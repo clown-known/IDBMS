@@ -1,4 +1,5 @@
 ﻿using API.Services;
+using API.Supporters.JwtAuthSupport;
 using BusinessObject.Enums;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
@@ -30,6 +31,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin, Participation")]
         public IActionResult GetUsers(string? searchParam, CompanyRole? role, UserStatus? status, int? pageSize, int? pageNo)
         {
             try
@@ -79,6 +81,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin")]
         public IActionResult CreateUser([FromBody] CreateUserRequest request)
         {
             try
@@ -146,6 +149,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/role")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult UpdateUserRole(Guid id, CompanyRole role)
         {
             try

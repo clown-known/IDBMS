@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using API.Supporters.JwtAuthSupport;
+using BusinessObject.Models;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using IDBMS_API.DTOs.Request;
@@ -27,6 +28,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
         public IActionResult GetWarrantyClaims(bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -53,6 +55,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("user/{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
         public IActionResult GetWarrantyClaimsByUserId(Guid id, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -78,11 +81,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         [EnableQuery]
         [HttpGet("project/{id}")]
-        public IActionResult GetWarrantyClaimsByProjectId(Guid id, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
+        public IActionResult GetWarrantyClaimsByProjectId(Guid projectId, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetByProjectId(id, isCompanyCover, name);
+                var list = _service.GetByProjectId(projectId, isCompanyCover, name);
 
                 var response = new ResponseMessage()
                 {
@@ -104,6 +108,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
         public IActionResult GetWarrantyClaimById(Guid id)
         {
             try
@@ -127,6 +132,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation")]
         public async Task<IActionResult> CreateWarrantyClaim([FromForm][FromBody] WarrantyClaimRequest request)
         {
                 try
@@ -150,6 +156,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult UpdateWarrantyClaim(Guid id, [FromForm][FromBody] WarrantyClaimRequest request)
         {
             try
@@ -172,6 +179,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult DeleteWarrantyClaim(Guid id, Guid projectId)
         {
             try
