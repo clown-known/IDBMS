@@ -20,14 +20,9 @@ namespace IDBMS_API.Services
         }
 
         public IEnumerable<BookingRequest> Filter(IEnumerable<BookingRequest> list,
-           ProjectType? type, BookingRequestStatus? status, string? contactName)
+           BookingRequestStatus? status, string? contactName)
         {
             IEnumerable<BookingRequest> filteredList = list;
-
-            if (type != null)
-            {
-                filteredList = filteredList.Where(item => item.ProjectType == type);
-            }
 
             if (status != null)
             {
@@ -46,18 +41,17 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public IEnumerable<BookingRequest> GetAll(ProjectType? type, BookingRequestStatus? status, string? contactName)
+        public IEnumerable<BookingRequest> GetAll(BookingRequestStatus? status, string? contactName)
         {
             var list = _repository.GetAll();
 
-            return Filter(list, type, status, contactName);
+            return Filter(list, status, contactName);
         }
         public BookingRequest? CreateBookingRequest([FromForm] BookingRequestRequest BookingRequest)
         {
             var br = new BookingRequest
             {
                 Id = Guid.NewGuid(),
-                ProjectType = BookingRequest.ProjectType,
                 ContactName= BookingRequest.ContactName,
                 ContactEmail = BookingRequest.ContactEmail,
                 ContactPhone = BookingRequest.ContactPhone,
@@ -77,7 +71,6 @@ namespace IDBMS_API.Services
         {
             var br = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
-            br.ProjectType = BookingRequest.ProjectType;
             br.ContactName = BookingRequest.ContactName;
             br.ContactEmail = BookingRequest.ContactEmail;
             br.ContactPhone = BookingRequest.ContactPhone;

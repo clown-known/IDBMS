@@ -28,11 +28,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetBookingRequests(ProjectType? type, BookingRequestStatus? status, string? contactName, int? pageSize, int? pageNo)
+        public IActionResult GetBookingRequests(BookingRequestStatus? status, string? contactName, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetAll(type, status, contactName);
+                var list = _service.GetAll(status, contactName);
 
                 var response = new ResponseMessage()
                 {

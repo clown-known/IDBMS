@@ -14,9 +14,6 @@ namespace BusinessObject.Models
         public Guid Id { get; set; }
 
         [Required]
-        public ProjectType ProjectType { get; set; }
-
-        [Required]
         public string ContactName { get; set; } = default!;
 
         [Required]

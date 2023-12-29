@@ -69,10 +69,6 @@ public class IdtDbContext : DbContext
             .Property(bookingRequest => bookingRequest.Status)
             .HasConversion<int>();
 
-        modelBuilder.Entity<BookingRequest>()
-            .Property(bookingRequest => bookingRequest.ProjectType)
-            .HasConversion<int>();
-
         modelBuilder.Entity<AuthenticationCode>()
             .Property(authenticationCode => authenticationCode.Status)
             .HasConversion<int>();

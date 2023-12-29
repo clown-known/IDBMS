@@ -7,9 +7,6 @@ namespace IDBMS_API.DTOs.Request
     public class BookingRequestRequest
     {
         [Required]
-        public ProjectType ProjectType { get; set; }
-
-        [Required]
         public string ContactName { get; set; } = default!;
 
         [Required]
