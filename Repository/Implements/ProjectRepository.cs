@@ -19,6 +19,7 @@ namespace Repository.Implements
                     .Include(p => p.Transactions.Where(t => t.IsDeleted == false))
                     .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
                     .Include(p => p.ProjectDocuments.Where(pd => pd.IsDeleted == false))
+                    .Include(p => p.Site)
                     .OrderByDescending(time => time.CreatedDate)
                     .ToList();
             }
@@ -39,6 +40,7 @@ namespace Repository.Implements
                         .ThenInclude(u => u.User)
                     .Include(p => p.Transactions.Where(t => t.IsDeleted == false))
                     .Include(p => p.ProjectDocuments.Where(pd => pd.IsDeleted == false))
+                    .Include(p => p.Site)
                     .FirstOrDefault(project => project.Id == id);
             }
             catch
@@ -94,6 +96,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Projects
                     .Include(pc => pc.ProjectCategory)
+                    .Include(p => p.Site)
                     .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
                         .ThenInclude(u => u.User)
                     .OrderByDescending(time => time.UpdatedDate ?? time.CreatedDate)
@@ -113,6 +116,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Projects
                     .Include(pc => pc.ProjectCategory)
+                    .Include(p => p.Site)
                     .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
                         .ThenInclude(u => u.User)
                     .OrderByDescending(time => time.UpdatedDate ?? time.CreatedDate)
@@ -133,6 +137,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Projects
                     .Include(pc => pc.ProjectCategory)
+                    .Include(p => p.Site)
                     .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
                         .ThenInclude(u => u.User)
                     .OrderByDescending(time => time.UpdatedDate ?? time.CreatedDate)
@@ -155,6 +160,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Projects
                     .Include(pc => pc.ProjectCategory)
+                    .Include(p => p.Site)
                     .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
                         .ThenInclude(u => u.User)
                     .OrderByDescending(time => time.UpdatedDate ?? time.CreatedDate)
@@ -180,6 +186,7 @@ namespace Repository.Implements
                     .Include(p => p.Transactions.Where(t => t.IsDeleted == false))
                     .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
                     .Include(p => p.ProjectDocuments.Where(pd => pd.IsDeleted == false))
+                    .Include(p => p.Site)
                     .OrderByDescending(time => time.CreatedDate)
                     .Where(p => p.SiteId == id).ToList();
             }
