@@ -15,6 +15,7 @@ public class Project
     public string? Description { get; set; }
 
     public string? AdvertisementDescription { get; set; }
+    public string? EnglishAdvertisementDescription { get; set; }
 
     public string? RepresentImageUrl { get; set; }
 

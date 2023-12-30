@@ -58,11 +58,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("{projectId}/documents")]
         public IActionResult GetDocumentsByProjectId(Guid projectId, int? pageSize, int? pageNo,
-            bool? isPublicAdvertisement, string? documentName, ProjectDocumentCategory? category)
+            bool? isPublicAdvertisement)
         {
             try
             {
-                var list = _service.GetDocumentsByProjectId(projectId, isPublicAdvertisement, documentName, category);
+                var list = _service.GetImagesByProjectId(projectId, isPublicAdvertisement);
 
                 var response = new ResponseMessage()
                 {
@@ -162,7 +162,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                _service.UpdatePublicDocument(documentId, isPublicAdvertisement);
+                _service.UpdatePublicImage(documentId, isPublicAdvertisement);
 
                 var response = new ResponseMessage()
                 {
@@ -187,7 +187,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                _service.UpdateAdvertisementDescription(projectId, request);
+                _service.UpdateRepresentImage(projectId, request);
 
                 var response = new ResponseMessage()
                 {

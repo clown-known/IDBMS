@@ -5,11 +5,6 @@ namespace IDBMS_API.DTOs.Request
 {
     public class AdvertisementImageRequest
     {
-        [Required]
-        public string Name { get; set; } = default!;
-
-        public string? Description { get; set; }
-
         public IFormFile? file { get; set; } = default!;
 
         [Required]
