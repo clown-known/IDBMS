@@ -63,7 +63,6 @@ namespace IDBMS_API.Services
                 Id = Guid.NewGuid(),
                 Name = request.Name,
                 Description = request.Description,
-                EnglishDescription= request.EnglishDescription,
                 CreatedDate = DateTime.Now,
                 Category = request.Category,
                 ProjectId = request.ProjectId,
@@ -98,7 +97,6 @@ namespace IDBMS_API.Services
 
             pd.Name = request.Name;
             pd.Description = request.Description;
-            pd.EnglishDescription = request.EnglishDescription;
             pd.CreatedDate = DateTime.Now;
             pd.Category = request.Category;
             pd.ProjectDocumentTemplateId = request.ProjectDocumentTemplateId;

@@ -16,8 +16,6 @@ namespace IDBMS_API.DTOs.Request
 
         public string? Description { get; set; }
 
-        public string? EnglishDescription { get; set; }
-
         public IFormFile? file { get; set; } = default!;
 
         [Required]

@@ -12,8 +12,6 @@ public class ProjectDocument
     public string Name { get; set; } = default!;
 
     public string? Description { get; set; }
-    public string? EnglishDescription { get; set; }
-
     public string? Url { get; set; } = default!;
 
     [Required]

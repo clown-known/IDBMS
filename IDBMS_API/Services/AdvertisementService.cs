@@ -45,24 +45,14 @@ namespace IDBMS_API.Services
             return filteredList;
         }
 
-        private IEnumerable<ProjectDocument> FilterDocument(IEnumerable<ProjectDocument> list,
-        ProjectDocumentCategory? category, bool? isPublicAdvertisement, string? name)
+        private IEnumerable<ProjectDocument> FilterImage(IEnumerable<ProjectDocument> list,
+        bool? isPublicAdvertisement)
         {
             IEnumerable<ProjectDocument> filteredList = list;
-
-            if (category != null)
-            {
-                filteredList = filteredList.Where(item => item.Category == category);
-            }
 
             if (isPublicAdvertisement != null)
             {
                 filteredList = filteredList.Where(item => item.IsPublicAdvertisement == isPublicAdvertisement);
-            }
-
-            if (name != null)
-            {
-                filteredList = filteredList.Where(item => (item.Name != null && item.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
             }
 
             return filteredList;
@@ -75,11 +65,11 @@ namespace IDBMS_API.Services
             return FilterProject(list, type, status, name);
         }
         
-        public IEnumerable<ProjectDocument> GetDocumentsByProjectId(Guid projectId, bool? isPublicAdvertisement, string? name, ProjectDocumentCategory? category)
+        public IEnumerable<ProjectDocument> GetImagesByProjectId(Guid projectId, bool? isPublicAdvertisement)
         {
-            var list = _documentRepo.GetByProjectId(projectId);
+            var list = _documentRepo.GetByProjectId(projectId).Where(d => d.Category == ProjectDocumentCategory.CompletionImage);
 
-            return FilterDocument(list, category, isPublicAdvertisement, name);
+            return FilterImage(list, isPublicAdvertisement);
         }
         public Project GetAdProjectById(Guid id)
         {
@@ -95,9 +85,7 @@ namespace IDBMS_API.Services
                     var image = new ProjectDocument
                     {
                         Id = Guid.NewGuid(),
-                        Name = request.Name,
-                        Description = request.Description,
-                        EnglishDescription = request.EnglishDescription,
+                        Name = "AdvertisementImage",
                         CreatedDate = DateTime.Now,
                         Category = ProjectDocumentCategory.CompletionImage,
                         ProjectId = request.ProjectId,
@@ -127,7 +115,7 @@ namespace IDBMS_API.Services
             _documentRepo.Update(pd);
         }
 
-        public void UpdatePublicDocument(Guid documentId, bool isPublicAdvertisement)
+        public void UpdatePublicImage(Guid documentId, bool isPublicAdvertisement)
         {
             var pd = _documentRepo.GetById(documentId) ?? throw new Exception("This object is not existed!");
 
@@ -136,12 +124,9 @@ namespace IDBMS_API.Services
             _documentRepo.Update(pd);
         }
 
-        public async void UpdateAdvertisementDescription(Guid projectId, [FromForm] AdvertisementDescriptionRequest request)
+        public async void UpdateRepresentImage(Guid projectId, [FromForm] AdvertisementDescriptionRequest request)
         {
             var p = _projectRepo.GetById(projectId) ?? throw new Exception("This object is not existed!");
-
-            p.AdvertisementDescription = request.Description;
-            p.EnglishAdvertisementDescription = request.EnglishDescription;
 
             if (request.RepresentImage != null)
             {
