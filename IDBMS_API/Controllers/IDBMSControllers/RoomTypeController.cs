@@ -30,7 +30,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetRoomTypeById(int id)
         {
             try
@@ -55,7 +54,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetRoomTypes(bool? isHidden, string? name, int? pageSize, int? pageNo)
         {
             try
