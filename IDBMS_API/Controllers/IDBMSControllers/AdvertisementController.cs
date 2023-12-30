@@ -2,7 +2,7 @@
 using BusinessObject.Enums;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Wordprocessing;
-using IDBMS_API.DTOs.Request;
+using IDBMS_API.DTOs.Request.AdvertisementRequest;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
 using IDBMS_API.Services.PaginationService;
@@ -106,9 +106,35 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
+        [HttpPost("/project")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> CreateAdvertisementProject([FromForm][FromBody] AdvertisementProjectRequest request)
+        {
+            try
+            {
+                var result = await _service.CreateAdvertisementProject(request);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
+                    Data = result
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
         [HttpPost("{projectId}/images")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public async Task<IActionResult> CreateCompletionImage(Guid projectId, [FromForm][FromBody] List<AdvertisementImageRequest> request)
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> CreateCompletionImage([FromForm][FromBody] List<AdvertisementImageRequest> request)
         {
             try
             {
@@ -132,7 +158,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("image/{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Admin")]
         public IActionResult DeleteCompletionImage(Guid id)
         {
             try
@@ -157,7 +183,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("document/{documentId}/public")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner")]
+        [Authorize(Policy = "Admin")]
         public IActionResult UpdatePublicDocument(Guid documentId, [FromQuery] bool isPublicAdvertisement)
         {
             try
@@ -182,12 +208,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{projectId}/advertisementDescription")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Admin")]
         public IActionResult UpdateAdvertisementDescription(Guid projectId, [FromForm][FromBody] AdvertisementDescriptionRequest request)
         {
             try
             {
-                _service.UpdateRepresentImage(projectId, request);
+                _service.UpdateAdProjectDescription(projectId, request);
 
                 var response = new ResponseMessage()
                 {
@@ -207,7 +233,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{projectId}/advertisementStatus")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Admin")]
         public IActionResult UpdateProjectAdvertisementStatus(Guid projectId, AdvertisementStatus status)
         {
             try

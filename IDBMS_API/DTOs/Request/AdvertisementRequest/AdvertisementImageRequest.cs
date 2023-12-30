@@ -1,11 +1,11 @@
 ﻿using BusinessObject.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace IDBMS_API.DTOs.Request
+namespace IDBMS_API.DTOs.Request.AdvertisementRequest
 {
     public class AdvertisementImageRequest
     {
-        public IFormFile? file { get; set; } = default!;
+        public IFormFile? File { get; set; } = default!;
 
         [Required]
         public Guid ProjectId { get; set; }

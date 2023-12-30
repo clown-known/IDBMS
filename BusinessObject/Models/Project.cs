@@ -51,7 +51,7 @@ public class Project
 
     [Required]
     [Column(TypeName = "money")]
-    public decimal AmountPaid { get; set; }    
+    public decimal AmountPaid { get; set; }
     
     [Column(TypeName = "money")]
     public decimal? TotalPenaltyFee { get; set; }
@@ -76,9 +76,8 @@ public class Project
     public int? ProjectDesignId { get; set; }
     public ProjectDesign? ProjectDesign { get; set; }
 
-    [Required]
-    public Guid SiteId { get; set; }
-    public Site Site { get; set; }
+    public Guid? SiteId { get; set; }
+    public Site? Site { get; set; }
 
     public List<Transaction> Transactions { get; set; } = new();
     public List<ProjectParticipation> ProjectParticipations { get; set; } = new();

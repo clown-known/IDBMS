@@ -65,7 +65,7 @@ namespace IDBMS_API.Services
             var pcCreated = _repository.Save(pc);
             return pcCreated;
         }
-        public async void UpdateProjectCategory(int id, [FromForm] ProjectCategoryRequest projectCategory)
+        public async void UpdateProjectCategory(int id, ProjectCategoryRequest projectCategory)
         {
             var pc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
