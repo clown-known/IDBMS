@@ -32,7 +32,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetRooms(string? usePurpose, bool? isHidden, int? pageSize, int? pageNo)
+        public IActionResult GetRooms(Guid projectId, string? usePurpose, bool? isHidden, int? pageSize, int? pageNo)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetRoomById(Guid id)
+        public IActionResult GetRoomById(Guid projectId, Guid id)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("floor/{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetRoomsByFloorId(Guid id, string? usePurpose, bool? isHidden, int? pageSize, int? pageNo)
+        public IActionResult GetRoomsByFloorId(Guid projectId, Guid id, string? usePurpose, bool? isHidden, int? pageSize, int? pageNo)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult CreateRoom([FromBody] RoomRequest request)
+        public IActionResult CreateRoom(Guid projectId, [FromBody] RoomRequest request)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult UpdateRoom(Guid id, [FromBody] RoomRequest request)
+        public IActionResult UpdateRoom(Guid projectId, Guid id, [FromBody] RoomRequest request)
         {
             try
             {

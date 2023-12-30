@@ -31,7 +31,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Viewer")]
-        public IActionResult GetProjectDocuments(ProjectDocumentCategory? category, string? name, int? pageSize, int? pageNo)
+        public IActionResult GetProjectDocuments(Guid projectId, ProjectDocumentCategory? category, string? name, int? pageSize, int? pageNo)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("document-template/{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Viewer")]
-        public IActionResult GetProjectDocumentByProjectDocumentTemplateId(int id)
+        public IActionResult GetProjectDocumentByProjectDocumentTemplateId(Guid projectId, int id)
         {
             return Ok(_service.GetByFilter(null, id));
         }
@@ -92,7 +92,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Viewer")]
-        public IActionResult GetProjectDocumentById(Guid id)
+        public IActionResult GetProjectDocumentById(Guid projectId, Guid id)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
-        public async Task<IActionResult> CreateProjectDocument([FromForm][FromBody] ProjectDocumentRequest request)
+        public async Task<IActionResult> CreateProjectDocument(Guid projectId, [FromForm][FromBody] ProjectDocumentRequest request)
         {
             try
             {
@@ -140,7 +140,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
-        public IActionResult UpdateProjectDocument(Guid id, [FromForm][FromBody] ProjectDocumentRequest request)
+        public IActionResult UpdateProjectDocument(Guid projectId, Guid id, [FromForm][FromBody] ProjectDocumentRequest request)
         {
             try
             {
@@ -163,7 +163,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
-        public IActionResult UpdateProjectDocumentStatus(Guid id)
+        public IActionResult UpdateProjectDocumentStatus(Guid projectId, Guid id)
         {
             try
             {

@@ -29,7 +29,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetPaymentStageDesigns(string? name, int? pageSize, int? pageNo)
+        public IActionResult GetPaymentStageDesigns(Guid projectId, string? name, int? pageSize, int? pageNo)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("project-design/{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetPaymentStageDesignsByProjectDesignId(int id, string? name, int? pageSize, int? pageNo)
+        public IActionResult GetPaymentStageDesignsByProjectDesignId(Guid projectId, int id, string? name, int? pageSize, int? pageNo)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetPaymentStageDesignById(int id)
+        public IActionResult GetPaymentStageDesignById(Guid projectId, int id)
         {
             try
             {
@@ -106,7 +106,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Admin, ProjectManager")]
         public IActionResult CreatePaymentStageDesign([FromBody] PaymentStageDesignRequest request)
         {
             try
@@ -129,7 +129,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Admin, ProjectManager")]
         public IActionResult UpdatePaymentStageDesign(int id, [FromBody] PaymentStageDesignRequest request)
         {
             try
@@ -152,7 +152,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Admin, ProjectManager")]
         public IActionResult DeletePaymentStageDesign(int id)
         {
             try

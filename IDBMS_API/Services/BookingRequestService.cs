@@ -56,7 +56,7 @@ namespace IDBMS_API.Services
 
             return Filter(list, status, contactName);
         }
-        public BookingRequest? CreateBookingRequest([FromForm] BookingRequestRequest request)
+        public BookingRequest? CreateBookingRequest(BookingRequestRequest request)
         {
             UserService userService = new (_userRepo, jwtTokenSupporter);
             var user = userService.GetByEmail(request.ContactEmail);
@@ -111,7 +111,7 @@ namespace IDBMS_API.Services
 
             return null;
         }
-        public void UpdateBookingRequest(Guid id, [FromForm] BookingRequestRequest request)
+        public void UpdateBookingRequest(Guid id, BookingRequestRequest request)
         {
             var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 

@@ -73,7 +73,7 @@ namespace IDBMS_API.Services
             return Filter(list, itemCodeOrName, itemCategoryId, taskStatus);
         }
 
-        public async Task<ItemInTask?> CreateItemInTask([FromForm] ItemInTaskRequest request)
+        public async Task<ItemInTask?> CreateItemInTask(ItemInTaskRequest request)
         {
             var itemInTask = new ItemInTask
             {
@@ -114,7 +114,7 @@ namespace IDBMS_API.Services
             return itemInTaskCreated;
         }
 
-        public async Task CreateItemsByTaskId([FromForm] List<ItemInTaskRequest> request)
+        public async Task CreateItemsByTaskId(List<ItemInTaskRequest> request)
         {
             foreach (var itemInTask in request)
             {
@@ -157,7 +157,7 @@ namespace IDBMS_API.Services
             }
         }
 
-        public async Task UpdateItemInTask(Guid id, [FromForm] ItemInTaskRequest request)
+        public async Task UpdateItemInTask(Guid id, ItemInTaskRequest request)
         {
             var itemInTask = _itemInTaskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 

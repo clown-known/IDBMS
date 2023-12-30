@@ -78,7 +78,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin, Participation")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> CreateProjectCategory([FromForm][FromBody] ProjectCategoryRequest request)
         {
             try
@@ -102,7 +102,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, Participation")]
+        [Authorize(Policy = "Admin")]
         public IActionResult UpdateProjectCategory(int id, [FromForm][FromBody] ProjectCategoryRequest request)
         {
             try
@@ -125,7 +125,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/isHidden")]
-        [Authorize(Policy = "Admin, Participation")]
+        [Authorize(Policy = "Admin")]
         public IActionResult UpdateProjectCategoryStatus(int id, bool isHidden)
         {
             try

@@ -28,7 +28,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
-        public IActionResult GetTaskAssignments(string? name, int? pageSize, int? pageNo)
+        public IActionResult GetTaskAssignments(Guid projectId, string? name, int? pageSize, int? pageNo)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("user/{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
-        public IActionResult GetTaskAssignmentsByUserId(Guid id, string? name, int? pageSize, int? pageNo)
+        public IActionResult GetTaskAssignmentsByUserId(Guid projectId, Guid id, string? name, int? pageSize, int? pageNo)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         [HttpPost]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult CreateTaskAssignment([FromBody] TaskAssignmentRequest request)
+        public IActionResult CreateTaskAssignment(Guid projectId, [FromBody] TaskAssignmentRequest request)
         {
                 try
                 {
@@ -130,7 +130,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("project-task/{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
-        public IActionResult UpdateTaskAssignment(Guid id, [FromBody] List<Guid> request)
+        public IActionResult UpdateTaskAssignment(Guid projectId, Guid id, [FromBody] List<Guid> request)
         {
             try
             {
@@ -153,7 +153,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult DeleteTaskAssignment(Guid id)
+        public IActionResult DeleteTaskAssignment(Guid projectId, Guid id)
         {
             try
             {

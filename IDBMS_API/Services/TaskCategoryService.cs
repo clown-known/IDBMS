@@ -45,7 +45,7 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
         }
-        public async Task<TaskCategory?> CreateTaskCategory([FromForm] TaskCategoryRequest request)
+        public async Task<TaskCategory?> CreateTaskCategory(TaskCategoryRequest request)
         {
             var ctc = new TaskCategory
             {
@@ -68,7 +68,7 @@ namespace IDBMS_API.Services
             var ctcCreated = _repository.Save(ctc);
             return ctcCreated;
         }
-        public async void UpdateTaskCategory(int id, [FromForm]TaskCategoryRequest request)
+        public async void UpdateTaskCategory(int id, TaskCategoryRequest request)
         {
             var ctc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 

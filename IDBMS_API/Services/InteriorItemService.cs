@@ -137,7 +137,7 @@ namespace IDBMS_API.Services
 
             return Filter(list, itemCategoryId, status, codeOrName, itemType);
         }
-        public async Task<InteriorItem?> CreateInteriorItem([FromForm] InteriorItemRequest request)
+        public async Task<InteriorItem?> CreateInteriorItem(InteriorItemRequest request)
         {
             var generateCode = GenerateCode(request.InteriorItemCategoryId);
             var ii = new InteriorItem
@@ -179,7 +179,7 @@ namespace IDBMS_API.Services
             var iiCreated = _itemRepo.Save(ii);
             return iiCreated;
         }
-        public async void UpdateInteriorItem(Guid id, [FromForm] InteriorItemRequest request)
+        public async void UpdateInteriorItem(Guid id, InteriorItemRequest request)
         {
             var ii = _itemRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 
