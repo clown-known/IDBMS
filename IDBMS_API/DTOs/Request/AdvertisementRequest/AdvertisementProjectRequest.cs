@@ -1,12 +1,10 @@
 ﻿using BusinessObject.Enums;
-using BusinessObject.Models;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace IDBMS_API.DTOs.Request
+namespace IDBMS_API.DTOs.Request.AdvertisementRequest
 {
-    public class ProjectRequest
+    public class AdvertisementProjectRequest
     {
         [Required]
         public string Name { get; set; } = default!;
@@ -26,16 +24,18 @@ namespace IDBMS_API.DTOs.Request
         public Guid CreatedByAdminId { get; set; }
 
         [Required]
+        [Column(TypeName = "money")]
+        public decimal FinalPrice { get; set; }
+
+        [Required]
+        public double Area { get; set; }
+
+        [Required]
         public int Language { get; set; }
 
-        [Required]
-        public ProjectStatus Status { get; set; }
+        public string? AdvertisementDescription { get; set; }
+        public string? EnglishAdvertisementDescription { get; set; }
 
-        [Required]
-        public AdvertisementStatus AdvertisementStatus { get; set; }
-
-        public Guid? BasedOnDecorProjectId { get; set; }
-
-        public Guid? SiteId { get; set; }
+        public IFormFile? RepresentImage { get; set; }
     }
 }

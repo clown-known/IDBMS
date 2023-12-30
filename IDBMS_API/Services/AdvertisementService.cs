@@ -3,6 +3,7 @@ using BusinessObject.Enums;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using IDBMS_API.DTOs.Request;
+using IDBMS_API.DTOs.Request.AdvertisementRequest;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interfaces;
 using System.Runtime.Intrinsics.Arm;
@@ -76,7 +77,43 @@ namespace IDBMS_API.Services
             return _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
 
-        public async Task CreateCompletionImage([FromForm] List<AdvertisementImageRequest> requests)
+        public async Task<Project?> CreateAdvertisementProject([FromForm] AdvertisementProjectRequest request)
+        {
+            var newAdProject = new Project
+            {
+                Id = Guid.NewGuid(),
+                Name = request.Name,
+                Type= request.Type,
+                ProjectCategoryId= request.ProjectCategoryId,
+                CreatedDate = DateTime.Now,
+                CreatedAdminUsername= request.CreatedAdminUsername,
+                CreatedByAdminId= request.CreatedByAdminId,
+                FinalPrice = request.FinalPrice,
+                AmountPaid = request.FinalPrice,
+                Area = request.Area,
+                Language= request.Language,
+                AdvertisementStatus = AdvertisementStatus.Allowed,
+                Status = ProjectStatus.Done,
+
+                AdvertisementDescription= request.AdvertisementDescription,
+                EnglishAdvertisementDescription= request.AdvertisementDescription,
+            };
+
+            var createdProject = _projectRepo.Save(newAdProject);
+
+            var updateDescription = new AdvertisementDescriptionRequest
+            {
+                AdvertisementDescription = request.AdvertisementDescription,
+                EnglishAdvertisementDescription = request.EnglishAdvertisementDescription,
+                RepresentImage = request.RepresentImage,
+            };
+
+            UpdateAdProjectDescription(createdProject.Id, updateDescription);
+
+            return createdProject;
+        }
+
+        public async Task CreateCompletionImage(List<AdvertisementImageRequest> requests)
         {
             if (requests.Any())
             {
@@ -93,10 +130,10 @@ namespace IDBMS_API.Services
                         IsDeleted = false,
                     };
 
-                    if (request.file != null)
+                    if (request.File != null)
                     {
                         FirebaseService s = new FirebaseService();
-                        string link = await s.UploadDocument(request.file, request.ProjectId);
+                        string link = await s.UploadDocument(request.File, request.ProjectId);
 
                         image.Url = link;
                     }
@@ -124,9 +161,12 @@ namespace IDBMS_API.Services
             _documentRepo.Update(pd);
         }
 
-        public async void UpdateRepresentImage(Guid projectId, [FromForm] AdvertisementDescriptionRequest request)
+        public async void UpdateAdProjectDescription(Guid projectId, [FromForm] AdvertisementDescriptionRequest request)
         {
             var p = _projectRepo.GetById(projectId) ?? throw new Exception("This object is not existed!");
+
+            p.AdvertisementDescription = request.AdvertisementDescription;
+            p.EnglishAdvertisementDescription = request.EnglishAdvertisementDescription;
 
             if (request.RepresentImage != null)
             {
