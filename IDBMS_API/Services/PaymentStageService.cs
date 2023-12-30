@@ -271,6 +271,7 @@ namespace IDBMS_API.Services
             stage.EndTimePayment = CalculateEndTimePayment(stage.StartedDate, stage.EndDate, stage.IsPrepaid);
 
             _stageRepo.Update(stage);
+            UpdateProjectWarrantyEnd(stage.ProjectId);
         }
 
         public DateTime? CalculateEndTimePayment(DateTime? startDate, DateTime? endDate, bool isPrepaid)
@@ -306,6 +307,8 @@ namespace IDBMS_API.Services
                 stage.StageNo = stageNumber++;
                 _stageRepo.Update(stage);
             }
+
+            UpdateProjectWarrantyEnd(projectId);
         }
 
         public void UpdateStageTimeSpan(Guid stageId, DateTime? soonestStartDate, DateTime? latestEndDate)
@@ -317,6 +320,8 @@ namespace IDBMS_API.Services
             stage.EndTimePayment = CalculateEndTimePayment(stage.StartedDate, stage.EndDate, stage.IsPrepaid);
 
             _stageRepo.Update(stage);
+
+            UpdateProjectWarrantyEnd(stage.ProjectId);
         }
 
         public bool IsExceedPaymentDeadline(Guid stageId, DateTime? endTime)
@@ -558,9 +563,6 @@ namespace IDBMS_API.Services
                 if (stage.Id == warrantyStageId)
                 {
                     stage.IsWarrantyStage = true;
-
-                    ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
-                    projectService.UpdateProjectWarrantyPeriodEndTime(projectId, stage.EndTimePayment);
                 }
                 else
                 {
@@ -568,6 +570,23 @@ namespace IDBMS_API.Services
                 }
 
                 _stageRepo.Update(stage);
+            }
+
+            UpdateProjectWarrantyEnd(projectId);
+        }
+
+        public void UpdateProjectWarrantyEnd(Guid projectId)
+        {
+            var stageList = _stageRepo.GetByProjectId(projectId);
+
+            var lastStage = stageList
+                    .OrderByDescending(stage => stage.StageNo)
+                    .FirstOrDefault();
+
+            if (lastStage != null)
+            {
+                ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
+                projectService.UpdateProjectWarrantyPeriodEndTime(projectId, lastStage.EndTimePayment ?? null);
             }
         }
 
@@ -583,6 +602,7 @@ namespace IDBMS_API.Services
             taskService.UpdateTasksInDeletedStage(id, ps.ProjectId);
 
             UpdateProjectPenaltyFeeByStages(ps.ProjectId);
+            UpdateProjectWarrantyEnd(ps.ProjectId);
         }
     }
 }
