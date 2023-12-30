@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using API.Supporters.JwtAuthSupport;
+using Azure.Core;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -29,6 +30,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetRoomTypeById(int id)
         {
             try
@@ -53,6 +55,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetRoomTypes(bool? isHidden, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -78,6 +81,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation")]
         public async Task<IActionResult> CreateRoomType([FromForm][FromBody] RoomTypeRequest request)
         {
             try
@@ -96,6 +100,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin, Participation")]
         public IActionResult UpdateRoomType(int id, [FromForm][FromBody] RoomTypeRequest request)
         {
             try
@@ -114,6 +119,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/isHidden")]
+        [Authorize(Policy = "Admin, Participation")]
         public IActionResult UpdateRoomTypeStatus(int id, bool isHidden)
         {
             try

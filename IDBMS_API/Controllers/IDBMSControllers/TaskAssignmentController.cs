@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using API.Supporters.JwtAuthSupport;
+using BusinessObject.Models;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using IDBMS_API.DTOs.Request;
@@ -26,6 +27,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
         public IActionResult GetTaskAssignments(string? name, int? pageSize, int? pageNo)
         {
             try
@@ -52,7 +54,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //lead arc, cons man
         [EnableQuery]
         [HttpGet("project/{id}")]
-        public IActionResult GetTaskAssignmentsByProjectId(Guid id, string? name, int? pageSize, int? pageNo)
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
+        public IActionResult GetTaskAssignmentsByProjectId(Guid projectId, Guid id, string? name, int? pageSize, int? pageNo)
         {
             try
             {
@@ -78,6 +81,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //lead arc, cons man
         [EnableQuery]
         [HttpGet("user/{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
         public IActionResult GetTaskAssignmentsByUserId(Guid id, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -102,6 +106,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult CreateTaskAssignment([FromBody] TaskAssignmentRequest request)
         {
                 try
@@ -124,6 +129,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("project-task/{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
         public IActionResult UpdateTaskAssignment(Guid id, [FromBody] List<Guid> request)
         {
             try
@@ -146,6 +152,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult DeleteTaskAssignment(Guid id)
         {
             try

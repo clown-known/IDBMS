@@ -1,4 +1,5 @@
-﻿using BusinessObject.Enums;
+﻿using API.Supporters.JwtAuthSupport;
+using BusinessObject.Enums;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -77,6 +78,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> CreateInteriorItemCategory([FromForm][FromBody] InteriorItemCategoryRequest request)
         {
             try
@@ -100,6 +102,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> UpdateInteriorItemCategory(int id, [FromForm][FromBody] InteriorItemCategoryRequest request)
         {
             try
@@ -122,6 +125,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin")]
         public IActionResult UpdateInteriorItemCategoryStatus(int id)
         {
             try

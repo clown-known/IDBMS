@@ -1,4 +1,5 @@
-﻿using BusinessObject.Enums;
+﻿using API.Supporters.JwtAuthSupport;
+using BusinessObject.Enums;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -103,6 +104,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin")]
         public IActionResult CreateInteriorItemColor([FromBody] InteriorItemColorRequest request)
         {
             try
@@ -133,6 +135,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin")]
         public IActionResult UpdateInteriorItemColor(int id, [FromBody] InteriorItemColorRequest request)
         {
             try
@@ -155,6 +158,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin")]
         public IActionResult DeleteInteriorItemColor(int id)
         {
             try

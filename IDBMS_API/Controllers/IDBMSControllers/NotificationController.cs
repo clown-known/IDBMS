@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using API.Supporters.JwtAuthSupport;
+using Azure.Core;
 using BusinessObject.Enums;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
@@ -104,6 +105,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin")]
         public IActionResult CreateNotificationsForAllCustomers([FromBody] NotificationRequest request)
         {
             try
@@ -127,6 +129,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost("projects/{projectId}")]
+        [Authorize(Policy = "Admin")]
         public IActionResult CreateNotificationForProject(Guid projectId, [FromBody] NotificationRequest request)
         {
             try

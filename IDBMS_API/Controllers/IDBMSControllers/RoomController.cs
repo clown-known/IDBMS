@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using API.Supporters.JwtAuthSupport;
+using Azure.Core;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -30,6 +31,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetRooms(string? usePurpose, bool? isHidden, int? pageSize, int? pageNo)
         {
             try
@@ -56,6 +58,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetRoomById(Guid id)
         {
             try
@@ -81,6 +84,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("floor/{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetRoomsByFloorId(Guid id, string? usePurpose, bool? isHidden, int? pageSize, int? pageNo)
         {
             try
@@ -106,6 +110,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult CreateRoom([FromBody] RoomRequest request)
         {
             try
@@ -129,6 +134,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult UpdateRoom(Guid id, [FromBody] RoomRequest request)
         {
             try
@@ -151,6 +157,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/isHidden")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult UpdateRoomStatus(Guid id, bool isHidden, Guid projectId)
         {
             try
