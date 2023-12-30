@@ -95,7 +95,7 @@ namespace API.Services
         {
             var user = _repository.GetByEmail(request.Email);
 
-            if (user != null && user.Status == UserStatus.Active && user.ExternalId == request.GoogleToken)
+            if (user != null && user.Status == UserStatus.Active && user.ExternalId == request.GoogleId)
             {
                 var token = jwtTokenSupporter.CreateToken(user);
                 UpdateTokenForUser(user, token);
