@@ -30,7 +30,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetAdvertisementAllowedProjects(int? pageSize, int? pageNo, ProjectType? type, AdvertisementStatus? status, string? name)
         {
             try
@@ -58,7 +57,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{projectId}/documents")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetDocumentsByProjectId(Guid projectId, int? pageSize, int? pageNo,
             bool? isPublicAdvertisement, string? documentName, ProjectDocumentCategory? category)
         {
@@ -71,6 +69,30 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                     Message = "Get successfully!",
                     Data = _documentPaginationService.PaginateList(list, pageSize, pageNo)
                 };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [EnableQuery]
+        [HttpGet("{id}")]
+        public IActionResult GetAdvertisementProjectById(Guid id)
+        {
+            try
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _service.GetAdProjectById(id),
+            };
 
                 return Ok(response);
             }
