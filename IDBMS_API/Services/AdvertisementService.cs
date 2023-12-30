@@ -73,13 +73,17 @@ namespace IDBMS_API.Services
             var list = _projectRepo.GetAdvertisementAllowedProjects();
 
             return FilterProject(list, type, status, name);
-        }     
+        }
         
         public IEnumerable<ProjectDocument> GetDocumentsByProjectId(Guid projectId, bool? isPublicAdvertisement, string? name, ProjectDocumentCategory? category)
         {
             var list = _documentRepo.GetByProjectId(projectId);
 
             return FilterDocument(list, category, isPublicAdvertisement, name);
+        }
+        public Project GetAdProjectById(Guid id)
+        {
+            return _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
 
         public async Task CreateCompletionImage([FromForm] List<AdvertisementImageRequest> requests)
