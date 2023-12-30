@@ -8,6 +8,6 @@ namespace IDBMS_API.DTOs.Request.AccountRequest
         public string Email { get; set; } = default!;
 
         [Required]
-        public string GoogleToken { get; set; } = default!;
+        public string GoogleId { get; set; } = default!;
     }
 }
