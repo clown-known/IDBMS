@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.EMMA;
+using API.Supporters.JwtAuthSupport;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -30,6 +31,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
         public IActionResult GetProjectTasks()
         {
             return Ok(_service.GetAll());
@@ -37,6 +39,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         
         [EnableQuery]
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
         public IActionResult GetProjectTaskById(Guid id)
         {
             try
@@ -61,6 +64,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("project/{projectId}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
         public IActionResult GetProjectTasksByProjectId(Guid projectId, int? pageSize, int? pageNo, 
                         string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId, 
                         bool includeRoomIdFilter, bool includeStageIdFilter, Guid? participationId)
@@ -90,6 +94,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("ids")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
         public IActionResult GetAllProjectTaskIdByFilter(Guid projectId, int? pageSize, int? pageNo,
                 string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId, 
                 bool includeRoomIdFilter, bool includeStageIdFilter, Guid? participationId)
@@ -118,6 +123,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
         public IActionResult CreateProjectTask([FromBody] ProjectTaskRequest request)
         {
             try
@@ -141,6 +147,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
         public IActionResult UpdateProjectTask(Guid id, [FromBody] ProjectTaskRequest request)
         {
             try
@@ -163,6 +170,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("payment-stage/{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
         public IActionResult AssignTasksToStage(Guid id,[FromBody] List<Guid> listTaskId, Guid projectId)
         {
             try
@@ -185,6 +193,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/status")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
         public IActionResult UpdateProjectTaskStatus(Guid id, ProjectTaskStatus status)
         {
             try

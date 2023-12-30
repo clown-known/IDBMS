@@ -1,4 +1,5 @@
-﻿using IDBMS_API.DTOs.Request;
+﻿using API.Supporters.JwtAuthSupport;
+using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager, Viewer")]
         public IActionResult GetTaskDocuments()
         {
             return Ok(_service.GetAll());
@@ -27,6 +29,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("task-report/{id}")]
+        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager, Viewer")]
         public IActionResult GetTaskDocumentsByTaskReportId(Guid id)
         {
             return Ok(_service.GetByTaskReportId(id));
@@ -34,6 +37,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager, Viewer")]
         public IActionResult GetTaskDocumentById(Guid id)
         {
             try
@@ -57,6 +61,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
         public IActionResult CreateTaskDocument(Guid projectId, Guid taskReportId,[FromBody] TaskDocumentRequest request)
         {
             try
@@ -87,6 +92,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
         public IActionResult DeleteTaskDocument(Guid id)
         {
             try

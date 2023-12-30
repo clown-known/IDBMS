@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using API.Supporters.JwtAuthSupport;
+using BusinessObject.Models;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using IDBMS_API.DTOs.Request;
@@ -27,6 +28,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
         public IActionResult GetTaskDesigns(string? codeOrName, int? taskCategoryId, int? pageSize, int? pageNo)
         {
             try
@@ -53,6 +55,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
         public IActionResult GetTaskDesignById(int id)
         {
             try
@@ -76,6 +79,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
         public IActionResult CreateTaskDesign([FromBody] TaskDesignRequest request)
         {
             try
@@ -99,6 +103,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
         public IActionResult UpdateTaskDesign(int id, [FromBody] TaskDesignRequest request)
         {
             try
@@ -121,6 +126,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
         public IActionResult DeleteTaskDesign(int id)
         {
             try

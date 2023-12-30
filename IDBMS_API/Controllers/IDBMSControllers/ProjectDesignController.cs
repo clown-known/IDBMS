@@ -1,4 +1,5 @@
-﻿using BusinessObject.Enums;
+﻿using API.Supporters.JwtAuthSupport;
+using BusinessObject.Enums;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -28,6 +29,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetProjectDesigns(ProjectType? type, string? name, bool? isHidden, int? pageSize, int? pageNo)
         {
             try
@@ -54,6 +56,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetProjectDesignById(int id)
         {
             try
@@ -77,6 +80,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult CreateProjectDesign([FromBody] ProjectDesignRequest request)
         {
             try
@@ -100,6 +104,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult UpdateProjectDesign(int id, [FromBody] ProjectDesignRequest request)
         {
             try
@@ -122,6 +127,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/isHidden")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult UpdateProjectDesignStatus(int id, bool isHidden)
         {
             try

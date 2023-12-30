@@ -11,6 +11,7 @@ using IDBMS_API.Services.PaginationService;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Threading.Tasks;
+using API.Supporters.JwtAuthSupport;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -77,6 +78,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation")]
         public async Task<IActionResult> CreateProjectCategory([FromForm][FromBody] ProjectCategoryRequest request)
         {
             try
@@ -100,6 +102,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin, Participation")]
         public IActionResult UpdateProjectCategory(int id, [FromForm][FromBody] ProjectCategoryRequest request)
         {
             try
@@ -122,6 +125,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/isHidden")]
+        [Authorize(Policy = "Admin, Participation")]
         public IActionResult UpdateProjectCategoryStatus(int id, bool isHidden)
         {
             try

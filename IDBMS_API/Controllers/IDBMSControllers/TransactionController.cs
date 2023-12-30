@@ -11,6 +11,7 @@ using IDBMS_API.Services.PaginationService;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Threading.Tasks;
+using API.Supporters.JwtAuthSupport;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -29,6 +30,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetTransactions(string? payerName,TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
             try
@@ -55,6 +57,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //admin, owner
         [EnableQuery]
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetTransactionsById(Guid id)
         {
             try
@@ -79,6 +82,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //cus
         [EnableQuery]
         [HttpGet("user/{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult GetTransactionsByUserId(Guid id, string? payerName, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
             try
@@ -105,11 +109,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //admin, owner
         [EnableQuery]
         [HttpGet("project/{id}")]
-        public IActionResult GetTransactionsByProjectId(Guid id, Guid projectId, string? payerName, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        public IActionResult GetTransactionsByProjectId(Guid projectId, string? payerName, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetByProjectId(id, payerName, type, status);
+                var list = _service.GetByProjectId(projectId, payerName, type, status);
 
                 var response = new ResponseMessage()
                 {
@@ -129,6 +134,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation")]
         public async Task<IActionResult> CreateTransaction([FromForm][FromBody] TransactionRequest request)
         {
             try
@@ -152,6 +158,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult UpdateTransaction(Guid id, [FromForm][FromBody] TransactionRequest request)
         {
             try
@@ -174,6 +181,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/status")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult UpdateTransactionStatus(Guid id, TransactionStatus status)
         {
             try
@@ -196,6 +204,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
         public IActionResult DeleteTransaction(Guid id)
         {
             try

@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using API.Supporters.JwtAuthSupport;
+using Azure.Core;
 using BusinessObject.Enums;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
@@ -29,6 +30,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Viewer")]
         public IActionResult GetProjectDocuments(ProjectDocumentCategory? category, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -54,6 +56,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         [EnableQuery]
         [HttpGet("document-template/{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Viewer")]
         public IActionResult GetProjectDocumentByProjectDocumentTemplateId(int id)
         {
             return Ok(_service.GetByFilter(null, id));
@@ -61,6 +64,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("project/{projectId}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Viewer")]
         public IActionResult GetProjectDocumentsByProjectId(Guid projectId, ProjectDocumentCategory? category, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -87,6 +91,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Viewer")]
         public IActionResult GetProjectDocumentById(Guid id)
         {
             try
@@ -110,6 +115,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
         public async Task<IActionResult> CreateProjectDocument([FromForm][FromBody] ProjectDocumentRequest request)
         {
             try
@@ -133,6 +139,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
         public IActionResult UpdateProjectDocument(Guid id, [FromForm][FromBody] ProjectDocumentRequest request)
         {
             try
@@ -155,6 +162,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
         public IActionResult UpdateProjectDocumentStatus(Guid id)
         {
             try
