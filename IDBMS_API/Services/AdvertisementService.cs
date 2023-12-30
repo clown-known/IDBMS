@@ -97,6 +97,7 @@ namespace IDBMS_API.Services
                         Id = Guid.NewGuid(),
                         Name = request.Name,
                         Description = request.Description,
+                        EnglishDescription = request.EnglishDescription,
                         CreatedDate = DateTime.Now,
                         Category = ProjectDocumentCategory.CompletionImage,
                         ProjectId = request.ProjectId,
@@ -140,6 +141,7 @@ namespace IDBMS_API.Services
             var p = _projectRepo.GetById(projectId) ?? throw new Exception("This object is not existed!");
 
             p.AdvertisementDescription = request.Description;
+            p.EnglishAdvertisementDescription = request.EnglishDescription;
 
             if (request.RepresentImage != null)
             {

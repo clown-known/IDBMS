@@ -6,6 +6,7 @@ namespace IDBMS_API.DTOs.Request
     {
         [Required]
         public string Description { get; set; } = default!;
+        public string? EnglishDescription { get; set; }
 
         public IFormFile? RepresentImage { get; set; }
     }
