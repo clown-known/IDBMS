@@ -33,7 +33,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetParticipations(ParticipationRole? role, string? name, int? pageSize, int? pageNo)
+        public IActionResult GetParticipations(Guid projectId, ParticipationRole? role, string? name, int? pageSize, int? pageNo)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("user/{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetParticipationsByUserId(Guid id, ParticipationRole? role, string? name, int? pageSize, int? pageNo)
+        public IActionResult GetParticipationsByUserId(Guid projectId, Guid id, ParticipationRole? role, string? name, int? pageSize, int? pageNo)
         {
             try
             {
@@ -145,7 +145,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult CreateParticipation([FromBody] ProjectParticipationRequest request)
+        public IActionResult CreateParticipation(Guid projectId, [FromBody] ProjectParticipationRequest request)
         {
             try
             {
@@ -169,7 +169,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost("employees")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult CreateParticipationsByRole([FromBody] CreateParticipationListRequest request)
+        public IActionResult CreateParticipationsByRole(Guid projectId, [FromBody] CreateParticipationListRequest request)
         {
             try
             {

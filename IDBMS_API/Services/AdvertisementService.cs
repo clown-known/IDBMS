@@ -77,7 +77,7 @@ namespace IDBMS_API.Services
             return _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
         }
 
-        public async Task<Project?> CreateAdvertisementProject([FromForm] AdvertisementProjectRequest request)
+        public async Task<Project?> CreateAdvertisementProject(AdvertisementProjectRequest request)
         {
             var newAdProject = new Project
             {
@@ -161,7 +161,7 @@ namespace IDBMS_API.Services
             _documentRepo.Update(pd);
         }
 
-        public async void UpdateAdProjectDescription(Guid projectId, [FromForm] AdvertisementDescriptionRequest request)
+        public async void UpdateAdProjectDescription(Guid projectId, AdvertisementDescriptionRequest request)
         {
             var p = _projectRepo.GetById(projectId) ?? throw new Exception("This object is not existed!");
 

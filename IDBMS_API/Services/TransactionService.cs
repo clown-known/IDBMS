@@ -98,7 +98,7 @@ namespace IDBMS_API.Services
             return Filter(list, payerName, type, status);
         }
 
-        public async Task<Transaction?> CreateTransaction([FromForm] TransactionRequest request)
+        public async Task<Transaction?> CreateTransaction(TransactionRequest request)
         {
             var trans = new Transaction
             {
@@ -129,7 +129,7 @@ namespace IDBMS_API.Services
             return transCreated;
         }
 
-        public Transaction? CreateTransactionByWarrantyClaim(Guid warrantyClaimId, [FromForm] TransactionRequest request)
+        public Transaction? CreateTransactionByWarrantyClaim(Guid warrantyClaimId, TransactionRequest request)
         {
             var trans = new Transaction
             {

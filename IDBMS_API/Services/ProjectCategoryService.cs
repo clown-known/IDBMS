@@ -45,7 +45,7 @@ namespace IDBMS_API.Services
         {
             return _repository.GetById(id);
         }
-        public async Task<ProjectCategory?> CreateProjectCategory([FromForm] ProjectCategoryRequest projectCategory)
+        public async Task<ProjectCategory?> CreateProjectCategory(ProjectCategoryRequest projectCategory)
         {
             var pc = new ProjectCategory
             {

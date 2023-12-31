@@ -29,7 +29,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
-        public IActionResult GetWarrantyClaims(bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
+        public IActionResult GetWarrantyClaims(Guid projectId, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("user/{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
-        public IActionResult GetWarrantyClaimsByUserId(Guid id, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
+        public IActionResult GetWarrantyClaimsByUserId(Guid projectId, Guid id, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
-        public IActionResult GetWarrantyClaimById(Guid id)
+        public IActionResult GetWarrantyClaimById(Guid projectId, Guid id)
         {
             try
             {
@@ -133,7 +133,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost]
         [Authorize(Policy = "Admin, Participation")]
-        public async Task<IActionResult> CreateWarrantyClaim([FromForm][FromBody] WarrantyClaimRequest request)
+        public async Task<IActionResult> CreateWarrantyClaim(Guid projectId, [FromForm][FromBody] WarrantyClaimRequest request)
         {
                 try
                 {
@@ -157,7 +157,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult UpdateWarrantyClaim(Guid id, [FromForm][FromBody] WarrantyClaimRequest request)
+        public IActionResult UpdateWarrantyClaim(Guid projectId, Guid id, [FromForm][FromBody] WarrantyClaimRequest request)
         {
             try
             {

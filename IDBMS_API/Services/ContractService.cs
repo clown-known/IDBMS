@@ -117,7 +117,7 @@ namespace IDBMS_API.Services
             ProjectDocument d = project.ProjectDocuments.Where(d => d.Category == ProjectDocumentCategory.Contract).FirstOrDefault();
             return await firebaseService.DownloadFileByDownloadUrl(d.Url);
         }
-        public async Task<bool> UploadContract(Guid projectId,[FromForm] IFormFile file)
+        public async Task<bool> UploadContract(Guid projectId, IFormFile file)
         {
             if (file == null) return false;
             var project = _projectRepository.GetById(projectId);

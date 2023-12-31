@@ -21,7 +21,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         [HttpGet("{projectId}/download")]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Owner")]
-        public async Task<IActionResult> Index(Guid projectid)
+        public async Task<IActionResult> Index(Guid projectId, Guid projectid)
         {
             try
             {

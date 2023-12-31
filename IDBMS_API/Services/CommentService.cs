@@ -66,7 +66,7 @@ namespace IDBMS_API.Services
 
             return Filter(list, type, status, content);
         }
-        public async Task<Comment?> CreateComment([FromForm] CommentRequest request)
+        public async Task<Comment?> CreateComment(CommentRequest request)
         {
 
             var cmt = new Comment
@@ -107,7 +107,7 @@ namespace IDBMS_API.Services
             var cmtCreated = _repository.Save(cmt);
             return cmtCreated;
         }
-        public async void UpdateComment(Guid id, [FromForm] CommentRequest request)
+        public async void UpdateComment(Guid id, CommentRequest request)
         {
             var cmt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 

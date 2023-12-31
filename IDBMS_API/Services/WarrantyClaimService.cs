@@ -123,7 +123,7 @@ namespace IDBMS_API.Services
 
         }
 
-        public async Task<WarrantyClaim?> CreateWarrantyClaim([FromForm]WarrantyClaimRequest request)
+        public async Task<WarrantyClaim?> CreateWarrantyClaim(WarrantyClaimRequest request)
         {
 
             var projectOwner = _projectParticipationRepo.GetProjectOwnerByProjectId(request.ProjectId);
@@ -173,7 +173,7 @@ namespace IDBMS_API.Services
             return wcCreated;
         }
 
-        public async void UpdateWarrantyClaim(Guid id, [FromForm] WarrantyClaimRequest request)
+        public async void UpdateWarrantyClaim(Guid id, WarrantyClaimRequest request)
         {
             var wc = _warrantyRepo.GetById(id) ?? throw new Exception("This object is not existed!");
 

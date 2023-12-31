@@ -56,7 +56,7 @@ namespace IDBMS_API.Services
 
             return Filter(list, category, name);
         }
-        public async Task<ProjectDocument?> CreateProjectDocument([FromForm] ProjectDocumentRequest request)
+        public async Task<ProjectDocument?> CreateProjectDocument(ProjectDocumentRequest request)
         {
             var pd = new ProjectDocument
             {
@@ -83,7 +83,7 @@ namespace IDBMS_API.Services
             return pdCreated;
         }
 
-        public async void UpdateProjectDocument(Guid id, [FromForm] ProjectDocumentRequest request)
+        public async void UpdateProjectDocument(Guid id, ProjectDocumentRequest request)
         {
             var pd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
 
