@@ -46,7 +46,7 @@ public class IdtDbContext : DbContext
     {
         var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
+            .AddJsonFile("appsettings.json", optional: true)
             .Build();
         return config.GetConnectionString("IDBMS");
     }
