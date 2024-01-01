@@ -69,7 +69,7 @@ namespace IDBMS_API.Services
         }
         public Admin? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetById(id) ?? throw new Exception("This admin id is not existed!");
         }
 
         public bool CheckByUsername(string username)
@@ -117,7 +117,7 @@ namespace IDBMS_API.Services
         public void UpdateAdmin(Guid id, AdminRequest request)
         {
             TryValidateRequest(request);
-            var admin = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var admin = _repository.GetById(id) ?? throw new Exception("This admin id is not existed!");
             PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             admin.Name = request.Name;
@@ -135,7 +135,7 @@ namespace IDBMS_API.Services
         }
         public void DeleteAdmin(Guid id)
         {
-            var admin = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var admin = _repository.GetById(id) ?? throw new Exception("This admin id is not existed!");
 
             admin.IsDeleted = true;
 
