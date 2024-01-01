@@ -2,7 +2,7 @@ name: Build and deploy .NET Core application to Web App idbms-app-service with A
 on:
   push:
     branches:
-    - dev
+    - master
 env:
   AZURE_WEBAPP_NAME: idbms-app-service
   AZURE_WEBAPP_PACKAGE_PATH: IDBMS_API\publish
