@@ -5,9 +5,16 @@
       "type": "apis.azure"
     },
     "mssql1": {
-      "secretStore": "AzureAppSettings",
-      "type": "mssql.onprem",
+      "ignored": "true",
+      "suggestion": "true",
+      "type": "mssql",
       "connectionId": "ConnectionStrings:IDBMS"
+    },
+    "identityapp1": {
+      "ignored": "true",
+      "suggestion": "true",
+      "type": "identityapp",
+      "connectionId": ""
     }
   }
 }
