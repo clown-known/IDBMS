@@ -22,7 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="appsettings.json">
+    <Content Update="BusinessObject\appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+	<Content Update="IDBMS_API\appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
