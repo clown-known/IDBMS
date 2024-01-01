@@ -78,12 +78,12 @@ namespace IDBMS_API.Services
 
         public Floor? GetById(Guid id)
         {
-            return _floorRepo.GetById(id) ?? throw new Exception("This object is not found!");
+            return _floorRepo.GetById(id) ?? throw new Exception("This floor id is not found!");
         }
 
         public IEnumerable<Floor> GetByProjectId(Guid id, int? noOfFloor, string? usePurpose)
         {
-            var list = _floorRepo.GetByProjectId(id) ?? throw new Exception("This object is not found!");
+            var list = _floorRepo.GetByProjectId(id) ?? throw new Exception("This floor id is not found!");
 
             return Filter(list, noOfFloor, usePurpose);
         }
@@ -126,7 +126,7 @@ namespace IDBMS_API.Services
 
         public void UpdateFloor(Guid id, FloorRequest request)
         {
-            var floor = _floorRepo.GetById(id) ?? throw new Exception("This object is not found!");
+            var floor = _floorRepo.GetById(id) ?? throw new Exception("This floor id is not found!");
 
             floor.Description = request.Description;
             floor.FloorNo = request.FloorNo;
@@ -138,7 +138,7 @@ namespace IDBMS_API.Services
 
         public void DeleteFloor(Guid id)
         {
-            var floor = _floorRepo.GetById(id) ?? throw new Exception("This object is not found!");
+            var floor = _floorRepo.GetById(id) ?? throw new Exception("This floor id is not found!");
 
             floor.IsDeleted = true;
 

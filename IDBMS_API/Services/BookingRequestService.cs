@@ -48,7 +48,7 @@ namespace IDBMS_API.Services
 
         public BookingRequest? GetById(Guid id)
         {
-            return _bookingRequestRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _bookingRequestRepo.GetById(id) ?? throw new Exception("This booking request id is not existed!");
         }
         public IEnumerable<BookingRequest> GetAll(BookingRequestStatus? status, string? contactName)
         {
@@ -113,7 +113,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateBookingRequest(Guid id, BookingRequestRequest request)
         {
-            var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This booking request id is not existed!");
 
             br.ContactName = request.ContactName;
             br.ContactEmail = request.ContactEmail;
@@ -127,7 +127,7 @@ namespace IDBMS_API.Services
 
         public void UpdateBookingRequestStatus(Guid id, BookingRequestStatus status)
         {
-            var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This booking request id is not existed!");
 
             br.Status = status;
             br.UpdatedDate = DateTime.Now;
@@ -137,7 +137,7 @@ namespace IDBMS_API.Services
 
         public void ProcessBookingRequest(Guid id, BookingRequestStatus status, string adminReply)
         {
-            var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This booking request id is not existed!");
 
             br.UpdatedDate = DateTime.Now;
             br.AdminReply = adminReply;
@@ -148,7 +148,7 @@ namespace IDBMS_API.Services
 
         public void DeleteBookingRequest(Guid id)
         {
-            var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This booking request id is not existed!");
 
             br.IsDeleted = true;
             br.UpdatedDate = DateTime.Now;

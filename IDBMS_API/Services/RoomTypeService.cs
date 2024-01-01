@@ -36,7 +36,7 @@ namespace IDBMS_API.Services
 
         public RoomType? GetById(int id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetById(id) ?? throw new Exception("This room type id is not existed!");
         }
         public IEnumerable<RoomType> GetAll(bool? isHidden, string? name)
         {
@@ -77,7 +77,7 @@ namespace IDBMS_API.Services
         }
         public async void UpdateRoomType(int id, RoomTypeRequest roomType)
         {
-            var rt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var rt = _repository.GetById(id) ?? throw new Exception("This room type id is not existed!");
 
             if (roomType.IconImage!= null)
             {
@@ -105,7 +105,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateRoomTypeStatus(int id, bool isHidden)
         {
-            var rt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var rt = _repository.GetById(id) ?? throw new Exception("This room type id is not existed!");
 
             rt.IsHidden = isHidden;
 

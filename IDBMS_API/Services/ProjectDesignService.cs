@@ -50,7 +50,7 @@ namespace IDBMS_API.Services
 
         public ProjectDesign? GetById(int id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetById(id) ?? throw new Exception("This project design id is not existed!");
         }
         public ProjectDesign? CreateProjectDesign(ProjectDesignRequest request)
         {
@@ -69,7 +69,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateProjectDesign(int id, ProjectDesignRequest request)
         {
-            var obj = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var obj = _repository.GetById(id) ?? throw new Exception("This project design id is not existed!");
 
             obj.MinBudget = request.MinBudget;
             obj.MaxBudget = request.MaxBudget;
@@ -83,7 +83,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateProjectDesign(int id, bool isHidden)
         {
-            var obj = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var obj = _repository.GetById(id) ?? throw new Exception("This project design id is not existed!");
 
             obj.IsHidden = isHidden;
 

@@ -114,7 +114,7 @@ namespace IDBMS_API.Services
         
         public void UpdateParticipation(Guid id, ProjectParticipationRequest request)
         {
-            var p = _participationRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var p = _participationRepo.GetById(id) ?? throw new Exception("This project participant id is not existed!");
 
             p.UserId = request.UserId;
             p.Role = request.Role;
@@ -124,7 +124,7 @@ namespace IDBMS_API.Services
 
         public void DeleteParticipation(Guid id)
         {
-            var p = _participationRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var p = _participationRepo.GetById(id) ?? throw new Exception("This project participant id is not existed!");
 
             p.IsDeleted = true;
 

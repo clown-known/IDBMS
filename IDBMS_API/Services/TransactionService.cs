@@ -81,19 +81,19 @@ namespace IDBMS_API.Services
         }
         public Transaction? GetById(Guid id)
         {
-            return _transactionRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _transactionRepo.GetById(id) ?? throw new Exception("This transaction id is not existed!");
         }
 
         public IEnumerable<Transaction> GetByProjectId(Guid id, string? payerName, TransactionType? type, TransactionStatus? status)
         {
-            var list = _transactionRepo.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+            var list = _transactionRepo.GetByProjectId(id) ?? throw new Exception("This transaction id is not existed!");
 
             return Filter(list, payerName, type, status);
         }
 
         public IEnumerable<Transaction> GetByUserId(Guid id, string? payerName, TransactionType? type, TransactionStatus? status)
         {
-            var list = _transactionRepo.GetByUserId(id) ?? throw new Exception("This object is not existed!");
+            var list = _transactionRepo.GetByUserId(id) ?? throw new Exception("This transaction id is not existed!");
 
             return Filter(list, payerName, type, status);
         }
@@ -155,7 +155,7 @@ namespace IDBMS_API.Services
 
         public async void UpdateTransaction(Guid id, TransactionRequest request)
         {
-            var trans = _transactionRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var trans = _transactionRepo.GetById(id) ?? throw new Exception("This transaction id is not existed!");
 
             if (request.TransactionReceiptImage != null)
             {
@@ -179,7 +179,7 @@ namespace IDBMS_API.Services
 
         public void UpdateTransactionStatus(Guid id, TransactionStatus status)
         {
-            var trans = _transactionRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var trans = _transactionRepo.GetById(id) ?? throw new Exception("This transaction id is not existed!");
 
             trans.Status = status;
 
@@ -205,7 +205,7 @@ namespace IDBMS_API.Services
 
         public void DeleteTransactionById(Guid id)
         {
-            var trans = _transactionRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var trans = _transactionRepo.GetById(id) ?? throw new Exception("This transaction id is not existed!");
 
             trans.IsDeleted = true;
 
