@@ -15,21 +15,16 @@ public class Room
     public string? Description { get; set; }
 
     [Required]
-    public int RoomNo { get; set; }
-
-    [Required]
     public string UsePurpose { get; set; } = default!;
 
     [Required]
     public double Area { get; set; }
 
-    [Required]
     [Column(TypeName = "money")]
-    public decimal PricePerArea { get; set; }
+    public decimal? PricePerArea { get; set; }
 
-    [Required]
-    public int RoomTypeId { get; set; }
-    public RoomType RoomType { get; set; } = new();
+    public int? RoomTypeId { get; set; }
+    public RoomType RoomType { get; set; }
 
     public Guid? ProjectId { get; set; }
     public Project? Project { get; set; } = new();

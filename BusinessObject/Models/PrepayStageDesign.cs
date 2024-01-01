@@ -14,6 +14,9 @@ public class PrepayStageDesign
     public bool IsPrepaid { get; set; }
 
     [Required]
+    public bool IsWarrantyStage { get; set; }
+
+    [Required]
     public int StageNo { get; set; }
 
     [Required]
@@ -22,6 +25,9 @@ public class PrepayStageDesign
     public string? Description { get; set; }
 
     [Required]
-    public int DecorProjectDesignId { get; set; }
-    public DecorProjectDesign DecorProjectDesign { get; set; } = new();
+    public bool IsDeleted { get; set; }
+
+    [Required]
+    public int ProjectDesignId { get; set; }
+    public ProjectDesign ProjectDesign { get; set; }
 }

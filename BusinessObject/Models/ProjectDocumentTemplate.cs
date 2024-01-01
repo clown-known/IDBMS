@@ -28,6 +28,10 @@ public class ProjectDocumentTemplate
 
     [Required]
     public string CompanyAddress { get; set; } = default!;
+    [Required]
+    public string Email { get; set; } = default!;
+    [Required]
+    public string Position { get; set; } = default!;
 
     [Required]
     public string CompanyPhone { get; set; } = default!;

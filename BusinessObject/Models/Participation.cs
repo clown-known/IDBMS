@@ -21,4 +21,6 @@ public class Participation
 
     [Required]
     public bool IsDeleted { get; set; }
+
+    public List<TaskAssignment> TaskAssignments { get; set; } = new();
 }

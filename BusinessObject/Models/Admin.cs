@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObject.Models;
 
@@ -17,13 +18,26 @@ public class Admin
     public string Email { get; set; } = default!;
 
     [Required]
-    public byte[] Password { get; set; } = default!;
+    [JsonIgnore]
+    public byte[] PasswordHash { get; set; } = default!;
 
+    [Required]
+    [JsonIgnore]
+    public byte[] PasswordSalt { get; set; } = default!;
+    [Required]
+    public AdminStatus Status { get; set; }
+
+    [JsonIgnore]
     public string? AuthenticationCode { get; set; }
+
+    [JsonIgnore]
+    public string? token { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }
 
     public Guid? CreatorId { get; set; }
     public Admin? Creator { get; set; }
+
+    public List<Project> Projects { get; set; } = new();
 }

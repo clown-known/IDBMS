@@ -3,8 +3,8 @@
 public enum ParticipationRole
 {
     ProductOwner = 0,
-    Viewer = 1,
-    LeadArchitect = 2,
-    Architect = 3,
-    ConstructionManager = 4,
+    ProjectManager = 1,
+    Architect = 2,
+    ConstructionManager = 3,
+    Viewer = 4,
 }

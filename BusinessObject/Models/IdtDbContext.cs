@@ -25,9 +25,9 @@ public class IdtDbContext : DbContext
     public DbSet<InteriorItemCategory> InteriorItemCategories { get; set; } = default!;
     public DbSet<InteriorItemColor> InteriorItemColors { get; set; } = default!;
     public DbSet<Notification> Notifications { get; set; } = default!;
-    public DbSet<Participation> Participations { get; set; } = default!;
-    public DbSet<PrepayStage> PrepayStages { get; set; } = default!;
-    public DbSet<PrepayStageDesign> PrepayStageDesigns { get; set; } = default!;
+    public DbSet<ProjectParticipation> ProjectParticipations { get; set; } = default!;
+    public DbSet<PaymentStage> PaymentStages { get; set; } = default!;
+    public DbSet<PaymentStageDesign> PaymentStageDesigns { get; set; } = default!;
     public DbSet<Project> Projects { get; set; } = default!;
     public DbSet<ProjectCategory> ProjectCategories { get; set; } = default!;
     public DbSet<ProjectDocument> ProjectDocuments { get; set; } = default!;
@@ -36,13 +36,15 @@ public class IdtDbContext : DbContext
     public DbSet<RoomType> RoomTypes { get; set; } = default!;
     public DbSet<Transaction> Transactions { get; set; } = default!;
     public DbSet<User> Users { get; set; } = default!;
-    public DbSet<UserRole> UserRoles { get; set; } = default!;
-    
+    public DbSet<BookingRequest> BookingRequests { get; set; } = default!;
+    public DbSet<WarrantyClaim> WarrantyClaims { get; set; } = default!;
+    public DbSet<ItemInTask> ItemInTasks { get; set; } = default!;
+
     private static string? GetConnectionString()
     {
         var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
+            .AddJsonFile("appsettings.json", optional: true)
             .Build();
         return config.GetConnectionString("IDBMS");
     }
@@ -53,12 +55,60 @@ public class IdtDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<PaymentStage>()
+            .Property(stage => stage.Status)
+            .HasConversion<int>();
+        
+        modelBuilder.Entity<Admin>()
+            .Property(admin => admin.Status)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<BookingRequest>()
+            .Property(bookingRequest => bookingRequest.Status)
+            .HasConversion<int>();
+
         modelBuilder.Entity<AuthenticationCode>()
             .Property(authenticationCode => authenticationCode.Status)
             .HasConversion<int>();
 
-        modelBuilder.Entity<ConstructionTask>()
-            .Property(constructionTask => constructionTask.Status)
+        modelBuilder.Entity<ProjectTask>()
+            .Property(projectTask => projectTask.CalculationUnit)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<TaskDesign>()
+            .Property(taskDesign => taskDesign.CalculationUnit)
+            .HasConversion<int>();            
+        
+        modelBuilder.Entity<InteriorItem>()
+            .Property(interiorItem => interiorItem.CalculationUnit)
+            .HasConversion<int>();          
+        
+        modelBuilder.Entity<InteriorItemColor>()
+            .Property(interiorItemColor => interiorItemColor.Type)
+            .HasConversion<int>();
+        
+        modelBuilder.Entity<Comment>()
+            .Property(comment => comment.Status)
+            .HasConversion<int>();        
+        
+        modelBuilder.Entity<Comment>()
+            .Property(comment => comment.Type)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<ProjectDesign>()
+            .Property(projectTask => projectTask.ProjectType)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<TaskCategory>()
+            .Property(taskCategory => taskCategory.ProjectType)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<ProjectTask>()
+            .Property(projectTask => projectTask.Status)
+            .HasConversion<int>();  
+
+        modelBuilder.Entity<ProjectDocumentTemplate>()
+            .Property(projectDocumentTemplate => projectDocumentTemplate.Type)
             .HasConversion<int>();
 
         modelBuilder.Entity<InteriorItem>()
@@ -91,6 +141,10 @@ public class IdtDbContext : DbContext
 
         modelBuilder.Entity<Transaction>()
             .Property(transaction => transaction.Type)
+            .HasConversion<int>();
+
+        modelBuilder.Entity<User>()
+            .Property(user => user.Role)
             .HasConversion<int>();
 
         modelBuilder.Entity<User>()

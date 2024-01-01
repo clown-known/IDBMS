@@ -12,9 +12,7 @@ public class ProjectDocument
     public string Name { get; set; } = default!;
 
     public string? Description { get; set; }
-
-    [Required]
-    public string Url { get; set; } = default!;
+    public string? Url { get; set; } = default!;
 
     [Required]
     public DateTime CreatedDate { get; set; }
@@ -32,9 +30,11 @@ public class ProjectDocument
     public Guid? DecorProgressReportId { get; set; }
     public DecorProgressReport? DecorProgressReport { get; set; }
 
+    public int? ProjectDocumentTemplateId { get; set; }
+    public ProjectDocumentTemplate? ProjectDocumentTemplate { get; set; }
+
     [Required]
-    public int ProjectDocumentTemplateId { get; set; }
-    public ProjectDocumentTemplate ProjectDocumentTemplate { get; set; } = new();
+    public bool IsPublicAdvertisement { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }

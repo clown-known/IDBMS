@@ -7,9 +7,6 @@ public class Floor
     [Key]
     public Guid Id { get; set; }
 
-    [Required]
-    public string Name { get; set; } = default!;
-
     public string? Description { get; set; }
 
     [Required]
@@ -19,11 +16,8 @@ public class Floor
     public int FloorNo { get; set; }
 
     [Required]
-    public double Area { get; set; }
-
-    [Required]
     public Guid ProjectId { get; set; }
-    public Project Project { get; set; } = new();
+    public Project Project { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }

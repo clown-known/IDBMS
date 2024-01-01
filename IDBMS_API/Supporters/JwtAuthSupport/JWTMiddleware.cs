@@ -45,12 +45,24 @@ namespace API.Supporters
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken) validatedToken;
+<<<<<<< HEAD
                 var userId = jwtToken.Claims.First(claim => claim.Type == "id").Value;
 
                 //var user = userRepository.GetById(userId);
                 var user = new User();
                 context.Items["User"] = user;
                 //context.Items["Role"] = 1;
+=======
+                var role = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "role");
+                if (role.Value.Equals("admin")) context.Items["role"] = "admin";
+                else
+                {
+                    var userId = jwtToken.Claims.First(claim => claim.Type == "id").Value;
+                    if (userId == null || userId.Equals("")) return;
+                    var user = userRepository.GetById(Guid.Parse(userId));
+                    context.Items["User"] = user;
+                }
+>>>>>>> dev
             }
             catch (Exception)
             {

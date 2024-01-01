@@ -15,6 +15,10 @@ public class InteriorItem
     [Required]
     public string Name { get; set; } = default!;
 
+    public string? EnglishName { get; set; }
+
+    public string? ImageUrl { get; set; } = default!;
+
     [Required]
     public double Length { get; set; }
 
@@ -40,14 +44,13 @@ public class InteriorItem
     public decimal EstimatePrice { get; set; }
 
     [Required]
-    public double LaborCost { get; set; }
+    public DateTime CreatedDate { get; set; }
 
     public int? InteriorItemColorId { get; set; }
     public InteriorItemColor? InteriorItemColor { get; set; }
     
-    [Required]
-    public int InteriorItemCategoryId { get; set; }
-    public InteriorItemCategory InteriorItemCategory { get; set; } = new();
+    public int? InteriorItemCategoryId { get; set; }
+    public InteriorItemCategory? InteriorItemCategory { get; set; }
 
     [Required]
     public InteriorItemStatus Status { get; set; }
@@ -55,7 +58,6 @@ public class InteriorItem
     public Guid? ParentItemId { get; set; }
     public InteriorItem? ParentItem { get; set; }
 
-    public List<ApplianceSuggestion> ApplianceSuggestions { get; set; } = new();
-    public List<ConstructionTask> ConstructionTasks { get; set; } = new();
+    public List<ItemInTask> ItemInTasks { get; set; } = new();
     public List<InteriorItemBookmark> InteriorItemBookmarks { get; set; } = new();
 }

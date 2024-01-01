@@ -12,11 +12,9 @@ public class User
     [Required]
     public string Name { get; set; } = default!;
 
+    public string? CompanyName { get; set; } = default!;
+    public string? JobPosition { get; set; } = default!;
     public string? Bio { get; set; } = default!;
-
-    [Required]
-    [Column(TypeName = "money")]
-    public decimal Balance { get; set; }
 
     [Required]
     public string Address { get; set; } = default!;
@@ -32,18 +30,24 @@ public class User
 
     [Required]
     public DateTime CreatedDate { get; set; }
+    public DateTime? DateOfBirth { get; set; }
 
     [Required]
     public DateTime UpdatedDate { get; set; }
 
     [Required]
-    public Language Language { get; set; } = default!;
+    public Language Language { get; set; }
+
+    [Required]
+    public CompanyRole Role { get; set; }
 
     [Required]
     public UserStatus Status { get; set; }
 
+    [JsonIgnore]
     public string? ExternalId { get; set; } = default!;
 
+    [JsonIgnore]
     public string? Token { get; set; } = default!;
 
     public DateTime? LockedUntil { get; set; }
@@ -54,6 +58,7 @@ public class User
     public List<InteriorItemBookmark> InteriorItemBookmarks { get; set; } = new();
     public List<Notification> Notifications { get; set; } = new();
     public List<Transaction> Transactions { get; set; } = new();
-    public List<UserRole> UserRoles { get; set; } = new();
-    public List<Participation> Participations { get; set; } = new();
+    public List<ProjectParticipation> Participations { get; set; } = new();
+    public List<AuthenticationCode> AuthenticationCodes { get; set; } = new();
+    public List<BookingRequest> BookingRequests { get; set; } = new();
 }

@@ -1,0 +1,45 @@
+﻿using IDBMS_API.DTOs.Response;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace IDBMS_API.Services.PaginationService
+{
+    public class PaginationService<T>
+    {
+        public PaginationResponse<T> PaginateList(IEnumerable<T> inputList, int? pageSize, int? pageNo)
+        {
+            PaginationResponse<T> response = new PaginationResponse<T>
+            {
+                PageSize = pageSize ?? inputList.Count(),
+                PageNo = pageNo ?? 1,
+                TotalItem = inputList.Count(),
+                TotalPage= 1,
+                List = inputList
+            };
+
+            if (pageSize.HasValue && pageNo.HasValue)
+            {
+
+                if (pageSize <= 0 || pageNo <= 0)
+                {
+                    response.List = Enumerable.Empty<T>();
+                }
+
+                int startIndex = (pageNo.Value - 1) * pageSize.Value;
+
+                if (startIndex < inputList.Count())
+                {
+                    response.List = inputList.Skip(startIndex).Take(pageSize.Value);
+                }
+                else
+                {
+                    response.List = Enumerable.Empty<T>();
+                }
+
+                response.TotalPage = (int)Math.Ceiling((double)response.TotalItem / response.PageSize);
+            }
+
+            return response;
+        }
+    }
+}

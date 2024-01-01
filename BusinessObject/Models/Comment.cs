@@ -8,7 +8,13 @@ public class Comment
     public Guid Id { get; set; }
 
     [Required]
-    public string Content { get; set; } = default!;
+    public CommentType Type { get; set; }
+
+    public string? Content { get; set; } = default!;
+
+    public string? FileUrl { get; set; }
+
+    public Guid? ItemId { get; set; }
 
     public Guid? ConstructionTaskId { get; set; }
     public ConstructionTask? ConstructionTask { get; set; }
@@ -22,8 +28,6 @@ public class Comment
     [Required]
     public Guid UserId { get; set; }
     public User User { get; set; } = new();
-
-    public string? FileUrl { get; set; }
 
     [Required]
     public DateTime CreatedTime { get; set; }

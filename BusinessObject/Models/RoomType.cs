@@ -11,8 +11,9 @@ public class RoomType
     [Required]
     public string Name { get; set; } = default!;
 
-    [Required]
-    public string ImageUrl { get; set; } = default!;
+    public string? EnglishName { get; set; }
+
+    public string? ImageUrl { get; set; } = default!;
 
     public string? Description { get; set; }
 
@@ -21,10 +22,12 @@ public class RoomType
     public decimal PricePerArea { get; set; }
 
     [Required]
-    public bool IsHidden { get; set; }
+    public double EstimateDayPerArea { get; set; }
 
     [Required]
-    public string IconImageUrl { get; set; } = default!;
+    public bool IsHidden { get; set; }
+
+    public string? IconImageUrl { get; set; } = default!;
 
     public List<Room> Rooms { get; set; } = new();
 }

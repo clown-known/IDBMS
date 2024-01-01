@@ -16,15 +16,16 @@ public class Transaction
     [Column(TypeName = "money")]
     public decimal Amount { get; set; }
 
+    public string? Note { get; set; }    
+    
     [Required]
-    public string? Note { get; set; }
+    public string PayerName { get; set; }
 
     [Required]
     public DateTime CreatedDate { get; set; }
 
-    [Required]
-    public Guid PrepayStageId { get; set; }
-    public PrepayStage PrepayStage { get; set; } = new();
+    public Guid? UserId { get; set; }
+    public User? User { get; set; }
 
     [Required]
     public Guid UserId { get; set; }
@@ -34,7 +35,7 @@ public class Transaction
     public TransactionStatus Status { get; set; }
 
     [Required]
-    public string TransactionReceiptImageUrl { get; set; } = default!;
+    public bool IsDeleted { get; set; }
 
-    public string? AdminNote { get; set; }
+    public string? TransactionReceiptImageUrl { get; set; } = default!;
 }
