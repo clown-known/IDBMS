@@ -80,7 +80,7 @@ namespace IDBMS_API.Services
 
         public PaymentStage? GetById(Guid id)
         {
-            return _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _stageRepo.GetById(id) ?? throw new Exception("This payment stage id is not existed!");
         }
 
         public IEnumerable<PaymentStage> GetByProjectId(Guid projectId, StageStatus? status, string? name)
@@ -237,7 +237,7 @@ namespace IDBMS_API.Services
 
         public void UpdatePaymentStage(Guid id, PaymentStageRequest request)
         {
-            var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ps = _stageRepo.GetById(id) ?? throw new Exception("This payment stage id is not existed!");
 
             ps.StageNo = 0;
             ps.Name = request.Name;
@@ -266,7 +266,7 @@ namespace IDBMS_API.Services
 
         public void UpdateEndTimePayment(Guid stageId)
         {
-            var stage = GetById(stageId) ?? throw new Exception("This object is not existed!");
+            var stage = GetById(stageId) ?? throw new Exception("This payment stage id is not existed!");
 
             stage.EndTimePayment = CalculateEndTimePayment(stage.StartedDate, stage.EndDate, stage.IsPrepaid);
 
@@ -313,7 +313,7 @@ namespace IDBMS_API.Services
 
         public void UpdateStageTimeSpan(Guid stageId, DateTime? soonestStartDate, DateTime? latestEndDate)
         {
-            var stage = _stageRepo.GetById(stageId) ?? throw new Exception("This object is not existed!");
+            var stage = _stageRepo.GetById(stageId) ?? throw new Exception("This payment stage id is not existed!");
 
             stage.StartedDate= soonestStartDate;
             stage.EndDate= latestEndDate;
@@ -326,7 +326,7 @@ namespace IDBMS_API.Services
 
         public bool IsExceedPaymentDeadline(Guid stageId, DateTime? endTime)
         {
-            var stage = _stageRepo.GetById(stageId) ?? throw new Exception("This object is not existed!");
+            var stage = _stageRepo.GetById(stageId) ?? throw new Exception("This payment stage id is not existed!");
 
             //check if incurred amount in last stage is paid or not
             if (stage.StageNo != 1)
@@ -354,7 +354,7 @@ namespace IDBMS_API.Services
 
         public void StartStage(Guid id)
         {
-            var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ps = _stageRepo.GetById(id) ?? throw new Exception("This payment stage id is not existed!");
 
             ps.StartedDate = DateTime.Now;
             ps.Status = StageStatus.Ongoing;
@@ -383,7 +383,7 @@ namespace IDBMS_API.Services
 
         public void CloseStage(Guid id)
         {
-            var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ps = _stageRepo.GetById(id) ?? throw new Exception("This payment stage id is not existed!");
 
             ProjectTaskService taskService = new (_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo, _taskCategoryRepo, _taskDesignRepo);
             var tasksOfStage = taskService.GetAllProjectTaskIdByFilter(ps.ProjectId, null, id, ProjectTaskStatus.Ongoing, null, null, false, true, null);
@@ -424,7 +424,7 @@ namespace IDBMS_API.Services
 
         public void SuspendStage(Guid id)
         {
-            var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ps = _stageRepo.GetById(id) ?? throw new Exception("This payment stage id is not existed!");
 
             ps.Status = StageStatus.Suspended;
 
@@ -441,7 +441,7 @@ namespace IDBMS_API.Services
         
         public void ReopenStage(Guid id, decimal penaltyFee)
         {
-            var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ps = _stageRepo.GetById(id) ?? throw new Exception("This payment stage id is not existed!");
 
             ps.Status = StageStatus.Unopen;
 
@@ -460,7 +460,7 @@ namespace IDBMS_API.Services
 
         public void UpdateStageEstimateBusinessDay(Guid id, int estimateBusinessDay)
         {
-            var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ps = _stageRepo.GetById(id) ?? throw new Exception("This payment stage id is not existed!");
 
             ps.EstimateBusinessDay = estimateBusinessDay;
 
@@ -469,7 +469,7 @@ namespace IDBMS_API.Services
 
         public void UpdateStagePenaltyFee(Guid stageId, decimal penaltyFee)
         {
-            var ps = _stageRepo.GetById(stageId) ?? throw new Exception("This object is not existed!");
+            var ps = _stageRepo.GetById(stageId) ?? throw new Exception("This payment stage id is not existed!");
 
             ps.PenaltyFee = penaltyFee;
 
@@ -505,7 +505,7 @@ namespace IDBMS_API.Services
 
         public void UpdateStageTotalIncurredPaid(Guid stageId, decimal totalIncurredPaid)
         {
-            var stage = _stageRepo.GetById(stageId) ?? throw new Exception("This object is not existed!");
+            var stage = _stageRepo.GetById(stageId) ?? throw new Exception("This payment stage id is not existed!");
 
             stage.TotalIncurredPaid = totalIncurredPaid == 0 ? null : totalIncurredPaid;
 
@@ -592,7 +592,7 @@ namespace IDBMS_API.Services
 
         public void DeletePaymentStage(Guid id)
         {
-            var ps = _stageRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ps = _stageRepo.GetById(id) ?? throw new Exception("This payment stage id is not existed!");
 
             ps.IsDeleted = true;
 

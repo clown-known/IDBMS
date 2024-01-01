@@ -36,13 +36,13 @@ namespace IDBMS_API.Services
         }
         public IEnumerable<PaymentStageDesign> GetByProjectDesignId(int id, string? name)
         {
-            var list =_repository.GetByProjectDesignId(id) ?? throw new Exception("This object is not existed!");
+            var list =_repository.GetByProjectDesignId(id) ?? throw new Exception("This payment stage design id is not existed!");
 
             return Filter(list, name);
         }
         public PaymentStageDesign? GetById(int id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetById(id) ?? throw new Exception("This payment stage design id is not existed!");
         }
         public PaymentStageDesign? CreatePaymentStageDesign(PaymentStageDesignRequest request)
         {
@@ -70,7 +70,7 @@ namespace IDBMS_API.Services
         }
         public void UpdatePaymentStageDesign(int id, PaymentStageDesignRequest request)
         {
-            var psd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var psd = _repository.GetById(id) ?? throw new Exception("This payment stage design id is not existed!");
             psd.PricePercentage = request.PricePercentage;
             psd.IsPrepaid = request.IsPrepaid;
             psd.StageNo = request.StageNo;
@@ -109,7 +109,7 @@ namespace IDBMS_API.Services
 
         public void DeletePaymentStageDesign(int id)
         {
-            var psd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var psd = _repository.GetById(id) ?? throw new Exception("This payment stage design id is not existed!");
 
             psd.IsDeleted= true;
 

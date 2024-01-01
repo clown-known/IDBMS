@@ -20,11 +20,11 @@ namespace IDBMS_API.Services
         }
         public TaskDocument? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetById(id) ?? throw new Exception("This task document id is not existed!");
         }
         public IEnumerable<TaskDocument> GetByTaskReportId(Guid id)
         {
-            return _repository.GetByTaskReportId(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetByTaskReportId(id) ?? throw new Exception("This task document id is not existed!");
         }
         public async Task<TaskDocument?> CreateTaskDocument(Guid projectId, Guid taskReportId, TaskDocumentRequest request)
         {
@@ -47,7 +47,7 @@ namespace IDBMS_API.Services
         }
         public void DeleteTaskDocument(Guid id)
         {
-            var td = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var td = _repository.GetById(id) ?? throw new Exception("This task document id is not existed!");
 
             td.IsDeleted = true;
 

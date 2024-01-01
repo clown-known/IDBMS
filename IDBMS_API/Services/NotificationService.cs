@@ -38,11 +38,11 @@ namespace IDBMS_API.Services
 
         public Notification? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetById(id) ?? throw new Exception("This notification id is not existed!");
         }
         public IEnumerable<Notification> GetByUserId (Guid userId, NotificationCategory? category)
         {
-            var list = _repository.GetByUserId(userId) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByUserId(userId) ?? throw new Exception("This notification id is not existed!");
 
             return Filter(list, category);
         }
@@ -100,7 +100,7 @@ namespace IDBMS_API.Services
 
         public void UpdateIsSeenById(Guid id)
         {
-            var request = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var request = _repository.GetById(id) ?? throw new Exception("This notification id is not existed!");
 
             request.IsSeen = true;
 

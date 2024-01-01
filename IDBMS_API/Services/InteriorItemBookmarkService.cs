@@ -19,12 +19,12 @@ namespace IDBMS_API.Services
 
         public IEnumerable<InteriorItemBookmark> GetByUserId(Guid userId)
         {
-            return _repository.GetByUserId(userId) ?? throw new Exception("This object is not existed!");
+            return _repository.GetByUserId(userId) ?? throw new Exception("This bookmark id is not existed!");
         }
 
         public InteriorItemBookmark GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetById(id) ?? throw new Exception("This bookmark id is not existed!");
         }
 
         public InteriorItemBookmark? CreateInteriorItemBookmark(InteriorItemBookmarkRequest request)
@@ -42,7 +42,7 @@ namespace IDBMS_API.Services
 
         public void UpdateInteriorItemBookmark(Guid id, InteriorItemBookmarkRequest request)
         {
-            var iib = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var iib = _repository.GetById(id) ?? throw new Exception("This bookmark id is not existed!");
 
             iib.UserId = request.UserId;
             iib.InteriorItemId = request.InteriorItemId;

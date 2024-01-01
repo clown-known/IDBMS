@@ -88,7 +88,7 @@ namespace IDBMS_API.Services
             else
             {
                 InteriorItemCategoryService itemCategoryService = new(_itemCategoryRepo);
-                var category = itemCategoryService.GetById(categoryId.Value) ?? throw new Exception("This object is not existed!");
+                var category = itemCategoryService.GetById(categoryId.Value) ?? throw new Exception("This item category id is not existed!");
                 var type = category.InteriorItemType;
 
                 if (type == InteriorItemType.Furniture)
@@ -129,11 +129,11 @@ namespace IDBMS_API.Services
         }
         public InteriorItem? GetById(Guid id)
         {
-            return _itemRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _itemRepo.GetById(id) ?? throw new Exception("This item id is not existed!");
         }
         public IEnumerable<InteriorItem> GetByCategory(int id, int? itemCategoryId, InteriorItemStatus? status, string? codeOrName, InteriorItemType? itemType)
         {
-            var list = _itemRepo.GetByCategory(id) ?? throw new Exception("This object is not existed!");
+            var list = _itemRepo.GetByCategory(id) ?? throw new Exception("This item id is not existed!");
 
             return Filter(list, itemCategoryId, status, codeOrName, itemType);
         }
@@ -181,7 +181,7 @@ namespace IDBMS_API.Services
         }
         public async void UpdateInteriorItem(Guid id, InteriorItemRequest request)
         {
-            var ii = _itemRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ii = _itemRepo.GetById(id) ?? throw new Exception("This item id is not existed!");
 
             ii.Name = request.Name;
             ii.EnglishName = request.EnglishName;
@@ -212,7 +212,7 @@ namespace IDBMS_API.Services
 
         public void UpdateInteriorItemStatus(Guid id, InteriorItemStatus status)
         {
-            var ii = _itemRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ii = _itemRepo.GetById(id) ?? throw new Exception("This item id is not existed!");
 
             ii.Status = status;
 
@@ -221,7 +221,7 @@ namespace IDBMS_API.Services
 
         public void DeleteInteriorItem(Guid id)
         {
-            var ii = _itemRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ii = _itemRepo.GetById(id) ?? throw new Exception("This item id is not existed!");
 
             ii.IsDeleted = true;
 

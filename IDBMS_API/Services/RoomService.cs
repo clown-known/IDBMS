@@ -79,12 +79,12 @@ namespace IDBMS_API.Services
 
         public Room? GetById(Guid id)
         {
-            return _roomRepo.GetById(id) ?? throw new Exception("This object is not found!");
+            return _roomRepo.GetById(id) ?? throw new Exception("This room id is not found!");
         }
 
         public IEnumerable<Room> GetByFloorId(Guid id, string? usePurpose, bool? isHidden)
         {
-            var list = _roomRepo.GetByFloorId(id) ?? throw new Exception("This object is not found!");
+            var list = _roomRepo.GetByFloorId(id) ?? throw new Exception("This room id is not found!");
 
             return Filter(list, usePurpose, isHidden);
         }
@@ -199,7 +199,7 @@ namespace IDBMS_API.Services
 
         public void UpdateRoom(Guid id, RoomRequest request)
         {
-            var room = _roomRepo.GetById(id) ?? throw new Exception("This object is not found!");
+            var room = _roomRepo.GetById(id) ?? throw new Exception("This room id is not found!");
 
             room.FloorId = request.FloorId;
             room.Description = request.Description;
@@ -227,7 +227,7 @@ namespace IDBMS_API.Services
 
         public void UpdateRoomStatus(Guid id, bool isHidden, Guid projectId)
         {
-            var room = _roomRepo.GetById(id) ?? throw new Exception("This object is not found!");
+            var room = _roomRepo.GetById(id) ?? throw new Exception("This room id is not found!");
 
             room.IsHidden = isHidden;
 
