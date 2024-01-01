@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-﻿using Microsoft.AspNetCore.Mvc;
-=======
 ﻿using API.Supporters.JwtAuthSupport;
 using BusinessObject.Enums;
 using BusinessObject.Models;
@@ -14,17 +11,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Threading.Tasks;
->>>>>>> dev
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
-    public class InteriorItemColorController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class InteriorItemColorsController : ODataController
     {
-<<<<<<< HEAD
-        public IActionResult Index()
-        {
-            return View();
-=======
         private readonly InteriorItemColorService _service;
         private readonly PaginationService<InteriorItemColor> _paginationService;
 
@@ -185,7 +178,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
->>>>>>> dev
         }
     }
+
 }

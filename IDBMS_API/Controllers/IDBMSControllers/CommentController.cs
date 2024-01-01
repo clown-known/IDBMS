@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-﻿using Microsoft.AspNetCore.Mvc;
-=======
 ﻿using Azure.Core;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
@@ -12,17 +9,13 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 using BusinessObject.Models;
 using IDBMS_API.Services.PaginationService;
 using API.Supporters.JwtAuthSupport;
->>>>>>> dev
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
-    public class CommentController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CommentsController : ODataController
     {
-<<<<<<< HEAD
-        public IActionResult Index()
-        {
-            return View();
-=======
         private readonly CommentService _service;
         private readonly PaginationService<Comment> _paginationService;
 
@@ -228,7 +221,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
->>>>>>> dev
         }
     }
+
 }

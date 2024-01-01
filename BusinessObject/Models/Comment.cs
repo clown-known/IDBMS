@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusinessObject.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObject.Models;
 
@@ -16,23 +17,24 @@ public class Comment
 
     public Guid? ItemId { get; set; }
 
-    public Guid? ConstructionTaskId { get; set; }
-    public ConstructionTask? ConstructionTask { get; set; }
-
-    public Guid? DecorProgressReportId { get; set; }
-    public DecorProgressReport? DecorProgressReport { get; set; }
+    [Required]
+    public Guid ProjectTaskId { get; set; }
+    public ProjectTask ProjectTask { get; set; }
 
     [Required]
-    public DateTime CreatedDate { get; set; }
+    public Guid ProjectId { get; set; }
 
     [Required]
     public Guid UserId { get; set; }
-    public User User { get; set; } = new();
+    public User User { get; set; }
 
     [Required]
     public DateTime CreatedTime { get; set; }
 
     public DateTime? LastModifiedTime { get; set; }
+
+    [Required]
+    public CommentStatus Status { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }

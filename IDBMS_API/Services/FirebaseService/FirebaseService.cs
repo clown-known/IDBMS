@@ -1,21 +1,23 @@
-﻿using Firebase.Storage;
-using Firebase.Auth;
+﻿using DocumentFormat.OpenXml.Vml;
+using Firebase.Storage;
+using IDBMS_API.Constants;
+using Microsoft.AspNetCore.Mvc;
+using Path = System.IO.Path;
 
 namespace BLL.Services
 {
     public class FirebaseService
     {
         IConfiguration config;
+        private readonly string _storageBucket;
         public  FirebaseService()
         {
             config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
+            _storageBucket = config["Firebase:StorageBucket"];
         }
-<<<<<<< HEAD
-        public async Task<string> Upload(Stream fileStream, string fileName)
-=======
         public async Task<string> UploadImage(IFormFile file)
         {
             try
@@ -75,38 +77,19 @@ namespace BLL.Services
             return null;
         } 
         public async Task<string> UploadDocument([FromForm] IFormFile file,Guid projectid)
->>>>>>> dev
         {
-            var firebaseAuthLink = await SignIn();
-            var cancellation = new CancellationTokenSource();
-            var task = new FirebaseStorage(
-                    config["firebase:Bucket"],
-                    new FirebaseStorageOptions()
+            if (file != null && file.Length != 0)
+            {
+
+                string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+
+                var storageClient = new FirebaseStorage(_storageBucket);
+                using (var stream = file.OpenReadStream())
+                {
+                    stream.Position = 0; // Reset the stream position
+
+                    using (var memoryStream = new MemoryStream())
                     {
-<<<<<<< HEAD
-                        AuthTokenAsyncFactory = () => Task.FromResult(firebaseAuthLink.FirebaseToken),
-                        ThrowOnCancel = true
-                    }
-                ).Child(fileName)
-                .PutAsync(fileStream);
-            return await task;
-        }
-        public async void Delete
-            (string fileName)
-        {
-            var firebaseAuthLink = await SignIn();
-            var cancellation = new CancellationTokenSource();
-            var task = new FirebaseStorage(
-                    config["firebase:Bucket"],
-                    new FirebaseStorageOptions()
-                    {
-                        AuthTokenAsyncFactory = () => Task.FromResult(firebaseAuthLink.FirebaseToken),
-                        ThrowOnCancel = true
-                    }
-                ).Child(fileName)
-                .DeleteAsync();
-            await task;
-=======
                         await stream.CopyToAsync(memoryStream);
                         memoryStream.Position = 0;
                         await storageClient.Child(projectid.ToString()).Child("Document").Child(fileName).PutAsync(memoryStream);
@@ -292,16 +275,9 @@ namespace BLL.Services
             FirebaseStorageReference starsRef = storageClient.Child($"{ProjectId}").Child(fileType).Child(fileName);
             string downloadUrl = await starsRef.GetDownloadUrlAsync();
             return downloadUrl;
->>>>>>> dev
         }
-
-        private async Task<FirebaseAuthLink> SignIn()
+        public async Task<byte[]> DownloadFile(string? fileName,Guid? projectId,string fileType,bool isSample)
         {
-<<<<<<< HEAD
-            var auth = new FirebaseAuthProvider(new FirebaseConfig(config["firebase:ApiKey"]));
-            var a = await auth.SignInWithEmailAndPasswordAsync(config["firebase:auth:email"], config["firebase:auth:password"]);
-            return a;
-=======
 
             var storageClient = new FirebaseStorage(_storageBucket);
             FirebaseStorageReference starsRef;
@@ -329,7 +305,6 @@ namespace BLL.Services
                 }
             }
             return null;
->>>>>>> dev
         }
         public async Task<byte[]> DownloadFiletest(string? fileName)
         {

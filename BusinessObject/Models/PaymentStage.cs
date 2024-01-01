@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObject.Models;
 
-public class PrepayStage
+public class PaymentStage
 {
     [Key]
     public Guid Id { get; set; }
@@ -52,7 +52,7 @@ public class PrepayStage
 
     [Required]
     public Guid ProjectId { get; set; }
-    public Project Project { get; set; } = new();
+    public Project Project { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }
@@ -60,8 +60,6 @@ public class PrepayStage
     [Required]
     public StageStatus Status { get; set; }
 
-    public List<ConstructionTask> ConstructionTasks { get; set; } = new();
-    public List<DecorProgressReport> DecorProgressReports { get; set; } = new();
-    public List<Transaction> Transactions { get; set; } = new();
+    public List<ProjectTask> Tasks { get; set; } = new();
 }
 

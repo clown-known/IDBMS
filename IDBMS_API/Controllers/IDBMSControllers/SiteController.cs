@@ -13,13 +13,9 @@ using System.Threading.Tasks;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
-<<<<<<< HEAD:IDBMS_API/Controllers/IDBMSControllers/PrepayStageController.cs
-    public class PrepayStageController : Controller
-=======
     [Route("api/[controller]")]
     [ApiController]
     public class SitesController : ODataController
->>>>>>> dev:IDBMS_API/Controllers/IDBMSControllers/SiteController.cs
     {
         private readonly SiteService _service;
         private readonly PaginationService<Site> _paginationService;

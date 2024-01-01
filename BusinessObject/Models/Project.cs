@@ -24,13 +24,12 @@ public class Project
 
     [Required]
     public int ProjectCategoryId { get; set; }
-    public ProjectCategory ProjectCategory { get; set; } = new();
+    public ProjectCategory ProjectCategory { get; set; }
 
     [Required]
     public DateTime CreatedDate { get; set; }
 
-    [Required]
-    public DateTime UpdatedDate { get; set; }
+    public DateTime? UpdatedDate { get; set; }
 
     public DateTime? WarrantyPeriodEndTime { get; set; }
 
@@ -67,16 +66,15 @@ public class Project
 
     [Required]
     public ProjectStatus Status { get; set; }
-
+    
     [Required]
-    public bool IsAdvertisement { get; set; }
+    public AdvertisementStatus AdvertisementStatus { get; set; }
 
     public Guid? BasedOnDecorProjectId { get; set; }
     public Project? BasedOnDecorProject { get; set; }
 
-    [Required]
-    public int DecorProjectDesignId { get; set; }
-    public DecorProjectDesign DecorProjectDesign { get; set; } = new();
+    public int? ProjectDesignId { get; set; }
+    public ProjectDesign? ProjectDesign { get; set; }
 
     public Guid? SiteId { get; set; }
     public Site? Site { get; set; }
@@ -85,5 +83,4 @@ public class Project
     public List<ProjectParticipation> ProjectParticipations { get; set; } = new();
     public List<PaymentStage> PaymentStages { get; set; } = new();
     public List<ProjectDocument> ProjectDocuments { get; set; } = new();
-    public List<Room> Rooms { get; set; } = new();
 }

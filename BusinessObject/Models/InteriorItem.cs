@@ -36,8 +36,9 @@ public class InteriorItem
 
     public string? Description { get; set; }
 
-    [Required]
-    public string Origin { get; set; } = default!;
+    public string? EnglishDescription { get; set; }
+
+    public string? Origin { get; set; } = default!;
 
     [Required]
     [Column(TypeName = "money")]
@@ -54,6 +55,9 @@ public class InteriorItem
 
     [Required]
     public InteriorItemStatus Status { get; set; }
+
+    [Required]
+    public bool IsDeleted { get; set; }
 
     public Guid? ParentItemId { get; set; }
     public InteriorItem? ParentItem { get; set; }

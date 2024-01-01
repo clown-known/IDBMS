@@ -5,11 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDBMS_API.DTOs.Response
+namespace Repository.Interfaces
 {
-    public class ResponseMessage
+    public interface ITaskCategoryRepository : ICrudBaseRepository<TaskCategory, int>
     {
-        public string? Message { get; set; }
-        public object? Data { get; set; }
     }
 }

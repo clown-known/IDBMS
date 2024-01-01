@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-﻿using Microsoft.AspNetCore.Mvc;
-=======
 ﻿using API.Supporters.JwtAuthSupport;
 using Azure.Core;
 using BusinessObject.Models;
@@ -16,17 +13,13 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Repository.Interfaces;
 using System;
 using System.Threading.Tasks;
->>>>>>> dev
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
-    public class RoomController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class RoomsController : ODataController
     {
-<<<<<<< HEAD
-        public IActionResult Index()
-        {
-            return View();
-=======
         private readonly RoomService _service;
         private readonly PaginationService<Room> _paginationService;
 
@@ -184,7 +177,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
->>>>>>> dev
         }
     }
 }

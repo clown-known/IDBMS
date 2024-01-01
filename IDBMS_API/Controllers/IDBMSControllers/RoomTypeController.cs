@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace IDBMS_API.Controllers.IDBMSControllers
-{
-    public class RoomTypeController : Controller
-    {
-        public IActionResult Index()
-        {
-            return View();
-=======
 ﻿using API.Supporters.JwtAuthSupport;
 using Azure.Core;
 using BusinessObject.Models;
@@ -144,7 +133,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             {
                 return BadRequest($"Error: {ex.Message}");
             }
->>>>>>> dev
         }
     }
+
 }

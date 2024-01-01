@@ -10,20 +10,12 @@ namespace API.Supporters.JwtAuthSupport
     public class AuthorizeAttribute : Attribute, IAuthorizationFilter
     {
         public string Policy { get; set; }
-<<<<<<< HEAD
-        private ParticipationRepository _participationRepository;
-        public AuthorizeAttribute() { }
-        public AuthorizeAttribute(Guid projectid)
-        {
-            _participationRepository = new ParticipationRepository();
-=======
         private ProjectParticipationRepository _participationRepository;
         private TaskAssignmentRepository _taskAssignmentRepository;
         public AuthorizeAttribute()
         {
             _participationRepository = new ProjectParticipationRepository();
             _taskAssignmentRepository = new TaskAssignmentRepository();
->>>>>>> dev
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -46,13 +38,7 @@ namespace API.Supporters.JwtAuthSupport
                     if (routeData != null)
                     {
 
-<<<<<<< HEAD
-                    var id = context.HttpContext.Request.Query["id"].ToString();
-                    if (id != null)
-                        context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
-=======
                         var id = context.HttpContext.Request.Query["projectId"].ToString();
->>>>>>> dev
 
                         Guid.TryParse(id, out Guid pid);
                         policy.ForEach(p =>
@@ -91,13 +77,8 @@ namespace API.Supporters.JwtAuthSupport
                             context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
                     }
                 }
-<<<<<<< HEAD
-                //context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
-            } 
-=======
                 
             }
->>>>>>> dev
         }
     }
 }

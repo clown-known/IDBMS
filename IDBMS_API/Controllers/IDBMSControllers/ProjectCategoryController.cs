@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-﻿using Microsoft.AspNetCore.Mvc;
-=======
 ﻿using Azure.Core;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.DTOs.Request;
@@ -15,17 +12,13 @@ using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Threading.Tasks;
 using API.Supporters.JwtAuthSupport;
->>>>>>> dev
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
-    public class ProjectCategoryController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProjectCategoriesController : ODataController
     {
-<<<<<<< HEAD
-        public IActionResult Index()
-        {
-            return View();
-=======
         private readonly ProjectCategoryService _service;
         private readonly PaginationService<ProjectCategory> _paginationService;
 
@@ -152,7 +145,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
->>>>>>> dev
         }
     }
+
 }

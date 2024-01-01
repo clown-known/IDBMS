@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-﻿using Microsoft.AspNetCore.Mvc;
-=======
 ﻿using API.Supporters.JwtAuthSupport;
 using Azure.Core;
 using BusinessObject.Enums;
@@ -15,17 +12,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Threading.Tasks;
->>>>>>> dev
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
-    public class ProjectDocumentController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProjectDocumentsController : ODataController
     {
-<<<<<<< HEAD
-        public IActionResult Index()
-        {
-            return View();
-=======
         private readonly ProjectDocumentService _service;
         private readonly PaginationService<ProjectDocument> _paginationService;
 
@@ -189,7 +182,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
->>>>>>> dev
         }
     }
+
 }

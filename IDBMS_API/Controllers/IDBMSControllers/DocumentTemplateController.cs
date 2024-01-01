@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-﻿using Microsoft.AspNetCore.Mvc;
-=======
 ﻿using API.Supporters.JwtAuthSupport;
 using BusinessObject.Enums;
 using BusinessObject.Models;
@@ -14,17 +11,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Threading.Tasks;
->>>>>>> dev
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
-    public class DocumentTemplateController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class DocumentTemplatesController : ODataController
     {
-<<<<<<< HEAD
-        public IActionResult Index()
-        {
-            return View();
-=======
         private readonly DocumentTemplateService _service;
         private readonly PaginationService<ProjectDocumentTemplate> _paginationService;
 
@@ -152,7 +145,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
->>>>>>> dev
         }
     }
+
 }

@@ -1,10 +1,7 @@
+using API.Services;
 using API.Supporters;
 using API.Supporters.JwtAuthSupport;
 using BLL.Services;
-<<<<<<< HEAD
-using Repository.Implements;
-using Repository.Interfaces;
-=======
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using FirebaseAdmin;
@@ -22,30 +19,20 @@ using Repository.Interfaces;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Text;
 using System.Text.Json.Serialization;
->>>>>>> dev
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-<<<<<<< HEAD
-
-=======
 string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "idbms-7f5e1-firebase-adminsdk-er69h-99ecd4346c.json");
 FirebaseApp.Create(new AppOptions()
 {
     Credential = GoogleCredential.FromFile(jsonFilePath),
     ProjectId = builder.Configuration["Firebase:ProjectId"]
 });
->>>>>>> dev
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-<<<<<<< HEAD
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IParticipationRepository, ParticipationRepository>();
-
-=======
 //add jwt bearer to swagger
 builder.Services.AddSwaggerGen(c =>
 {
@@ -151,11 +138,14 @@ builder.Services.AddScoped<AdvertisementService, AdvertisementService>();
 builder.Services.AddScoped<DashboardService, DashboardService>();
 
 builder.Services.AddScoped(typeof(PaginationService<>), typeof(PaginationService<>));
->>>>>>> dev
 
 builder.Services.AddScoped<FirebaseService, FirebaseService>();
 builder.Services.AddScoped<JwtTokenSupporter, JwtTokenSupporter>();
-
+builder.Services.AddControllers().AddJsonOptions(x =>
+                    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
+                .AddOData(option => option.Select().Filter()
+                .Count().OrderBy().Expand().SetMaxTop(100).AddRouteComponents("odata", GetEdmModel()));
+builder.Services.AddODataQueryFilter();
 
 // cors
 builder.Services.AddCors(options =>
@@ -189,13 +179,13 @@ app.UseCors();
 
 app.UseAuthorization();
 
+app.UseODataBatching();
+
 app.UseMiddleware<JWTMiddleware>();
 
 app.MapControllers();
 
 app.Run();
-<<<<<<< HEAD
-=======
 
 
 static IEdmModel GetEdmModel()
@@ -236,4 +226,3 @@ static IEdmModel GetEdmModel()
 
     return builder.GetEdmModel();
 }
->>>>>>> dev

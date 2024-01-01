@@ -13,31 +13,26 @@ using System.Threading.Tasks;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
-<<<<<<< HEAD:IDBMS_API/Controllers/IDBMSControllers/PrepayStageDesignController.cs
-    public class PrepayStageDesignController : Controller
-=======
     [Route("api/[controller]")]
     [ApiController]
-    public class WarrantyClaimsController : ODataController
->>>>>>> dev:IDBMS_API/Controllers/IDBMSControllers/WarrantyClaimController.cs
+    public class TaskAssignmentsController : ODataController
     {
-        private readonly WarrantyClaimService _service;
-        private readonly PaginationService<WarrantyClaim> _paginationService;
+        private readonly TaskAssignmentService _service;
+        private readonly PaginationService<TaskAssignment> _paginationService;
 
-        public WarrantyClaimsController(WarrantyClaimService service, PaginationService<WarrantyClaim> paginationService)
+        public TaskAssignmentsController(TaskAssignmentService service, PaginationService<TaskAssignment> paginationService)
         {
             _service = service;
             _paginationService = paginationService;
         }
-
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
-        public IActionResult GetWarrantyClaims(Guid projectId, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
+        public IActionResult GetTaskAssignments(Guid projectId, string? name, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetAll(isCompanyCover, name);
+                var list = _service.GetAll(name);
 
                 var response = new ResponseMessage()
                 {
@@ -56,41 +51,15 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
-
-        [EnableQuery]
-        [HttpGet("user/{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
-        public IActionResult GetWarrantyClaimsByUserId(Guid projectId, Guid id, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
-        {
-            try
-            {
-                var list = _service.GetByUserId(id, isCompanyCover, name);
-
-                var response = new ResponseMessage()
-                {
-                    Message = "Get successfully!",
-                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
-                };
-
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var response = new ResponseMessage()
-                {
-                    Message = $"Error: {ex.Message}"
-                };
-                return BadRequest(response);
-            }
-        }
+        //lead arc, cons man
         [EnableQuery]
         [HttpGet("project/{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
-        public IActionResult GetWarrantyClaimsByProjectId(Guid projectId, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
+        public IActionResult GetTaskAssignmentsByProjectId(Guid projectId, Guid id, string? name, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetByProjectId(projectId, isCompanyCover, name);
+                var list = _service.GetByProjectId(id, name);
 
                 var response = new ResponseMessage()
                 {
@@ -109,18 +78,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
-
+        //lead arc, cons man
         [EnableQuery]
-        [HttpGet("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
-        public IActionResult GetWarrantyClaimById(Guid projectId, Guid id)
+        [HttpGet("user/{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
+        public IActionResult GetTaskAssignmentsByUserId(Guid projectId, Guid id, string? name, int? pageSize, int? pageNo)
         {
             try
             {
+                var list = _service.GetByUserId(id, name);
+
                 var response = new ResponseMessage()
                 {
                     Message = "Get successfully!",
-                    Data = _service.GetById(id),
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
                 };
 
                 return Ok(response);
@@ -134,18 +105,16 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
-
         [HttpPost]
-        [Authorize(Policy = "Admin, Participation")]
-        public async Task<IActionResult> CreateWarrantyClaim(Guid projectId, [FromForm][FromBody] WarrantyClaimRequest request)
+        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        public IActionResult CreateTaskAssignment(Guid projectId, [FromBody] TaskAssignmentRequest request)
         {
                 try
                 {
-                    var result = await _service.CreateWarrantyClaim(request);
+                    _service.CreateTaskAssignment(request);
                     var response = new ResponseMessage()
                     {
                         Message = "Create successfully!",
-                        Data = result
                     };
                     return Ok(response);
                 }
@@ -156,16 +125,16 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                         Message = $"Error: {ex.Message}"
                     };
                     return BadRequest(response);
-                }
+                }  
         }
 
-        [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult UpdateWarrantyClaim(Guid projectId, Guid id, [FromForm][FromBody] WarrantyClaimRequest request)
+        [HttpPut("project-task/{id}")]
+        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
+        public IActionResult UpdateTaskAssignment(Guid projectId, Guid id, [FromBody] List<Guid> request)
         {
             try
             {
-                _service.UpdateWarrantyClaim(id, request);
+                _service.UpdateTaskAssignmentByTaskId(id, request);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
@@ -184,11 +153,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult DeleteWarrantyClaim(Guid id, Guid projectId)
+        public IActionResult DeleteTaskAssignment(Guid projectId, Guid id)
         {
             try
             {
-                _service.DeleteWarrantyClaim(id, projectId);
+                _service.DeleteTaskAssignment(id);
                 var response = new ResponseMessage()
                 {
                     Message = "Delete successfully!",

@@ -1,8 +1,4 @@
 ﻿using API.Supporters.JwtAuthSupport;
-<<<<<<< HEAD
-using BusinessObject.Models;
-using IDBMS_API.DTOs.Request;
-=======
 using BLL.Services;
 using IDBMS_API.DTOs.Request;
 using BusinessObject.Models;
@@ -10,7 +6,6 @@ using Firebase.Storage;
 using IDBMS_API.DTOs.Request.AccountRequest;
 using IDBMS_API.Services;
 using IDBMS_API.Supporters.File;
->>>>>>> dev
 using IDBMS_API.Supporters.Utils;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,7 +31,7 @@ namespace IDBMS_API.Controllers
             return Ok(token);
         }
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(CreateAccountRequest request)
+        public async Task<ActionResult<User>> Register(CreateUserRequest request)
         {
             PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
             var user = new User();
@@ -46,17 +41,6 @@ namespace IDBMS_API.Controllers
 
             return Ok(user);
         }
-<<<<<<< HEAD
-        [HttpGet("case1")]
-        [Authorize]
-        public IActionResult Case1()
-        {
-            return Ok("success");
-        }
-        [HttpGet("case2")]
-        [Authorize( Policy = "ParticipationAccess")]
-        public IActionResult Case2(string? id) { 
-=======
         [HttpPost("file")]
         [Authorize(Policy = "owner")]
         public async Task<IActionResult> IndexAsync([FromBody][FromForm] IFormFile id)
@@ -146,7 +130,6 @@ namespace IDBMS_API.Controllers
         [Authorize(Policy = "Viewer")]
         public IActionResult CaseViewer(Guid projectId)
         {
->>>>>>> dev
             return Ok("success");
         }
     }

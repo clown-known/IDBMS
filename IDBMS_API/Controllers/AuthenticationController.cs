@@ -2,11 +2,6 @@
 using API.Services;
 using API.Supporters.JwtAuthSupport;
 using BusinessObject.Models;
-<<<<<<< HEAD
-using IDBMS_API.DTOs.Request;
-using IDBMS_API.DTOs.Response;
-using Microsoft.AspNetCore.Mvc;
-=======
 using Microsoft.AspNetCore.Mvc;
 using IDBMS_API.Supporters.Utils;
 using IDBMS_API.Services;
@@ -16,7 +11,6 @@ using Azure.Core;
 using DocumentFormat.OpenXml.Office2016.Excel;
 using IDBMS_API.DTOs.Request.AccountRequest;
 using IDBMS_API.DTOs.Response;
->>>>>>> dev
 
 namespace API.Controllers
 {
@@ -25,12 +19,6 @@ namespace API.Controllers
     public class AuthenticationsController : ControllerBase
     {
         private readonly UserService userService;
-<<<<<<< HEAD
-
-        public AuthenticationController(UserService userService)
-        {
-            this.userService = userService;
-=======
         private readonly AdminService adminService;
         private readonly AuthenticationCodeService authenticationCodeService;
 
@@ -39,7 +27,6 @@ namespace API.Controllers
             this.userService = userService;
             this.authenticationCodeService = authenticationCodeService;
             this.adminService = adminService;
->>>>>>> dev
         }
 
         [HttpPost("login")]
@@ -164,8 +151,6 @@ namespace API.Controllers
                 return BadRequest(response);
             }
         }
-<<<<<<< HEAD
-=======
         [HttpPost("register")]
         public IActionResult Register(CreateUserRequest request)
         {
@@ -229,6 +214,5 @@ namespace API.Controllers
             return Unauthorized();
 
         }
->>>>>>> dev
     }
 }

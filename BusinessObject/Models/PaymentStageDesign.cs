@@ -2,7 +2,7 @@
 
 namespace BusinessObject.Models;
 
-public class PrepayStageDesign
+public class PaymentStageDesign
 {
     [Key]
     public int Id { get; set; }
@@ -22,7 +22,11 @@ public class PrepayStageDesign
     [Required]
     public string Name { get; set; } = default!;
 
+    public string? EnglishName { get; set; }
+
     public string? Description { get; set; }
+
+    public string? EnglishDescription { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }

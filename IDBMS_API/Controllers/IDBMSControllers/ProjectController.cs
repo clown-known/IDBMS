@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace IDBMS_API.Controllers.IDBMSControllers
-{
-    public class ProjectController : Controller
-    {
-        public IActionResult Index()
-        {
-            return View();
-        }
-=======
 ﻿using Azure.Core;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
@@ -191,6 +179,5 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
->>>>>>> dev
     }
 }

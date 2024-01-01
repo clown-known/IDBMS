@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-﻿using Microsoft.AspNetCore.Mvc;
-=======
 ﻿using Azure.Core;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
@@ -15,17 +12,13 @@ using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Threading.Tasks;
 using API.Supporters.JwtAuthSupport;
->>>>>>> dev
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
-    public class TransactionController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TransactionsController : ODataController
     {
-<<<<<<< HEAD
-        public IActionResult Index()
-        {
-            return View();
-=======
         private readonly TransactionService _service;
         private readonly PaginationService<Transaction> _paginationService;
 
@@ -208,7 +201,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
->>>>>>> dev
         }
 
         [HttpDelete("{id}")]
@@ -234,4 +226,5 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
     }
+
 }

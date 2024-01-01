@@ -17,6 +17,8 @@ public class RoomType
 
     public string? Description { get; set; }
 
+    public string? EnglishDescription { get; set; }
+
     [Required]
     [Column(TypeName = "money")]
     public decimal PricePerArea { get; set; }

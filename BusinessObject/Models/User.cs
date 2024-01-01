@@ -1,6 +1,7 @@
 ﻿using BusinessObject.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace BusinessObject.Models;
 
@@ -26,7 +27,12 @@ public class User
     public string Phone { get; set; } = default!;
 
     [Required]
-    public byte[] Password { get; set; } = default!;
+    [JsonIgnore]
+    public byte[] PasswordHash { get; set; } = default!;
+
+    [Required]
+    [JsonIgnore]
+    public byte[] PasswordSalt { get; set; } = default!;
 
     [Required]
     public DateTime CreatedDate { get; set; }
@@ -53,8 +59,6 @@ public class User
     public DateTime? LockedUntil { get; set; }
 
     public List<Comment> Comments { get; set; } = new();
-    public List<ConstructionTaskReport> ConstructionTaskReports { get; set; } = new();
-    public List<DecorProgressReport> DecorProgressReports { get; set; } = new();
     public List<InteriorItemBookmark> InteriorItemBookmarks { get; set; } = new();
     public List<Notification> Notifications { get; set; } = new();
     public List<Transaction> Transactions { get; set; } = new();

@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-﻿using Microsoft.AspNetCore.Mvc;
-=======
 ﻿using API.Supporters.JwtAuthSupport;
 using Azure.Core;
 using BusinessObject.Enums;
@@ -16,17 +13,13 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Repository.Interfaces;
 using System.Threading.Tasks;
->>>>>>> dev
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
-    public class NotificationController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class NotificationsController : ODataController
     {
-<<<<<<< HEAD
-        public IActionResult Index()
-        {
-            return View();
-=======
         private readonly NotificationService _service;
         private readonly PaginationService<Notification> _paginationService;
 
@@ -199,7 +192,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
->>>>>>> dev
         }
     }
+
 }

@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-﻿using Microsoft.AspNetCore.Mvc;
-=======
 ﻿using Azure.Core;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
@@ -15,18 +12,13 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using IDBMS_API.Services.PaginationService;
 using BusinessObject.Enums;
 using API.Supporters.JwtAuthSupport;
->>>>>>> dev
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
-    public class AdminController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AdminsController : ODataController
     {
-<<<<<<< HEAD
-        public IActionResult Index()
-        {
-            return View();
-        }
-=======
         private readonly AdminService _service;
         private readonly PaginationService<Admin> _paginationService;
 
@@ -180,6 +172,5 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
->>>>>>> dev
     }
 }
