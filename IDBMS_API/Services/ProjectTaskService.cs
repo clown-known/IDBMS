@@ -142,7 +142,7 @@ namespace IDBMS_API.Services
 
         public ProjectTask? GetById(Guid id)
         {
-            return _taskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _taskRepo.GetById(id) ?? throw new Exception("This project task id is not existed!");
         }
 
         public IEnumerable<ProjectTask?> GetByProjectId(Guid id, 
@@ -312,7 +312,7 @@ namespace IDBMS_API.Services
 
         public void UpdateTaskProgress(Guid taskId, double unitUsed)
         {
-            var ct = _taskRepo.GetById(taskId) ?? throw new Exception("This object is not existed!");
+            var ct = _taskRepo.GetById(taskId) ?? throw new Exception("This project task id is not existed!");
 
             ct.UnitUsed = unitUsed;
             ct.Percentage = (int)((unitUsed / ct.UnitInContract) * 100);
@@ -458,7 +458,7 @@ namespace IDBMS_API.Services
         {
                 foreach (var taskId in listTaskId)
                 {
-                    var task = _taskRepo.GetById(taskId) ?? throw new Exception("This object is not existed!");
+                    var task = _taskRepo.GetById(taskId) ?? throw new Exception("This project task id is not existed!");
 
                     task.PaymentStageId = paymentStageId;
 
@@ -487,7 +487,7 @@ namespace IDBMS_API.Services
 
         public void UpdateProjectTask(Guid id, ProjectTaskRequest request)
         {
-            var ct = _taskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ct = _taskRepo.GetById(id) ?? throw new Exception("This project task id is not existed!");
 
             ct.Name = request.Name;
             ct.Description = request.Description;
@@ -511,7 +511,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateProjectTaskStatus(Guid id, ProjectTaskStatus status)
         {
-            var ct = _taskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ct = _taskRepo.GetById(id) ?? throw new Exception("This project task id is not existed!");
 
             ct.Status = status;
 

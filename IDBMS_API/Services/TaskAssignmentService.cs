@@ -38,26 +38,26 @@ namespace IDBMS_API.Services
 
         public TaskAssignment? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetById(id) ?? throw new Exception("This task assignment id is not existed!");
         }
 
         public IEnumerable<TaskAssignment> GetByProjectId(Guid id, string? name)
         {
-            var list = _repository.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByProjectId(id) ?? throw new Exception("This task assignment id is not existed!");
 
             return Filter(list, name);
         }
 
         public IEnumerable<TaskAssignment> GetByUserId(Guid id, string? name)
         {
-            var list = _repository.GetByUserId(id) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByUserId(id) ?? throw new Exception("This task assignment id is not existed!");
 
             return Filter(list, name);
         }
 
         public IEnumerable<TaskAssignment> GetByTaskId(Guid id, string? name)
         {
-            var list = _repository.GetByTaskId(id) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByTaskId(id) ?? throw new Exception("This task assignment id is not existed!");
 
             return Filter(list, name);
         }
@@ -122,7 +122,7 @@ namespace IDBMS_API.Services
 
         public void DeleteTaskAssignment(Guid id)
         {
-            var ta = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ta = _repository.GetById(id) ?? throw new Exception("This task assignment id is not existed!");
 
             _repository.DeleteById(id);
         }

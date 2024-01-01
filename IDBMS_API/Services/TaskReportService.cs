@@ -76,12 +76,12 @@ namespace IDBMS_API.Services
 
         public TaskReport? GetById(Guid id)
         {
-            return _taskReportRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _taskReportRepo.GetById(id) ?? throw new Exception("This task report id is not existed!");
         }
 
         public IEnumerable<TaskReport> GetByTaskId(Guid id, string? name)
         {
-            var list = _taskReportRepo.GetByTaskId(id) ?? throw new Exception("This object is not existed!");
+            var list = _taskReportRepo.GetByTaskId(id) ?? throw new Exception("This task report id is not existed!");
 
             return Filter(list, name);
         }
@@ -137,7 +137,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateTaskReport(Guid id, TaskReportRequest request)
         {
-            var ctr = _taskReportRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ctr = _taskReportRepo.GetById(id) ?? throw new Exception("This task report id is not existed!");
 
             ctr.Name = request.Name;
             ctr.UnitUsed = request.UnitUsed;
@@ -150,7 +150,7 @@ namespace IDBMS_API.Services
         }
         public void DeleteTaskReport(Guid id)
         {
-            var ctr = _taskReportRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ctr = _taskReportRepo.GetById(id) ?? throw new Exception("This task report id is not existed!");
 
             ctr.IsDeleted = true;
 

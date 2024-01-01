@@ -44,11 +44,11 @@ namespace IDBMS_API.Services
         }
         public ProjectDocument? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetById(id) ?? throw new Exception("This project document id is not existed!");
         }
         public IEnumerable<ProjectDocument?> GetByFilter(Guid? projectId, int? documentTemplateId)
         {
-            return _repository.GetByFilter(projectId, documentTemplateId) ?? throw new Exception("This object is not existed!");
+            return _repository.GetByFilter(projectId, documentTemplateId) ?? throw new Exception("This project document id is not existed!");
         }
         public IEnumerable<ProjectDocument?> GetByProjectId(Guid id, ProjectDocumentCategory? category, string? name)
         {
@@ -85,7 +85,7 @@ namespace IDBMS_API.Services
 
         public async void UpdateProjectDocument(Guid id, ProjectDocumentRequest request)
         {
-            var pd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var pd = _repository.GetById(id) ?? throw new Exception("This project document id is not existed!");
 
             if (request.file != null)
             {
@@ -106,7 +106,7 @@ namespace IDBMS_API.Services
         }
         public void DeleteProjectDocument(Guid id)
         {
-            var pd = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var pd = _repository.GetById(id) ?? throw new Exception("This project document id is not existed!");
 
             pd.IsDeleted = true;
 

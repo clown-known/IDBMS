@@ -41,11 +41,11 @@ namespace IDBMS_API.Services
         }
         public InteriorItemColor? GetById(int id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetById(id) ?? throw new Exception("This item color id is not existed!");
         }
         public IEnumerable<InteriorItemColor> GetByCategoryId(int id, ColorType? type, string? name)
         {
-            var list = _repository.GetByCategoryId(id) ?? throw new Exception("This object is not existed!");
+            var list = _repository.GetByCategoryId(id) ?? throw new Exception("This item color id is not existed!");
 
             return Filter(list, type, name);
         }
@@ -65,7 +65,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateInteriorItemColor(int id, InteriorItemColorRequest request)
         {
-            var iic = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var iic = _repository.GetById(id) ?? throw new Exception("This item color id is not existed!");
             iic.Name = request.Name;
             iic.EnglishName = request.EnglishName;
             iic.Type = request.Type;
@@ -76,7 +76,7 @@ namespace IDBMS_API.Services
         }
         public void DeleteInteriorItemColor(int id)
         {
-            var iic = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var iic = _repository.GetById(id) ?? throw new Exception("This item color id is not existed!");
 
             //interior item
 
