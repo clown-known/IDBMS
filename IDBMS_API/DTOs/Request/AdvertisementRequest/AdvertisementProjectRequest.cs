@@ -31,11 +31,9 @@ namespace IDBMS_API.DTOs.Request.AdvertisementRequest
         public double Area { get; set; }
 
         [Required]
-        public int Language { get; set; }
-
-        public string? AdvertisementDescription { get; set; }
-        public string? EnglishAdvertisementDescription { get; set; }
-
-        public IFormFile? RepresentImage { get; set; }
+        public Language Language { get; set; }        
+        
+        [Required]
+        public int EstimateBusinessDay { get; set; }
     }
 }
