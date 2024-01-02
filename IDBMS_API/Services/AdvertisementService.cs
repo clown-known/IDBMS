@@ -65,7 +65,7 @@ namespace IDBMS_API.Services
 
             return FilterProject(list, type, status, name);
         }
-        
+
         public IEnumerable<ProjectDocument> GetImagesByProjectId(Guid projectId, bool? isPublicAdvertisement)
         {
             var list = _documentRepo.GetByProjectId(projectId).Where(d => d.Category == ProjectDocumentCategory.CompletionImage);

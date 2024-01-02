@@ -20,7 +20,7 @@ namespace IDBMS_API.Services
         }
 
         public IEnumerable<ProjectParticipation> Filter(IEnumerable<ProjectParticipation> list,
-            ParticipationRole? role, string? name)
+            ParticipationRole? role, string? userName, ProjectStatus? projectStatus)
         {
             IEnumerable<ProjectParticipation> filteredList = list;
             
@@ -29,26 +29,31 @@ namespace IDBMS_API.Services
                 filteredList = filteredList.Where(item => item.Role == role);
             }
 
-            if (name != null)
+            if (userName != null)
             {
-                filteredList = filteredList.Where(item => (item.User.Name != null && item.User.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+                filteredList = filteredList.Where(item => (item.User.Name != null && item.User.Name.Unidecode().IndexOf(userName.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            if (projectStatus != null)
+            {
+                filteredList = filteredList.Where(item => item.Project.Status == projectStatus);
             }
 
             return filteredList;
         }
 
-        public IEnumerable<ProjectParticipation> GetAll(ParticipationRole? role, string? name)
+        public IEnumerable<ProjectParticipation> GetAll(ParticipationRole? role, string? name, ProjectStatus? projectStatus)
         {
             var list = _participationRepo.GetAll();
 
-            return Filter(list, role, name);
+            return Filter(list, role, name, projectStatus);
         }
 
-        public IEnumerable<ProjectParticipation> GetByUserId(Guid id, ParticipationRole? role, string? name)
+        public IEnumerable<ProjectParticipation> GetByUserId(Guid id, ParticipationRole? role, string? name, ProjectStatus? projectStatus)
         {
             var list = _participationRepo.GetByUserId(id);
 
-            return Filter(list, role, name);
+            return Filter(list, role, name, projectStatus);
         }
 
         public IEnumerable<ProjectParticipation> GetUsersByParticipationInProject(Guid projectId)
@@ -62,7 +67,7 @@ namespace IDBMS_API.Services
         {
             var list = _participationRepo.GetProjectMemberByProjectId(id);
 
-            return Filter(list, role, name);
+            return Filter(list, role, name, null);
         }
 
         public ProjectParticipation? GetProjectManagerByProjectId(Guid id)

@@ -157,8 +157,8 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
                 .Where(u => u.UserId.Equals(id) && u.IsDeleted == false)
                 .Include(p => p.Project)
                     .ThenInclude(pc => pc.ProjectCategory)
-                .ToList()
-                .Reverse<ProjectParticipation>();
+                .OrderByDescending(p => p.Project.UpdatedDate)
+                .ToList();
         }
         catch
         {
