@@ -26,7 +26,7 @@ namespace IDBMS_API.DTOs.Request
         public Guid CreatedByAdminId { get; set; }
 
         [Required]
-        public int Language { get; set; }
+        public Language Language { get; set; }
 
         [Required]
         public ProjectStatus Status { get; set; }

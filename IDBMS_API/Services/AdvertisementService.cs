@@ -24,9 +24,14 @@ namespace IDBMS_API.Services
         }
 
         private IEnumerable<Project> FilterProject(IEnumerable<Project> list,
-                ProjectType? type, AdvertisementStatus? status, string? name)
+                int? categoryId, ProjectType? type, AdvertisementStatus? status, string? name)
         {
             IEnumerable<Project> filteredList = list;
+
+            if (categoryId != null)
+            {
+                filteredList = filteredList.Where(item => item.ProjectCategoryId == categoryId);
+            }
 
             if (type != null)
             {
@@ -59,13 +64,13 @@ namespace IDBMS_API.Services
             return filteredList;
         }
 
-        public IEnumerable<Project> GetAllProjects(ProjectType? type, AdvertisementStatus? status, string? name)
+        public IEnumerable<Project> GetAllProjects(int? categoryId, ProjectType? type, AdvertisementStatus? status, string? name)
         {
             var list = _projectRepo.GetAdvertisementAllowedProjects();
 
-            return FilterProject(list, type, status, name);
+            return FilterProject(list, categoryId, type, status, name);
         }
-        
+
         public IEnumerable<ProjectDocument> GetImagesByProjectId(Guid projectId, bool? isPublicAdvertisement)
         {
             var list = _documentRepo.GetByProjectId(projectId).Where(d => d.Category == ProjectDocumentCategory.CompletionImage);
@@ -77,7 +82,7 @@ namespace IDBMS_API.Services
             return _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
         }
 
-        public async Task<Project?> CreateAdvertisementProject(AdvertisementProjectRequest request)
+        public Project? CreateAdvertisementProject(AdvertisementProjectRequest request)
         {
             var newAdProject = new Project
             {
@@ -94,23 +99,28 @@ namespace IDBMS_API.Services
                 Language= request.Language,
                 AdvertisementStatus = AdvertisementStatus.Allowed,
                 Status = ProjectStatus.Done,
-
-                AdvertisementDescription= request.AdvertisementDescription,
-                EnglishAdvertisementDescription= request.AdvertisementDescription,
+                EstimateBusinessDay = request.EstimateBusinessDay,
             };
 
             var createdProject = _projectRepo.Save(newAdProject);
 
-            var updateDescription = new AdvertisementDescriptionRequest
-            {
-                AdvertisementDescription = request.AdvertisementDescription,
-                EnglishAdvertisementDescription = request.EnglishAdvertisementDescription,
-                RepresentImage = request.RepresentImage,
-            };
-
-            UpdateAdProjectDescription(createdProject.Id, updateDescription);
-
             return createdProject;
+        }
+
+        public void UpdateAdvertisementProject(Guid projectId, AdvertisementProjectRequest request)
+        {
+            var adsProject = _projectRepo.GetById(projectId) ?? throw new Exception("This project id is not existed!");
+
+            adsProject.Name = request.Name;
+            adsProject.Type = request.Type;
+            adsProject.ProjectCategoryId = request.ProjectCategoryId;
+            adsProject.FinalPrice = request.FinalPrice;
+            adsProject.AmountPaid = request.FinalPrice;
+            adsProject.Area = request.Area;
+            adsProject.Language = request.Language;
+            adsProject.EstimateBusinessDay = request.EstimateBusinessDay;
+
+            _projectRepo.Update(adsProject);
         }
 
         public async Task CreateCompletionImage(List<AdvertisementImageRequest> requests)
@@ -161,7 +171,7 @@ namespace IDBMS_API.Services
             _documentRepo.Update(pd);
         }
 
-        public async void UpdateAdProjectDescription(Guid projectId, AdvertisementDescriptionRequest request)
+        public async Task UpdateAdProjectDescription(Guid projectId, AdvertisementDescriptionRequest request)
         {
             var p = _projectRepo.GetById(projectId) ?? throw new Exception("This project id is not existed!");
 

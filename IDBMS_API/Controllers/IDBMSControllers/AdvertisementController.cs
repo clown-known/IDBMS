@@ -30,11 +30,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetAdvertisementAllowedProjects(int? pageSize, int? pageNo, ProjectType? type, AdvertisementStatus? status, string? name)
+        public IActionResult GetAdvertisementAllowedProjects(int? pageSize, int? pageNo, int? categoryId, ProjectType? type, AdvertisementStatus? status, string? name)
         {
             try
             {
-                var list = _service.GetAllProjects(type, status, name);
+                var list = _service.GetAllProjects(categoryId, type, status, name);
 
                 var response = new ResponseMessage()
                 {
@@ -108,16 +108,41 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost("/project")]
         [Authorize(Policy = "Admin")]
-        public async Task<IActionResult> CreateAdvertisementProject([FromForm][FromBody] AdvertisementProjectRequest request)
+        public IActionResult CreateAdvertisementProject([FromForm][FromBody] AdvertisementProjectRequest request)
         {
             try
             {
-                var result = await _service.CreateAdvertisementProject(request);
+                var result = _service.CreateAdvertisementProject(request);
 
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",
                     Data = result
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [HttpPut("/project/{id}")]
+        [Authorize(Policy = "Admin")]
+        public IActionResult UpdateAdvertisementProject(Guid id, [FromForm][FromBody] AdvertisementProjectRequest request)
+        {
+            try
+            {
+                _service.UpdateAdvertisementProject(id, request);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
                 };
 
                 return Ok(response);
