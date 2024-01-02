@@ -31,7 +31,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation")]
+        [Authorize(Policy = "Admin")]
         public IActionResult GetUsers(string? searchParam, CompanyRole? role, UserStatus? status, int? pageSize, int? pageNo)
         {
             try
@@ -150,7 +150,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}/role")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult UpdateUserRole(Guid id, CompanyRole role)
+        public IActionResult UpdateUserRole(Guid projectId, Guid id, CompanyRole role)
         {
             try
             {

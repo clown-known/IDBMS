@@ -104,8 +104,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
-        public async Task<IActionResult> CreateInteriorItem([FromForm][FromBody] InteriorItemRequest request)
+        [Authorize(Policy = "Admin, Architect, ConstructionManager")]
+        public async Task<IActionResult> CreateInteriorItem([FromBody] InteriorItemRequest request)
         {
             try
             {
@@ -128,8 +128,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
-        public IActionResult UpdateInteriorItem(Guid id, [FromForm][FromBody] InteriorItemRequest request)
+        [Authorize(Policy = "Admin, Architect, ConstructionManager")]
+        public IActionResult UpdateInteriorItem(Guid id, [FromBody] InteriorItemRequest request)
         {
             try
             {
@@ -151,7 +151,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/status")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
+        [Authorize(Policy = "Admin, Architect, ConstructionManager")]
         public IActionResult UpdateInteriorItemStatus(Guid id, InteriorItemStatus status)
         {
             try
@@ -174,7 +174,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
+        [Authorize(Policy = "Admin, Architect, ConstructionManager")]
         public IActionResult DeleteInteriorItem(Guid id)
         {
             try

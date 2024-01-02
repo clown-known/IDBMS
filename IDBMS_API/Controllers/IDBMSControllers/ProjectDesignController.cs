@@ -30,7 +30,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetProjectDesigns(ProjectType? type, string? name, bool? isHidden, int? pageSize, int? pageNo)
+        public IActionResult GetProjectDesigns(Guid projectId, ProjectType? type, string? name, bool? isHidden, int? pageSize, int? pageNo)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetProjectDesignById(int id)
+        public IActionResult GetProjectDesignById(Guid projectId, int id)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Admin, ProjectManager")]
         public IActionResult CreateProjectDesign([FromBody] ProjectDesignRequest request)
         {
             try
@@ -104,7 +104,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Admin, ProjectManager")]
         public IActionResult UpdateProjectDesign(int id, [FromBody] ProjectDesignRequest request)
         {
             try
@@ -127,7 +127,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/isHidden")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Admin, ProjectManager")]
         public IActionResult UpdateProjectDesignStatus(int id, bool isHidden)
         {
             try

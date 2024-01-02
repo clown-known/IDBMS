@@ -31,7 +31,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetTransactions(string? payerName,TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
+        public IActionResult GetTransactions(Guid projectId, string? payerName,TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetTransactionsById(Guid id)
+        public IActionResult GetTransactionsById(Guid projectId, Guid id)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("user/{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetTransactionsByUserId(Guid id, string? payerName, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
+        public IActionResult GetTransactionsByUserId(Guid projectId, Guid id, string? payerName, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         [HttpPost]
         [Authorize(Policy = "Admin, Participation")]
-        public async Task<IActionResult> CreateTransaction([FromForm][FromBody] TransactionRequest request)
+        public async Task<IActionResult> CreateTransaction(Guid projectId, [FromForm][FromBody] TransactionRequest request)
         {
             try
             {
@@ -159,7 +159,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult UpdateTransaction(Guid id, [FromForm][FromBody] TransactionRequest request)
+        public IActionResult UpdateTransaction(Guid projectId, Guid id, [FromForm][FromBody] TransactionRequest request)
         {
             try
             {
@@ -182,7 +182,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}/status")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult UpdateTransactionStatus(Guid id, TransactionStatus status)
+        public IActionResult UpdateTransactionStatus(Guid projectId, Guid id, TransactionStatus status)
         {
             try
             {
@@ -205,7 +205,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult DeleteTransaction(Guid id)
+        public IActionResult DeleteTransaction(Guid projectId, Guid id)
         {
             try
             {

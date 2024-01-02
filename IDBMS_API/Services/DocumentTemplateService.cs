@@ -41,7 +41,7 @@ namespace IDBMS_API.Services
         }
         public ProjectDocumentTemplate? GetById(int id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetById(id) ?? throw new Exception("This document template id is not existed!");
         }
         public ProjectDocumentTemplate? CreateDocumentTemplate(ProjectDocumentTemplateRequest request)
         {
@@ -69,7 +69,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateDocumentTemplate(int id, ProjectDocumentTemplateRequest request)
         {
-            var dt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var dt = _repository.GetById(id) ?? throw new Exception("This document template id is not existed!");
             dt.Name = request.Name;
             dt.Type = request.Type;
             dt.Language = request.Language;
@@ -90,7 +90,7 @@ namespace IDBMS_API.Services
         }
         public void DeleteDocumentTemplate(int id)
         {
-            var dt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var dt = _repository.GetById(id) ?? throw new Exception("This document template id is not existed!");
 
             dt.IsDeleted = true;
 

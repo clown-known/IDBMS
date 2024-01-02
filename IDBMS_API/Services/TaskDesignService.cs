@@ -45,7 +45,7 @@ namespace IDBMS_API.Services
         }
         public TaskDesign? GetById(int id)
         {
-            return _taskDesignRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _taskDesignRepo.GetById(id) ?? throw new Exception("This task design id is not existed!");
         }
 
         public bool CheckCodeExisted(string code)
@@ -86,7 +86,7 @@ namespace IDBMS_API.Services
             else
             {
                 TaskCategoryService taskCategoryService = new (_taskCategoryRepo);
-                var category = taskCategoryService.GetById(categoryId.Value) ?? throw new Exception("This object is not existed!");
+                var category = taskCategoryService.GetById(categoryId.Value) ?? throw new Exception("This task category id is not existed!");
                 var type = category.ProjectType;
 
                 if (type == ProjectType.Decor)
@@ -138,7 +138,7 @@ namespace IDBMS_API.Services
         }
         public void UpdateTaskDesign(int id, TaskDesignRequest request)
         {
-            var ctd = _taskDesignRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ctd = _taskDesignRepo.GetById(id) ?? throw new Exception("This task design id is not existed!");
 
             ctd.Name = request.Name;
             ctd.EnglishName = request.EnglishName;
@@ -153,7 +153,7 @@ namespace IDBMS_API.Services
         }
         public void DeleteTaskDesign(int id)
         {
-            var ctd = _taskDesignRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ctd = _taskDesignRepo.GetById(id) ?? throw new Exception("This task design id is not existed!");
 
             ctd.IsDeleted = true;
 

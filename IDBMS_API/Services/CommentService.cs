@@ -50,7 +50,7 @@ namespace IDBMS_API.Services
 
         public Comment? GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetById(id) ?? throw new Exception("This comment id is not existed!");
         }
 
         public IEnumerable<Comment> GetByProjectTaskId(Guid id, CommentType? type, CommentStatus? status, string? content)
@@ -66,7 +66,7 @@ namespace IDBMS_API.Services
 
             return Filter(list, type, status, content);
         }
-        public async Task<Comment?> CreateComment([FromForm] CommentRequest request)
+        public async Task<Comment?> CreateComment(CommentRequest request)
         {
 
             var cmt = new Comment
@@ -107,9 +107,9 @@ namespace IDBMS_API.Services
             var cmtCreated = _repository.Save(cmt);
             return cmtCreated;
         }
-        public async void UpdateComment(Guid id, [FromForm] CommentRequest request)
+        public async void UpdateComment(Guid id, CommentRequest request)
         {
-            var cmt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var cmt = _repository.GetById(id) ?? throw new Exception("This comment id is not existed!");
 
             cmt.ProjectTaskId = request.ProjectTaskId;
             cmt.ProjectId = request.ProjectId;
@@ -147,7 +147,7 @@ namespace IDBMS_API.Services
 
         public void UpdateCommentStatus(Guid id, CommentStatus status)
         {
-            var cmt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var cmt = _repository.GetById(id) ?? throw new Exception("This comment id is not existed!");
 
             cmt.Status = status;
 
@@ -156,7 +156,7 @@ namespace IDBMS_API.Services
 
         public void DeleteComment(Guid id)
         {
-            var cmt = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var cmt = _repository.GetById(id) ?? throw new Exception("This comment id is not existed!");
 
             cmt.IsDeleted = true;
             cmt.LastModifiedTime = DateTime.Now;

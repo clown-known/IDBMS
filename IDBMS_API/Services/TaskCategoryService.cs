@@ -43,9 +43,9 @@ namespace IDBMS_API.Services
         }
         public TaskCategory? GetById(int id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetById(id) ?? throw new Exception("This task category id is not existed!");
         }
-        public async Task<TaskCategory?> CreateTaskCategory([FromForm] TaskCategoryRequest request)
+        public async Task<TaskCategory?> CreateTaskCategory(TaskCategoryRequest request)
         {
             var ctc = new TaskCategory
             {
@@ -68,9 +68,9 @@ namespace IDBMS_API.Services
             var ctcCreated = _repository.Save(ctc);
             return ctcCreated;
         }
-        public async void UpdateTaskCategory(int id, [FromForm]TaskCategoryRequest request)
+        public async void UpdateTaskCategory(int id, TaskCategoryRequest request)
         {
-            var ctc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ctc = _repository.GetById(id) ?? throw new Exception("This task category id is not existed!");
 
             if (request.IconImage != null)
             {
@@ -90,7 +90,7 @@ namespace IDBMS_API.Services
         }
         public void DeleteTaskCategory(int id)
         {
-            var ctc = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var ctc = _repository.GetById(id) ?? throw new Exception("This task category id is not existed!");
 
             ctc.IsDeleted = true;
             //cons task design

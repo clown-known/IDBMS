@@ -32,7 +32,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
-        public IActionResult GetProjectTasks()
+        public IActionResult GetProjectTasks(Guid projectId)
         {
             return Ok(_service.GetAll());
         }        
@@ -40,7 +40,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
-        public IActionResult GetProjectTaskById(Guid id)
+        public IActionResult GetProjectTaskById(Guid projectId, Guid id)
         {
             try
             {
@@ -124,7 +124,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
-        public IActionResult CreateProjectTask([FromBody] ProjectTaskRequest request)
+        public IActionResult CreateProjectTask(Guid projectId, [FromBody] ProjectTaskRequest request)
         {
             try
             {
@@ -148,7 +148,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
-        public IActionResult UpdateProjectTask(Guid id, [FromBody] ProjectTaskRequest request)
+        public IActionResult UpdateProjectTask(Guid projectId, Guid id, [FromBody] ProjectTaskRequest request)
         {
             try
             {
@@ -194,7 +194,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}/status")]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
-        public IActionResult UpdateProjectTaskStatus(Guid id, ProjectTaskStatus status)
+        public IActionResult UpdateProjectTaskStatus(Guid projectId, Guid id, ProjectTaskStatus status)
         {
             try
             {

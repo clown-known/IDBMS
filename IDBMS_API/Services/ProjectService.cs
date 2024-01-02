@@ -80,11 +80,11 @@ public class ProjectService
 
     public Project? GetById(Guid id)
     {
-        return _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+        return _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
     }    
     public IEnumerable<Project> GetBySiteId(Guid id, ProjectType? type, ProjectStatus? status, string? name)
     {
-        var list = _projectRepo.GetBySiteId(id) ?? throw new Exception("This object is not found!");
+        var list = _projectRepo.GetBySiteId(id) ?? throw new Exception("This project id is not found!");
 
         return Filter(list, type, status, name);
     }
@@ -148,7 +148,7 @@ public class ProjectService
 
     public void UpdateProject(Guid id, ProjectRequest request)
     {
-        var p = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+        var p = _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
 
         p.Name = request.Name;
         p.Description = request.Description;
@@ -165,7 +165,7 @@ public class ProjectService
 
     public void UpdateProjectDataByTask(Guid id, decimal estimatePrice, decimal finalPrice, int estimateBusinessDay)
     {
-        var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
 
         project.EstimatedPrice = estimatePrice;
         project.FinalPrice = finalPrice;
@@ -177,7 +177,7 @@ public class ProjectService
 
     public void UpdateProjectDataByRoom(Guid id, double totalArea)
     {
-        var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
 
         project.Area = (double)totalArea;
         project.UpdatedDate = DateTime.Now;
@@ -187,7 +187,7 @@ public class ProjectService
 
     public void UpdateProjectDataByWarrantyClaim(Guid id, decimal totalWarrantyPaid)
     {
-        var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
 
         project.TotalWarrantyPaid = totalWarrantyPaid;
         project.UpdatedDate = DateTime.Now;
@@ -197,7 +197,7 @@ public class ProjectService
 
     public void UpdateProjectAmountPaid(Guid id, decimal totalPaid)
     {
-        var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
 
         project.AmountPaid = totalPaid;
         project.UpdatedDate = DateTime.Now;
@@ -207,7 +207,7 @@ public class ProjectService
 
     public void UpdateProjectTotalPenaltyFee(Guid id, decimal totalPenaltyFee)
     {
-        var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
 
         project.TotalPenaltyFee = totalPenaltyFee;
         project.UpdatedDate = DateTime.Now;
@@ -217,7 +217,7 @@ public class ProjectService
 
     public void UpdateProjectWarrantyPeriodEndTime(Guid id, DateTime? warrantyPeriodEndTime)
     {
-        var project = _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
 
         project.WarrantyPeriodEndTime = warrantyPeriodEndTime;
         project.UpdatedDate = DateTime.Now;

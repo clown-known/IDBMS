@@ -38,7 +38,7 @@ namespace IDBMS_API.Services
         }
         public Site? GetById(Guid id)
         {
-            return _siteRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _siteRepo.GetById(id) ?? throw new Exception("This site id is not existed!");
         }
         public Site? CreateSite(SiteRequest request)
         {
@@ -62,7 +62,7 @@ namespace IDBMS_API.Services
 
         public void UpdateSite(Guid id, SiteRequest request)
         {
-            var site = _siteRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var site = _siteRepo.GetById(id) ?? throw new Exception("This site id is not existed!");
 
             site.Name = request.Name;
             site.Description = request.Description;
@@ -77,7 +77,7 @@ namespace IDBMS_API.Services
         }
         public void DeleteSite(Guid id)
         {
-            var site = _siteRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var site = _siteRepo.GetById(id) ?? throw new Exception("This site id is not existed!");
 
             site.IsDeleted = true;
 

@@ -43,9 +43,9 @@ namespace IDBMS_API.Services
         }
         public InteriorItemCategory? GetById(int id)
         {
-            return _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _repository.GetById(id) ?? throw new Exception("This item category id is not existed!");
         }
-        public async Task<InteriorItemCategory?> CreateInteriorItemCategory([FromForm] InteriorItemCategoryRequest request)
+        public async Task<InteriorItemCategory?> CreateInteriorItemCategory(InteriorItemCategoryRequest request)
         {  
             var iic = new InteriorItemCategory
             {
@@ -77,9 +77,9 @@ namespace IDBMS_API.Services
             var iicCreated = _repository.Save(iic);
             return iicCreated;
         }
-        public async Task UpdateInteriorItemCategory(int id, [FromForm] InteriorItemCategoryRequest request)
+        public async Task UpdateInteriorItemCategory(int id, InteriorItemCategoryRequest request)
         {
-            var iic = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var iic = _repository.GetById(id) ?? throw new Exception("This item category id is not existed!");
 
             if (request.BannerImage != null)
             {
@@ -111,7 +111,7 @@ namespace IDBMS_API.Services
         }
         public void DeleteInteriorItemCategory(int id)
         {
-            var iic = _repository.GetById(id) ?? throw new Exception("This object is not existed!");
+            var iic = _repository.GetById(id) ?? throw new Exception("This item category id is not existed!");
 
             iic.IsDeleted = true;
             //interior item

@@ -74,10 +74,10 @@ namespace IDBMS_API.Services
         }
         public Project GetAdProjectById(Guid id)
         {
-            return _projectRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
         }
 
-        public async Task<Project?> CreateAdvertisementProject([FromForm] AdvertisementProjectRequest request)
+        public async Task<Project?> CreateAdvertisementProject(AdvertisementProjectRequest request)
         {
             var newAdProject = new Project
             {
@@ -145,7 +145,7 @@ namespace IDBMS_API.Services
 
         public void DeleteCompletionImage(Guid documentId)
         {
-            var pd = _documentRepo.GetById(documentId) ?? throw new Exception("This object is not existed!");
+            var pd = _documentRepo.GetById(documentId) ?? throw new Exception("This project document id is not existed!");
 
             pd.IsDeleted = true;
 
@@ -154,16 +154,16 @@ namespace IDBMS_API.Services
 
         public void UpdatePublicImage(Guid documentId, bool isPublicAdvertisement)
         {
-            var pd = _documentRepo.GetById(documentId) ?? throw new Exception("This object is not existed!");
+            var pd = _documentRepo.GetById(documentId) ?? throw new Exception("This project document id is not existed!");
 
             pd.IsPublicAdvertisement = isPublicAdvertisement;
 
             _documentRepo.Update(pd);
         }
 
-        public async void UpdateAdProjectDescription(Guid projectId, [FromForm] AdvertisementDescriptionRequest request)
+        public async void UpdateAdProjectDescription(Guid projectId, AdvertisementDescriptionRequest request)
         {
-            var p = _projectRepo.GetById(projectId) ?? throw new Exception("This object is not existed!");
+            var p = _projectRepo.GetById(projectId) ?? throw new Exception("This project id is not existed!");
 
             p.AdvertisementDescription = request.AdvertisementDescription;
             p.EnglishAdvertisementDescription = request.EnglishAdvertisementDescription;

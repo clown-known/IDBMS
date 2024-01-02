@@ -51,7 +51,7 @@ namespace IDBMS_API.Services
 
         public ItemInTask? GetById(Guid id)
         {
-            return _itemInTaskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _itemInTaskRepo.GetById(id) ?? throw new Exception("This item in task id is not existed!");
         }
 
         public IEnumerable<ItemInTask> GetByProjectId(Guid id, string? itemCodeOrName, int? itemCategoryId, ProjectTaskStatus? taskStatus)
@@ -73,7 +73,7 @@ namespace IDBMS_API.Services
             return Filter(list, itemCodeOrName, itemCategoryId, taskStatus);
         }
 
-        public async Task<ItemInTask?> CreateItemInTask([FromForm] ItemInTaskRequest request)
+        public async Task<ItemInTask?> CreateItemInTask(ItemInTaskRequest request)
         {
             var itemInTask = new ItemInTask
             {
@@ -114,7 +114,7 @@ namespace IDBMS_API.Services
             return itemInTaskCreated;
         }
 
-        public async Task CreateItemsByTaskId([FromForm] List<ItemInTaskRequest> request)
+        public async Task CreateItemsByTaskId(List<ItemInTaskRequest> request)
         {
             foreach (var itemInTask in request)
             {
@@ -157,9 +157,9 @@ namespace IDBMS_API.Services
             }
         }
 
-        public async Task UpdateItemInTask(Guid id, [FromForm] ItemInTaskRequest request)
+        public async Task UpdateItemInTask(Guid id, ItemInTaskRequest request)
         {
-            var itemInTask = _itemInTaskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var itemInTask = _itemInTaskRepo.GetById(id) ?? throw new Exception("This item in task id is not existed!");
 
             itemInTask.Quantity = request.Quantity;
             itemInTask.ProjectTaskId = request.ProjectTaskId;
@@ -197,7 +197,7 @@ namespace IDBMS_API.Services
 
         public void UpdateItemInTaskQuantity(Guid id, int quantity)
         {
-            var itemInTask = _itemInTaskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var itemInTask = _itemInTaskRepo.GetById(id) ?? throw new Exception("This item in task id is not existed!");
 
             itemInTask.Quantity = quantity;
 
@@ -206,7 +206,7 @@ namespace IDBMS_API.Services
 
         public void DeleteItemInTask(Guid id)
         {
-            var itemInTask = _itemInTaskRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var itemInTask = _itemInTaskRepo.GetById(id) ?? throw new Exception("This item in task id is not existed!");
 
             _itemInTaskRepo.DeleteById(id);
         }

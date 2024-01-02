@@ -1,4 +1,5 @@
 ﻿using API.Supporters.JwtAuthSupport;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
@@ -22,23 +23,57 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet]
         [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager, Viewer")]
-        public IActionResult GetTaskDocuments()
+        public IActionResult GetTaskDocuments(Guid projectId)
         {
-            return Ok(_service.GetAll());
+            try
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _service.GetAll(),
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [EnableQuery]
         [HttpGet("task-report/{id}")]
         [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager, Viewer")]
-        public IActionResult GetTaskDocumentsByTaskReportId(Guid id)
+        public IActionResult GetTaskDocumentsByTaskReportId(Guid projectId, Guid id)
         {
-            return Ok(_service.GetByTaskReportId(id));
+            try
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _service.GetByTaskReportId(id),
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
         }
 
         [EnableQuery]
         [HttpGet("{id}")]
         [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager, Viewer")]
-        public IActionResult GetTaskDocumentById(Guid id)
+        public IActionResult GetTaskDocumentById(Guid projectId, Guid id)
         {
             try
             {
@@ -93,7 +128,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
-        public IActionResult DeleteTaskDocument(Guid id)
+        public IActionResult DeleteTaskDocument(Guid projectId, Guid id)
         {
             try
             {

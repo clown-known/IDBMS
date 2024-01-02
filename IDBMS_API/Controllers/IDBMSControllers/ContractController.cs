@@ -21,12 +21,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         [HttpGet("{projectId}/download")]
         [Authorize(Policy = "Admin, Participation, ProjectManager, Owner")]
-        public async Task<IActionResult> Index(Guid projectid)
+        public async Task<IActionResult> Index(Guid projectId)
         {
             try
             {
-                byte[] file = await contractService.DownloadContract(projectid);
-                string fileName = "Contract-" + projectid.ToString() + ".docx";
+                byte[] file = await contractService.DownloadContract(projectId);
+                string fileName = "Contract-" + projectId.ToString() + ".docx";
 
                 var response = new ResponseMessage()
                 {

@@ -23,9 +23,10 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "idbms-7f5e1-firebase-adminsdk-er69h-99ecd4346c.json");
 FirebaseApp.Create(new AppOptions()
 {
-    Credential = GoogleCredential.FromFile("idbms-7f5e1-firebase-adminsdk-er69h-99ecd4346c.json"),
+    Credential = GoogleCredential.FromFile(jsonFilePath),
     ProjectId = builder.Configuration["Firebase:ProjectId"]
 });
 builder.Services.AddControllers();

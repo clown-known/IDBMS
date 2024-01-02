@@ -83,19 +83,19 @@ namespace IDBMS_API.Services
 
         public WarrantyClaim? GetById(Guid id)
         {
-            return _warrantyRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            return _warrantyRepo.GetById(id) ?? throw new Exception("This warranty claim id is not existed!");
         }
 
         public IEnumerable<WarrantyClaim> GetByUserId(Guid id, bool? isCompanyCover, string? name)
         {
-            var list = _warrantyRepo.GetByUserId(id) ?? throw new Exception("This object is not existed!");
+            var list = _warrantyRepo.GetByUserId(id) ?? throw new Exception("This warranty claim id is not existed!");
 
             return Filter(list, isCompanyCover, name);
         }
 
         public IEnumerable<WarrantyClaim> GetByProjectId(Guid id, bool? isCompanyCover, string? name)
         {
-            var list = _warrantyRepo.GetByProjectId(id) ?? throw new Exception("This object is not existed!");
+            var list = _warrantyRepo.GetByProjectId(id) ?? throw new Exception("This warranty claim id is not existed!");
 
             return Filter(list, isCompanyCover, name);
         }
@@ -123,7 +123,7 @@ namespace IDBMS_API.Services
 
         }
 
-        public async Task<WarrantyClaim?> CreateWarrantyClaim([FromForm]WarrantyClaimRequest request)
+        public async Task<WarrantyClaim?> CreateWarrantyClaim(WarrantyClaimRequest request)
         {
 
             var projectOwner = _projectParticipationRepo.GetProjectOwnerByProjectId(request.ProjectId);
@@ -173,9 +173,9 @@ namespace IDBMS_API.Services
             return wcCreated;
         }
 
-        public async void UpdateWarrantyClaim(Guid id, [FromForm] WarrantyClaimRequest request)
+        public async void UpdateWarrantyClaim(Guid id, WarrantyClaimRequest request)
         {
-            var wc = _warrantyRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var wc = _warrantyRepo.GetById(id) ?? throw new Exception("This warranty claim id is not existed!");
 
             decimal transactionBeforeUpdated = wc.IsCompanyCover ? 0 : wc.TotalPaid;
             decimal transactionAfterUpdated = request.IsCompanyCover ? 0 : request.TotalPaid;
@@ -218,7 +218,7 @@ namespace IDBMS_API.Services
         }
         public void DeleteWarrantyClaim(Guid id, Guid projectId)
         {
-            var wc = _warrantyRepo.GetById(id) ?? throw new Exception("This object is not existed!");
+            var wc = _warrantyRepo.GetById(id) ?? throw new Exception("This warranty claim id is not existed!");
 
             wc.IsDeleted = true;
 
