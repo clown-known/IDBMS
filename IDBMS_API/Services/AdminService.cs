@@ -49,11 +49,6 @@ namespace IDBMS_API.Services
             {
                 if (PasswordUtils.VerifyPasswordHash(password, admin.PasswordHash, admin.PasswordSalt))
                 {
-                    if (admin.token != null)
-                    {
-                        return (admin.token, admin);
-                    }
-
                     var token = jwtTokenSupporter.CreateTokenForAdmin(admin);
                     UpdateTokenForAdmin(admin, token);
                     return (token, admin);
