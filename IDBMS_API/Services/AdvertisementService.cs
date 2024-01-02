@@ -93,6 +93,7 @@ namespace IDBMS_API.Services
                 CreatedDate = DateTime.Now,
                 CreatedAdminUsername= request.CreatedAdminUsername,
                 CreatedByAdminId= request.CreatedByAdminId,
+                EstimatedPrice= request.EstimatedPrice,
                 FinalPrice = request.FinalPrice,
                 AmountPaid = request.FinalPrice,
                 Area = request.Area,
@@ -114,6 +115,7 @@ namespace IDBMS_API.Services
             adsProject.Name = request.Name;
             adsProject.Type = request.Type;
             adsProject.ProjectCategoryId = request.ProjectCategoryId;
+            adsProject.EstimatedPrice = request.EstimatedPrice;
             adsProject.FinalPrice = request.FinalPrice;
             adsProject.AmountPaid = request.FinalPrice;
             adsProject.Area = request.Area;

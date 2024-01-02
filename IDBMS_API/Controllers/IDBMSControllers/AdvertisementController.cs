@@ -106,9 +106,9 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpPost("/project")]
+        [HttpPost("project")]
         [Authorize(Policy = "Admin")]
-        public IActionResult CreateAdvertisementProject([FromForm][FromBody] AdvertisementProjectRequest request)
+        public IActionResult CreateAdvertisementProject([FromBody] AdvertisementProjectRequest request)
         {
             try
             {
@@ -132,9 +132,9 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpPut("/project/{id}")]
+        [HttpPut("project/{id}")]
         [Authorize(Policy = "Admin")]
-        public IActionResult UpdateAdvertisementProject(Guid id, [FromForm][FromBody] AdvertisementProjectRequest request)
+        public IActionResult UpdateAdvertisementProject(Guid id, [FromBody] AdvertisementProjectRequest request)
         {
             try
             {
@@ -234,11 +234,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{projectId}/advertisementDescription")]
         [Authorize(Policy = "Admin")]
-        public IActionResult UpdateAdvertisementDescription(Guid projectId, [FromForm][FromBody] AdvertisementDescriptionRequest request)
+        public async Task<IActionResult> UpdateAdvertisementDescription(Guid projectId, [FromForm][FromBody] AdvertisementDescriptionRequest request)
         {
             try
             {
-                _service.UpdateAdProjectDescription(projectId, request);
+                await _service.UpdateAdProjectDescription(projectId, request);
 
                 var response = new ResponseMessage()
                 {
