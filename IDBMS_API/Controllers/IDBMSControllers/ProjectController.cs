@@ -14,6 +14,7 @@ using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Threading.Tasks;
 using API.Supporters.JwtAuthSupport;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -95,6 +96,32 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 {
                     Message = "Get successfully!",
                     Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [HttpGet("status")]
+        [Authorize(Policy = "Admin, Participation")]
+        public IActionResult GetProjectsBySiteId(Guid userId)
+        {
+            try
+            {
+                var list = _service.CountParticipationsByProjectStatus(userId);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = list
                 };
 
                 return Ok(response);

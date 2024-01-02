@@ -59,7 +59,7 @@ namespace Repository.Implements
                     //.Include(p => p.ProjectDocuments.Where(pd => pd.IsDeleted == false))
                     .Include(pc => pc.ProjectCategory)
                     .Include(pc => pc.Site)
-                    .OrderByDescending(time => time.CreatedDate)
+                    .OrderByDescending(time => time.UpdatedDate ?? time.CreatedDate)
                     .Where(p => (p.Status == ProjectStatus.Done || p.Status == ProjectStatus.WarrantyPending) && p.AdvertisementStatus != AdvertisementStatus.NotAllowed)
                     .ToList();
             }

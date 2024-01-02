@@ -109,6 +109,18 @@ public class ProjectService
         return _projectRepo.GetOngoingProjectsByUserId(id);
     }
 
+    public Dictionary<ProjectStatus, int> CountParticipationsByProjectStatus(Guid userId)
+    {
+        var list = _projectRepo.GetRecentProjectsByUserId(userId);
+
+        var allStatusValues = Enum.GetValues(typeof(ProjectStatus)).Cast<ProjectStatus>();
+
+        var statusCounts = allStatusValues
+            .ToDictionary(status => status, status => list.Count(project => project.Status == status));
+
+        return statusCounts;
+    }
+
     public Project? CreateProject(ProjectRequest request)
     {
         var newProject = new Project
@@ -227,7 +239,7 @@ public class ProjectService
 
     public void UpdateProjectStatus(Guid id, ProjectStatus status)
     {
-        var project = _projectRepo.GetById(id) ?? throw new Exception("Not existed");
+        var project = _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
 
         project.Status = status;
         project.UpdatedDate = DateTime.Now;

@@ -62,7 +62,7 @@ public class Project
     public int? EstimateBusinessDay { get; set; }
 
     [Required]
-    public int Language { get; set; }
+    public Language Language { get; set; }
 
     [Required]
     public ProjectStatus Status { get; set; }
