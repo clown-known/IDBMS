@@ -27,7 +27,7 @@ namespace IDBMS_API.DTOs.Request
         public int? RoomTypeId { get; set; }
 
         [Required]
-        public bool IsHidden { get; set; }
+        public bool IsDeleted { get; set; }
 
         [Required]
         public Guid ProjectId { get; set; }
