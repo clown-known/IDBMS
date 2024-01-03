@@ -154,6 +154,7 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
         {
             using var context = new IdtDbContext();
             return context.ProjectParticipations
+                .Include(p => p.User)
                 .Where(u => u.UserId.Equals(id) && u.IsDeleted == false)
                 .Include(p => p.Project)
                     .ThenInclude(pc => pc.ProjectCategory)

@@ -5,7 +5,7 @@ namespace IDBMS_API.DTOs.Request.AdvertisementRequest
 {
     public class AdvertisementImageRequest
     {
-        public IFormFile? File { get; set; } = default!;
+        public List<IFormFile> ImageList { get; set; } = default!;
 
         [Required]
         public Guid ProjectId { get; set; }

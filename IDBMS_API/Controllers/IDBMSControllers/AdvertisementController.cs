@@ -57,7 +57,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{projectId}/documents")]
-        public IActionResult GetDocumentsByProjectId(Guid projectId, int? pageSize, int? pageNo,
+        public IActionResult GetImagesByProjectId(Guid projectId, int? pageSize, int? pageNo,
             bool? isPublicAdvertisement)
         {
             try
@@ -159,7 +159,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost("{projectId}/images")]
         [Authorize(Policy = "Admin")]
-        public async Task<IActionResult> CreateCompletionImage([FromForm][FromBody] List<AdvertisementImageRequest> request)
+        public async Task<IActionResult> CreateCompletionImage([FromForm][FromBody] AdvertisementImageRequest request)
         {
             try
             {
