@@ -220,7 +220,7 @@ namespace IDBMS_API.Services
             UpdateProjectArea(request.ProjectId);
         }
 
-        public void DeleteRoomStatus(Guid id, Guid projectId)
+        public void DeleteRoom(Guid id, Guid projectId)
         {
             var room = _roomRepo.GetById(id) ?? throw new Exception("This room id is not found!");
 

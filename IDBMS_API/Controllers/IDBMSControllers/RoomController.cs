@@ -158,11 +158,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "ProjectManager")]
-        public IActionResult UpdateRoomStatus(Guid id, Guid projectId)
+        public IActionResult DeleteRoom(Guid id, Guid projectId)
         {
             try
             {
-                _service.DeleteRoomStatus(id, projectId);
+                _service.DeleteRoom(id, projectId);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
