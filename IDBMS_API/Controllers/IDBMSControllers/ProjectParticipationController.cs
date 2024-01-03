@@ -86,7 +86,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("user/{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "User")]
         public IActionResult GetParticipationsByUserId(Guid projectId, Guid id, ParticipationRole? role, string? name, int? pageSize, int? pageNo, ProjectStatus? projectStatus)
         {
             try
