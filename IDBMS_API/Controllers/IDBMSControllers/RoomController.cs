@@ -32,11 +32,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetRooms(Guid projectId, string? usePurpose, bool? isHidden, int? pageSize, int? pageNo)
+        public IActionResult GetRooms(Guid projectId, string? usePurpose, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetAll(usePurpose, isHidden);
+                var list = _service.GetAll(usePurpose);
 
                 var response = new ResponseMessage()
                 {
@@ -85,11 +85,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("floor/{id}")]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetRoomsByFloorId(Guid projectId, Guid id, string? usePurpose, bool? isHidden, int? pageSize, int? pageNo)
+        public IActionResult GetRoomsByFloorId(Guid projectId, Guid id, string? usePurpose, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetByFloorId(id, usePurpose, isHidden);
+                var list = _service.GetByFloorId(id, usePurpose);
 
                 var response = new ResponseMessage()
                 {
@@ -156,13 +156,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpPut("{id}/isHidden")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult UpdateRoomStatus(Guid id, bool isHidden, Guid projectId)
+        [HttpDelete("{id}")]
+        [Authorize(Policy = "ProjectManager")]
+        public IActionResult DeleteRoom(Guid id, Guid projectId)
         {
             try
             {
-                _service.UpdateRoomStatus(id, isHidden, projectId);
+                _service.DeleteRoom(id, projectId);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",

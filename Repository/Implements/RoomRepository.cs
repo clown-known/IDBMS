@@ -16,6 +16,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Rooms
                     .Include(rt => rt.RoomType)
+                    .Where(room => room.IsDeleted == false)
                     .ToList()
                     .Reverse<Room>();
             }
@@ -33,7 +34,7 @@ namespace Repository.Implements
                 return context.Rooms
                     .Include(rt => rt.RoomType)
                     .Include(t => t.Tasks)
-                    .FirstOrDefault(room => room.Id == id);
+                    .FirstOrDefault(room => room.Id == id && room.IsDeleted == false);
             }
             catch
             {
@@ -48,7 +49,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Rooms
                     .Include(f => f.Floor)
-                    .Where(room => room.Floor != null && room.Floor.ProjectId == id)
+                    .Where(room => room.Floor != null && room.Floor.ProjectId == id && room.IsDeleted == false)
                     .ToList()
                     .Reverse<Room>();
             }
@@ -65,7 +66,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Rooms
                     .Include(rt => rt.RoomType)
-                    .Where(room => room.FloorId == id)
+                    .Where(room => room.FloorId == id && room.IsDeleted == false)
                     .ToList()
                     .Reverse<Room>();
             }

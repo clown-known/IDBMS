@@ -53,7 +53,7 @@ namespace IDBMS_API.Services
         }
 
         private IEnumerable<Room> Filter(IEnumerable<Room> list,
-            string? usePurpose, bool? isHidden)
+            string? usePurpose)
         {
             IEnumerable<Room> filteredList = list;
 
@@ -62,19 +62,14 @@ namespace IDBMS_API.Services
                 filteredList = filteredList.Where(item => item.UsePurpose.Unidecode().IndexOf(usePurpose.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0);
             }
 
-            if (isHidden != null)
-            {
-                filteredList = filteredList.Where(item => item.IsHidden == isHidden);
-            }
-
             return filteredList;
         }
 
-        public IEnumerable<Room> GetAll(string? usePurpose, bool? isHidden)
+        public IEnumerable<Room> GetAll(string? usePurpose)
         {
             var list = _roomRepo.GetAll();
 
-            return Filter(list, usePurpose, isHidden);
+            return Filter(list, usePurpose);
         }
 
         public Room? GetById(Guid id)
@@ -82,18 +77,18 @@ namespace IDBMS_API.Services
             return _roomRepo.GetById(id) ?? throw new Exception("This room id is not found!");
         }
 
-        public IEnumerable<Room> GetByFloorId(Guid id, string? usePurpose, bool? isHidden)
+        public IEnumerable<Room> GetByFloorId(Guid id, string? usePurpose)
         {
             var list = _roomRepo.GetByFloorId(id) ?? throw new Exception("This room id is not found!");
 
-            return Filter(list, usePurpose, isHidden);
+            return Filter(list, usePurpose);
         }
         
-        public IEnumerable<Room> GetByProjectId(Guid id, string? usePurpose, bool? isHidden)
+        public IEnumerable<Room> GetByProjectId(Guid id, string? usePurpose)
         {
             var list = _roomRepo.GetByProjectId(id);
 
-            return Filter(list, usePurpose, isHidden);
+            return Filter(list, usePurpose);
         }
 
         public void UpdateProjectArea(Guid projectId)
@@ -106,7 +101,7 @@ namespace IDBMS_API.Services
             {
                 area = roomsInProject.Sum(room =>
                 {
-                    if (room != null && room.IsHidden != true)
+                    if (room != null)
                     {
                         return room.Area;
                     }
@@ -128,7 +123,7 @@ namespace IDBMS_API.Services
                 Description = request.Description,
                 UsePurpose = request.UsePurpose,
                 Area = request.Area,
-                IsHidden = false,
+                IsDeleted = false,
             };
 
             var roomCreated = new Room();
@@ -179,7 +174,7 @@ namespace IDBMS_API.Services
 
         public void DuplicateRoomsByFloorId(Guid createdId, Guid basedOnId, Guid projectId)
         {
-            var rooms = _roomRepo.GetByFloorId(basedOnId).Where(r=> r.IsHidden == false);
+            var rooms = _roomRepo.GetByFloorId(basedOnId);
 
             foreach (var room in rooms)
             {
@@ -188,7 +183,7 @@ namespace IDBMS_API.Services
                     Area= room.Area,
                     Description= room.Description,
                     FloorId= createdId,
-                    IsHidden= room.IsHidden,
+                    IsDeleted = false,
                     UsePurpose = room.UsePurpose,
                     ProjectId= projectId
                 };
@@ -225,11 +220,11 @@ namespace IDBMS_API.Services
             UpdateProjectArea(request.ProjectId);
         }
 
-        public void UpdateRoomStatus(Guid id, bool isHidden, Guid projectId)
+        public void DeleteRoom(Guid id, Guid projectId)
         {
             var room = _roomRepo.GetById(id) ?? throw new Exception("This room id is not found!");
 
-            room.IsHidden = isHidden;
+            room.IsDeleted = true;
 
             _roomRepo.Update(room);
 

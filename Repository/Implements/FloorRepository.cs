@@ -31,7 +31,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.Floors
-                    .Include(r => r.Rooms.Where(r => r.IsHidden != true))
+                    .Include(r => r.Rooms.Where(r => r.IsDeleted != true))
                         .ThenInclude(rt => rt.RoomType)
                     .FirstOrDefault(floor => floor.Id == id && floor.IsDeleted == false);
             }
@@ -46,7 +46,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.Floors
-                    .Include(r => r.Rooms.Where(r => r.IsHidden != true))
+                    .Include(r => r.Rooms.Where(r => r.IsDeleted != true))
                     .Where(floor => floor.ProjectId == id && floor.IsDeleted == false)
                     .OrderBy(floor => floor.FloorNo)
                     .ToList();
