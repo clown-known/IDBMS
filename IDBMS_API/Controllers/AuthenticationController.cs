@@ -48,6 +48,7 @@ namespace API.Controllers
                     Token = token,
                     user.Name,
                     user.Id,
+                    Role = user.Role.ToString(),
                 };
                 return Ok(response);
             }
@@ -80,6 +81,7 @@ namespace API.Controllers
                     Token = token,
                     user.Name,
                     user.Id,
+                    Role = user.Role.ToString(),
                 };
                 return Ok(response);
             }
@@ -113,6 +115,7 @@ namespace API.Controllers
                     user.Username,
                     user.Name,
                     user.Id,
+                    Role = "Admin",
                 };
                 return Ok(response);
             }
