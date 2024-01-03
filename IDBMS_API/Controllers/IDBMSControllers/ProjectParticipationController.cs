@@ -33,11 +33,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet]
         [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetParticipations(Guid projectId, ParticipationRole? role, string? name, int? pageSize, int? pageNo, ProjectStatus? projectStatus)
+        public IActionResult GetParticipations(Guid projectId, ParticipationRole? role, string? userName, int? pageSize, int? pageNo, ProjectStatus? projectStatus, string? projectName)
         {
             try
             {
-                var list = _service.GetAll(role, name, projectStatus);
+                var list = _service.GetAll(role, userName, projectStatus, projectName);
 
                 var response = new ResponseMessage()
                 {
@@ -87,11 +87,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("user/{id}")]
         [Authorize(Policy = "User")]
-        public IActionResult GetParticipationsByUserId(Guid projectId, Guid id, ParticipationRole? role, string? name, int? pageSize, int? pageNo, ProjectStatus? projectStatus)
+        public IActionResult GetParticipationsByUserId(Guid projectId, Guid id, ParticipationRole? role, string? userName, int? pageSize, int? pageNo, ProjectStatus? projectStatus, string? projectName)
         {
             try
             {
-                var list = _service.GetByUserId(id, role, name, projectStatus);
+                var list = _service.GetByUserId(id, role, userName, projectStatus, projectName);
 
                 var response = new ResponseMessage()
                 {

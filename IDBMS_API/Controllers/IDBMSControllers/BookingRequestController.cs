@@ -76,7 +76,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.UpdateBookingRequest(id, request);
-                return Ok();
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -90,7 +94,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.ProcessBookingRequest(id, status, adminReply);
-                return Ok();
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
