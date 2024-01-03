@@ -47,6 +47,9 @@ namespace API.Supporters.JwtAuthSupport
                             string s = p.Trim().ToLower();
                             switch (s)
                             {
+                                case "user":
+                                    accept = user != null;
+                                    break;
                                 case "participation":
                                     accept = _participationRepository.GetByProjectId(pid).Where(p => p.UserId == user.Id).FirstOrDefault() != null;
                                     break;

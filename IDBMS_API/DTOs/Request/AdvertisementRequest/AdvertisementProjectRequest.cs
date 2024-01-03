@@ -9,8 +9,6 @@ namespace IDBMS_API.DTOs.Request.AdvertisementRequest
         [Required]
         public string Name { get; set; } = default!;
 
-        public string? Description { get; set; }
-
         [Required]
         public ProjectType Type { get; set; }
 
@@ -22,6 +20,10 @@ namespace IDBMS_API.DTOs.Request.AdvertisementRequest
 
         [Required]
         public Guid CreatedByAdminId { get; set; }
+
+        [Required]
+        [Column(TypeName = "money")]
+        public decimal EstimatedPrice { get; set; }
 
         [Required]
         [Column(TypeName = "money")]
