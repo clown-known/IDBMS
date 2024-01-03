@@ -125,16 +125,16 @@ namespace IDBMS_API.Services
             _projectRepo.Update(adsProject);
         }
 
-        public async Task CreateCompletionImage(List<AdvertisementImageRequest> requests)
+        public async Task CreateCompletionImage(AdvertisementImageRequest request)
         {
-            if (requests.Any())
+            if (request.ImageList.Any())
             {
-                foreach (var request in requests)
+                foreach (var imageRequest in request.ImageList)
                 {
                     var image = new ProjectDocument
                     {
                         Id = Guid.NewGuid(),
-                        Name = "AdvertisementImage",
+                        Name = "Advertisement Image",
                         CreatedDate = DateTime.Now,
                         Category = ProjectDocumentCategory.CompletionImage,
                         ProjectId = request.ProjectId,
@@ -142,13 +142,10 @@ namespace IDBMS_API.Services
                         IsDeleted = false,
                     };
 
-                    if (request.File != null)
-                    {
-                        FirebaseService s = new FirebaseService();
-                        string link = await s.UploadDocument(request.File, request.ProjectId);
+                    FirebaseService s = new FirebaseService();
+                    string link = await s.UploadDocument(imageRequest, request.ProjectId);
 
-                        image.Url = link;
-                    }
+                    image.Url = link;
 
                     _documentRepo.Save(image);
                 }

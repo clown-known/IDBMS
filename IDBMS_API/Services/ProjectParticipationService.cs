@@ -20,7 +20,7 @@ namespace IDBMS_API.Services
         }
 
         public IEnumerable<ProjectParticipation> Filter(IEnumerable<ProjectParticipation> list,
-            ParticipationRole? role, string? userName, ProjectStatus? projectStatus)
+            ParticipationRole? role, string? userName, ProjectStatus? projectStatus, string? projectName)
         {
             IEnumerable<ProjectParticipation> filteredList = list;
             
@@ -39,21 +39,26 @@ namespace IDBMS_API.Services
                 filteredList = filteredList.Where(item => item.Project.Status == projectStatus);
             }
 
+            if (projectName != null)
+            {
+                filteredList = filteredList.Where(item => (item.Project.Name != null && item.Project.Name.Unidecode().IndexOf(projectName.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
             return filteredList;
         }
 
-        public IEnumerable<ProjectParticipation> GetAll(ParticipationRole? role, string? name, ProjectStatus? projectStatus)
+        public IEnumerable<ProjectParticipation> GetAll(ParticipationRole? role, string? name, ProjectStatus? projectStatus, string? projectName)
         {
             var list = _participationRepo.GetAll();
 
-            return Filter(list, role, name, projectStatus);
+            return Filter(list, role, name, projectStatus, projectName);
         }
 
-        public IEnumerable<ProjectParticipation> GetByUserId(Guid id, ParticipationRole? role, string? name, ProjectStatus? projectStatus)
+        public IEnumerable<ProjectParticipation> GetByUserId(Guid id, ParticipationRole? role, string? name, ProjectStatus? projectStatus, string? projectName)
         {
             var list = _participationRepo.GetByUserId(id);
 
-            return Filter(list, role, name, projectStatus);
+            return Filter(list, role, name, projectStatus, projectName);
         }
 
         public IEnumerable<ProjectParticipation> GetUsersByParticipationInProject(Guid projectId)
@@ -67,7 +72,7 @@ namespace IDBMS_API.Services
         {
             var list = _participationRepo.GetProjectMemberByProjectId(id);
 
-            return Filter(list, role, name, null);
+            return Filter(list, role, name, null, null);
         }
 
         public ProjectParticipation? GetProjectManagerByProjectId(Guid id)
