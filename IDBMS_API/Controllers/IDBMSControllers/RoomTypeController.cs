@@ -79,7 +79,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public async Task<IActionResult> CreateRoomType([FromForm][FromBody] RoomTypeRequest request)
         {
             try
@@ -98,7 +98,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateRoomType(int id, [FromForm][FromBody] RoomTypeRequest request)
         {
             try
@@ -117,7 +117,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/isHidden")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateRoomTypeStatus(int id, bool isHidden)
         {
             try

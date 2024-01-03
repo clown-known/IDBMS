@@ -30,8 +30,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetTransactions(Guid projectId, string? payerName,TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
+        [Authorize(Policy = "")]
+        public IActionResult GetTransactions(string? payerName,TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //admin, owner
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Owner, ProjectManager")]
         public IActionResult GetTransactionsById(Guid projectId, Guid id)
         {
             try
@@ -82,7 +82,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //cus
         [EnableQuery]
         [HttpGet("user/{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "User")]
         public IActionResult GetTransactionsByUserId(Guid projectId, Guid id, string? payerName, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
             try
@@ -109,12 +109,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //admin, owner
         [EnableQuery]
         [HttpGet("project/{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetTransactionsByProjectId(Guid projectId, string? payerName, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
+        [Authorize(Policy = "Owner, ProjectManager")]
+        public IActionResult GetTransactionsByProjectId(Guid projectId, Guid id, string? payerName, TransactionType? type, TransactionStatus? status, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetByProjectId(projectId, payerName, type, status);
+                var list = _service.GetByProjectId(id, payerName, type, status);
 
                 var response = new ResponseMessage()
                 {
@@ -134,8 +134,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost]
-        [Authorize(Policy = "Admin, Participation")]
-        public async Task<IActionResult> CreateTransaction(Guid projectId, [FromForm][FromBody] TransactionRequest request)
+        [Authorize(Policy = "")]
+        public async Task<IActionResult> CreateTransaction([FromForm][FromBody] TransactionRequest request)
         {
             try
             {
@@ -158,8 +158,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult UpdateTransaction(Guid projectId, Guid id, [FromForm][FromBody] TransactionRequest request)
+        [Authorize(Policy = "")]
+        public IActionResult UpdateTransaction(Guid id, [FromForm][FromBody] TransactionRequest request)
         {
             try
             {
@@ -181,8 +181,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/status")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult UpdateTransactionStatus(Guid projectId, Guid id, TransactionStatus status)
+        [Authorize(Policy = "")]
+        public IActionResult UpdateTransactionStatus(Guid id, TransactionStatus status)
         {
             try
             {
@@ -204,8 +204,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult DeleteTransaction(Guid projectId, Guid id)
+        [Authorize(Policy = "")]
+        public IActionResult DeleteTransaction(Guid id)
         {
             try
             {

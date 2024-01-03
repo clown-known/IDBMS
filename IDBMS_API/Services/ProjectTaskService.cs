@@ -454,6 +454,23 @@ namespace IDBMS_API.Services
             UpdatePaymentStageData(decorTask.ProjectId);
         }
 
+        public void CancelTasksInRoom(Guid roomId, Guid projectId)
+        {
+            var tasks = _taskRepo.GetByRoomId(roomId);
+
+            foreach (var task in tasks)
+            {
+                task.Status = ProjectTaskStatus.Cancelled;
+                task.UpdatedDate = DateTime.Now;
+                task.RoomId = null;
+
+                _taskRepo.Update(task);
+            }
+
+            UpdateProjectData(projectId);
+            UpdatePaymentStageData(projectId);
+        }
+
         public void AssignTasksToStage(Guid paymentStageId, List<Guid> listTaskId, Guid projectId)
         {
                 foreach (var taskId in listTaskId)

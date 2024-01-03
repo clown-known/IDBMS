@@ -37,21 +37,21 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetItemInTaskById(Guid projectId, Guid id)
         {
             return Ok(_service.GetById(id));
         }
 
         [EnableQuery]
-        [HttpGet("project/{projectId}")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
-        public IActionResult GetItemInTaskByProjectId(Guid projectId,
+        [HttpGet("project/{id}")]
+        [Authorize(Policy = "Participation")]
+        public IActionResult GetItemInTaskByProjectId(Guid projectId, Guid id,
             string? itemCodeOrName, int? pageSize, int? pageNo, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
             try
             {
-                var list = _service.GetByProjectId(projectId, itemCodeOrName, itemCategoryId, taskStatus);
+                var list = _service.GetByProjectId(id, itemCodeOrName, itemCategoryId, taskStatus);
 
                 var response = new ResponseMessage()
                 {
@@ -80,7 +80,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("project-task/{id}")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetItemInTaskByTaskId(Guid projectId, Guid id, 
             string? itemCodeOrName, int? pageSize, int? pageNo, int? itemCategoryId, ProjectTaskStatus? taskStatus)
         {
@@ -108,7 +108,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
 
         [HttpPost]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
         public async Task<IActionResult> CreateItemInTask(Guid projectId, [FromForm][FromBody] ItemInTaskRequest request)
         {
             try
@@ -132,7 +132,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost("project-task/{id}")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
         public async Task<IActionResult> CreateItemsByTaskId(Guid projectId, [FromForm][FromBody] List<ItemInTaskRequest> request)
         {
             try
@@ -155,7 +155,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
         public async Task<IActionResult> UpdateItemInTask(Guid projectId, Guid id, [FromForm][FromBody] ItemInTaskRequest request)
         {
             try
@@ -178,7 +178,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/quantity")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
         public IActionResult UpdateItemInTaskQuantity(Guid projectId, Guid id, int quantity)
         {
             try
@@ -201,7 +201,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
         public IActionResult DeleteItemInTask(Guid projectId, Guid id)
         {
             try

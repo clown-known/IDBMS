@@ -15,7 +15,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             this.firebaseService = firebaseService;
         }
         [HttpGet]
-        [Authorize]
+        [Authorize(Policy = "User")]
         public async Task<DownloadResponse> Download(string url, string? name)
         {
             var content = await firebaseService.DownloadFileByDownloadUrl(url);

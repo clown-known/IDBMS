@@ -31,7 +31,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult GetUsers(string? searchParam, CompanyRole? role, UserStatus? status, int? pageSize, int? pageNo)
         {
             try
@@ -58,6 +58,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
+        [Authorize(Policy = "User")]
         public IActionResult GetUsersById(Guid id)
         {
             try
@@ -81,7 +82,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult CreateUser([FromBody] CreateUserRequest request)
         {
             try
@@ -105,6 +106,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "User")]
         public IActionResult UpdateUser(Guid id, [FromBody] UpdateUserRequest request)
         {
             try
@@ -127,6 +129,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/status")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateUserStatus(Guid id, UserStatus status)
         {
             try
@@ -149,8 +152,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/role")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult UpdateUserRole(Guid projectId, Guid id, CompanyRole role)
+        [Authorize(Policy = "")]
+        public IActionResult UpdateUserRole(Guid id, CompanyRole role)
         {
             try
             {

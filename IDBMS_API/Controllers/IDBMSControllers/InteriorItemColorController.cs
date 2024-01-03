@@ -104,7 +104,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult CreateInteriorItemColor([FromBody] InteriorItemColorRequest request)
         {
             try
@@ -135,7 +135,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateInteriorItemColor(int id, [FromBody] InteriorItemColorRequest request)
         {
             try
@@ -158,7 +158,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult DeleteInteriorItemColor(int id)
         {
             try

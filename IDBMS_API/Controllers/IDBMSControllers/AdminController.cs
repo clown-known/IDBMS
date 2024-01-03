@@ -30,7 +30,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult GetAdmins(string? searchValue, AdminStatus? status, int? pageSize, int? pageNo)
         {
             try
@@ -57,7 +57,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult GetAdminById(Guid id)
         {
             try
@@ -81,7 +81,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("username")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult CheckUsernameExist(string username)
         {
             try
@@ -105,7 +105,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult CreateAdmin([FromBody] AdminRequest request)
         {
             try
@@ -128,7 +128,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateAdmin(Guid id, [FromBody] AdminRequest request)
         {
             try
@@ -150,7 +150,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult DeleteAdmin(Guid id)
         {
             try

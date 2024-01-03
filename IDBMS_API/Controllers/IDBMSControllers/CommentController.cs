@@ -28,7 +28,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner, Viewer")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetComments(Guid projectId, int? pageSize, int? pageNo)
         {
             try
@@ -55,7 +55,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //permission
         [EnableQuery]
         [HttpGet("project-task/{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner, Viewer")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetCommentsProjectTaskId(Guid projectId, Guid id, CommentType? type, CommentStatus? status, string? content, int? pageSize, int? pageNo)
         {
             var list = _service.GetByProjectTaskId(id, type, status, content);
@@ -81,10 +81,10 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //permission
         [EnableQuery]
         [HttpGet("project/{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner, Viewer")]
-        public IActionResult GetCommentsProjectId(Guid projectId, CommentType? type, CommentStatus? status, string? content, int? pageSize, int? pageNo)
+        [Authorize(Policy = "Participation")]
+        public IActionResult GetCommentsProjectId(Guid projectId, Guid id, CommentType? type, CommentStatus? status, string? content, int? pageSize, int? pageNo)
         {
-            var list = _service.GetByProjectId(projectId, type, status, content);
+            var list = _service.GetByProjectId(id, type, status, content);
             try
             {
                 var response = new ResponseMessage()
@@ -107,8 +107,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner")]
-        public IActionResult GetCommentById(Guid id)
+        [Authorize(Policy = "Participation")]
+        public IActionResult GetCommentById(Guid id, Guid projectId)
         {
             try
             {
@@ -131,7 +131,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager, Owner")]
         public async Task<IActionResult> CreateComment(Guid projectId, [FromBody] CommentRequest request)
         {
             try
@@ -155,7 +155,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager, Owner")]
         public IActionResult UpdateComment(Guid projectId, Guid id, [FromBody] CommentRequest request)
         {
             try
@@ -178,7 +178,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/status")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager, Owner")]
         public IActionResult UpdateCommentStatus(Guid projectId, Guid id, CommentStatus status)
         {
             try
@@ -201,7 +201,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Owner")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager, Owner")]
         public IActionResult DeleteComment(Guid projectId, Guid id)
         {
             try

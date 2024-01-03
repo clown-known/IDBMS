@@ -19,14 +19,14 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             this.contractService = contractService;
         }
-        [HttpGet("{projectId}/download")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Owner")]
-        public async Task<IActionResult> Index(Guid projectId)
+        [HttpGet("{id}/download")]
+        [Authorize(Policy = "Participation")]
+        public async Task<IActionResult> Index(Guid projectId, Guid id)
         {
             try
             {
-                byte[] file = await contractService.DownloadContract(projectId);
-                string fileName = "Contract-" + projectId.ToString() + ".docx";
+                byte[] file = await contractService.DownloadContract(id);
+                string fileName = "Contract-" + id.ToString() + ".docx";
 
                 var response = new ResponseMessage()
                 {
@@ -46,7 +46,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost("company")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public async Task<IActionResult> GenContractForCompany(ContractRequest request)
         {
             try
@@ -73,7 +73,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpGet("{projectId}/company")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Owner")]
+        [Authorize(Policy = "")]
         public async Task<IActionResult> GetDataForCompany(Guid projectId)
         {
             try
@@ -98,7 +98,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost("individual")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public async Task<IActionResult> GenContractForCustomer(ContractForCustomerRequest request)
         {
             try
@@ -125,7 +125,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpGet("{projectId}/individual")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Owner")]
+        [Authorize(Policy = "")]
         public async Task<IActionResult> GetDataForCustomer(Guid projectId)
         {
             try
@@ -150,7 +150,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost("{projectId}/upload")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Owner")]
+        [Authorize(Policy = "")]
         public async Task<IActionResult> UploadContract(Guid projectId, [FromForm]IFormFile file)
         {
             try

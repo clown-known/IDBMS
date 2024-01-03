@@ -32,7 +32,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetPaymentStages(Guid projectId, StageStatus? status, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -59,7 +59,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //all
         [EnableQuery]
         [HttpGet("project/{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetPaymentStagesByProjectId(Guid id, Guid projectId, StageStatus? status, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -86,7 +86,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("project/{id}/actions")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetPaymentStagesByProjectIdWithActions(Guid id, Guid projectId, StageStatus? status, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -114,7 +114,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //permission
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetPaymentStagesById(Guid projectId, Guid id)
         {
             try
@@ -137,7 +137,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult CreatePaymentStage(Guid projectId, [FromBody] PaymentStageRequest request)
         {
             try
@@ -161,7 +161,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost("project/{id}")]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult CreatePaymentStagesByDesigns(Guid projectId, Guid id)
         {
             try
@@ -184,7 +184,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult UpdatePaymentStage(Guid projectId, Guid id, [FromBody] PaymentStageRequest request)
         {
             try
@@ -207,8 +207,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/start")]
-        [Authorize(Policy = "Admin, ProjectManager")]
-        public IActionResult StartStage(Guid id)
+        [Authorize(Policy = "ProjectManager")]
+        public IActionResult StartStage(Guid projectId, Guid id)
         {
             try
             {
@@ -230,7 +230,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/end")]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult CloseStage(Guid projectId, Guid id)
         {
             try
@@ -253,7 +253,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/suspend")]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult SuspendStage(Guid projectId, Guid id)
         {
             try
@@ -276,7 +276,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/reopen")]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult ReopenStage(Guid projectId, Guid id, [FromBody] decimal penaltyFee)
         {
             try
@@ -299,7 +299,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/penaltyFee")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult UpdateStagePenaltyFee(Guid projectId, Guid id, decimal penaltyFee)
         {
             try
@@ -322,7 +322,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult DeletePaymentStage(Guid projectId, Guid id)
         {
             try
