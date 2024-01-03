@@ -27,7 +27,7 @@ public class Room
     public RoomType RoomType { get; set; }
 
     [Required]
-    public bool IsHidden { get; set; }
+    public bool IsDeleted { get; set; }
 
     public List<ProjectTask> Tasks { get; set; } = new();
 
