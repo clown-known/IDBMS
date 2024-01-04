@@ -219,6 +219,18 @@ namespace IDBMS_API.Services
             _itemRepo.Update(ii);
         }
 
+        public void DeleteItemColor(int colorId)
+        {
+            var items = _itemRepo.GetAll().Where(i => i.InteriorItemColorId == colorId);
+
+            foreach (var item in items)
+            {
+                item.InteriorItemColorId = null;
+
+                _itemRepo.Update(item);
+            }
+        }
+
         public void DeleteInteriorItem(Guid id)
         {
             var ii = _itemRepo.GetById(id) ?? throw new Exception("This item id is not existed!");

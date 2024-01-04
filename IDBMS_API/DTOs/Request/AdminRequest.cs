@@ -15,9 +15,6 @@ namespace IDBMS_API.DTOs.Request
         public string Name { get; set; } = default!;
 
         [Required]
-        public string Username { get; set; } = default!;
-
-        [Required]
         public string Email { get; set; } = default!;
 
         [Required]
