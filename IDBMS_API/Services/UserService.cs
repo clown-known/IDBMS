@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using BusinessObject.Enums;
 using UnidecodeSharpFork;
 using System.Security.Cryptography;
+using IDBMS_API.Supporters.JwtAuthSupport;
 
 namespace API.Services
 {
@@ -22,10 +23,12 @@ namespace API.Services
     {
         private readonly IUserRepository _repository;
         private readonly JwtTokenSupporter jwtTokenSupporter;
-        public UserService(IUserRepository _repository, JwtTokenSupporter jwtTokenSupporter)
+        private readonly GoogleTokenVerify googleTokenVerify;
+        public UserService(IUserRepository _repository, JwtTokenSupporter jwtTokenSupporter, GoogleTokenVerify googleTokenVerify)
         {
             this._repository = _repository;
             this.jwtTokenSupporter = jwtTokenSupporter;
+            this.googleTokenVerify = googleTokenVerify;
         }
 
         public IEnumerable<User> Filter(IEnumerable<User> list,
@@ -93,14 +96,27 @@ namespace API.Services
 
         public (string? token, User? user) LoginByGoogle(LoginByGoogleRequest request)
         {
-            var user = _repository.GetByEmail(request.Email);
+            var payload = googleTokenVerify.VerifyGoogleTokenId(request.GoogleToken);
 
-            if (user != null && user.Status == UserStatus.Active && user.ExternalId == request.GoogleId)
+            if (payload!= null && payload.Result != null)
             {
-                var token = jwtTokenSupporter.CreateToken(user);
-                UpdateTokenForUser(user, token);
-                return (token, user);
+                var user = _repository.GetByEmail(payload.Result.Email);
+
+                if (user != null && user.Status == UserStatus.Active)
+                {
+                    if (user.ExternalId == null)
+                    {
+                        user.ExternalId = payload.Result.Subject;
+
+                        _repository.Update(user);
+                    }
+
+                    var token = jwtTokenSupporter.CreateToken(user);
+                    UpdateTokenForUser(user, token);
+                    return (token, user);
+                }
             }
+            
             return (null, null);
         }
 

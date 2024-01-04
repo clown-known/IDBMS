@@ -8,6 +8,7 @@ using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using IDBMS_API.Services;
 using IDBMS_API.Services.PaginationService;
+using IDBMS_API.Supporters.JwtAuthSupport;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OData;
 using Microsoft.IdentityModel.Tokens;
@@ -141,6 +142,8 @@ builder.Services.AddScoped(typeof(PaginationService<>), typeof(PaginationService
 
 builder.Services.AddScoped<FirebaseService, FirebaseService>();
 builder.Services.AddScoped<JwtTokenSupporter, JwtTokenSupporter>();
+builder.Services.AddScoped<GoogleTokenVerify, GoogleTokenVerify>();
+
 builder.Services.AddControllers().AddJsonOptions(x =>
                     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
                 .AddOData(option => option.Select().Filter()
