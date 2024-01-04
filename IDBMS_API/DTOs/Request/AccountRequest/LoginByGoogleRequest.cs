@@ -5,9 +5,6 @@ namespace IDBMS_API.DTOs.Request.AccountRequest
     public class LoginByGoogleRequest
     {
         [Required]
-        public string Email { get; set; } = default!;
-
-        [Required]
-        public string GoogleId { get; set; } = default!;
+        public string GoogleToken { get; set; } = default!;
     }
 }
