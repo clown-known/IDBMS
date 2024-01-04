@@ -74,6 +74,54 @@ namespace IDBMS_API.Services
             return admin != null;
         }
 
+        public string GenerateCode(string name)
+        {
+            string username = String.Empty;
+            Random random = new();
+
+            for (int attempt = 0; attempt < 10; attempt++)
+            {
+                // Generate the code
+                username = GenerateSingleCode(name, random);
+
+
+                bool usernameExists = CheckByUsername(username);
+
+                if (usernameExists == false)
+                {
+                    return username;
+                }
+            }
+
+            throw new Exception("Failed to generate a unique username after 10 attempts.");
+        }
+
+        public string GenerateSingleCode(string name, Random random)
+        {
+            string username = String.Empty;
+
+            string[] words = name.Split(' ');
+
+            if (words.Length > 0)
+            {
+                // Take the entire last name
+                username += words[words.Length - 1];
+
+                // Take the first character
+                for (int i = 0; i < words.Length - 1; i++)
+                {
+                    if (!string.IsNullOrEmpty(words[i]))
+                    {
+                        username += char.ToUpper(words[i][0]);
+                    }
+                }
+            }
+
+            username += random.Next(10, 99);
+
+            return username;
+        }
+
         private void TryValidateRequest(AdminRequest request)
         {
             if (new Regex(RegexCollector.EmailRegex).IsMatch(request.Email) == false)
@@ -98,7 +146,7 @@ namespace IDBMS_API.Services
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
-                Username = request.Username,
+                Username = GenerateCode(request.Name),
                 Email = request.Email,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
