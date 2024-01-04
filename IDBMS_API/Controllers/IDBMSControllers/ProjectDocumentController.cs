@@ -30,7 +30,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Viewer")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetProjectDocuments(Guid projectId, ProjectDocumentCategory? category, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -56,20 +56,20 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         [EnableQuery]
         [HttpGet("document-template/{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Viewer")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetProjectDocumentByProjectDocumentTemplateId(Guid projectId, int id)
         {
             return Ok(_service.GetByFilter(null, id));
         }
 
         [EnableQuery]
-        [HttpGet("project/{projectId}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Viewer")]
-        public IActionResult GetProjectDocumentsByProjectId(Guid projectId, ProjectDocumentCategory? category, string? name, int? pageSize, int? pageNo)
+        [HttpGet("project/{id}")]
+        [Authorize(Policy = "Participation")]
+        public IActionResult GetProjectDocumentsByProjectId(Guid projectId, Guid id, ProjectDocumentCategory? category, string? name, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetByProjectId(projectId, category, name);
+                var list = _service.GetByProjectId(id, category, name);
 
                 var response = new ResponseMessage()
                 {
@@ -91,7 +91,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager, Viewer")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetProjectDocumentById(Guid projectId, Guid id)
         {
             try
@@ -115,7 +115,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager, Owner")]
         public async Task<IActionResult> CreateProjectDocument(Guid projectId, [FromForm][FromBody] ProjectDocumentRequest request)
         {
             try
@@ -139,7 +139,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager, Owner")]
         public IActionResult UpdateProjectDocument(Guid projectId, Guid id, [FromForm][FromBody] ProjectDocumentRequest request)
         {
             try
@@ -162,8 +162,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Architect, ConstructionManager")]
-        public IActionResult UpdateProjectDocumentStatus(Guid projectId, Guid id)
+        [Authorize(Policy = "ProjectManager")]
+        public IActionResult DeleteProjectDocument(Guid projectId, Guid id)
         {
             try
             {

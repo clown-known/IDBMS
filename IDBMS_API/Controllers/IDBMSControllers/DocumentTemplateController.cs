@@ -29,7 +29,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        public IActionResult GetDocumentTemplates(DocumentTemplateType? type, string? name, int? pageSize, int? pageNo)
+        [Authorize(Policy = "ProjectManager")]
+        public IActionResult GetDocumentTemplates(Guid projectId, DocumentTemplateType? type, string? name, int? pageSize, int? pageNo)
         {
             try
             {
@@ -55,7 +56,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        public IActionResult GetDocumentTemplateById(int id)
+        [Authorize(Policy = "ProjectManager")]
+        public IActionResult GetDocumentTemplateById(Guid projectId, int id)
         {
             try
             {
@@ -78,7 +80,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult CreateDocumentTemplate([FromBody] ProjectDocumentTemplateRequest request)
         {
             try
@@ -102,8 +104,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin")]
-        public IActionResult UpdateDocumentTemplate(Guid projectId, int id, [FromBody] ProjectDocumentTemplateRequest request)
+        [Authorize(Policy = "")]
+        public IActionResult UpdateDocumentTemplate(int id, [FromBody] ProjectDocumentTemplateRequest request)
         {
             try
             {
@@ -125,7 +127,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult DeleteDocumentTemplate(int id)
         {
             try

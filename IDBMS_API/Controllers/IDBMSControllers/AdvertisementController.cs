@@ -106,8 +106,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpPost("project")]
-        [Authorize(Policy = "Admin")]
+        [HttpPost]
+        [Authorize(Policy = "")]
         public IActionResult CreateAdvertisementProject([FromBody] AdvertisementProjectRequest request)
         {
             try
@@ -132,8 +132,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpPut("project/{id}")]
-        [Authorize(Policy = "Admin")]
+        [HttpPut("{id}")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateAdvertisementProject(Guid id, [FromBody] AdvertisementProjectRequest request)
         {
             try
@@ -158,7 +158,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost("{projectId}/images")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public async Task<IActionResult> CreateCompletionImage([FromForm][FromBody] AdvertisementImageRequest request)
         {
             try
@@ -183,7 +183,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("image/{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult DeleteCompletionImage(Guid id)
         {
             try
@@ -208,7 +208,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("document/{documentId}/public")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult UpdatePublicDocument(Guid documentId, [FromQuery] bool isPublicAdvertisement)
         {
             try
@@ -233,7 +233,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{projectId}/advertisementDescription")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public async Task<IActionResult> UpdateAdvertisementDescription(Guid projectId, [FromForm][FromBody] AdvertisementDescriptionRequest request)
         {
             try
@@ -258,7 +258,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{projectId}/advertisementStatus")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateProjectAdvertisementStatus(Guid projectId, AdvertisementStatus status)
         {
             try

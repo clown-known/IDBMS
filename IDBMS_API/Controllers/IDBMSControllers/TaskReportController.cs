@@ -28,7 +28,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager, Viewer")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetTaskReports(Guid projectId, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -55,7 +55,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager, Viewer")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetTaskReportById(Guid projectId, Guid id)
         {
             try
@@ -80,7 +80,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("project-task/{id}")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager, Viewer")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetTaskReportsByProjectTaskId(Guid projectId, Guid id, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -106,7 +106,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin, Architect, ConstructionManager")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
         public async Task<IActionResult> CreateTaskReport(Guid projectId,[FromBody] TaskReportRequest request)
         {
             try
@@ -130,8 +130,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, Architect, ConstructionManager")]
-        public IActionResult UpdateTaskReport(Guid id, [FromBody] TaskReportRequest request)
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
+        public IActionResult UpdateTaskReport(Guid projectId, Guid id, [FromBody] TaskReportRequest request)
         {
             try
             {
@@ -153,8 +153,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin, Architect, ConstructionManager")]
-        public IActionResult DeleteTaskReport(Guid id)
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
+        public IActionResult DeleteTaskReport(Guid projectId, Guid id)
         {
             try
             {

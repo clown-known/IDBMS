@@ -31,6 +31,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "User")]
         public IActionResult GetNotifications(NotificationCategory? category, int? pageSize, int? pageNo)
         {
             try
@@ -56,6 +57,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         [EnableQuery]
         [HttpGet("user/{id}")]
+        [Authorize(Policy = "User")]
         public IActionResult GetByUserId(Guid id, NotificationCategory? category, int? pageSize, int? pageNo)
         {
             try
@@ -82,6 +84,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
+        [Authorize(Policy = "User")]
         public IActionResult GetNotificationById(Guid id)
         {
             try
@@ -128,13 +131,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpPost("projects/{projectId}")]
-        [Authorize(Policy = "Admin")]
-        public IActionResult CreateNotificationForProject(Guid projectId, [FromBody] NotificationRequest request)
+        [HttpPost("projects/{id}")]
+        [Authorize(Policy = "Admin, ProjectManager")]
+        public IActionResult CreateNotificationForProject(Guid projectId, Guid id, [FromBody] NotificationRequest request)
         {
             try
             {
-                _service.CreateNotificatonForProject(projectId, request);
+                _service.CreateNotificatonForProject(id, request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!"
@@ -151,6 +154,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPut("{id}/is-seen")]
+        [Authorize(Policy = "User")]
         public IActionResult UpdateIsSeen(Guid id)
         {
             try
@@ -173,6 +177,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("is-seen/user/{id}")]
+        [Authorize(Policy = "User")]
         public IActionResult UpdateIsSeenByUser(Guid id)
         {
             try

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Repository.Interfaces;
+using API.Supporters.JwtAuthSupport;
 
 namespace IDBMS_API.Controllers.IDBMSControllers
 {
@@ -23,6 +24,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "User")]
         public IActionResult GetInteriorItemBookmarks()
         {
             return Ok(_service.GetAll());
@@ -30,12 +32,14 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("user/{id}")]
+        [Authorize(Policy = "User")]
         public IActionResult GetInteriorItemBookmarksByUserId(Guid id)
         { 
             return Ok(_service.GetByUserId(id));
         }
 
         [HttpPost]
+        [Authorize(Policy = "User")]
         public IActionResult CreateInteriorItemBookmark([FromBody] InteriorItemBookmarkRequest request)
         {
             try
@@ -59,6 +63,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "User")]
         public IActionResult DeleteInteriorItemBookmark(Guid id)
         {
             try

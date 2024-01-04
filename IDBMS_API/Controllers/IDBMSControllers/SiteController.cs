@@ -28,7 +28,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "")]
         public IActionResult GetSites(Guid projectId, string? nameOrAddress, int? pageSize, int? pageNo)
         {
             try
@@ -55,7 +55,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetSiteById(Guid projectId, Guid id)
         {
             try
@@ -79,7 +79,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult CreateSite([FromBody] SiteRequest request)
         {
                 try
@@ -103,7 +103,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateSite(Guid id, [FromBody] SiteRequest request)
         {
             try
@@ -126,7 +126,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "")]
         public IActionResult DeleteSite(Guid id)
         {
             try

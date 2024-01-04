@@ -78,7 +78,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public async Task<IActionResult> CreateInteriorItemCategory([FromForm][FromBody] InteriorItemCategoryRequest request)
         {
             try
@@ -102,7 +102,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public async Task<IActionResult> UpdateInteriorItemCategory(int id, [FromForm][FromBody] InteriorItemCategoryRequest request)
         {
             try
@@ -125,7 +125,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateInteriorItemCategoryStatus(int id)
         {
             try

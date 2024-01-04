@@ -28,8 +28,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
-        public IActionResult GetWarrantyClaims(Guid projectId, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
+        [Authorize(Policy = "")]
+        public IActionResult GetWarrantyClaims(bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
         {
             try
             {
@@ -55,8 +55,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("user/{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
-        public IActionResult GetWarrantyClaimsByUserId(Guid projectId, Guid id, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
+        [Authorize(Policy = "User")]
+        public IActionResult GetWarrantyClaimsByUserId(Guid id, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
         {
             try
             {
@@ -81,12 +81,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         [EnableQuery]
         [HttpGet("project/{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
-        public IActionResult GetWarrantyClaimsByProjectId(Guid projectId, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
+        [Authorize(Policy = "ProjectManager, Owner")]
+        public IActionResult GetWarrantyClaimsByProjectId(Guid projectId, Guid id, bool? isCompanyCover, string? name, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetByProjectId(projectId, isCompanyCover, name);
+                var list = _service.GetByProjectId(id, isCompanyCover, name);
 
                 var response = new ResponseMessage()
                 {
@@ -108,7 +108,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
+        [Authorize(Policy = "ProjectManager, Owner")]
         public IActionResult GetWarrantyClaimById(Guid projectId, Guid id)
         {
             try
@@ -132,8 +132,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin, Participation")]
-        public async Task<IActionResult> CreateWarrantyClaim(Guid projectId, [FromForm][FromBody] WarrantyClaimRequest request)
+        [Authorize(Policy = "")]
+        public async Task<IActionResult> CreateWarrantyClaim([FromForm][FromBody] WarrantyClaimRequest request)
         {
                 try
                 {
@@ -156,8 +156,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult UpdateWarrantyClaim(Guid projectId, Guid id, [FromForm][FromBody] WarrantyClaimRequest request)
+        [Authorize(Policy = "")]
+        public IActionResult UpdateWarrantyClaim(Guid id, [FromForm][FromBody] WarrantyClaimRequest request)
         {
             try
             {
@@ -179,7 +179,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "")]
         public IActionResult DeleteWarrantyClaim(Guid id, Guid projectId)
         {
             try

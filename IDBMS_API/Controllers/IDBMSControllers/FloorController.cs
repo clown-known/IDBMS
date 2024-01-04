@@ -32,7 +32,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetFloors(Guid projectId, int? noOfFloor, string? usePurpose, int? pageSize, int? pageNo)
         {
             try
@@ -59,7 +59,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetFloorById(Guid projectId, Guid id)
         {
             try
@@ -84,12 +84,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("project/{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager, Viewer")]
-        public IActionResult GetFloorsByProjectId(Guid projectId, int? noOfFloor, string? usePurpose, int? pageSize, int? pageNo)
+        [Authorize(Policy = "Participation")]
+        public IActionResult GetFloorsByProjectId(Guid id, Guid projectId, int? noOfFloor, string? usePurpose, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetByProjectId(projectId, noOfFloor, usePurpose);
+                var list = _service.GetByProjectId(id, noOfFloor, usePurpose);
 
                 var response = new ResponseMessage()
                 {
@@ -110,7 +110,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
         public IActionResult CreateFloor(Guid projectId, [FromBody] FloorRequest request)
         {
             try
@@ -134,7 +134,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
         public IActionResult UpdateFloor(Guid projectId, Guid id, [FromBody] FloorRequest request)
         {
             try
@@ -157,7 +157,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult DeleteFloor(Guid projectId, Guid id)
         {
             try
