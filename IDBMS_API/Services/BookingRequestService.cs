@@ -12,6 +12,7 @@ using Azure.Core;
 using API.Services;
 using API.Supporters.JwtAuthSupport;
 using IDBMS_API.DTOs.Request.AccountRequest;
+using IDBMS_API.Supporters.JwtAuthSupport;
 
 namespace IDBMS_API.Services
 {
@@ -20,12 +21,14 @@ namespace IDBMS_API.Services
         private readonly IBookingRequestRepository _bookingRequestRepo;
         private readonly IUserRepository _userRepo;
         private readonly JwtTokenSupporter jwtTokenSupporter;
+        private readonly GoogleTokenVerify googleTokenVerify;
 
-        public BookingRequestService(IBookingRequestRepository bookingRequestRepo, IUserRepository userRepo, JwtTokenSupporter jwtTokenSupporter)
+        public BookingRequestService(IBookingRequestRepository bookingRequestRepo, IUserRepository userRepo, JwtTokenSupporter jwtTokenSupporter, GoogleTokenVerify googleTokenVerify)
         {
             _bookingRequestRepo = bookingRequestRepo;
             _userRepo = userRepo;
             this.jwtTokenSupporter= jwtTokenSupporter;
+            this.googleTokenVerify= googleTokenVerify;
         }
 
         public IEnumerable<BookingRequest> Filter(IEnumerable<BookingRequest> list,
@@ -58,7 +61,7 @@ namespace IDBMS_API.Services
         }
         public BookingRequest? CreateBookingRequest(BookingRequestRequest request)
         {
-            UserService userService = new (_userRepo, jwtTokenSupporter);
+            UserService userService = new (_userRepo, jwtTokenSupporter, googleTokenVerify);
             var user = userService.GetByEmail(request.ContactEmail);
 
             var br = new BookingRequest

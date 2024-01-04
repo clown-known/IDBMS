@@ -510,6 +510,9 @@ namespace IDBMS_API.Services
             stage.TotalIncurredPaid = totalIncurredPaid == 0 ? null : totalIncurredPaid;
 
             _stageRepo.Update(stage);
+
+            TransactionService transactionService = new TransactionService(_transactionRepo, _stageRepo, _projectRepo, _projectDesignRepo, _stageDesignRepo, _taskRepo, _floorRepo, _roomRepo, _roomTypeRepo, _taskDesignRepo, _taskCategoryRepo);
+            transactionService.UpdateTotalPaidByProjectId(stage.ProjectId);
         }
 
         public void UpdateStagePaid(Guid projectId, decimal totalPaid)
