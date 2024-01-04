@@ -125,7 +125,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [HttpDelete("{id}")]
+/*        [HttpDelete("{id}")]
         [Authorize(Policy = "")]
         public IActionResult DeleteSite(Guid id)
         {
@@ -146,6 +146,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
                 return BadRequest(response);
             }
-        }
+        }*/
     }
 }

@@ -213,8 +213,18 @@ namespace IDBMS_API.Services
                     if (task != null && task.Status != ProjectTaskStatus.Cancelled)
                     {
                         decimal pricePerUnit = task.PricePerUnit;
-                        double unitUsed = (task.UnitUsed > task.UnitInContract ? task.UnitUsed : task.UnitInContract);
-                        return pricePerUnit * (decimal)unitUsed;
+                        double unit = 0;
+
+                        if (task.Status == ProjectTaskStatus.Done)
+                        {
+                            unit = task.UnitUsed;
+                        }
+                        else
+                        {
+                            unit = task.UnitUsed > task.UnitInContract ? task.UnitUsed : task.UnitInContract;
+                        }
+
+                        return pricePerUnit * (decimal)unit;
                     }
                     return 0;
                 });
@@ -299,7 +309,7 @@ namespace IDBMS_API.Services
                         {
                             decimal pricePerUnit = task.PricePerUnit;
                             double unitIncurred = task.UnitUsed - task.UnitInContract;
-                            return pricePerUnit * (decimal)(unitIncurred > 0 ? unitIncurred : 0);
+                            return pricePerUnit * (decimal)unitIncurred;
                         }
                         return 0;
                     });
@@ -444,14 +454,17 @@ namespace IDBMS_API.Services
         {
             var decorTask = _taskRepo.GetByRoomId(roomId).FirstOrDefault(t => t.Code != null && t.Code.Equals("DECOR"));
 
-            decorTask.PricePerUnit = pricePerArea;
-            decorTask.EstimateBusinessDay= estimateBusinessDay;
-            decorTask.EndDate = CalculateEndDate(decorTask.StartedDate, decorTask.EstimateBusinessDay);
+            if (decorTask != null)
+            {
+                decorTask.PricePerUnit = pricePerArea;
+                decorTask.EstimateBusinessDay = estimateBusinessDay;
+                decorTask.EndDate = CalculateEndDate(decorTask.StartedDate, decorTask.EstimateBusinessDay);
 
-            _taskRepo.Update(decorTask);
+                _taskRepo.Update(decorTask);
 
-            UpdateProjectData(decorTask.ProjectId);
-            UpdatePaymentStageData(decorTask.ProjectId);
+                UpdateProjectData(decorTask.ProjectId);
+                UpdatePaymentStageData(decorTask.ProjectId);
+            }
         }
 
         public void CancelTasksInRoom(Guid roomId, Guid projectId)
@@ -540,16 +553,17 @@ namespace IDBMS_API.Services
             if (status == ProjectTaskStatus.Done)
             {
                 ct.EndDate = DateTime.Now;
+
+                if (ct.UnitUsed != ct.UnitInContract)
+                {
+                    ct.IsIncurred = true;
+                }
             }
 
             _taskRepo.Update(ct);
 
-            if (status == ProjectTaskStatus.Cancelled)
-            {
-
-                UpdateProjectData(ct.ProjectId);
-                UpdatePaymentStageData(ct.ProjectId);
-            }
+            UpdateProjectData(ct.ProjectId);
+            UpdatePaymentStageData(ct.ProjectId);
         }
 
     }
