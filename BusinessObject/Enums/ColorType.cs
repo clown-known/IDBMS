@@ -10,6 +10,5 @@ namespace BusinessObject.Enums
     {
         MixColor = 0,
         SingleColor = 1,
-        CustomColor = 2
     }
 }
