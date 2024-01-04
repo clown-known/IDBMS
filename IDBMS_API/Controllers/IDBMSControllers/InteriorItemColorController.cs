@@ -105,13 +105,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost]
         [Authorize(Policy = "")]
-        public IActionResult CreateInteriorItemColor([FromBody] InteriorItemColorRequest request)
+        public async Task<IActionResult> CreateInteriorItemColor([FromForm][FromBody] InteriorItemColorRequest request)
         {
             try
             {
                 try
                 {
-                    var result = _service.CreateInteriorItemColor(request);
+                    var result = await _service.CreateInteriorItemColor(request);
                     var response = new ResponseMessage()
                     {
                         Message = "Create successfully!",
@@ -136,11 +136,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "")]
-        public IActionResult UpdateInteriorItemColor(int id, [FromBody] InteriorItemColorRequest request)
+        public async Task<IActionResult> UpdateInteriorItemColor(int id, [FromForm][FromBody] InteriorItemColorRequest request)
         {
             try
             {
-                _service.UpdateInteriorItemColor(id, request);
+                await _service.UpdateInteriorItemColor(id, request);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",

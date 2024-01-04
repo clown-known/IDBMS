@@ -19,8 +19,8 @@ namespace IDBMS_API.DTOs.Request
         public ColorType Type { get; set; }
 
         [Required]
-        public string PrimaryColor { get; set; } = default!;
+        public IFormFile? PrimaryColorFile { get; set; } = default!;
 
-        public string? SecondaryColor { get; set; }
+        public IFormFile? SecondaryColorFile { get; set; }
     }
 }

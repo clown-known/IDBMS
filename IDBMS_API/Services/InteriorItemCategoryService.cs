@@ -114,7 +114,6 @@ namespace IDBMS_API.Services
             var iic = _repository.GetById(id) ?? throw new Exception("This item category id is not existed!");
 
             iic.IsDeleted = true;
-            //interior item
 
             _repository.Update(iic);
         }
