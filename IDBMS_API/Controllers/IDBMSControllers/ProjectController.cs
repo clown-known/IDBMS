@@ -33,7 +33,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetProjects(Guid projectId, int? pageSize, int? pageNo, ProjectType? type, ProjectStatus? status, string? name)
         {
             try
@@ -60,7 +60,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetProjectById(Guid projectId, Guid id)
         {
             try
@@ -85,8 +85,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("site/{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetProjectsBySiteId(Guid projectId, Guid id, int? pageSize, int? pageNo, ProjectType? type, ProjectStatus? status, string? name)
+        [Authorize(Policy = "")]
+        public IActionResult GetProjectsBySiteId(Guid id, int? pageSize, int? pageNo, ProjectType? type, ProjectStatus? status, string? name)
         {
             try
             {
@@ -111,8 +111,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpGet("status")]
-        [Authorize(Policy = "Admin, Participation")]
-        public IActionResult GetProjectsBySiteId(Guid userId)
+        [Authorize(Policy = "User")]
+        public IActionResult CountParticipationsByProjectStatus(Guid userId)
         {
             try
             {
@@ -137,8 +137,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin, Participation")]
-        public IActionResult BookProject(Guid projectId, [FromBody] ProjectRequest request)
+        [Authorize(Policy = "")]
+        public IActionResult CreateProject([FromBody] ProjectRequest request)
         {
             try
             {
@@ -161,7 +161,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Admin, ProjectManager")]
         public IActionResult UpdateProject(Guid projectId, Guid id, [FromBody] ProjectRequest request)
         {
             try
@@ -184,7 +184,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/status")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Admin, ProjectManager")]
         public IActionResult UpdateProjectStatus(Guid projectId, Guid id, ProjectStatus status)
         {
             try

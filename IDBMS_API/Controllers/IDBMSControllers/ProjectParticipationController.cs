@@ -31,35 +31,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [EnableQuery]
-        [HttpGet]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetParticipations(Guid projectId, ParticipationRole? role, string? userName, int? pageSize, int? pageNo, ProjectStatus? projectStatus, string? projectName)
-        {
-            try
-            {
-                var list = _service.GetAll(role, userName, projectStatus, projectName);
-
-                var response = new ResponseMessage()
-                {
-                    Message = "Get successfully!",
-                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
-                };
-
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var response = new ResponseMessage()
-                {
-                    Message = $"Error: {ex.Message}"
-                };
-                return BadRequest(response);
-            }
-        }
-
-        [EnableQuery]
         [HttpGet("project-owner")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetProjectOwnerByProjectId(Guid projectId)
         {
             try
@@ -87,7 +60,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("user/{id}")]
         [Authorize(Policy = "User")]
-        public IActionResult GetParticipationsByUserId(Guid projectId, Guid id, ParticipationRole? role, string? userName, int? pageSize, int? pageNo, ProjectStatus? projectStatus, string? projectName)
+        public IActionResult GetParticipationsByUserId(Guid id, ParticipationRole? role, string? userName, int? pageSize, int? pageNo, ProjectStatus? projectStatus, string? projectName)
         {
             try
             {
@@ -112,13 +85,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [EnableQuery]
-        [HttpGet("project/{projectId}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetParticipationsByProjectId(Guid projectId, ParticipationRole? role, string? name, int? pageSize, int? pageNo)
+        [HttpGet("project/{id}")]
+        [Authorize(Policy = "Participation")]
+        public IActionResult GetParticipationsByProjectId(Guid projectId, Guid id, ParticipationRole? role, string? name, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetProjectMemberByProjectId(projectId, role, name);
+                var list = _service.GetProjectMemberByProjectId(id, role, name);
 
                 var response = new ResponseMessage()
                 {
@@ -126,8 +99,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                     Data = new
                     {
                         PaginatedList = _paginationService.PaginateList(list, pageSize, pageNo),
-                        ProductOwner = _service.GetProjectOwnerByProjectId(projectId),
-                        ProjectManager = _service.GetProjectManagerByProjectId(projectId),
+                        ProductOwner = _service.GetProjectOwnerByProjectId(id),
+                        ProjectManager = _service.GetProjectManagerByProjectId(id),
                     }
                 };
 
@@ -144,13 +117,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [EnableQuery]
-        [HttpGet("project/{projectId}/users")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetUsersByParticipationInProject(Guid projectId)
+        [HttpGet("project/{id}/users")]
+        [Authorize(Policy = "Participation")]
+        public IActionResult GetUsersByParticipationInProject(Guid projectId, Guid id)
         {
             try
             {
-                var list = _service.GetUsersByParticipationInProject(projectId);
+                var list = _service.GetUsersByParticipationInProject(id);
 
                 var response = new ResponseMessage()
                 {
@@ -171,7 +144,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult CreateParticipation(Guid projectId, [FromBody] ProjectParticipationRequest request)
         {
             try
@@ -195,7 +168,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost("employees")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult CreateParticipationsByRole(Guid projectId, [FromBody] CreateParticipationListRequest request)
         {
             try
@@ -219,7 +192,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult UpdateParticipation(Guid projectId, Guid id, [FromBody] ProjectParticipationRequest request)
         {
             try
@@ -242,7 +215,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult DeleteParticipation(Guid projectId, Guid id)
         {
             try

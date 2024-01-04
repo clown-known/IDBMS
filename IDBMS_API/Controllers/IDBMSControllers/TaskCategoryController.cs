@@ -81,7 +81,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public async Task<IActionResult> CreateTaskCategory([FromForm][FromBody] TaskCategoryRequest request)
         {
             try
@@ -105,7 +105,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateTaskCategory(int id, [FromForm][FromBody] TaskCategoryRequest request)
         {
             try
@@ -128,7 +128,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateTaskCategoryStatus(int id)
         {
             try

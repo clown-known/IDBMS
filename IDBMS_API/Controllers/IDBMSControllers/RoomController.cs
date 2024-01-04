@@ -165,7 +165,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 _service.DeleteRoom(id, projectId);
                 var response = new ResponseMessage()
                 {
-                    Message = "Update successfully!",
+                    Message = "Delete successfully!",
                 };
                 return Ok(response);
             }

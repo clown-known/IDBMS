@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using BusinessObject.Enums;
 using IDBMS_API.DTOs.Response;
+using API.Supporters.JwtAuthSupport;
 
 namespace IDBMS_API.Controllers
 {
@@ -20,6 +21,7 @@ namespace IDBMS_API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "")]
         public IActionResult GetDashboardDataByAdmin()
         {
             try
@@ -44,6 +46,7 @@ namespace IDBMS_API.Controllers
         }
 
         [HttpGet("userId")]
+        [Authorize(Policy = "User")]
         public IActionResult GetDashboardDataByEngineerId(Guid userId)
         {
             try

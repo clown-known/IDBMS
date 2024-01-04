@@ -220,13 +220,16 @@ namespace IDBMS_API.Services
             UpdateProjectArea(request.ProjectId);
         }
 
-        public void DeleteRoom(Guid id, Guid projectId)
+        public void DeleteRoom(Guid roomId, Guid projectId)
         {
-            var room = _roomRepo.GetById(id) ?? throw new Exception("This room id is not found!");
+            var room = _roomRepo.GetById(roomId) ?? throw new Exception("This room id is not found!");
 
             room.IsDeleted = true;
 
             _roomRepo.Update(room);
+
+            ProjectTaskService taskService = new(_projectTaskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo, _taskCategoryRepo, _taskDesignRepo);
+            taskService.CancelTasksInRoom(roomId, projectId);
 
             UpdateProjectArea(projectId);
         }

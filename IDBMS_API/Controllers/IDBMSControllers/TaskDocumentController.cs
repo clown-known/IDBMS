@@ -22,7 +22,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager, Viewer")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetTaskDocuments(Guid projectId)
         {
             try
@@ -47,7 +47,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("task-report/{id}")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager, Viewer")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetTaskDocumentsByTaskReportId(Guid projectId, Guid id)
         {
             try
@@ -72,7 +72,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager, Viewer")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetTaskDocumentById(Guid projectId, Guid id)
         {
             try
@@ -96,7 +96,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
         public IActionResult CreateTaskDocument(Guid projectId, Guid taskReportId,[FromBody] TaskDocumentRequest request)
         {
             try
@@ -127,7 +127,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin, Participation, Architect, ConstructionManager")]
+        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
         public IActionResult DeleteTaskDocument(Guid projectId, Guid id)
         {
             try

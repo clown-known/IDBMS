@@ -29,8 +29,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetProjectDesigns(Guid projectId, ProjectType? type, string? name, bool? isHidden, int? pageSize, int? pageNo)
+        [Authorize(Policy = "")]
+        public IActionResult GetProjectDesigns(ProjectType? type, string? name, bool? isHidden, int? pageSize, int? pageNo)
         {
             try
             {
@@ -56,8 +56,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin, Participation, ProjectManager")]
-        public IActionResult GetProjectDesignById(Guid projectId, int id)
+        [Authorize(Policy = "")]
+        public IActionResult GetProjectDesignById(int id)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "")]
         public IActionResult CreateProjectDesign([FromBody] ProjectDesignRequest request)
         {
             try
@@ -104,7 +104,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateProjectDesign(int id, [FromBody] ProjectDesignRequest request)
         {
             try
@@ -127,7 +127,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/isHidden")]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateProjectDesignStatus(int id, bool isHidden)
         {
             try
@@ -135,7 +135,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 _service.UpdateProjectDesign(id, isHidden);
                 var response = new ResponseMessage()
                 {
-                    Message = "Delete successfully!",
+                    Message = "Update successfully!",
                 };
                 return Ok(response);
             }

@@ -1,4 +1,5 @@
-﻿using BusinessObject.Enums;
+﻿using API.Supporters.JwtAuthSupport;
+using BusinessObject.Enums;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -28,6 +29,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
+        [Authorize(Policy = "User")]
         public IActionResult GetBookingRequests(BookingRequestStatus? status, string? contactName, int? pageSize, int? pageNo)
         {
             try
@@ -71,6 +73,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "User")]
         public IActionResult UpdateBookingRequest(Guid id, [FromBody] BookingRequestRequest request)
         {
             try
@@ -89,6 +92,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/process")]
+        [Authorize(Policy = "")]
         public IActionResult ProcessBookingRequest(Guid id, BookingRequestStatus status, [FromBody] string adminReply)
         {
             try
@@ -107,6 +111,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/status")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateBookingRequestStatus(Guid id, BookingRequestStatus status)
         {
             try
@@ -121,6 +126,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "User")]
         public IActionResult DeleteBookingRequest(Guid id)
         {
             try
