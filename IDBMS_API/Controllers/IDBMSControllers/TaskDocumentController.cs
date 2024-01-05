@@ -97,7 +97,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost]
         [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
-        public IActionResult CreateTaskDocument(Guid projectId, Guid taskReportId,[FromBody] TaskDocumentRequest request)
+        public IActionResult CreateTaskDocument(Guid projectId, Guid taskReportId, [FromForm][FromBody] TaskDocumentRequest request)
         {
             try
             {
