@@ -85,6 +85,11 @@ namespace IDBMS_API.Services
             return _participationRepo.GetProjectOwnerByProjectId(id);
         }
 
+        public ProjectParticipation? GetParticpationInProjectByUserId(Guid userId, Guid projectId)
+        {
+            return _participationRepo.GetParticpationInProjectByUserId(userId, projectId);
+        }
+
         public ProjectParticipation? CreateParticipation(ProjectParticipationRequest request)
         {
             var p = new ProjectParticipation
