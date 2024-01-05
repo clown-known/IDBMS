@@ -31,6 +31,33 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [EnableQuery]
+        [HttpGet("")]
+        [Authorize(Policy = "User")]
+        public IActionResult GetProjectOwnerByProjectId(Guid userId, Guid projectId)
+        {
+            try
+            {
+                var data = _service.GetParticpationInProjectByUserId(userId, projectId);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = data
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [EnableQuery]
         [HttpGet("project-owner")]
         [Authorize(Policy = "Participation")]
         public IActionResult GetProjectOwnerByProjectId(Guid projectId)

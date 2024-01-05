@@ -147,7 +147,6 @@ namespace IDBMS_API.Services
                     IsIncurred = false,
                     ProjectId = request.ProjectId,
                     RoomId = roomCreated.Id,
-                    Status = ProjectTaskStatus.Pending,
                     EstimateBusinessDay = (int)Math.Ceiling(roomType.EstimateDayPerArea * roomCreated.Area),
                 };
 

@@ -393,7 +393,8 @@ namespace IDBMS_API.Services
                 ProjectId = request.ProjectId,
                 PaymentStageId = request.PaymentStageId,
                 RoomId = request.RoomId,
-                Status = request.Status,
+                ParentTaskId= request.ParentTaskId,
+                Status = ProjectTaskStatus.Pending,
                 EstimateBusinessDay = request.EstimateBusinessDay,
             };
 
@@ -440,7 +441,7 @@ namespace IDBMS_API.Services
                 ProjectId = request.ProjectId,
                 PaymentStageId = request.PaymentStageId,
                 RoomId = request.RoomId,
-                Status = request.Status,
+                Status = ProjectTaskStatus.Pending,
                 EstimateBusinessDay = request.EstimateBusinessDay,
             };
 
@@ -530,8 +531,8 @@ namespace IDBMS_API.Services
             ct.EndDate = CalculateEndDate(request.StartedDate, request.EstimateBusinessDay);
             ct.ProjectId = request.ProjectId;
             ct.PaymentStageId = request.PaymentStageId;
+            ct.ParentTaskId= request.ParentTaskId;
             ct.RoomId = request.RoomId;
-            ct.Status = request.Status;
             ct.EstimateBusinessDay= request.EstimateBusinessDay;
 
             _taskRepo.Update(ct);

@@ -10,8 +10,8 @@ namespace IDBMS_API.Services.PaginationService
         {
             PaginationResponse<T> response = new PaginationResponse<T>
             {
-                PageSize = pageSize ?? inputList.Count(),
-                PageNo = pageNo ?? 1,
+                PageSize = pageSize ?? null,
+                PageNo = pageNo ?? null,
                 TotalItem = inputList.Count(),
                 TotalPage= 1,
                 List = inputList
@@ -36,7 +36,7 @@ namespace IDBMS_API.Services.PaginationService
                     response.List = Enumerable.Empty<T>();
                 }
 
-                response.TotalPage = (int)Math.Ceiling((double)response.TotalItem / response.PageSize);
+                response.TotalPage = (int)Math.Ceiling((double)response.TotalItem / pageSize.Value);
             }
 
             return response;

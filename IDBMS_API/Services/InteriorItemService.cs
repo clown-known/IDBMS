@@ -101,7 +101,7 @@ namespace IDBMS_API.Services
                 }
                 if (type == InteriorItemType.CustomFurniture)
                 {
-                    code += "NB_";
+                    code += "NB_"; // nội bộ
                 }
 
                 var valid = category.Name.Contains(' ');
