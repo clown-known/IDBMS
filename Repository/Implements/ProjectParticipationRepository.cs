@@ -66,6 +66,21 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
         }
     }
 
+    public ProjectParticipation? GetParticpationInProjectByUserId(Guid userId, Guid projectId)
+    {
+        try
+        {
+            using var context = new IdtDbContext();
+            return context.ProjectParticipations
+                    .Include(u => u.User)
+                    .FirstOrDefault(item => item.ProjectId == projectId && item.UserId == userId && item.IsDeleted == false);
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
     public ProjectParticipation Save(ProjectParticipation entity)
     {
         try
