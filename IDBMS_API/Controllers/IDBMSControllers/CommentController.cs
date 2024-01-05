@@ -26,32 +26,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         }
 
-        [EnableQuery]
-        [HttpGet]
-        [Authorize(Policy = "Participation")]
-        public IActionResult GetComments(Guid projectId, int? pageSize, int? pageNo)
-        {
-            try
-            {
-                var list = _service.GetAll();
-
-                var response = new ResponseMessage()
-                {
-                    Message = "Get successfully!",
-                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
-                };
-
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var response = new ResponseMessage()
-                {
-                    Message = $"Error: {ex.Message}"
-                };
-                return BadRequest(response);
-            }
-        }
         //permission
         [EnableQuery]
         [HttpGet("project-task/{id}")]
