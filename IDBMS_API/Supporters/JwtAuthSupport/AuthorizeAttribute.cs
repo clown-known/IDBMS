@@ -41,8 +41,8 @@ namespace API.Supporters.JwtAuthSupport
                         var id = context.HttpContext.Request.Query["projectId"].ToString();
 
                         Guid.TryParse(id, out Guid pid);
-                        policy.ForEach(p =>
-                        //foreach (var p in policy)
+
+                        foreach (var p in policy)
                         {
                             string s = p.Trim().ToLower();
                             switch (s)
@@ -74,7 +74,10 @@ namespace API.Supporters.JwtAuthSupport
                                                 && p.Role == BusinessObject.Enums.ParticipationRole.Viewer).FirstOrDefault() != null;
                                     break;
                             }
-                        });
+
+                            if (accept)
+                                return;
+                        };
 
                         if (!accept)
                             context.Result = new JsonResult(new { Message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
