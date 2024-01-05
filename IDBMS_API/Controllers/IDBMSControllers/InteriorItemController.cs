@@ -105,7 +105,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost]
         [Authorize(Policy = "")]
-        public async Task<IActionResult> CreateInteriorItem([FromBody] InteriorItemRequest request)
+        public async Task<IActionResult> CreateInteriorItem([FromForm][FromBody] InteriorItemRequest request)
         {
             try
             {
