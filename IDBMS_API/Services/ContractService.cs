@@ -46,7 +46,12 @@ namespace IDBMS_API.Services
             {
                 ProjectRepository projectRepository = new ProjectRepository();
                 Project project = projectRepository.GetByIdWithSite(projectid);
-                User owner = project.ProjectParticipations.Where(p => p.Role == ParticipationRole.ProductOwner).FirstOrDefault().User;
+                var ownerParticipation = project.ProjectParticipations.FirstOrDefault(p => p.Role == ParticipationRole.ProductOwner);
+
+                if (ownerParticipation == null)
+                    throw new Exception("Project owner is not found!");
+
+                User owner = ownerParticipation.User;
                 Site site = project.Site;
                 DocumentTemplateRepository documentTemplateRepository = new DocumentTemplateRepository();
                 var doc = documentTemplateRepository.getByType(DocumentTemplateType.Contract);
@@ -73,7 +78,7 @@ namespace IDBMS_API.Services
                 return contractForCompanyResponse;
             }catch(Exception e)
             {
-                return null;
+                throw;
             }
         }
         public ContractForCustomerResponse GetDataForCustomerContract(Guid projectid)
@@ -82,7 +87,12 @@ namespace IDBMS_API.Services
             {
                 ProjectRepository projectRepository = new ProjectRepository();
                 Project project = projectRepository.GetByIdWithSite(projectid);
-                User owner = project.ProjectParticipations.Where(p => p.Role == ParticipationRole.ProductOwner).FirstOrDefault().User;
+                var ownerParticipation = project.ProjectParticipations.FirstOrDefault(p => p.Role == ParticipationRole.ProductOwner);
+
+                if (ownerParticipation == null)
+                    throw new Exception("Project owner is not found!");
+
+                User owner = ownerParticipation.User;
                 Site site = project.Site;
                 DocumentTemplateRepository documentTemplateRepository = new DocumentTemplateRepository();
                 var doc = documentTemplateRepository.getByType(DocumentTemplateType.Contract);
@@ -107,7 +117,7 @@ namespace IDBMS_API.Services
                 return contractForCustomerResponse;
             }catch(Exception e)
             {
-                return null;
+                throw;
             }
         }
         

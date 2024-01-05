@@ -28,7 +28,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult GetTaskDesigns(string? codeOrName, int? taskCategoryId, int? pageSize, int? pageNo)
         {
             try
@@ -55,7 +55,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [EnableQuery]
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult GetTaskDesignById(int id)
         {
             try
@@ -79,7 +79,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult CreateTaskDesign([FromBody] TaskDesignRequest request)
         {
             try
@@ -103,7 +103,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult UpdateTaskDesign(int id, [FromBody] TaskDesignRequest request)
         {
             try
@@ -126,7 +126,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult DeleteTaskDesign(int id)
         {
             try

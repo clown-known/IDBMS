@@ -161,7 +161,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult UpdateProject(Guid projectId, Guid id, [FromBody] ProjectRequest request)
         {
             try
@@ -184,7 +184,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}/status")]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult UpdateProjectStatus(Guid projectId, Guid id, ProjectStatus status)
         {
             try
