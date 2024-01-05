@@ -108,7 +108,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "")]
         public IActionResult CreateNotificationsForAllCustomers([FromBody] NotificationRequest request)
         {
             try
@@ -132,7 +132,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost("projects/{id}")]
-        [Authorize(Policy = "Admin, ProjectManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult CreateNotificationForProject(Guid projectId, Guid id, [FromBody] NotificationRequest request)
         {
             try
