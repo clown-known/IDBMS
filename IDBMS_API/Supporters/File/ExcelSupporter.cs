@@ -111,8 +111,8 @@ namespace IDBMS_API.Supporters.File
                     });
 
                     var (sum,incrs) = GenSheetTHKP(doc,"Sheet2","HTKP",projectName, listTaskName, excelResults);
-                    
 
+                    GenSheet1ForCompany(doc,"Sheet1","Tong",project,listTaskName,sum,incrs,1);
                     for (int i = 1; i <= 10; i++)
                     {
                         ExcelUtils.RemoveSheet(doc, "Sheet" + i.ToString());
@@ -124,11 +124,65 @@ namespace IDBMS_API.Supporters.File
                 return stream.ToArray();
             }
         }
+        public static void GenSheet1ForCompany(SpreadsheetDocument doc, string templateName, string sheetName, Project project, string categoryName, ExcelResult total, ExcelResult incr, int paymentStageNO)
+        {
+            ExcelUtils.RenameSheet(doc, templateName, sheetName);
+
+            var owner = project.ProjectParticipations.FirstOrDefault(p => p.Role == BusinessObject.Enums.ParticipationRole.ProductOwner).User;
+            string A4data = "Tên gói thầu:  " + categoryName;
+            int count = 0;
+            ExcelUtils.FindAndReplaceString(doc, sheetName, "A3", "Tên dự án:   " + project.Name.ToUpper());
+
+            ExcelUtils.FindAndReplaceString(doc, sheetName, "A4", A4data);
+            ExcelUtils.FindAndReplaceString(doc, sheetName, "A6", "Chủ đầu tư: " + owner.CompanyName.ToUpper());
+
+            PaymentStageRepository paymentStageRepository = new PaymentStageRepository();
+            List<PaymentStage> paymentStage = paymentStageRepository.GetAll().Where(p => p.ProjectId == project.Id).ToList();
+
+
+            ExcelUtils.FindAndReplaceString(doc, sheetName, "C13", IntUtils.ConvertStringToMoney(project.EstimatedPrice.Value));
+
+            if (incr != null)
+            {
+                string formula = "'" + incr.sheetName + "'!" + Char.ToString((char)incr.resultColumn++) + incr.resultRow;
+                ExcelUtils.FindAndReplaceFormula(doc, sheetName, "D13", IntUtils.ConvertStringToMoney((decimal)incr.value1), formula);
+            }
+            else
+                ExcelUtils.FindAndReplaceString(doc, sheetName, "D13", "0");
+
+            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "E13", "", "D13+C13");
+            string formula2 = "'" + total.sheetName + "'!" + Char.ToString((char)total.resultColumn++) + total.resultRow;
+            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "F13", IntUtils.ConvertStringToMoney((decimal)total.value1), formula2);
+            if(project.AmountPaid != 0)
+                ExcelUtils.FindAndReplaceString(doc, sheetName, "G13", IntUtils.ConvertStringToMoney(project.AmountPaid));
+            else
+                ExcelUtils.FindAndReplaceString(doc, sheetName, "G13", "0");
+
+            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "H13", "", "F13-G13");
+
+            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "C14", "", "C13");
+            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "D14", "", "D13");
+            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "E14", "", "E13");
+            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "F14", "", "F13");
+            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "G14", "", "G13");
+            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "H14", "", "H13");
+
+            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "G16", "", "E14");
+            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "G17", "", "F13");
+            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "G18", "", "G13");
+            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "G19", "", "H13");
+
+            var result = (int)total.value1 -  (int)project.AmountPaid;
+            ExcelUtils.FindAndReplaceString(doc, sheetName, "A20", " Số tiền bằng chữ: "+ IntUtils.ConvertNumberToVietnamese(result) + " đồng");
+
+
+        }
+
         public static (ExcelResult sum, ExcelResult? incrs) GenSheetTHKP(SpreadsheetDocument doc,string templateSheetName, string sheetName, string projectTitle, string categoryName, List<ExcelResult> excelResults)
         {
 
-            ExcelUtils.FindAndReplaceString(doc, sheetName, "A1", "BẢNG 1 :  BẢNG TỔNG HỢP GIÁ TRỊ QUYẾT TOÁN");
-            ExcelUtils.FindAndReplaceString(doc, sheetName, "A2", "CÔNG TRÌNH : " + projectTitle.ToUpper());
+            ExcelUtils.FindAndReplaceString(doc, templateSheetName, "A1", "BẢNG 1 :  BẢNG TỔNG HỢP GIÁ TRỊ QUYẾT TOÁN");
+            ExcelUtils.FindAndReplaceString(doc, templateSheetName, "A2", "CÔNG TRÌNH : " + projectTitle.ToUpper());
             ExcelUtils.FindAndReplaceString(doc, templateSheetName, "A6", "I");
             ExcelUtils.FindAndReplaceString(doc, templateSheetName, "B6", "Hợp đồng thi công lắp đặt công trình");
             int currentIndex = 7;
@@ -228,7 +282,7 @@ namespace IDBMS_API.Supporters.File
 
 
             var cate = incr != null ? categoryName + " & PHẦN PHÁT SINH CÓ DUYỆT GIÁ" : categoryName;
-            ExcelUtils.FindAndReplaceString(doc, sheetName, "A3", "HẠNG MỤC : " + cate);
+            ExcelUtils.FindAndReplaceString(doc, templateSheetName, "A3", "HẠNG MỤC : " + cate);
 
             ExcelUtils.RenameSheet(doc, templateSheetName, sheetName);
             return (sum,incrs);
@@ -453,8 +507,8 @@ namespace IDBMS_API.Supporters.File
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Description);
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Code);
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), Enum.GetName(task.CalculationUnit));
-                        ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitInContract.ToString());
-                        ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitUsed.ToString());
+                        ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitInContract.ToString());
+                        ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitUsed.ToString());
                         if (task.Status == BusinessObject.Enums.ProjectTaskStatus.Done)
                             ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitUsed.ToString());
                         else
@@ -508,45 +562,6 @@ namespace IDBMS_API.Supporters.File
             return result;
         }
         
-        public static void GenSheet1ForCompany(SpreadsheetDocument doc, string templateName, string sheetName, Project project, string categoryName,ExcelResult total, ExcelResult incr, int paymentStageNO)
-        {
-            ExcelUtils.RenameSheet(doc, templateName, sheetName);
 
-            var owner = project.ProjectParticipations.FirstOrDefault(p => p.Role == BusinessObject.Enums.ParticipationRole.ProductOwner).User;
-            string A4data = "Tên gói thầu:  " + categoryName;
-            int count = 0;
-            ExcelUtils.FindAndReplaceString(doc, sheetName, "A3", "Tên dự án:   " + project.Name.ToUpper());
-
-            ExcelUtils.FindAndReplaceString(doc, sheetName, "A4", A4data);
-            ExcelUtils.FindAndReplaceString(doc, sheetName, "A6", "Chủ đầu tư: " + owner.CompanyName.ToUpper());
-
-            PaymentStageRepository paymentStageRepository = new PaymentStageRepository();
-            List<PaymentStage> paymentStage = paymentStageRepository.GetAll().Where(p => p.ProjectId == project.Id).ToList();
-
-
-            ExcelUtils.FindAndReplaceString(doc, sheetName, "C13", IntUtils.ConvertStringToMoney(project.EstimatedPrice.Value));
-
-            if (incr != null)
-            {
-                string formula = "'" + incr.sheetName + "'!" + Char.ToString((char)incr.resultColumn++) + incr.resultRow;
-                ExcelUtils.FindAndReplaceFormula(doc, sheetName, "D13", IntUtils.ConvertStringToMoney((decimal)incr.value1), formula);
-                ExcelUtils.FindAndReplaceString(doc, sheetName, "D13", "0");
-            }
-
-            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "E13", "", "D13+C13");
-            string formula2 = "'" + total.sheetName + "'!" + Char.ToString((char)total.resultColumn++) + total.resultRow;
-            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "F13", IntUtils.ConvertStringToMoney((decimal)total.value1), formula2);
-
-            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "H13", "", "F13 - G13");
-
-            //ExcelUtils.FindAndReplaceFormula(doc, sheetName, "C14", "", "C13");
-            //ExcelUtils.FindAndReplaceFormula(doc, sheetName, "D14", "", "D13");
-            //ExcelUtils.FindAndReplaceFormula(doc, sheetName, "E14", "", "E13");
-            //ExcelUtils.FindAndReplaceFormula(doc, sheetName, "F14", "", "F13");
-            //ExcelUtils.FindAndReplaceFormula(doc, sheetName, "G14", "", "G13");
-            //ExcelUtils.FindAndReplaceFormula(doc, sheetName, "H14", "", "H13");
-
-
-        }
     }
 }
