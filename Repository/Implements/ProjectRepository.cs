@@ -38,6 +38,7 @@ namespace Repository.Implements
                     .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
                         .ThenInclude(u => u.User)
                     .Include(p => p.Transactions.Where(t => t.IsDeleted == false))
+                    .Include(p => p.Site)
                     .Include(p => p.ProjectDocuments.Where(pd => pd.IsDeleted == false))
                     .FirstOrDefault(project => project.Id == id);
             }
