@@ -121,6 +121,7 @@ namespace IDBMS_API.Services
             adsProject.Area = request.Area;
             adsProject.Language = request.Language;
             adsProject.EstimateBusinessDay = request.EstimateBusinessDay;
+            adsProject.UpdatedDate = DateTime.Now;
 
             _projectRepo.Update(adsProject);
         }
@@ -176,6 +177,7 @@ namespace IDBMS_API.Services
 
             p.AdvertisementDescription = request.AdvertisementDescription;
             p.EnglishAdvertisementDescription = request.EnglishAdvertisementDescription;
+            p.UpdatedDate = DateTime.Now;
 
             if (request.RepresentImage != null)
             {
@@ -193,6 +195,7 @@ namespace IDBMS_API.Services
             var project = _projectRepo.GetById(projectId) ?? throw new Exception("Not existed");
 
             project.AdvertisementStatus = status;
+            project.UpdatedDate= DateTime.Now;
 
             _projectRepo.Update(project);
         }

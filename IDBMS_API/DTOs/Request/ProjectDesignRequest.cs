@@ -21,8 +21,6 @@ namespace IDBMS_API.DTOs.Request
         [Column(TypeName = "money")]
         public decimal MaxBudget { get; set; }
 
-        public int? EstimateBusinessDay { get; set; }
-
         [Required]
         public string Name { get; set; } = default!;
 
