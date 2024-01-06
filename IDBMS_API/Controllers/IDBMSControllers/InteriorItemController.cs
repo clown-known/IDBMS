@@ -105,7 +105,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost]
         [Authorize(Policy = "")]
-        public async Task<IActionResult> CreateInteriorItem([FromBody] InteriorItemRequest request)
+        public async Task<IActionResult> CreateInteriorItem([FromForm][FromBody] InteriorItemRequest request)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "")]
-        public IActionResult UpdateInteriorItem(Guid id, [FromBody] InteriorItemRequest request)
+        public IActionResult UpdateInteriorItem(Guid id, [FromForm][FromBody] InteriorItemRequest request)
         {
             try
             {

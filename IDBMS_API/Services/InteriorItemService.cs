@@ -108,6 +108,7 @@ namespace IDBMS_API.Services
                 if (valid)
                 {
                     category.Name.Split(' ').ToList().ForEach(i => code += i[0].ToString().Unidecode().ToUpper());
+                    code = code.Replace("/", "");
                     code += "_";
                 }
                 else
