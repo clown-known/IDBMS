@@ -129,7 +129,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "")]
-        public IActionResult UpdateInteriorItem(Guid id, [FromBody] InteriorItemRequest request)
+        public IActionResult UpdateInteriorItem(Guid id, [FromForm][FromBody] InteriorItemRequest request)
         {
             try
             {
