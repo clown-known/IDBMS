@@ -106,7 +106,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost]
         [Authorize(Policy = "ProjectManager, Architect, ConstructionManager, Owner")]
-        public async Task<IActionResult> CreateComment(Guid projectId, [FromBody] CommentRequest request)
+        public async Task<IActionResult> CreateComment(Guid projectId, [FromForm] CommentRequest request)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "ProjectManager, Architect, ConstructionManager, Owner")]
-        public IActionResult UpdateComment(Guid projectId, Guid id, [FromBody] CommentRequest request)
+        public IActionResult UpdateComment(Guid projectId, Guid id, [FromForm] CommentRequest request)
         {
             try
             {
