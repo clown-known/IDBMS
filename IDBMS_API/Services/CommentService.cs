@@ -17,14 +17,9 @@ namespace IDBMS_API.Services
             _repository = repository;
         }
 
-        public IEnumerable<Comment> Filter(IEnumerable<Comment> list, CommentType? type, CommentStatus? status, string? content)
+        public IEnumerable<Comment> Filter(IEnumerable<Comment> list, CommentStatus? status, string? content)
         {
             IEnumerable<Comment> filteredList = list;
-
-            if (type != null)
-            {
-                filteredList = filteredList.Where(comment => comment.Type == type);
-            }
 
             if (status != null)
             {
@@ -53,18 +48,18 @@ namespace IDBMS_API.Services
             return _repository.GetById(id) ?? throw new Exception("This comment id is not existed!");
         }
 
-        public IEnumerable<Comment> GetByProjectTaskId(Guid id, CommentType? type, CommentStatus? status, string? content)
+        public IEnumerable<Comment> GetByProjectTaskId(Guid id, CommentStatus? status, string? content)
         {
             var list = _repository.GetByTaskId(id);
 
-            return Filter(list, type, status, content);
+            return Filter(list, status, content);
         }
 
-        public IEnumerable<Comment> GetByProjectId(Guid id, CommentType? type, CommentStatus? status, string? content)
+        public IEnumerable<Comment> GetByProjectId(Guid id, CommentStatus? status, string? content)
         {
             var list = _repository.GetByProjectId(id);
 
-            return Filter(list, type, status, content);
+            return Filter(list, status, content);
         }
         public async Task<Comment?> CreateComment(CommentRequest request)
         {
@@ -77,15 +72,11 @@ namespace IDBMS_API.Services
                 UserId = request.UserId,
                 CreatedTime = DateTime.Now,
                 Status = CommentStatus.Sent,
+                Content = request.Content,
+                IsDeleted = false,
             };
 
-            if (request.Type == CommentType.Text)
-            {
-                cmt.Type= CommentType.Text;
-                cmt.Content = request.Content;
-            }
-
-            if (request.Type == CommentType.File)
+            if (request.File != null)
             {
                 FirebaseService s = new FirebaseService();
                 string link = "";
@@ -94,14 +85,7 @@ namespace IDBMS_API.Services
                     link = await s.UploadCommentFile(request.File, request.ProjectId, request.ProjectTaskId);
                 }
 
-                cmt.Type = CommentType.File;
                 cmt.FileUrl= link;
-            }
-
-            if (request.Type == CommentType.ItemSuggestion)
-            {
-                cmt.Type = CommentType.ItemSuggestion;
-                cmt.ItemId = request.ItemId;
             }
 
             var cmtCreated = _repository.Save(cmt);
@@ -116,14 +100,9 @@ namespace IDBMS_API.Services
             cmt.UserId = request.UserId;
             cmt.LastModifiedTime = DateTime.Now;
             cmt.Status = CommentStatus.Edited;
+            cmt.Content = request.Content;
 
-            if (request.Type == CommentType.Text)
-            {
-                cmt.Type = CommentType.Text;
-                cmt.Content = request.Content;
-            }
-
-            if (request.Type == CommentType.File)
+            if (request.File != null)
             {
                 FirebaseService s = new FirebaseService();
                 string link = "";
@@ -132,14 +111,7 @@ namespace IDBMS_API.Services
                     link = await s.UploadCommentFile(request.File, request.ProjectId, request.ProjectTaskId);
                 }
 
-                cmt.Type = CommentType.File;
                 cmt.FileUrl = link;
-            }
-
-            if (request.Type == CommentType.ItemSuggestion)
-            {
-                cmt.Type = CommentType.ItemSuggestion;
-                cmt.ItemId = request.ItemId;
             }
 
             _repository.Update(cmt);
@@ -150,6 +122,7 @@ namespace IDBMS_API.Services
             var cmt = _repository.GetById(id) ?? throw new Exception("This comment id is not existed!");
 
             cmt.Status = status;
+            cmt.LastModifiedTime = DateTime.Now;
 
             _repository.Update(cmt);
         }
