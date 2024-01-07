@@ -23,5 +23,7 @@ namespace IDBMS_API.DTOs.Request
         public string? Content { get; set; } = default!;
 
         public IFormFile? File { get; set; }
+
+        public Guid? ReplyCommentId { get; set; }
     }
 }
