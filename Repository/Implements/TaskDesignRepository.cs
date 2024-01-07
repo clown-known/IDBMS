@@ -17,7 +17,6 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.TaskDesigns
-                    .Include(u => u.InteriorItemCategory)
                     .Include(p => p.TaskCategory)
                     .Where(psd=> psd.IsDeleted == false)
                     .ToList()

@@ -326,6 +326,7 @@ namespace IDBMS_API.Services
 
             ct.UnitUsed = unitUsed;
             ct.Percentage = (int)((unitUsed / ct.UnitInContract) * 100);
+            ct.UpdatedDate = DateTime.Now;
 
             if (unitUsed > ct.UnitInContract)
                 ct.IsIncurred = true;
@@ -343,6 +344,7 @@ namespace IDBMS_API.Services
             foreach (var task in listTask)
             {
                 task.PaymentStageId = null;
+                task.UpdatedDate = DateTime.Now;
 
                 _taskRepo.Update(task);
             }
@@ -460,6 +462,7 @@ namespace IDBMS_API.Services
                 decorTask.PricePerUnit = pricePerArea;
                 decorTask.EstimateBusinessDay = estimateBusinessDay;
                 decorTask.EndDate = CalculateEndDate(decorTask.StartedDate, decorTask.EstimateBusinessDay);
+                decorTask.UpdatedDate = DateTime.Now;
 
                 _taskRepo.Update(decorTask);
 
@@ -487,34 +490,35 @@ namespace IDBMS_API.Services
 
         public void AssignTasksToStage(Guid paymentStageId, List<Guid> listTaskId, Guid projectId)
         {
-                foreach (var taskId in listTaskId)
-                {
-                    var task = _taskRepo.GetById(taskId) ?? throw new Exception("This project task id is not existed!");
+            foreach (var taskId in listTaskId)
+            {
+                var task = _taskRepo.GetById(taskId) ?? throw new Exception("This project task id is not existed!");
 
-                    task.PaymentStageId = paymentStageId;
+                task.PaymentStageId = paymentStageId;
+                task.UpdatedDate = DateTime.Now;
 
-                    _taskRepo.Update(task);
-                }
+                _taskRepo.Update(task);
+            }
             UpdatePaymentStageData(projectId);
         }
 
-/*        public void StartTasksOfStage(Guid paymentStageId, Guid projectId)
-        {
-            var listTask = _taskRepo.GetByPaymentStageId(paymentStageId);
-            if (listTask.Any())
-            {
-                foreach (var task in listTask)
+        /*        public void StartTasksOfStage(Guid paymentStageId, Guid projectId)
                 {
-                    if (task!= null && task.PaymentStageId == paymentStageId && task.Status == ProjectTaskStatus.Confirmed)
+                    var listTask = _taskRepo.GetByPaymentStageId(paymentStageId);
+                    if (listTask.Any())
                     {
-                        task.StartedDate = DateTime.Now;
-                        _taskRepo.Update(task);
+                        foreach (var task in listTask)
+                        {
+                            if (task!= null && task.PaymentStageId == paymentStageId && task.Status == ProjectTaskStatus.Confirmed)
+                            {
+                                task.StartedDate = DateTime.Now;
+                                _taskRepo.Update(task);
+                            }
+                        }
                     }
-                }
-            }
 
-            UpdatePaymentStageData(projectId);
-        }*/
+                    UpdatePaymentStageData(projectId);
+                }*/
 
         public void UpdateProjectTask(Guid id, ProjectTaskRequest request)
         {
@@ -545,6 +549,7 @@ namespace IDBMS_API.Services
             var ct = _taskRepo.GetById(id) ?? throw new Exception("This project task id is not existed!");
 
             ct.Status = status;
+            ct.UpdatedDate = DateTime.Now;
 
             if (status == ProjectTaskStatus.Ongoing)
             {

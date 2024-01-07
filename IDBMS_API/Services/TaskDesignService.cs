@@ -130,7 +130,6 @@ namespace IDBMS_API.Services
                 CalculationUnit = request.CalculationUnit,
                 EstimatePricePerUnit = request.EstimatePricePerUnit,
                 IsDeleted = false,
-                InteriorItemCategoryId = request.InteriorItemCategoryId,
                 TaskCategoryId = request.TaskCategoryId,
             };
 
@@ -147,7 +146,6 @@ namespace IDBMS_API.Services
             ctd.EnglishDescription = request.EnglishDescription;
             ctd.CalculationUnit = request.CalculationUnit;
             ctd.EstimatePricePerUnit = request.EstimatePricePerUnit;
-            ctd.InteriorItemCategoryId = request.InteriorItemCategoryId;
             ctd.TaskCategoryId = request.TaskCategoryId;
 
             _taskDesignRepo.Update(ctd);

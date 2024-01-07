@@ -36,9 +36,6 @@ namespace BusinessObject.Models
         [Required]
         public bool IsDeleted { get; set; }
 
-        public int? InteriorItemCategoryId { get; set; }
-        public InteriorItemCategory? InteriorItemCategory { get; set; }
-
         public int? TaskCategoryId { get; set; }
         public TaskCategory TaskCategory { get; set; }
 
