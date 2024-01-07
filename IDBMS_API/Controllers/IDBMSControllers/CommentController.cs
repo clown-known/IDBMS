@@ -30,9 +30,9 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("project-task/{id}")]
         [Authorize(Policy = "Participation")]
-        public IActionResult GetCommentsProjectTaskId(Guid projectId, Guid id, CommentType? type, CommentStatus? status, string? content, int? pageSize, int? pageNo)
+        public IActionResult GetCommentsProjectTaskId(Guid projectId, Guid id, CommentStatus? status, string? content, int? pageSize, int? pageNo)
         {
-            var list = _service.GetByProjectTaskId(id, type, status, content);
+            var list = _service.GetByProjectTaskId(id, status, content);
             try
             {
                 var response = new ResponseMessage()
@@ -56,9 +56,9 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet("project/{id}")]
         [Authorize(Policy = "Participation")]
-        public IActionResult GetCommentsProjectId(Guid projectId, Guid id, CommentType? type, CommentStatus? status, string? content, int? pageSize, int? pageNo)
+        public IActionResult GetCommentsProjectId(Guid projectId, Guid id, CommentStatus? status, string? content, int? pageSize, int? pageNo)
         {
-            var list = _service.GetByProjectId(id, type, status, content);
+            var list = _service.GetByProjectId(id, status, content);
             try
             {
                 var response = new ResponseMessage()
@@ -106,7 +106,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost]
         [Authorize(Policy = "ProjectManager, Architect, ConstructionManager, Owner")]
-        public async Task<IActionResult> CreateComment(Guid projectId, [FromBody] CommentRequest request)
+        public async Task<IActionResult> CreateComment(Guid projectId, [FromForm] CommentRequest request)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "ProjectManager, Architect, ConstructionManager, Owner")]
-        public IActionResult UpdateComment(Guid projectId, Guid id, [FromBody] CommentRequest request)
+        public IActionResult UpdateComment(Guid projectId, Guid id, [FromForm] CommentRequest request)
         {
             try
             {
