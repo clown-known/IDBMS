@@ -20,12 +20,7 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public Guid UserId { get; set; }
 
-        [Required]
-        public CommentType Type { get; set; }
-
         public string? Content { get; set; } = default!;
-
-        public Guid? ItemId { get; set; }
 
         public IFormFile? File { get; set; }
     }
