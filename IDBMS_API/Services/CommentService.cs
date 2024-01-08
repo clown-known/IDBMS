@@ -74,6 +74,7 @@ namespace IDBMS_API.Services
                 Status = CommentStatus.Sent,
                 Content = request.Content,
                 IsDeleted = false,
+                ReplyCommentId = request.ReplyCommentId,
             };
 
             if (request.File != null)
