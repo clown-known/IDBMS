@@ -12,4 +12,6 @@ public interface IProjectParticipationRepository : ICrudBaseRepository<ProjectPa
     ProjectParticipation? GetProjectOwnerByProjectId(Guid id);
     ProjectParticipation? GetProjectManagerByProjectId(Guid id);
     ProjectParticipation? GetParticpationInProjectByUserId(Guid userId, Guid projectId);
+
+    IEnumerable<ProjectParticipation> GetCustomerViewersByProjectId(Guid id);
 }

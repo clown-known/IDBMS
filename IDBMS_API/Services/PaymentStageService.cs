@@ -189,11 +189,7 @@ namespace IDBMS_API.Services
             var project = projectService.GetById(projectId);
 
             ProjectDesignService pjDesignService = new ProjectDesignService(_projectDesignRepo);
-            var projectDesigns = pjDesignService.GetByType(project.Type);
-
-            var selectedDesign = projectDesigns.FirstOrDefault(design =>
-                project.EstimatedPrice >= design.MinBudget &&
-                project.EstimatedPrice <= design.MaxBudget);
+            var selectedDesign = pjDesignService.GetProjectDesignMapped(project.EstimatedPrice.Value, project.Type);
 
             if (selectedDesign == null)
             {

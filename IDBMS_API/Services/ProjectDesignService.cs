@@ -48,6 +48,17 @@ namespace IDBMS_API.Services
             return _repository.GetByType(type);
         }
 
+        public ProjectDesign? GetProjectDesignMapped(decimal estimatePrice, ProjectType type)
+        {
+            var designList = _repository.GetByType(type);
+
+            var selectedDesign = designList.FirstOrDefault(design =>
+                                estimatePrice >= design.MinBudget &&
+                                estimatePrice <= design.MaxBudget);
+
+            return selectedDesign;
+        }
+
         public ProjectDesign? GetById(int id)
         {
             return _repository.GetById(id) ?? throw new Exception("This project design id is not existed!");

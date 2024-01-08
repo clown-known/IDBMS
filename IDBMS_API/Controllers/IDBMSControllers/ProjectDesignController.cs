@@ -79,6 +79,33 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
+        [EnableQuery]
+        [HttpGet("map")]
+        [Authorize(Policy = "")]
+        public IActionResult GetProjectDesignByProjectData(decimal estimatePrice, ProjectType type)
+        {
+            try
+            {
+                var selectedDesign = _service.GetProjectDesignMapped(estimatePrice, type);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = selectedDesign
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
         [HttpPost]
         [Authorize(Policy = "")]
         public IActionResult CreateProjectDesign([FromBody] ProjectDesignRequest request)
