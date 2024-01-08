@@ -28,6 +28,9 @@ public class Comment
 
     public DateTime? LastModifiedTime { get; set; }
 
+    public Guid? ReplyCommentId { get; set; }
+    public Comment? ReplyComment { get; set; }
+
     [Required]
     public CommentStatus Status { get; set; }
 
