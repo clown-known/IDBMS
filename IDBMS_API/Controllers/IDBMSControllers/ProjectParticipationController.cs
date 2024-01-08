@@ -30,10 +30,9 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             _paginationService = paginationService;
         }
 
-        [EnableQuery]
         [HttpGet("")]
         [Authorize(Policy = "User")]
-        public IActionResult GetProjectOwnerByProjectId(Guid userId, Guid projectId)
+        public IActionResult GetParticpationInProjectByUserId(Guid userId, Guid projectId)
         {
             try
             {
@@ -57,19 +56,23 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [EnableQuery]
-        [HttpGet("project-owner")]
+        [HttpGet("decision-makers")]
         [Authorize(Policy = "Participation")]
-        public IActionResult GetProjectOwnerByProjectId(Guid projectId)
+        public IActionResult GetProjectDecisionMakersByProjectId(Guid projectId)
         {
             try
             {
-                var data = _service.GetProjectOwnerByProjectId(projectId);
+                var owner = _service.GetProjectOwnerByProjectId(projectId);
+                var pm = _service.GetProjectManagerByProjectId(projectId);
 
                 var response = new ResponseMessage()
                 {
                     Message = "Get successfully!",
-                    Data = data
+                    Data = new
+                    {
+                        ProjectOwner = owner,
+                        ProjectManager = pm,
+                    }
                 };
 
                 return Ok(response);
@@ -84,7 +87,37 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [EnableQuery]
+        [HttpGet("user-view")]
+        [Authorize(Policy = "Participation")]
+        public IActionResult GetProjectParticipationInProjectByUserView(Guid projectId)
+        {
+            try
+            {
+                var customerViewers = _service.GetCustomerViewersByProjectId(projectId);
+                var pm = _service.GetProjectManagerByProjectId(projectId);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = new
+                    {
+                        CustomerViewers = customerViewers,
+                        ProjectManager = pm,
+                    }
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
         [HttpGet("user/{id}")]
         [Authorize(Policy = "User")]
         public IActionResult GetParticipationsByUserId(Guid id, ParticipationRole? role, string? userName, int? pageSize, int? pageNo, ProjectStatus? projectStatus, string? projectName)
@@ -111,9 +144,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [EnableQuery]
         [HttpGet("project/{id}")]
-        [Authorize(Policy = "Participation")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult GetParticipationsByProjectId(Guid projectId, Guid id, ParticipationRole? role, string? name, int? pageSize, int? pageNo)
         {
             try
@@ -143,7 +175,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
-        [EnableQuery]
+
+
         [HttpGet("project/{id}/users")]
         [Authorize(Policy = "Participation")]
         public IActionResult GetUsersByParticipationInProject(Guid projectId, Guid id)
