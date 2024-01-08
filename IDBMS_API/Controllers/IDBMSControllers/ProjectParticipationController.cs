@@ -89,11 +89,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpGet("user-view")]
         [Authorize(Policy = "Participation")]
-        public IActionResult GetProjectParticipationInProjectByUserView(Guid projectId)
+        public IActionResult GetProjectParticipationInProjectByUserView(Guid projectId, string? name, int? pageSize, int? pageNo)
         {
             try
             {
-                var customerViewers = _service.GetCustomerViewersByProjectId(projectId);
+                var customerViewers = _service.GetCustomerViewersByProjectId(projectId, name);
                 var pm = _service.GetProjectManagerByProjectId(projectId);
 
                 var response = new ResponseMessage()
@@ -101,7 +101,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                     Message = "Get successfully!",
                     Data = new
                     {
-                        CustomerViewers = customerViewers,
+                        CustomerViewers = _paginationService.PaginateList(customerViewers, pageSize, pageNo),
                         ProjectManager = pm,
                     }
                 };

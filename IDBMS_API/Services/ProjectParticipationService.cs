@@ -90,9 +90,10 @@ namespace IDBMS_API.Services
             return _participationRepo.GetParticpationInProjectByUserId(userId, projectId);
         }
 
-        public IEnumerable<ProjectParticipation> GetCustomerViewersByProjectId(Guid projectId)
+        public IEnumerable<ProjectParticipation> GetCustomerViewersByProjectId(Guid projectId, string? name)
         {
-            return _participationRepo.GetCustomerViewersByProjectId(projectId);
+            var list = _participationRepo.GetCustomerViewersByProjectId(projectId);
+            return Filter(list, null, name, null, null);
         }
 
         public ProjectParticipation? CreateParticipation(ProjectParticipationRequest request)
