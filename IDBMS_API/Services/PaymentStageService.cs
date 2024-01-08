@@ -10,6 +10,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Repository.Implements;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
 using IDBMS_API.DTOs.Response;
+using IDBMS_API.Supporters.TimeHelper;
 
 namespace IDBMS_API.Services
 {
@@ -339,7 +340,7 @@ namespace IDBMS_API.Services
             {
                 if (endTime.HasValue)
                 {
-                    DateTime currentDate = DateTime.Now;
+                    DateTime currentDate = TimeHelper.GetTime(DateTime.Now);
 
                     return currentDate > endTime;
                 }
@@ -352,7 +353,7 @@ namespace IDBMS_API.Services
         {
             var ps = _stageRepo.GetById(id) ?? throw new Exception("This payment stage id is not existed!");
 
-            ps.StartedDate = DateTime.Now;
+            ps.StartedDate = TimeHelper.GetTime(DateTime.Now);
             ps.Status = StageStatus.Ongoing;
 
             _stageRepo.Update(ps);
@@ -387,7 +388,7 @@ namespace IDBMS_API.Services
             if (tasksOfStage.Count() > 0)
                 throw new Exception("Some Tasks in Stage is not done!");
 
-            ps.EndDate = DateTime.Now;
+            ps.EndDate = TimeHelper.GetTime(DateTime.Now);
             ps.Status = StageStatus.Done;
 
             _stageRepo.Update(ps);

@@ -226,6 +226,29 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
+        [HttpPost]
+        [Authorize(Policy = "")]
+        public IActionResult AddViewer(Guid projectId, [FromBody] string email)
+        {
+            try
+            {
+                var result = _service.AddViewer(projectId,email);
+                var response = new ResponseMessage()
+                {
+                    Message = "Create successfully!",
+                    Data = result
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
 
         [HttpPost("employees")]
         [Authorize(Policy = "ProjectManager")]

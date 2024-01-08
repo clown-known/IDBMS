@@ -6,6 +6,8 @@ using System.Text.RegularExpressions;
 using BusinessObject.Enums;
 using Microsoft.AspNetCore.Mvc;
 using UnidecodeSharpFork;
+using IDBMS_API.Supporters.UserHelper;
+using Repository.Implements;
 
 namespace IDBMS_API.Services
 {
@@ -13,10 +15,12 @@ namespace IDBMS_API.Services
     {
         private readonly IProjectParticipationRepository _participationRepo;
         private readonly ITaskAssignmentRepository _assignmentRepo;
-        public ProjectParticipationService(IProjectParticipationRepository participationRepo, ITaskAssignmentRepository assignmentRepo)
+        private readonly IUserRepository _userRepo;
+        public ProjectParticipationService(IProjectParticipationRepository participationRepo, ITaskAssignmentRepository assignmentRepo,IUserRepository userRepository)
         {
             _participationRepo = participationRepo;
             _assignmentRepo = assignmentRepo;
+            _userRepo = userRepository;
         }
 
         public IEnumerable<ProjectParticipation> Filter(IEnumerable<ProjectParticipation> list,
@@ -107,6 +111,25 @@ namespace IDBMS_API.Services
             };
 
             var pCreated = _participationRepo.Save(p);
+            return pCreated;
+        }
+        public ProjectParticipation? AddViewer(Guid projectId,string email)
+        {
+            User? user = _userRepo.GetByEmail(email);
+            if(user == null)
+            {
+                (user, string password) = UserHelper.GennarateViewerUserForProject(projectId,email);
+            }
+            var pCreated = _participationRepo.Save(new ProjectParticipation
+            {
+                IsDeleted = false,
+                ProjectId = projectId,
+                UserId = user.Id,
+                Role = BusinessObject.Enums.ParticipationRole.Viewer
+            });
+            // send email
+
+            //
             return pCreated;
         }
 

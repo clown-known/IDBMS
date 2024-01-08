@@ -6,6 +6,7 @@ using Repository.Interfaces;
 using Microsoft.OData.Edm;
 using UnidecodeSharpFork;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using IDBMS_API.Supporters.TimeHelper;
 
 public class ProjectService
 {
@@ -170,7 +171,7 @@ public class ProjectService
         p.Status = request.Status;
         p.AdvertisementStatus = request.AdvertisementStatus;
         p.SiteId= request.SiteId;
-        p.UpdatedDate = DateTime.Now;
+        p.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
         _projectRepo.Update(p);
     }
@@ -181,7 +182,7 @@ public class ProjectService
 
         project.EstimatedPrice = estimatePrice;
         project.FinalPrice = finalPrice;
-        project.UpdatedDate = DateTime.Now;
+        project.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
         project.EstimateBusinessDay = estimateBusinessDay;
 
         _projectRepo.Update(project);
@@ -192,7 +193,7 @@ public class ProjectService
         var project = _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
 
         project.Area = (double)totalArea;
-        project.UpdatedDate = DateTime.Now;
+        project.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
         _projectRepo.Update(project);
     }
@@ -202,7 +203,7 @@ public class ProjectService
         var project = _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
 
         project.TotalWarrantyPaid = totalWarrantyPaid;
-        project.UpdatedDate = DateTime.Now;
+        project.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
         _projectRepo.Update(project);
     }
@@ -212,7 +213,7 @@ public class ProjectService
         var project = _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
 
         project.AmountPaid = totalPaid;
-        project.UpdatedDate = DateTime.Now;
+        project.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
         _projectRepo.Update(project);
     }
@@ -222,7 +223,7 @@ public class ProjectService
         var project = _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
 
         project.TotalPenaltyFee = totalPenaltyFee;
-        project.UpdatedDate = DateTime.Now;
+        project.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
         _projectRepo.Update(project);
     }
@@ -232,7 +233,7 @@ public class ProjectService
         var project = _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
 
         project.WarrantyPeriodEndTime = warrantyPeriodEndTime;
-        project.UpdatedDate = DateTime.Now;
+        project.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
         _projectRepo.Update(project);
     }
@@ -242,7 +243,7 @@ public class ProjectService
         var project = _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
 
         project.Status = status;
-        project.UpdatedDate = DateTime.Now;
+        project.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
         _projectRepo.Update(project);
     }
