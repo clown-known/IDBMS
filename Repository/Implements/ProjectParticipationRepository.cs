@@ -145,6 +145,25 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
         }
     }
 
+    public IEnumerable<ProjectParticipation> GetCustomerViewersByProjectId(Guid id)
+    {
+        try
+        {
+            using var context = new IdtDbContext();
+            return context.ProjectParticipations
+                .OrderBy(p => p.Role)
+                .Include(u => u.User)
+                .Where(u => u.ProjectId.Equals(id) && u.IsDeleted == false
+                            && u.User.Role == CompanyRole.Customer
+                            && u.Role != ParticipationRole.ProjectManager && u.Role != ParticipationRole.ProductOwner)
+                .ToList();
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
     public IEnumerable<ProjectParticipation> GetUsersByParticipationInProject(Guid id)
     {
         try
