@@ -54,6 +54,15 @@ namespace IDBMS_API.Services
             _taskCategoryRepo = taskCategoryRepo;
         }
 
+        private static string GetTimezone()
+        {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+            return config["Timezone:SystemTimeZoneId"];
+        }
+
         public IEnumerable<TaskReport> Filter(IEnumerable<TaskReport> list,
            string? name)
         {
@@ -114,14 +123,16 @@ namespace IDBMS_API.Services
 
         public async Task<TaskReport?> CreateTaskReport(Guid projectId,TaskReportRequest request)
         {
+            var timezone = GetTimezone();
+
             var ctr = new TaskReport
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
                 UnitUsed = request.UnitUsed,
                 Description = request.Description,
-                CreatedTime = DateTime.Now,
-                ProjectTaskId= request.ProjectTaskId,
+                CreatedTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone)),
+                ProjectTaskId = request.ProjectTaskId,
                 IsDeleted = false,
             };
             var ctrCreated = _taskReportRepo.Save(ctr);
@@ -138,11 +149,12 @@ namespace IDBMS_API.Services
         public void UpdateTaskReport(Guid id, TaskReportRequest request)
         {
             var ctr = _taskReportRepo.GetById(id) ?? throw new Exception("This task report id is not existed!");
+            var timezone = GetTimezone();
 
             ctr.Name = request.Name;
             ctr.UnitUsed = request.UnitUsed;
             ctr.Description = request.Description;
-            ctr.UpdatedTime = DateTime.Now;
+            ctr.UpdatedTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
 
             _taskReportRepo.Update(ctr);
 
