@@ -240,9 +240,13 @@ namespace IDBMS_API.Services
             ps.Description = request.Description;
             ps.IsPrepaid = request.IsPrepaid;
             ps.PricePercentage = request.PricePercentage;
-            ps.EndTimePayment = request.EndTimePayment;
             ps.ProjectId = request.ProjectId;
             ps.IsWarrantyStage = request.IsWarrantyStage;
+
+            if (request.EndTimePayment == ps.EndTimePayment)
+                UpdateEndTimePayment(id);
+            else
+                ps.EndTimePayment = request.EndTimePayment;
 
             ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
             var project = projectService.GetById(request.ProjectId);
@@ -257,9 +261,6 @@ namespace IDBMS_API.Services
             }
 
             UpdateStageNoByProjectId(ps.ProjectId);
-
-            if (request.EndTimePayment == ps.EndTimePayment)
-                UpdateEndTimePayment(id);
         }
 
         public void UpdateEndTimePayment(Guid stageId)
