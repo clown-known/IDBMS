@@ -120,11 +120,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpGet("user/{id}")]
         [Authorize(Policy = "User")]
-        public IActionResult GetParticipationsByUserId(Guid id, ParticipationRole? role, string? userName, int? pageSize, int? pageNo, ProjectStatus? projectStatus, string? projectName)
+        public IActionResult GetParticipationsByUserId(Guid id, ParticipationRole? role, int? pageSize, int? pageNo, ProjectStatus? projectStatus, string? projectName)
         {
             try
             {
-                var list = _service.GetByUserId(id, role, userName, projectStatus, projectName);
+                var list = _service.GetByUserId(id, role, projectStatus, projectName);
 
                 var response = new ResponseMessage()
                 {
