@@ -48,11 +48,12 @@ namespace IDBMS_API.Services
             return Filter(list, name);
         }
 
-        public IEnumerable<TaskAssignment> GetByUserId(Guid id, string? name)
+        public IEnumerable<TaskAssignment> GetTaskAssignmentsOfUserInProject(Guid projectId, Guid userId)
         {
-            var list = _repository.GetByUserId(id) ?? throw new Exception("This task assignment id is not existed!");
+            var list = _repository.GetByUserId(userId).Where(ta => ta.ProjectParticipation.ProjectId == projectId) 
+                        ?? throw new Exception("Task Assignment in project of this user id is not existed!");
 
-            return Filter(list, name);
+            return Filter(list, null);
         }
 
         public IEnumerable<TaskAssignment> GetByTaskId(Guid id, string? name)

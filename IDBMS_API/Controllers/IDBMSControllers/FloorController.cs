@@ -110,7 +110,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult CreateFloor(Guid projectId, [FromBody] FloorRequest request)
         {
             try
@@ -134,7 +134,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult UpdateFloor(Guid projectId, Guid id, [FromBody] FloorRequest request)
         {
             try

@@ -80,13 +80,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         //lead arc, cons man
         [EnableQuery]
-        [HttpGet("user/{id}")]
-        [Authorize(Policy = "User")]
-        public IActionResult GetTaskAssignmentsByUserId(Guid id, string? name, int? pageSize, int? pageNo)
+        [HttpGet("user/{userId}")]
+        [Authorize(Policy = "Participation")]
+        public IActionResult GetTaskAssignmentsOfUserInProject(Guid projectId, Guid userId, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetByUserId(id, name);
+                var list = _service.GetTaskAssignmentsOfUserInProject(projectId, userId);
 
                 var response = new ResponseMessage()
                 {
