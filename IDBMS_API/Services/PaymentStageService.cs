@@ -257,7 +257,9 @@ namespace IDBMS_API.Services
             }
 
             UpdateStageNoByProjectId(ps.ProjectId);
-            UpdateEndTimePayment(id);
+
+            if (request.EndTimePayment == ps.EndTimePayment)
+                UpdateEndTimePayment(id);
         }
 
         public void UpdateEndTimePayment(Guid stageId)
