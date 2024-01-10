@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using UnidecodeSharpFork;
 using IDBMS_API.Supporters.UserHelper;
 using Repository.Implements;
+using IDBMS_API.Supporters.EmailSupporter;
 
 namespace IDBMS_API.Services
 {
@@ -117,9 +118,12 @@ namespace IDBMS_API.Services
         public ProjectParticipation? AddViewer(Guid projectId,string email)
         {
             User? user = _userRepo.GetByEmail(email);
-            if(user == null)
+            string link = "https://idbms-user-web-client.vercel.app/vi-VN/project/" + projectId.ToString();
+            if (user == null)
             {
                 (user, string password) = UserHelper.GennarateViewerUserForProject(projectId,email);
+                EmailSupporter.SendInviteEnglishEmail(email, link, password);
+
             }
             var pCreated = _participationRepo.Save(new ProjectParticipation
             {
@@ -129,7 +133,7 @@ namespace IDBMS_API.Services
                 Role = BusinessObject.Enums.ParticipationRole.Viewer
             });
             // send email
-
+            EmailSupporter.SendInviteEnglishEmail(email,link);
             //
             return pCreated;
         }
