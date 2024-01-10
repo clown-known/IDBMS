@@ -28,6 +28,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+    - name: Setup SwashBuckle .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.SWASHBUCKLE_DOTNET_CORE_VERSION }}
     - name: Restore
       run: dotnet restore ${{ env.WORKING_DIRECTORY }}
     - name: Build
@@ -66,7 +70,7 @@ jobs:
       with:
         creds: ${{ secrets.idbms_api_management_service_SPN }}
     - name: Import API into Azure API Management
-      run: az apim api import --path "${{ env.AZURE_APIM_RESOURCE_PATH }}" --resource-group "${{ env.AZURE_APIM_RESOURCEGROUP }}" --service-name "${{ env.AZURE_APIM_SERVICENAME }}" --api-id "${{ env.AZURE_APIM_API_ID }}" --service-url "${{ env.AZURE_APIM_APPSERVICEURL }}" --subscription-required false
+      run: az apim api import --path "${{ env.AZURE_APIM_RESOURCE_PATH }}" --resource-group "${{ env.AZURE_APIM_RESOURCEGROUP }}" --service-name "${{ env.AZURE_APIM_SERVICENAME }}" --api-id "${{ env.AZURE_APIM_API_ID }}" --service-url "${{ env.AZURE_APIM_APPSERVICEURL }}" --specification-path "${{ env.API_IMPORT_SPECIFICATION_PATH }}" --specification-format OpenApi --subscription-required false
     - name: logout
       run: >
         az logout
