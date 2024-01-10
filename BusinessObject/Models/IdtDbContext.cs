@@ -44,8 +44,10 @@ public class IdtDbContext : DbContext
 
     private static string? GetConnectionString()
     {
+        string dir = Directory.GetCurrentDirectory();
+        string path = dir.Substring(0, dir.LastIndexOf("\\")) + "\\IDBMS_API";
         var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
+            .SetBasePath(path)
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
             .Build();
         return config.GetConnectionString("IDBMS");
