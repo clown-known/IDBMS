@@ -36,4 +36,6 @@ public class Comment
 
     [Required]
     public bool IsDeleted { get; set; }
+
+    public List<Comment> CommentReplies { get; set; } = new();
 }
