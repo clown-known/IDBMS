@@ -10,6 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Runtime.CompilerServices;
+using IDBMS_API.Supporters.TimeHelper;
 
 namespace IDBMS_API.Services
 {
@@ -57,7 +58,7 @@ namespace IDBMS_API.Services
         {
             var user = userRepository.GetByEmail(email);
             if (user == null) return null;
-            if (user.LockedUntil != null && user.LockedUntil > DateTime.Now) return null;
+            if (user.LockedUntil != null && user.LockedUntil > TimeHelper.GetTime(DateTime.Now)) return null;
             // gen code, update to database
             Random random = new Random();
             string rdn = "";
@@ -75,8 +76,8 @@ namespace IDBMS_API.Services
             {
                 Id = Guid.NewGuid(),
                 UserId = user.Id,
-                CreatedTime = DateTime.Now,
-                ExpiredTime = DateTime.Now.AddMinutes(ConstantValue.ExpiredTimeOfCode),
+                CreatedTime = TimeHelper.GetTime(DateTime.Now),
+                ExpiredTime = TimeHelper.GetTime(DateTime.Now).AddMinutes(ConstantValue.ExpiredTimeOfCode),
                 Code = rdn,
                 Status = BusinessObject.Enums.AuthenticationCodeStatus.Active
             };

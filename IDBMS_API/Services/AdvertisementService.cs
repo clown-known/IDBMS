@@ -4,6 +4,7 @@ using BusinessObject.Models;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Request.AdvertisementRequest;
+using IDBMS_API.Supporters.TimeHelper;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interfaces;
 using System.Runtime.Intrinsics.Arm;
@@ -94,7 +95,7 @@ namespace IDBMS_API.Services
                 Name = request.Name,
                 Type= request.Type,
                 ProjectCategoryId= request.ProjectCategoryId,
-                CreatedDate = DateTime.Now,
+                CreatedDate = TimeHelper.GetTime(DateTime.Now),
                 CreatedAdminUsername= request.CreatedAdminUsername,
                 CreatedByAdminId= request.CreatedByAdminId,
                 EstimatedPrice= request.EstimatedPrice,
@@ -125,7 +126,7 @@ namespace IDBMS_API.Services
             adsProject.Area = request.Area;
             adsProject.Language = request.Language;
             adsProject.EstimateBusinessDay = request.EstimateBusinessDay;
-            adsProject.UpdatedDate = DateTime.Now;
+            adsProject.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
             _projectRepo.Update(adsProject);
         }
@@ -140,7 +141,7 @@ namespace IDBMS_API.Services
                     {
                         Id = Guid.NewGuid(),
                         Name = "Advertisement Image",
-                        CreatedDate = DateTime.Now,
+                        CreatedDate = TimeHelper.GetTime(DateTime.Now),
                         Category = ProjectDocumentCategory.CompletionImage,
                         ProjectId = request.ProjectId,
                         IsPublicAdvertisement = request.IsPublicAdvertisement,
@@ -181,7 +182,7 @@ namespace IDBMS_API.Services
 
             p.AdvertisementDescription = request.AdvertisementDescription;
             p.EnglishAdvertisementDescription = request.EnglishAdvertisementDescription;
-            p.UpdatedDate = DateTime.Now;
+            p.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
             if (request.RepresentImage != null)
             {
@@ -199,7 +200,7 @@ namespace IDBMS_API.Services
             var project = _projectRepo.GetById(projectId) ?? throw new Exception("Not existed");
 
             project.AdvertisementStatus = status;
-            project.UpdatedDate= DateTime.Now;
+            project.UpdatedDate= TimeHelper.GetTime(DateTime.Now);
 
             _projectRepo.Update(project);
         }

@@ -5,6 +5,7 @@ using Azure.Core;
 using BusinessObject.Enums;
 using UnidecodeSharpFork;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using IDBMS_API.Supporters.TimeHelper;
 
 namespace IDBMS_API.Services
 {
@@ -52,15 +53,6 @@ namespace IDBMS_API.Services
             _transactionRepo = transactionRepo;
             _taskDesignRepo = taskDesignRepo;
             _taskCategoryRepo = taskCategoryRepo;
-        }
-
-        private static string GetTimezone()
-        {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .Build();
-            return config["Timezone:SystemTimeZoneId"];
         }
 
         public IEnumerable<TaskReport> Filter(IEnumerable<TaskReport> list,
@@ -123,7 +115,7 @@ namespace IDBMS_API.Services
 
         public async Task<TaskReport?> CreateTaskReport(Guid projectId,TaskReportRequest request)
         {
-            var timezone = GetTimezone();
+            var timezone = TimeHelper.GetTimezone();
 
             var ctr = new TaskReport
             {
@@ -149,7 +141,7 @@ namespace IDBMS_API.Services
         public void UpdateTaskReport(Guid id, TaskReportRequest request)
         {
             var ctr = _taskReportRepo.GetById(id) ?? throw new Exception("This task report id is not existed!");
-            var timezone = GetTimezone();
+            var timezone = TimeHelper.GetTimezone();
 
             ctr.Name = request.Name;
             ctr.UnitUsed = request.UnitUsed;

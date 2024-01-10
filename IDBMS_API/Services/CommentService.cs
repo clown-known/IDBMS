@@ -6,6 +6,7 @@ using Repository.Interfaces;
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 using UnidecodeSharpFork;
+using IDBMS_API.Supporters.TimeHelper;
 
 namespace IDBMS_API.Services
 {
@@ -70,7 +71,7 @@ namespace IDBMS_API.Services
                 ProjectTaskId = request.ProjectTaskId,
                 ProjectId = request.ProjectId,
                 UserId = request.UserId,
-                CreatedTime = DateTime.Now,
+                CreatedTime = TimeHelper.GetTime(DateTime.Now),
                 Status = CommentStatus.Sent,
                 Content = request.Content,
                 IsDeleted = false,
@@ -99,7 +100,7 @@ namespace IDBMS_API.Services
             cmt.ProjectTaskId = request.ProjectTaskId;
             cmt.ProjectId = request.ProjectId;
             cmt.UserId = request.UserId;
-            cmt.LastModifiedTime = DateTime.Now;
+            cmt.LastModifiedTime = TimeHelper.GetTime(DateTime.Now);
             cmt.Status = CommentStatus.Edited;
             cmt.Content = request.Content;
 
@@ -123,7 +124,7 @@ namespace IDBMS_API.Services
             var cmt = _repository.GetById(id) ?? throw new Exception("This comment id is not existed!");
 
             cmt.Status = status;
-            cmt.LastModifiedTime = DateTime.Now;
+            cmt.LastModifiedTime = TimeHelper.GetTime(DateTime.Now);
 
             _repository.Update(cmt);
         }
@@ -133,7 +134,7 @@ namespace IDBMS_API.Services
             var cmt = _repository.GetById(id) ?? throw new Exception("This comment id is not existed!");
 
             cmt.IsDeleted = true;
-            cmt.LastModifiedTime = DateTime.Now;
+            cmt.LastModifiedTime = TimeHelper.GetTime(DateTime.Now);
 
             _repository.Update(cmt);
         }
