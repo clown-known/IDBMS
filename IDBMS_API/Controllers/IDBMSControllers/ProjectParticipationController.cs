@@ -89,11 +89,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpGet("user-view")]
         [Authorize(Policy = "Participation")]
-        public IActionResult GetProjectParticipationInProjectByUserView(Guid projectId)
+        public IActionResult GetProjectParticipationInProjectByUserView(Guid projectId, string? name, int? pageSize, int? pageNo)
         {
             try
             {
-                var customerViewers = _service.GetCustomerViewersByProjectId(projectId);
+                var customerViewers = _service.GetCustomerViewersByProjectId(projectId, name);
                 var pm = _service.GetProjectManagerByProjectId(projectId);
 
                 var response = new ResponseMessage()
@@ -101,7 +101,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                     Message = "Get successfully!",
                     Data = new
                     {
-                        CustomerViewers = customerViewers,
+                        CustomerViewers = _paginationService.PaginateList(customerViewers, pageSize, pageNo),
                         ProjectManager = pm,
                     }
                 };
@@ -120,11 +120,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpGet("user/{id}")]
         [Authorize(Policy = "User")]
-        public IActionResult GetParticipationsByUserId(Guid id, ParticipationRole? role, string? userName, int? pageSize, int? pageNo, ProjectStatus? projectStatus, string? projectName)
+        public IActionResult GetParticipationsByUserId(Guid id, ParticipationRole? role, int? pageSize, int? pageNo, ProjectStatus? projectStatus, string? projectName)
         {
             try
             {
-                var list = _service.GetByUserId(id, role, userName, projectStatus, projectName);
+                var list = _service.GetByUserId(id, role, projectStatus, projectName);
 
                 var response = new ResponseMessage()
                 {
