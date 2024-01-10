@@ -28,7 +28,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 var response = new ResponseMessage()
                 {
                     Message = "Generate successfully!",
-                    Data = File(file, "application/octet-stream", fileName),
+                    Data = file!=null?File(file, "application/octet-stream", fileName):null,
                 };
 
                 return File(file, "application/octet-stream", fileName);
