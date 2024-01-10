@@ -5,6 +5,7 @@ using IDBMS_API.Constants;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Supporters.File;
+using IDBMS_API.Supporters.TimeHelper;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Implements;
 
@@ -141,7 +142,7 @@ namespace IDBMS_API.Services
                 {
                     currentDoc.Url = link;
                     currentDoc.Category = ProjectDocumentCategory.Contract;
-                    currentDoc.CreatedDate = DateTime.Now;
+                    currentDoc.CreatedDate = TimeHelper.GetTime(DateTime.Now);
                     currentDoc.ProjectDocumentTemplateId = temp.Id;
                     currentDoc.IsDeleted = false;
                     _projectDocumentRepository.Update(currentDoc);

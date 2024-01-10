@@ -13,6 +13,7 @@ using API.Services;
 using API.Supporters.JwtAuthSupport;
 using IDBMS_API.DTOs.Request.AccountRequest;
 using IDBMS_API.Supporters.JwtAuthSupport;
+using IDBMS_API.Supporters.TimeHelper;
 
 namespace IDBMS_API.Services
 {
@@ -74,7 +75,7 @@ namespace IDBMS_API.Services
                 Note = request.Note,
                 Status = BookingRequestStatus.Pending,
                 IsDeleted = false,
-                CreatedDate= DateTime.Now,
+                CreatedDate= TimeHelper.GetTime(DateTime.Now),
             };
 
             if (user == null)
@@ -123,7 +124,7 @@ namespace IDBMS_API.Services
             br.ContactPhone = request.ContactPhone;
             br.ContactLocation = request.ContactLocation;
             br.Note = request.Note;
-            br.UpdatedDate= DateTime.Now;
+            br.UpdatedDate= TimeHelper.GetTime(DateTime.Now);
 
             _bookingRequestRepo.Update(br);
         }
@@ -133,7 +134,7 @@ namespace IDBMS_API.Services
             var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This booking request id is not existed!");
 
             br.Status = status;
-            br.UpdatedDate = DateTime.Now;
+            br.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
             _bookingRequestRepo.Update(br);
         }
@@ -142,7 +143,7 @@ namespace IDBMS_API.Services
         {
             var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This booking request id is not existed!");
 
-            br.UpdatedDate = DateTime.Now;
+            br.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
             br.AdminReply = adminReply;
             br.Status = status;
 
@@ -154,7 +155,7 @@ namespace IDBMS_API.Services
             var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This booking request id is not existed!");
 
             br.IsDeleted = true;
-            br.UpdatedDate = DateTime.Now;
+            br.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
             _bookingRequestRepo.Update(br);
         }

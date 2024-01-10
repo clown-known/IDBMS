@@ -16,6 +16,7 @@ using BusinessObject.Enums;
 using UnidecodeSharpFork;
 using System.Security.Cryptography;
 using IDBMS_API.Supporters.JwtAuthSupport;
+using IDBMS_API.Supporters.TimeHelper;
 
 namespace API.Services
 {
@@ -225,7 +226,7 @@ namespace API.Services
             var user = _repository.GetById(userId) ?? throw new Exception("User not existed");
 
             user.Address = request.Address;
-            user.UpdatedDate = DateTime.UtcNow;
+            user.UpdatedDate = TimeHelper.GetTime(DateTime.UtcNow);
             user.Language = request.Language;
             user.DateOfBirth= request.DateOfBirth;
             user.Email = request.Email;

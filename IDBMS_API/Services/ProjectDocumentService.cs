@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using BusinessObject.Enums;
 using UnidecodeSharpFork;
 using DocumentFormat.OpenXml.Wordprocessing;
+using IDBMS_API.Supporters.TimeHelper;
 
 namespace IDBMS_API.Services
 {
@@ -97,7 +98,7 @@ namespace IDBMS_API.Services
 
             pd.Name = request.Name;
             pd.Description = request.Description;
-            pd.CreatedDate = DateTime.Now;
+            pd.CreatedDate = TimeHelper.GetTime(DateTime.Now);
             pd.Category = request.Category;
             pd.ProjectDocumentTemplateId = request.ProjectDocumentTemplateId;
             pd.IsPublicAdvertisement = request.IsPublicAdvertisement;
