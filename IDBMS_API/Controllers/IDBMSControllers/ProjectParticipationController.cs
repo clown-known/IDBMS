@@ -227,7 +227,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
         [HttpPost("addviewer")]
-        [Authorize(Policy = "")]
+        [Authorize(Policy = "owner")]
         public IActionResult AddViewer(Guid projectId, [FromBody] string email)
         {
             try
