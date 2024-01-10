@@ -33,6 +33,29 @@ namespace IDBMS_API.Supporters.EmailSupporter
                 smtp.Send(mm);
             }
         }
+        public static void SendDeadlineEnglishEmail(string email,string link,string date1,string date2)
+        {
+            string subject = "Upcoming Funding Deadline for Next Project Phase";
+            string dateline = EmailSupporter.dateline.Replace("{link}",link).Replace("{date1}", date1).Replace("{date2}", date2);
+            string body = dateline;
+            // send otp
+            using (MailMessage mm = new MailMessage("idtautomailer@gmail.com", email))
+            {
+                mm.Subject = subject;
+
+                mm.Body = body;
+
+                mm.IsBodyHtml = true;
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = "smtp.gmail.com";
+                smtp.EnableSsl = true;
+                NetworkCredential NetworkCred = new NetworkCredential("idtautomailer@gmail.com", "npufojpvlcxiowda");
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = NetworkCred;
+                smtp.Port = 587;
+                smtp.Send(mm);
+            }
+        }
         public static void SendInviteEnglishEmail(string email,string link,string password)
         {
             string subject = "Invitation to Join Project on IDT Décor";
@@ -58,7 +81,7 @@ namespace IDBMS_API.Supporters.EmailSupporter
         }
         public static void SendVerifyEnglishEmail(string email,string link)
         {
-            string subject = "Invitation to Join Project on IDT Décor";
+            string subject = " Account Verification: Action Required";
             string verify = EmailSupporter.verify.Replace("{link}",link);
             string body = verify;
             // send otp
@@ -102,29 +125,7 @@ namespace IDBMS_API.Supporters.EmailSupporter
                 smtp.Send(mm);
             }
         }
-        public static void SendDeadlineEnglishEmail(string email,string link,string name,string time)
-        {
-            string subject = "New Project Stage Commencement Notification";
-            string stage = EmailSupporter.stage.Replace("{link}",link).Replace("{name}",name).Replace("{time}",time);
-            string body = stage;
-            // send otp
-            using (MailMessage mm = new MailMessage("idtautomailer@gmail.com", email))
-            {
-                mm.Subject = subject;
 
-                mm.Body = body;
-
-                mm.IsBodyHtml = true;
-                SmtpClient smtp = new SmtpClient();
-                smtp.Host = "smtp.gmail.com";
-                smtp.EnableSsl = true;
-                NetworkCredential NetworkCred = new NetworkCredential("idtautomailer@gmail.com", "npufojpvlcxiowda");
-                smtp.UseDefaultCredentials = false;
-                smtp.Credentials = NetworkCred;
-                smtp.Port = 587;
-                smtp.Send(mm);
-            }
-        }
         public static void SendInviteEnglishEmail(string email,string link)
         {
             string subject = "Invitation to Join Project on IDT Décor";

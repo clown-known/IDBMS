@@ -7,6 +7,7 @@ using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using IDBMS_API.Services;
+using IDBMS_API.Services.Background;
 using IDBMS_API.Services.ExcelService;
 using IDBMS_API.Services.PaginationService;
 using IDBMS_API.Supporters.JwtAuthSupport;
@@ -69,6 +70,7 @@ builder.Services.AddSwaggerGen(c =>
                     });
 });
 
+builder.Services.AddHostedService<DeadlineBackgroundService>();
 // repository
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IAuthenticationCodeRepository, AuthenticationCodeRepository>();
