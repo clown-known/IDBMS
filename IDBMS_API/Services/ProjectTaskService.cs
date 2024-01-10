@@ -11,6 +11,7 @@ using System.Globalization;
 using UnidecodeSharpFork;
 using System.Linq;
 using Repository.Implements;
+using IDBMS_API.Supporters.TimeHelper;
 
 namespace IDBMS_API.Services
 {
@@ -326,7 +327,7 @@ namespace IDBMS_API.Services
 
             ct.UnitUsed = unitUsed;
             ct.Percentage = (int)((unitUsed / ct.UnitInContract) * 100);
-            ct.UpdatedDate = DateTime.Now;
+            ct.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
             if (unitUsed > ct.UnitInContract)
                 ct.IsIncurred = true;
@@ -344,7 +345,7 @@ namespace IDBMS_API.Services
             foreach (var task in listTask)
             {
                 task.PaymentStageId = null;
-                task.UpdatedDate = DateTime.Now;
+                task.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
                 _taskRepo.Update(task);
             }
@@ -462,7 +463,7 @@ namespace IDBMS_API.Services
                 decorTask.PricePerUnit = pricePerArea;
                 decorTask.EstimateBusinessDay = estimateBusinessDay;
                 decorTask.EndDate = CalculateEndDate(decorTask.StartedDate, decorTask.EstimateBusinessDay);
-                decorTask.UpdatedDate = DateTime.Now;
+                decorTask.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
                 _taskRepo.Update(decorTask);
 
@@ -478,7 +479,7 @@ namespace IDBMS_API.Services
             foreach (var task in tasks)
             {
                 task.Status = ProjectTaskStatus.Cancelled;
-                task.UpdatedDate = DateTime.Now;
+                task.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
                 task.RoomId = null;
 
                 _taskRepo.Update(task);
@@ -495,7 +496,7 @@ namespace IDBMS_API.Services
                 var task = _taskRepo.GetById(taskId) ?? throw new Exception("This project task id is not existed!");
 
                 task.PaymentStageId = paymentStageId;
-                task.UpdatedDate = DateTime.Now;
+                task.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
                 _taskRepo.Update(task);
             }
@@ -511,7 +512,7 @@ namespace IDBMS_API.Services
                         {
                             if (task!= null && task.PaymentStageId == paymentStageId && task.Status == ProjectTaskStatus.Confirmed)
                             {
-                                task.StartedDate = DateTime.Now;
+                                task.StartedDate = TimeHelper.GetTime(DateTime.Now);
                                 _taskRepo.Update(task);
                             }
                         }
@@ -530,7 +531,7 @@ namespace IDBMS_API.Services
             ct.PricePerUnit = request.PricePerUnit;
             ct.UnitInContract = request.UnitInContract;
             ct.IsIncurred = request.IsIncurred;
-            ct.UpdatedDate= DateTime.Now;
+            ct.UpdatedDate= TimeHelper.GetTime(DateTime.Now);
             ct.StartedDate= request.StartedDate;
             ct.EndDate = CalculateEndDate(request.StartedDate, request.EstimateBusinessDay);
             ct.ProjectId = request.ProjectId;
@@ -549,16 +550,16 @@ namespace IDBMS_API.Services
             var ct = _taskRepo.GetById(id) ?? throw new Exception("This project task id is not existed!");
 
             ct.Status = status;
-            ct.UpdatedDate = DateTime.Now;
+            ct.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
 
             if (status == ProjectTaskStatus.Ongoing)
             {
-                ct.StartedDate= DateTime.Now;
+                ct.StartedDate= TimeHelper.GetTime(DateTime.Now);
             }
 
             if (status == ProjectTaskStatus.Done)
             {
-                ct.EndDate = DateTime.Now;
+                ct.EndDate = TimeHelper.GetTime(DateTime.Now);
 
                 if (ct.UnitUsed != ct.UnitInContract)
                 {

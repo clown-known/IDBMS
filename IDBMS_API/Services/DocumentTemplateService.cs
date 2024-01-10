@@ -4,6 +4,7 @@ using Repository.Implements;
 using Repository.Interfaces;
 using BusinessObject.Enums;
 using UnidecodeSharpFork;
+using IDBMS_API.Supporters.TimeHelper;
 
 namespace IDBMS_API.Services
 {
@@ -73,7 +74,7 @@ namespace IDBMS_API.Services
             dt.Name = request.Name;
             dt.Type = request.Type;
             dt.Language = request.Language;
-            dt.UpdatedDate = DateTime.Now;
+            dt.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
             dt.CompanyName = request.CompanyName;
             dt.CompanyAddress = request.CompanyAddress;
             dt.CompanyPhone = request.CompanyPhone;
