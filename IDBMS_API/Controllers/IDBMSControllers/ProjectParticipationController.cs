@@ -226,7 +226,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
-        [HttpPost]
+        [HttpPost("addviewer")]
         [Authorize(Policy = "")]
         public IActionResult AddViewer(Guid projectId, [FromBody] string email)
         {
