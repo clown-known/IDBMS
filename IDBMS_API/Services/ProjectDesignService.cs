@@ -56,6 +56,12 @@ namespace IDBMS_API.Services
                                 estimatePrice >= design.MinBudget &&
                                 estimatePrice <= design.MaxBudget);
 
+            if (selectedDesign == null)
+            {
+                // If no design within the budget range, select the one with the highest budget
+                selectedDesign = designList.OrderByDescending(design => design.MaxBudget).FirstOrDefault();
+            }
+
             return selectedDesign;
         }
 
