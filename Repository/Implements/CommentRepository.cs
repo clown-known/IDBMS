@@ -37,13 +37,15 @@ namespace Repository.Implements
                 throw;
             }
         }
+
         public IEnumerable<Comment> GetByTaskId(Guid id)
         {
             try
             {
                 using var context = new IdtDbContext();
                 return context.Comments
-                    .Where(comment => comment.ProjectTaskId == id && comment.IsDeleted == false)
+                    .Include(t => t.CommentReplies.Where(rp => rp.IsDeleted == false))
+                    .Where(comment => comment.ProjectTaskId == id && comment.IsDeleted == false && comment.ReplyCommentId == null)
                     .OrderByDescending(comment => comment.LastModifiedTime ?? comment.CreatedTime)
                     .ToList();
             }
@@ -52,6 +54,7 @@ namespace Repository.Implements
                 throw;
             }
         }
+
         public IEnumerable<Comment> GetByProjectId(Guid id)
         {
             try
@@ -60,7 +63,8 @@ namespace Repository.Implements
                 return context.Comments
                     .Include(t => t.ProjectTask)
                     .Include(u => u.User)
-                    .Where(comment => comment.ProjectId == id && comment.IsDeleted == false)
+                    .Include(t => t.CommentReplies.Where(rp => rp.IsDeleted == false))
+                    .Where(comment => comment.ProjectId == id && comment.IsDeleted == false && comment.ReplyCommentId == null)
                     .OrderByDescending(comment => comment.LastModifiedTime ?? comment.CreatedTime)
                     .ToList();
             }

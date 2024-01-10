@@ -71,12 +71,29 @@ namespace IDBMS_API.Services
 
             return filteredList;
         }
-
         public IEnumerable<PaymentStage> GetAll(StageStatus? status, string? name)
         {
             var list = _stageRepo.GetAll();
 
             return Filter(list, status, name);
+        }
+        public User GetOwner(Guid stageId)
+        {
+            var stage = _stageRepo.GetById(stageId);
+            var project = _projectRepo.GetById(stage.ProjectId);
+            return project.ProjectParticipations.FirstOrDefault(p=>p.Role == ParticipationRole.ProductOwner).User;
+        }
+        public IEnumerable<PaymentStage> GetOutOfDateStage()
+        {
+            var list = _stageRepo.GetAll().Where(s=>s.IsPrepaid!=true && s.EndTimePayment <= TimeHelper.GetTime(DateTime.Now));
+            
+            return list;
+        }
+        public IEnumerable<PaymentStage> GetAboutToExpireStage()
+        {
+            var list = _stageRepo.GetAll().Where(s=>s.IsPrepaid!=true && s.EndTimePayment >= TimeHelper.GetTime(DateTime.Now)&& s.EndTimePayment.Value.AddDays(10) <= TimeHelper.GetTime(DateTime.Now));
+            
+            return list;
         }
 
         public PaymentStage? GetById(Guid id)

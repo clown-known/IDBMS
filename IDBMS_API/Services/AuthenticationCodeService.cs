@@ -18,12 +18,17 @@ namespace IDBMS_API.Services
     {
         private readonly IUserRepository userRepository;
         private readonly IAuthenticationCodeRepository authenticationCodeRepository;
+        private readonly IAdminRepository adminRepository;
         private readonly IConfiguration configuration;
-        public AuthenticationCodeService(IUserRepository userRepository, IConfiguration configuration, IAuthenticationCodeRepository authenticationCodeRepository)
+        private readonly JwtTokenSupporter jwtTokenSupporter;
+
+        public AuthenticationCodeService(IUserRepository userRepository, IConfiguration configuration, IAuthenticationCodeRepository authenticationCodeRepository,IAdminRepository adminRepository, JwtTokenSupporter jwtTokenSupporter)
         {
             this.userRepository = userRepository;
             this.configuration = configuration;
             this.authenticationCodeRepository = authenticationCodeRepository;
+            this.adminRepository = adminRepository;
+            this.jwtTokenSupporter = jwtTokenSupporter;
         }
         public bool Verify(string code,string email)
         {
@@ -36,6 +41,16 @@ namespace IDBMS_API.Services
             user.Status = BusinessObject.Enums.UserStatus.Active;
             userRepository.Update(user);
             return true;
+        }
+        public string AdminVerify(string code,string email)
+        {
+            var user = adminRepository.GetByEmail(email);
+            if (user == null) return null;
+            if(user.AuthenticationCode == null || !user.AuthenticationCode.Equals(code)) return null;
+            string token = jwtTokenSupporter.CreateTokenForAdmin(user);
+            user.token = token;
+            adminRepository.Update(user);
+            return token;
         }
         public string deCode(string token,string skey)
         {
@@ -83,6 +98,21 @@ namespace IDBMS_API.Services
             };
             var code = authenticationCodeRepository.Save(code1) ;
 
+            return rdn;
+        }
+        public string CreateAdminLoginCode(string email)
+        {
+            var user = adminRepository.GetByEmail(email);
+            if (user == null) return null;
+            // gen code, update to database
+            Random random = new Random();
+            string rdn = "";
+            for (int i = 0; i < 6; i++)
+            {
+                rdn += (random.Next(0, 9)).ToString();
+            }
+            user.AuthenticationCode = rdn;
+            adminRepository.Update(user);
             return rdn;
         }
         public void SendEmail(string email,string subject,string body)
