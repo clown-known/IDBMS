@@ -31,11 +31,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [EnableQuery]
         [HttpGet]
         [Authorize(Policy = "")]
-        public IActionResult GetAdmins(string? searchValue, AdminStatus? status, int? pageSize, int? pageNo)
+        public IActionResult GetAdmins(string? searchValue, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetAll(searchValue, status);
+                var list = _service.GetAll(searchValue);
 
                 var response = new ResponseMessage()
                 {
