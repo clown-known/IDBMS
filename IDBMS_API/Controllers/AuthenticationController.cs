@@ -11,6 +11,7 @@ using Azure.Core;
 using DocumentFormat.OpenXml.Office2016.Excel;
 using IDBMS_API.DTOs.Request.AccountRequest;
 using IDBMS_API.DTOs.Response;
+using IDBMS_API.Supporters.EmailSupporter;
 
 namespace API.Controllers
 {
@@ -21,12 +22,17 @@ namespace API.Controllers
         private readonly UserService userService;
         private readonly AdminService adminService;
         private readonly AuthenticationCodeService authenticationCodeService;
+        private readonly IConfiguration configuration;
 
         public AuthenticationsController(UserService userService, AuthenticationCodeService authenticationCodeService,AdminService adminService )
         {
             this.userService = userService;
             this.authenticationCodeService = authenticationCodeService;
             this.adminService = adminService;
+            configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true, true)
+                .Build();
         }
 
         [HttpPost("login")]
@@ -108,10 +114,9 @@ namespace API.Controllers
                     return BadRequest(response);
                 }
 
-                response.Message = "Login successfully!";
+                response.Message = "Login successfully! please check your email to continue.";
                 response.Data = new
                 {
-                    Token = token,
                     user.Username,
                     user.Name,
                     user.Id,
@@ -205,15 +210,32 @@ namespace API.Controllers
 
             var code = authenticationCodeService.CreateCode(email);
             if (code == null) return BadRequest();
-            string link = $"<a href='https://localhost:7062/api/Authentication/confirmverify?code={code}&email={email}' style='background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px;'>" +
-                "Click here</a>";
-            authenticationCodeService.SendEmail(email, "Verify Code For IDT", $"Click this button to verify: {link}");
+            string link = configuration["Server:Frontend"] + "/Authentication/confirmverify?code=" + code + "&email=" + email;
+            EmailSupporter.SendVerifyEnglishEmail(email,link);
+            return Ok();
+        }
+        [HttpPost("adminVerify")]
+        public IActionResult AdminVerify(string email)
+        {
+
+            var code = authenticationCodeService.CreateCode(email);
+            if (code == null) return BadRequest();
+            string link = configuration["Server:Frontend"] + "/Authentication/confirmverify?code=" + code + "&email=" + email;
+            EmailSupporter.SendVerifyEnglishEmail(email,link);
             return Ok();
         }
         [HttpGet("confirmverify")]
         public IActionResult ConfirmVerify(string code,string email)
         {
             if (authenticationCodeService.Verify(code, email)) return Ok();
+            return Unauthorized();
+
+        }
+        [HttpGet("adminConfirmverify")]
+        public IActionResult AdminConfirmVerify(string code,string email)
+        {
+            string token = authenticationCodeService.AdminVerify(code, email);
+            if (token!=null) return Ok(token);
             return Unauthorized();
 
         }
