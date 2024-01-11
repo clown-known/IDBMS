@@ -122,9 +122,14 @@ namespace API.Controllers
                     user.Id,
                     Role = "Admin",
                 };
-                var code = authenticationCodeService.CreateCode(user.Email);
+                // gen code
+                var code = authenticationCodeService.CreateAdminLoginCode(user.Email);
                 if (code == null) return BadRequest();
+
+                // gen link
                 string link = configuration["Server:Frontend"] + "/Authentication/adminConfirmverify?code=" + code + "&email=" + user.Email;
+
+                // send mail
                 EmailSupporter.SendVerifyEnglishEmail(user.Email, link);
                 return Ok(response);
             }
