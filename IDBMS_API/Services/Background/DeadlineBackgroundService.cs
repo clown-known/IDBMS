@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IDBMS_API.Services.Background
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class DeadlineBackgroundService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
