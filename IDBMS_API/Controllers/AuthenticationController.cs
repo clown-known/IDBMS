@@ -122,6 +122,10 @@ namespace API.Controllers
                     user.Id,
                     Role = "Admin",
                 };
+                var code = authenticationCodeService.CreateCode(user.Email);
+                if (code == null) return BadRequest();
+                string link = configuration["Server:Frontend"] + "/Authentication/adminConfirmverify?code=" + code + "&email=" + user.Email;
+                EmailSupporter.SendVerifyEnglishEmail(user.Email, link);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -220,7 +224,7 @@ namespace API.Controllers
 
             var code = authenticationCodeService.CreateCode(email);
             if (code == null) return BadRequest();
-            string link = configuration["Server:Frontend"] + "/Authentication/confirmverify?code=" + code + "&email=" + email;
+            string link = configuration["Server:Frontend"] + "/Authentication/adminConfirmverify?code=" + code + "&email=" + email;
             EmailSupporter.SendVerifyEnglishEmail(email,link);
             return Ok();
         }
