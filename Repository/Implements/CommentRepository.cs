@@ -16,7 +16,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Comments
                     .Where(comment => comment.IsDeleted == false)
-                    .OrderByDescending(comment => comment.LastModifiedTime ?? comment.CreatedTime)
+                    .OrderByDescending(comment => comment.CreatedTime)
                     .ToList();
             }
             catch
@@ -44,10 +44,13 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.Comments
-                    .Include(t => t.CommentReplies.Where(rp => rp.IsDeleted == false))
+                    .Include(t => t.CommentReplies
+                                    .Where(rp => rp.IsDeleted == false)
+                                    .OrderByDescending(rp => rp.CreatedTime)
+                            )
                         .ThenInclude(cr => cr.User)
                     .Where(comment => comment.ProjectTaskId == id && comment.IsDeleted == false && comment.ReplyCommentId == null)
-                    .OrderByDescending(comment => comment.LastModifiedTime ?? comment.CreatedTime)
+                    .OrderByDescending(comment => comment.CreatedTime)
                     .ToList();
             }
             catch
@@ -64,10 +67,13 @@ namespace Repository.Implements
                 return context.Comments
                     .Include(t => t.ProjectTask)
                     .Include(u => u.User)
-                    .Include(t => t.CommentReplies.Where(rp => rp.IsDeleted == false))
+                    .Include(t => t.CommentReplies
+                                    .Where(rp => rp.IsDeleted == false)
+                                    .OrderByDescending(rp => rp.CreatedTime)
+                            )
                         .ThenInclude(cr => cr.User)
                     .Where(comment => comment.ProjectId == id && comment.IsDeleted == false && comment.ReplyCommentId == null)
-                    .OrderByDescending(comment => comment.LastModifiedTime ?? comment.CreatedTime)
+                    .OrderByDescending(comment => comment.CreatedTime)
                     .ToList();
             }
             catch
