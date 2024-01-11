@@ -45,6 +45,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Comments
                     .Include(t => t.CommentReplies.Where(rp => rp.IsDeleted == false))
+                        .ThenInclude(cr => cr.User)
                     .Where(comment => comment.ProjectTaskId == id && comment.IsDeleted == false && comment.ReplyCommentId == null)
                     .OrderByDescending(comment => comment.LastModifiedTime ?? comment.CreatedTime)
                     .ToList();
@@ -64,6 +65,7 @@ namespace Repository.Implements
                     .Include(t => t.ProjectTask)
                     .Include(u => u.User)
                     .Include(t => t.CommentReplies.Where(rp => rp.IsDeleted == false))
+                        .ThenInclude(cr => cr.User)
                     .Where(comment => comment.ProjectId == id && comment.IsDeleted == false && comment.ReplyCommentId == null)
                     .OrderByDescending(comment => comment.LastModifiedTime ?? comment.CreatedTime)
                     .ToList();
