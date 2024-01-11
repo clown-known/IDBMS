@@ -62,10 +62,6 @@ public class IdtDbContext : DbContext
         modelBuilder.Entity<PaymentStage>()
             .Property(stage => stage.Status)
             .HasConversion<int>();
-        
-        modelBuilder.Entity<Admin>()
-            .Property(admin => admin.Status)
-            .HasConversion<int>();
 
         modelBuilder.Entity<BookingRequest>()
             .Property(bookingRequest => bookingRequest.Status)
