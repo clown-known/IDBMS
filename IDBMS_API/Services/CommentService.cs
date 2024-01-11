@@ -62,7 +62,7 @@ namespace IDBMS_API.Services
 
             return Filter(list, status, content);
         }
-        public async Task<Comment?> CreateComment(CommentRequest request)
+        public Comment? CreateComment(CommentRequest request)
         {
 
             var cmt = new Comment
@@ -78,22 +78,10 @@ namespace IDBMS_API.Services
                 ReplyCommentId = request.ReplyCommentId,
             };
 
-            if (request.File != null)
-            {
-                FirebaseService s = new FirebaseService();
-                string link = "";
-                if (request.File != null)
-                {
-                    link = await s.UploadCommentFile(request.File, request.ProjectId, request.ProjectTaskId);
-                }
-
-                cmt.FileUrl= link;
-            }
-
             var cmtCreated = _repository.Save(cmt);
             return cmtCreated;
         }
-        public async void UpdateComment(Guid id, CommentRequest request)
+        public void UpdateComment(Guid id, CommentRequest request)
         {
             var cmt = _repository.GetById(id) ?? throw new Exception("This comment id is not existed!");
 
@@ -103,18 +91,6 @@ namespace IDBMS_API.Services
             cmt.LastModifiedTime = TimeHelper.GetTime(DateTime.Now);
             cmt.Status = CommentStatus.Edited;
             cmt.Content = request.Content;
-
-            if (request.File != null)
-            {
-                FirebaseService s = new FirebaseService();
-                string link = "";
-                if (request.File != null)
-                {
-                    link = await s.UploadCommentFile(request.File, request.ProjectId, request.ProjectTaskId);
-                }
-
-                cmt.FileUrl = link;
-            }
 
             _repository.Update(cmt);
         }
