@@ -7,6 +7,7 @@ using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using IDBMS_API.Services;
+using IDBMS_API.Services.Background;
 using IDBMS_API.Services.ExcelService;
 using IDBMS_API.Services.PaginationService;
 using IDBMS_API.Supporters.JwtAuthSupport;
@@ -39,6 +40,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "IDBMS API", Version = "v1" });
+    c.IgnoreObsoleteActions();
+    c.IgnoreObsoleteProperties();
+    c.DocInclusionPredicate((name, api) => true);
+    c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n
@@ -68,7 +73,6 @@ builder.Services.AddSwaggerGen(c =>
                       }
                     });
 });
-
 // repository
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IAuthenticationCodeRepository, AuthenticationCodeRepository>();
@@ -145,6 +149,8 @@ builder.Services.AddScoped(typeof(PaginationService<>), typeof(PaginationService
 builder.Services.AddScoped<FirebaseService, FirebaseService>();
 builder.Services.AddScoped<JwtTokenSupporter, JwtTokenSupporter>();
 builder.Services.AddScoped<GoogleTokenVerify, GoogleTokenVerify>();
+
+builder.Services.AddHostedService<DeadlineBackgroundService>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
                     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)

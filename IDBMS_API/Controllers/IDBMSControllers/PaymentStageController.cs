@@ -3,11 +3,15 @@ using Azure.Core;
 using BusinessObject.Enums;
 using BusinessObject.Models;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Services;
 using IDBMS_API.Services.PaginationService;
+using IDBMS_API.Supporters.EmailSupporter;
+using IDBMS_API.Supporters.TimeHelper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -20,14 +24,18 @@ namespace IDBMS_API.Controllers.IDBMSControllers
     public class PaymentStagesController : ODataController
     {
         private readonly PaymentStageService _service;
+        private readonly ProjectService _projectService;
         private readonly PaginationService<PaymentStage> _paginationService;
         private readonly PaginationService<PaymentStageResponse> _paginationResponseService;
+        private readonly IConfiguration _configuration;
 
-        public PaymentStagesController(PaymentStageService service, PaginationService<PaymentStage> paginationService, PaginationService<PaymentStageResponse> paginationResponseService)
+        public PaymentStagesController(PaymentStageService service, PaginationService<PaymentStage> paginationService, PaginationService<PaymentStageResponse> paginationResponseService, IConfiguration configuration, ProjectService projectService)
         {
             _service = service;
             _paginationService = paginationService;
             _paginationResponseService = paginationResponseService;
+            _configuration = configuration;
+            _projectService = projectService;
         }
 
         [EnableQuery]
@@ -213,6 +221,15 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             try
             {
                 _service.StartStage(id);
+
+                string link = _configuration["Server:Frontend"] + "/project/" + projectId.ToString() + "/stages";
+                var project = _projectService.GetById(projectId);
+                if (project != null) {
+                    User owner = project.ProjectParticipations.Where(u => u.Role == ParticipationRole.ProductOwner).FirstOrDefault().User;
+                    string time = TimeHelper.GetTime(DateTime.Now).ToString();
+                    EmailSupporter.SendStageEnglishEmail(owner.Email, link,owner.Name,time); 
+                }
+
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",
