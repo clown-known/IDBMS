@@ -29,6 +29,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         //permission
         [EnableQuery]
         [HttpGet("project-task/{id}")]
+        [Authorize(Policy = "Participation")]
         public IActionResult GetCommentsProjectTaskId(Guid projectId, Guid id, CommentStatus? status, string? content, int? pageSize, int? pageNo)
         {
             var list = _service.GetByProjectTaskId(id, status, content);
