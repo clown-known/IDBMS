@@ -22,7 +22,7 @@ namespace IDBMS_API.Services
         }
 
         private IEnumerable<Admin> Filter(IEnumerable<Admin> list,
-            string? search, AdminStatus? status)
+            string? search)
         {
             IEnumerable<Admin> filteredList = list;
 
@@ -32,11 +32,6 @@ namespace IDBMS_API.Services
                             (item.Email != null && item.Email.Unidecode().IndexOf(search.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0) ||
                             (item.Username != null && item.Username.Unidecode().IndexOf(search.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0) ||
                             (item.Name != null && item.Name.Unidecode().IndexOf(search.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
-            }
-
-            if (status != null)
-            {
-                filteredList = filteredList.Where(item => item.Status == status);
             }
 
             return filteredList;
@@ -56,11 +51,11 @@ namespace IDBMS_API.Services
             }
             return (null, null);
         }
-        public IEnumerable<Admin> GetAll(string? search, AdminStatus? status)
+        public IEnumerable<Admin> GetAll(string? search)
         {
             var list = _repository.GetAll();
 
-            return Filter(list, search, status);
+            return Filter(list, search);
         }
         public Admin? GetById(Guid id)
         {
@@ -152,7 +147,6 @@ namespace IDBMS_API.Services
                 PasswordSalt = passwordSalt,
                 IsDeleted = false,
                 CreatorId = request.CreatorId,
-                Status = AdminStatus.Unverified,
             };
             var adminCreated = _repository.Save(admin);
             return adminCreated;

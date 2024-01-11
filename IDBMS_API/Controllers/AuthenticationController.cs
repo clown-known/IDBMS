@@ -127,7 +127,7 @@ namespace API.Controllers
                 if (code == null) return BadRequest();
 
                 // gen link
-                string link = configuration["Server:Frontend"] + "/Authentication/adminConfirmverify?code=" + code + "&email=" + user.Email;
+                string link = configuration["Server:AdminFrontend"] + "/authentication/adminConfirmverify?code=" + code + "&email=" + user.Email;
 
                 // send mail
                 EmailSupporter.SendVerifyEnglishEmail(user.Email, link);
@@ -216,10 +216,9 @@ namespace API.Controllers
         [HttpPost("verify")]
         public IActionResult Verify(string email)
         {
-
             var code = authenticationCodeService.CreateCode(email);
             if (code == null) return BadRequest();
-            string link = configuration["Server:Frontend"] + "/Authentication/confirmverify?code=" + code + "&email=" + email;
+            string link = configuration["Server:Frontend"] + "/authentication/confirmverify?code=" + code + "&email=" + email;
             EmailSupporter.SendVerifyEnglishEmail(email,link);
             return Ok();
         }
@@ -229,7 +228,7 @@ namespace API.Controllers
 
             var code = authenticationCodeService.CreateCode(email);
             if (code == null) return BadRequest();
-            string link = configuration["Server:Frontend"] + "/Authentication/adminConfirmverify?code=" + code + "&email=" + email;
+            string link = configuration["Server:AdminFrontend"] + "/authentication/adminConfirmverify?code=" + code + "&email=" + email;
             EmailSupporter.SendVerifyEnglishEmail(email,link);
             return Ok();
         }
