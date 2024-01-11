@@ -47,6 +47,7 @@ namespace IDBMS_API.Services
             var user = adminRepository.GetByEmail(email);
             if (user == null) return null;
             if(user.AuthenticationCode == null || !user.AuthenticationCode.Equals(code)) return null;
+            user.AuthenticationCode = "";
             string token = jwtTokenSupporter.CreateTokenForAdmin(user);
             user.token = token;
             adminRepository.Update(user);

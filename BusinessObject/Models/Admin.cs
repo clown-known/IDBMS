@@ -25,8 +25,6 @@ public class Admin
     [Required]
     [JsonIgnore]
     public byte[] PasswordSalt { get; set; } = default!;
-    [Required]
-    public AdminStatus Status { get; set; }
 
     [JsonIgnore]
     public string? AuthenticationCode { get; set; }
