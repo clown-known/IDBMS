@@ -1,8 +1,10 @@
 ﻿using BusinessObject.Models;
 using IDBMS_API.Supporters.EmailSupporter;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IDBMS_API.Services.Background
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class DeadlineBackgroundService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;

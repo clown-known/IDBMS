@@ -80,7 +80,11 @@ namespace IDBMS_API.Services
         }
         public Project GetAdProjectById(Guid id)
         {
-            return _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
+            var adProject =  _projectRepo.GetById(id) ?? throw new Exception("This project id is not existed!");
+
+            adProject.ProjectDocuments = GetImagesByProjectId(id, true).ToList();
+
+            return adProject;
         }
 
         public Project? CreateAdvertisementProject(AdvertisementProjectRequest request)

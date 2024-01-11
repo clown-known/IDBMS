@@ -14,11 +14,11 @@ namespace IDBMS_API.Services.ExcelService
     {
         byte[] _dataSample;
         byte[] _file;
-        public async Task<byte[]?> GenNewExcel(Guid request)
+        public async Task<byte[]?> GenNewExcel(Guid projectId)
         {
             FirebaseService firebaseService = new FirebaseService();
             _dataSample = await firebaseService.DownloadFile("TemplateExcel.xlsx", null, "Excel", true);
-            _file = ExcelSupporter.GenExcelFileBytes(_dataSample,request);
+            _file = ExcelSupporter.GenExcelFileBytes(_dataSample, projectId);
             return _file;
         }
     }
