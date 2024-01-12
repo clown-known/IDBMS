@@ -179,7 +179,7 @@ namespace IDBMS_API.Services
             _participationRepo.Update(p);
 
             TaskAssignmentService assignmentService = new TaskAssignmentService(_assignmentRepo);
-            assignmentService.DeleteTaskAssignmentByParticipationId(id);
+            assignmentService.DeleteTaskAssignmentByUserId(p.UserId, p.ProjectId);
         }
     }
 }
