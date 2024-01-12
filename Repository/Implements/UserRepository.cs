@@ -62,6 +62,25 @@ public class UserRepository : IUserRepository
             throw;
         }
     }
+
+    public IEnumerable<User> GetAvailableUsersByProjectId(Guid projectId)
+    {
+        try
+        {
+            using var context = new IdtDbContext();
+            return context.Users
+                .Include(u => u.Participations.Where(par => par.IsDeleted == false))
+                .Where(u => !u.Participations.Any(par => par.ProjectId == projectId && par.IsDeleted == false))
+                .OrderBy(u => u.Role)
+                        .ThenBy(u => u.CreatedDate)
+                .ToList();
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
     public void Lock(string email)
     {
         try

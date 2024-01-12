@@ -80,6 +80,33 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [EnableQuery]
+        [HttpGet("project-task/{id}")]
+        [Authorize(Policy = "Participation")]
+        public IActionResult GetTaskAssignmentsByTaskId(Guid projectId, Guid id, string? name, int? pageSize, int? pageNo)
+        {
+            try
+            {
+                var list = _service.GetByTaskId(id, name);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [EnableQuery]
         [HttpGet("user/{userId}")]
         [Authorize(Policy = "Participation")]
         public IActionResult GetTaskAssignmentsOfUserInProject(Guid projectId, Guid userId, int? pageSize, int? pageNo)

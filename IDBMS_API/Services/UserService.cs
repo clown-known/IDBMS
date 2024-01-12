@@ -75,6 +75,13 @@ namespace API.Services
             return _repository.GetByEmail(email);
         }
 
+        public IEnumerable<User> GetAvailableUsersByProjectId(Guid projectId, string? searchParam, CompanyRole? role, UserStatus? status)
+        {
+            var list = _repository.GetAvailableUsersByProjectId(projectId);
+
+            return Filter(list, searchParam, role, status);
+        }
+
         public (string? token, User? user) Login(string email, string password)
         {
             var user = _repository.GetByEmail(email);
