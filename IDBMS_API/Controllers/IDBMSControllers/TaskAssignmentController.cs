@@ -51,7 +51,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
-        //lead arc, cons man
+
         [EnableQuery]
         [HttpGet("project/{id}")]
         [Authorize(Policy = "Participation")]
@@ -78,7 +78,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
-        //lead arc, cons man
+
         [EnableQuery]
         [HttpGet("user/{userId}")]
         [Authorize(Policy = "Participation")]
