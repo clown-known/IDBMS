@@ -81,6 +81,32 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
+        [HttpGet("project/{id}/available-users")]
+        [Authorize(Policy = "ProjectManager")]
+        public IActionResult GetAvailableUsersByProjectId(Guid projectId, Guid id, string? searchParam, CompanyRole? role, UserStatus? status, int? pageSize, int? pageNo)
+        {
+            try
+            {
+                var list = _service.GetAvailableUsersByProjectId(id, searchParam, role, status);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = list
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
         [HttpPost]
         [Authorize(Policy = "")]
         public IActionResult CreateUser([FromBody] CreateUserRequest request)
