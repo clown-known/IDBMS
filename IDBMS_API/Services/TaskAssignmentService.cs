@@ -128,9 +128,9 @@ namespace IDBMS_API.Services
             _repository.DeleteById(id);
         }
 
-        public void DeleteTaskAssignmentByParticipationId(Guid participationId)
+        public void DeleteTaskAssignmentByUserId(Guid userId)
         {
-            var list = _repository.GetByParticipationId(participationId);
+            var list = _repository.GetByUserId(userId);
 
             foreach (var assignment in list)
             {
