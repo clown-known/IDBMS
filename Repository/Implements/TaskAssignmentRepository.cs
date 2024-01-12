@@ -82,6 +82,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.TaskAssignments
                     .Include(ta => ta.ProjectParticipation)
+                        .ThenInclude(ta=> ta.User)
                     .Where(ta => ta.ProjectTaskId == id)
                     .OrderByDescending(a => a.CreatedDate)
                     .ToList();
