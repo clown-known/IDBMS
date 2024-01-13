@@ -93,6 +93,7 @@ namespace IDBMS_API.Services
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
+                Description = "Dự án quảng cáo",
                 Type= request.Type,
                 ProjectCategoryId= request.ProjectCategoryId,
                 CreatedDate = TimeHelper.GetTime(DateTime.Now),
