@@ -336,7 +336,7 @@ namespace IDBMS_API.Services
             UpdateProjectWarrantyEnd(stage.ProjectId);
         }
 
-        public bool IsExceedPaymentDeadline(Guid stageId, DateTime? endTime)
+        private bool IsExceedPaymentDeadline(Guid stageId, DateTime? endTime)
         {
             var stage = _stageRepo.GetById(stageId) ?? throw new Exception("This payment stage id is not existed!");
 
