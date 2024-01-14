@@ -286,7 +286,7 @@ namespace IDBMS_API.Services
             UpdateProjectWarrantyEnd(stage.ProjectId);
         }
 
-        public DateTime? CalculateEndTimePayment(DateTime? startDate, DateTime? endDate, bool isPrepaid)
+        private DateTime? CalculateEndTimePayment(DateTime? startDate, DateTime? endDate, bool isPrepaid)
         {
             if (startDate == null || endDate == null)
             {
