@@ -77,12 +77,7 @@ namespace IDBMS_API.Services
 
             return Filter(list, status, name);
         }
-        public User GetOwner(Guid stageId)
-        {
-            var stage = _stageRepo.GetById(stageId);
-            var project = _projectRepo.GetById(stage.ProjectId);
-            return project.ProjectParticipations.FirstOrDefault(p=>p.Role == ParticipationRole.ProductOwner).User;
-        }
+
         public IEnumerable<PaymentStage> GetOutOfDateStage()
         {
             var list = _stageRepo.GetAll().Where(s=>s.IsPrepaid!=true && s.EndTimePayment <= TimeHelper.GetTime(DateTime.Now));

@@ -23,22 +23,35 @@ namespace IDBMS_API.Services.Background
                 using (var scope = _serviceProvider.CreateScope())
                 {
                     var paymentStageService = scope.ServiceProvider.GetRequiredService<PaymentStageService>();
+                    var participationService = scope.ServiceProvider.GetRequiredService<ProjectParticipationService>();
 
                     var paymenOutOfDate = paymentStageService.GetOutOfDateStage();
                     foreach (var stage in paymenOutOfDate)
                     {
-                        var owner = paymentStageService.GetOwner(stage.Id);
-                        string link = _configuration["Server:Frontend"] + "/project/" + stage.ProjectId.ToString() + "/stages";
+                        var ownerParticipation = participationService.GetProjectOwnerByProjectId(stage.ProjectId);
 
-                        EmailSupporter.SendDeadlineEnglishEmail(owner.Email, link, stage.EndTimePayment.ToString(), stage.EndTimePayment.ToString());
+                        if (ownerParticipation != null)
+                        {
+                            var owner = ownerParticipation.User;
+
+                            string link = _configuration["Server:Frontend"] + "/project/" + stage.ProjectId.ToString() + "/stages";
+
+                          //  EmailSupporter.SendDeadlineEnglishEmail(owner.Email, link, stage.EndTimePayment.ToString(), stage.EndTimePayment.ToString());
+                        }
                     }
                     var paymenAboutDate = paymentStageService.GetOutOfDateStage();
                     foreach (var stage in paymenAboutDate)
                     {
-                        var owner = paymentStageService.GetOwner(stage.Id);
-                        string link = _configuration["Server:Frontend"] + "/project/" + stage.ProjectId.ToString() + "/stages";
+                        var ownerParticipation = participationService.GetProjectOwnerByProjectId(stage.ProjectId);
 
-                        EmailSupporter.SendDeadlineEnglishEmail(owner.Email, link, stage.EndTimePayment.ToString(), stage.EndTimePayment.ToString());
+                        if (ownerParticipation != null)
+                        {
+                            var owner = ownerParticipation.User;
+
+                            string link = _configuration["Server:Frontend"] + "/project/" + stage.ProjectId.ToString() + "/stages";
+
+                           // EmailSupporter.SendDeadlineEnglishEmail(owner.Email, link, stage.EndTimePayment.ToString(), stage.EndTimePayment.ToString());
+                        }
                     }
 
                 }
