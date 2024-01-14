@@ -19,8 +19,5 @@ namespace IDBMS_API.DTOs.Request
         public string ContactLocation { get; set; } = default!;
 
         public string? Note { get; set; } = default!;
-
-        [Required]
-        public Language Language { get; set; }
     }
 }
