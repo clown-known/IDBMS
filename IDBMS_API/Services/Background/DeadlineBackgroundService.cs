@@ -36,7 +36,7 @@ namespace IDBMS_API.Services.Background
 
                             string link = _configuration["Server:Frontend"] + "/project/" + stage.ProjectId.ToString() + "/stages";
 
-                            EmailSupporter.SendDeadlineEnglishEmail(owner.Email, link, stage.EndTimePayment.ToString(), stage.EndTimePayment.ToString());
+                          //  EmailSupporter.SendDeadlineEnglishEmail(owner.Email, link, stage.EndTimePayment.ToString(), stage.EndTimePayment.ToString());
                         }
                     }
                     var paymenAboutDate = paymentStageService.GetOutOfDateStage();
@@ -50,7 +50,7 @@ namespace IDBMS_API.Services.Background
 
                             string link = _configuration["Server:Frontend"] + "/project/" + stage.ProjectId.ToString() + "/stages";
 
-                            EmailSupporter.SendDeadlineEnglishEmail(owner.Email, link, stage.EndTimePayment.ToString(), stage.EndTimePayment.ToString());
+                           // EmailSupporter.SendDeadlineEnglishEmail(owner.Email, link, stage.EndTimePayment.ToString(), stage.EndTimePayment.ToString());
                         }
                     }
 
