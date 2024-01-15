@@ -296,9 +296,7 @@ namespace IDBMS_API.Services
                         }
 
                         if (project != null && 
-                            (project.Status == ProjectStatus.Draft || 
-                            project.Status == ProjectStatus.PendingConfirmation || 
-                            project.Status == ProjectStatus.Negotiating))
+                            (project.Status == ProjectStatus.Negotiating))
                         {
                             stageService.UpdateStageTimeSpan(stage.Id, soonestStartDate, latestEndDate);
                         }

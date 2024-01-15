@@ -46,7 +46,7 @@ namespace IDBMS_API.Services
             try
             {
                 ProjectRepository projectRepository = new ProjectRepository();
-                Project project = projectRepository.GetByIdWithSite(projectid);
+                Project project = projectRepository.GetById(projectid);
                 var ownerParticipation = project.ProjectParticipations.FirstOrDefault(p => p.Role == ParticipationRole.ProductOwner);
 
                 if (ownerParticipation == null)
@@ -87,7 +87,7 @@ namespace IDBMS_API.Services
             try
             {
                 ProjectRepository projectRepository = new ProjectRepository();
-                Project project = projectRepository.GetByIdWithSite(projectid);
+                Project project = projectRepository.GetById(projectid);
                 var ownerParticipation = project.ProjectParticipations.FirstOrDefault(p => p.Role == ParticipationRole.ProductOwner);
 
                 if (ownerParticipation == null)

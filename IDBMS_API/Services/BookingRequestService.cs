@@ -78,34 +78,13 @@ namespace IDBMS_API.Services
                 CreatedDate= TimeHelper.GetTime(DateTime.Now),
             };
 
-            if (user == null)
-            {
-                var newUser = new CreateUserRequest
-                {
-                    Name = request.ContactName,
-                    Address = request.ContactLocation,
-                    Email= request.ContactEmail,
-                    Phone= request.ContactPhone,
-                    Language = request.Language,
-                    Role = CompanyRole.Customer,
-                };
-
-                var createdUser = userService.GenerateUser(newUser);
-
-                br.UserId = createdUser.Id;
-
-                var bookingRequestCreated = _bookingRequestRepo.Save(br);
-                return bookingRequestCreated;
-            }
-            else
+            if (user != null)
             {
                 var pendingRequest = user.BookingRequests.Any(request => request.Status == BookingRequestStatus.Pending);
 
-                if (pendingRequest == false && user.Status == UserStatus.Active)
+                if (pendingRequest == false)
                 {
                     br.UserId = user.Id;
-                    var bookingRequestCreated = _bookingRequestRepo.Save(br);
-                    return bookingRequestCreated;
                 }
                 else
                 {
@@ -113,7 +92,8 @@ namespace IDBMS_API.Services
                 }
             }
 
-            return null;
+            var bookingRequestCreated = _bookingRequestRepo.Save(br);
+            return bookingRequestCreated;
         }
         public void UpdateBookingRequest(Guid id, BookingRequestRequest request)
         {
@@ -139,13 +119,37 @@ namespace IDBMS_API.Services
             _bookingRequestRepo.Update(br);
         }
 
-        public void ProcessBookingRequest(Guid id, BookingRequestStatus status, string adminReply)
+        public void ProcessBookingRequest(Guid id, ProcessBookingRequestRequest request)
         {
             var br = _bookingRequestRepo.GetById(id) ?? throw new Exception("This booking request id is not existed!");
 
             br.UpdatedDate = TimeHelper.GetTime(DateTime.Now);
-            br.AdminReply = adminReply;
-            br.Status = status;
+            br.AdminReply = request.AdminReply;
+            br.Status = request.Status;
+
+            UserService userService = new(_userRepo, jwtTokenSupporter, googleTokenVerify);
+            var user = userService.GetByEmail(request.ContactEmail);
+
+            if (user == null)
+            {
+                var newUser = new CreateUserRequest
+                {
+                    Name = request.ContactName,
+                    Address = request.ContactLocation,
+                    Email = request.ContactEmail,
+                    Phone = request.ContactPhone,
+                    Language = request.Language,
+                    Role = CompanyRole.Customer,
+                };
+
+                var createdUser = userService.GenerateUser(newUser);
+
+                //noti for createduser with result and account password
+
+                br.UserId = createdUser.Id;
+            }
+
+            // noti for request.ContactEmail with result
 
             _bookingRequestRepo.Update(br);
         }

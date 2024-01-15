@@ -59,12 +59,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         {
             try
             {
-                var res = _service.CreateBookingRequest(request);
-                if (res == null)
+                var br = _service.CreateBookingRequest(request);
+                var response = new ResponseMessage()
                 {
-                    return BadRequest("Failed to create object");
-                }
-                return Ok(res);
+                    Message = "Create successfully!",
+                    Data = br
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -93,11 +94,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}/process")]
         [Authorize(Policy = "")]
-        public IActionResult ProcessBookingRequest(Guid id, BookingRequestStatus status, [FromBody] string adminReply)
+        public IActionResult ProcessBookingRequest(Guid id, ProcessBookingRequestRequest request)
         {
             try
             {
-                _service.ProcessBookingRequest(id, status, adminReply);
+                _service.ProcessBookingRequest(id, request);
                 var response = new ResponseMessage()
                 {
                     Message = "Update successfully!",

@@ -11,5 +11,4 @@ public interface IProjectRepository : ICrudBaseRepository<Project, Guid>
     IEnumerable<Project> GetRecentProjectsByUserId(Guid id);
     IEnumerable<Project> GetOngoingProjects();
     IEnumerable<Project> GetOngoingProjectsByUserId(Guid id);
-    Project? GetByIdWithSite(Guid id);
 }
