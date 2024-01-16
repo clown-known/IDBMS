@@ -36,6 +36,7 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Projects
                     .Include(pc => pc.ProjectCategory)
+                    .Include(pc => pc.BasedOnDecorProject)
                     .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
                         .ThenInclude(u => u.User)
                     .Include(p => p.Transactions.Where(t => t.IsDeleted == false))
