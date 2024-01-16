@@ -106,11 +106,11 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost]
         [Authorize(Policy = "Participation")]
-        public async Task<IActionResult> CreateComment(Guid projectId, [FromForm] CommentRequest request)
+        public IActionResult CreateComment(Guid projectId, [FromBody] CommentRequest request)
         {
             try
             {
-                var result = await _service.CreateComment(request);
+                var result = _service.CreateComment(request);
                 var response = new ResponseMessage()
                 {
                     Message = "Create successfully!",
@@ -130,7 +130,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "Participation")]
-        public IActionResult UpdateComment(Guid projectId, Guid id, [FromForm] CommentRequest request)
+        public IActionResult UpdateComment(Guid projectId, Guid id, [FromBody] CommentRequest request)
         {
             try
             {

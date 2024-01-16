@@ -36,12 +36,12 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.Projects
                     .Include(pc => pc.ProjectCategory)
+                    .Include(pc => pc.BasedOnDecorProject)
                     .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
                         .ThenInclude(u => u.User)
                     .Include(p => p.Transactions.Where(t => t.IsDeleted == false))
                     .Include(p => p.Site)
                     .Include(p => p.ProjectDocuments.Where(pd => pd.IsDeleted == false))
-                    .Include(p => p.Site)
                     .FirstOrDefault(project => project.Id == id);
             }
             catch
@@ -63,26 +63,6 @@ namespace Repository.Implements
                     .OrderByDescending(time => time.UpdatedDate ?? time.CreatedDate)
                     .Where(p => (p.Status == ProjectStatus.Done || p.Status == ProjectStatus.WarrantyPending) && p.AdvertisementStatus != AdvertisementStatus.NotAllowed)
                     .ToList();
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        public Project? GetByIdWithSite(Guid id)
-        {
-            try
-            {
-                using var context = new IdtDbContext();
-                return context.Projects
-                    .Include(pc => pc.ProjectCategory)
-                    .Include(pc => pc.Site)
-                    .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
-                        .ThenInclude(u => u.User)
-                    .Include(p => p.Transactions.Where(t => t.IsDeleted == false))
-                    .Include(p => p.ProjectDocuments.Where(pd => pd.IsDeleted == false))
-                    .FirstOrDefault(project => project.Id == id);
             }
             catch
             {

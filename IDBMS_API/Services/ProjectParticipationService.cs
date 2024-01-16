@@ -62,11 +62,11 @@ namespace IDBMS_API.Services
             return Filter(list, role, name, projectStatus, projectName);
         }
 
-        public IEnumerable<ProjectParticipation> GetByUserId(Guid id, ParticipationRole? role, string? name, ProjectStatus? projectStatus, string? projectName)
+        public IEnumerable<ProjectParticipation> GetByUserId(Guid id, ParticipationRole? role, ProjectStatus? projectStatus, string? projectName)
         {
             var list = _participationRepo.GetByUserId(id);
 
-            return Filter(list, role, name, projectStatus, projectName);
+            return Filter(list, role, null, projectStatus, projectName);
         }
 
         public IEnumerable<ProjectParticipation> GetUsersByParticipationInProject(Guid projectId)
@@ -98,9 +98,10 @@ namespace IDBMS_API.Services
             return _participationRepo.GetParticpationInProjectByUserId(userId, projectId);
         }
 
-        public IEnumerable<ProjectParticipation> GetCustomerViewersByProjectId(Guid projectId)
+        public IEnumerable<ProjectParticipation> GetCustomerViewersByProjectId(Guid projectId, string? name)
         {
-            return _participationRepo.GetCustomerViewersByProjectId(projectId);
+            var list = _participationRepo.GetCustomerViewersByProjectId(projectId);
+            return Filter(list, null, name, null, null);
         }
 
         public ProjectParticipation? CreateParticipation(ProjectParticipationRequest request)
@@ -206,7 +207,7 @@ namespace IDBMS_API.Services
             _participationRepo.Update(p);
 
             TaskAssignmentService assignmentService = new TaskAssignmentService(_assignmentRepo);
-            assignmentService.DeleteTaskAssignmentByParticipationId(id);
+            assignmentService.DeleteTaskAssignmentByUserId(p.UserId, p.ProjectId);
         }
     }
 }

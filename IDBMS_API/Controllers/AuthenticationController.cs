@@ -216,36 +216,115 @@ namespace API.Controllers
         [HttpPost("verify")]
         public IActionResult Verify(string email)
         {
-            var code = authenticationCodeService.CreateCode(email);
-            if (code == null) return BadRequest();
-            string link = configuration["Server:Frontend"] + "/authentication/confirmverify?code=" + code + "&email=" + email;
-            EmailSupporter.SendVerifyEnglishEmail(email,link);
-            return Ok();
+            try
+            {
+                var code = authenticationCodeService.CreateCode(email);
+
+                if (code == null)
+                    throw new Exception("Create code fail!");
+
+                string link = configuration["Server:Frontend"] + "/authentication/confirmverify?code=" + code + "&email=" + email;
+                EmailSupporter.SendVerifyEnglishEmail(email, link);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Create code successfully!",
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+
+                return BadRequest(response);
+            }
         }
         [HttpPost("adminVerify")]
         public IActionResult AdminVerify(string email)
         {
+            try
+            {
+                var code = authenticationCodeService.CreateCode(email);
 
-            var code = authenticationCodeService.CreateCode(email);
-            if (code == null) return BadRequest();
-            string link = configuration["Server:AdminFrontend"] + "/authentication/adminConfirmverify?code=" + code + "&email=" + email;
-            EmailSupporter.SendVerifyEnglishEmail(email,link);
-            return Ok();
+                if (code == null)
+                    throw new Exception("Create code fail!");
+
+                string link = configuration["Server:AdminFrontend"] + "/authentication/adminConfirmverify?code=" + code + "&email=" + email;
+                EmailSupporter.SendVerifyEnglishEmail(email, link);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Create code successfully!",
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+
+                return BadRequest(response);
+            }
         }
         [HttpGet("confirmverify")]
         public IActionResult ConfirmVerify(string code,string email)
         {
-            if (authenticationCodeService.Verify(code, email)) return Ok();
-            return Unauthorized();
+            try
+            {
+                bool confirm = authenticationCodeService.Verify(code, email);
 
+                var response = new ResponseMessage()
+                {
+                    Message = "Verify successfully!",
+                };
+
+                if (confirm == true)
+                    return Ok(response);
+                else throw new Exception("Verify fail!");
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+
+                return Unauthorized(response);
+            }
         }
         [HttpGet("adminConfirmverify")]
         public IActionResult AdminConfirmVerify(string code,string email)
         {
-            string token = authenticationCodeService.AdminVerify(code, email);
-            if (token!=null) return Ok(token);
-            return Unauthorized();
+            try
+            {
+                string token = authenticationCodeService.AdminVerify(code, email);
 
+                var response = new ResponseMessage()
+                {
+                    Message = "Verify successfully!",
+                    Data = token
+                };
+
+                if (token != null)
+                    return Ok(response);
+                else throw new Exception("Token null!");
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+
+                return Unauthorized(response);
+            }
         }
     }
 }

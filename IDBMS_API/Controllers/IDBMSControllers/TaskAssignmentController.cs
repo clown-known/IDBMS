@@ -51,7 +51,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
-        //lead arc, cons man
+
         [EnableQuery]
         [HttpGet("project/{id}")]
         [Authorize(Policy = "Participation")]
@@ -78,15 +78,42 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 return BadRequest(response);
             }
         }
-        //lead arc, cons man
+
         [EnableQuery]
-        [HttpGet("user/{id}")]
-        [Authorize(Policy = "User")]
-        public IActionResult GetTaskAssignmentsByUserId(Guid id, string? name, int? pageSize, int? pageNo)
+        [HttpGet("project-task/{id}")]
+        [Authorize(Policy = "Participation")]
+        public IActionResult GetTaskAssignmentsByTaskId(Guid projectId, Guid id, string? name, int? pageSize, int? pageNo)
         {
             try
             {
-                var list = _service.GetByUserId(id, name);
+                var list = _service.GetByTaskId(id, name);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _paginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
+        [EnableQuery]
+        [HttpGet("user/{userId}")]
+        [Authorize(Policy = "Participation")]
+        public IActionResult GetTaskAssignmentsOfUserInProject(Guid projectId, Guid userId, int? pageSize, int? pageNo)
+        {
+            try
+            {
+                var list = _service.GetTaskAssignmentsOfUserInProject(projectId, userId);
 
                 var response = new ResponseMessage()
                 {

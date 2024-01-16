@@ -7,4 +7,6 @@ public interface IUserRepository : ICrudBaseRepository<User, Guid>
 {
     public User? GetByEmail(string email);
     public void Lock(string email);
+
+    IEnumerable<User> GetAvailableUsersByProjectId(Guid projectId);
 }

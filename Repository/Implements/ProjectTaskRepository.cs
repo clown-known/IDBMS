@@ -41,6 +41,9 @@ namespace Repository.Implements
                     .Include(p => p.PaymentStage)
                     .Include(p => p.ParentTask)
                     .Include(r => r.Room)
+                    .Include(pt => pt.TaskAssignments)
+                        .ThenInclude(ta => ta.ProjectParticipation)
+                            .ThenInclude(pp => pp.User)
                     .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
                     .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
                     .FirstOrDefault(task => task.Id == id);
@@ -57,12 +60,14 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.ProjectTasks
+                    .AsNoTracking()
                     .Include(c => c.TaskCategory)
                     .Include(p => p.PaymentStage)
+                    .Include(pt => pt.TaskAssignments)
+                        .ThenInclude(ta => ta.ProjectParticipation)
+                            .ThenInclude(pp => pp.User)
                     .Include(r => r.Room)
                         .ThenInclude(f => f.Floor)
-                    .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
-                    .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
                     .Where(task => task.ProjectId == id)
                     .OrderByDescending(c => c.CreatedDate)
                     .ToList();

@@ -123,7 +123,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult CreateProjectTask(Guid projectId, [FromBody] ProjectTaskRequest request)
         {
             try
@@ -147,7 +147,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
+        [Authorize(Policy = "ProjectManager")]
         public IActionResult UpdateProjectTask(Guid projectId, Guid id, [FromBody] ProjectTaskRequest request)
         {
             try

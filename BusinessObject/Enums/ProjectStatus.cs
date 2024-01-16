@@ -2,8 +2,6 @@
 
 public enum ProjectStatus
 {
-    Draft = 0,
-    PendingConfirmation = 1,
     Negotiating = 2,
     PendingDeposit = 3,
     Ongoing = 4,

@@ -1,8 +1,10 @@
 ﻿using BusinessObject.Models;
 using IDBMS_API.Supporters.EmailSupporter;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IDBMS_API.Services.Background
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class DeadlineBackgroundService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
@@ -23,9 +25,11 @@ namespace IDBMS_API.Services.Background
                     var paymentStageService = scope.ServiceProvider.GetRequiredService<PaymentStageService>();
                     var deadlineService = scope.ServiceProvider.GetRequiredService<DeadlineService>();
 
+
                     var paymenAbout10ToExpire = paymentStageService.GetAbout10ToExpireStage();
                     foreach (var stage in paymenAbout10ToExpire)
                     {
+
                         var owner = paymentStageService.GetOwner(stage.Id);
                         string link = _configuration["Server:Frontend"] + "/project/" + stage.ProjectId.ToString() + "/stages";
                         deadlineService.SendDeadlineEmail(owner.Email,owner.Name, link, stage.EndTimePayment.ToString(), stage.EndTimePayment.ToString(),owner.Language==0);
@@ -33,9 +37,11 @@ namespace IDBMS_API.Services.Background
                     var paymenOutOfDateStage = paymentStageService.GetOutOfDateStage();
                     foreach (var stage in paymenOutOfDateStage)
                     {
+
                         var owner = paymentStageService.GetOwner(stage.Id);
                         string link = _configuration["Server:Frontend"] + "/project/" + stage.ProjectId.ToString() + "/stages";
                         deadlineService.SendOutDateEmail(owner.Email,owner.Name, link, stage.EndTimePayment.ToString(),owner.Language==0);
+
                     }
 
                 }

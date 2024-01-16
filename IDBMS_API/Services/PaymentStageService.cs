@@ -77,12 +77,7 @@ namespace IDBMS_API.Services
 
             return Filter(list, status, name);
         }
-        public User GetOwner(Guid stageId)
-        {
-            var stage = _stageRepo.GetById(stageId);
-            var project = _projectRepo.GetById(stage.ProjectId);
-            return project.ProjectParticipations.FirstOrDefault(p=>p.Role == ParticipationRole.ProductOwner).User;
-        }
+
         public IEnumerable<PaymentStage> GetOutOfDateStage()
         {
             
@@ -259,9 +254,13 @@ namespace IDBMS_API.Services
             ps.Description = request.Description;
             ps.IsPrepaid = request.IsPrepaid;
             ps.PricePercentage = request.PricePercentage;
-            ps.EndTimePayment = request.EndTimePayment;
             ps.ProjectId = request.ProjectId;
             ps.IsWarrantyStage = request.IsWarrantyStage;
+
+            if (request.EndTimePayment == ps.EndTimePayment)
+                UpdateEndTimePayment(id);
+            else
+                ps.EndTimePayment = request.EndTimePayment;
 
             ProjectService projectService = new (_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
             var project = projectService.GetById(request.ProjectId);
@@ -276,7 +275,6 @@ namespace IDBMS_API.Services
             }
 
             UpdateStageNoByProjectId(ps.ProjectId);
-            UpdateEndTimePayment(id);
         }
 
         public void UpdateEndTimePayment(Guid stageId)
@@ -289,7 +287,7 @@ namespace IDBMS_API.Services
             UpdateProjectWarrantyEnd(stage.ProjectId);
         }
 
-        public DateTime? CalculateEndTimePayment(DateTime? startDate, DateTime? endDate, bool isPrepaid)
+        private DateTime? CalculateEndTimePayment(DateTime? startDate, DateTime? endDate, bool isPrepaid)
         {
             if (startDate == null || endDate == null)
             {
@@ -339,7 +337,7 @@ namespace IDBMS_API.Services
             UpdateProjectWarrantyEnd(stage.ProjectId);
         }
 
-        public bool IsExceedPaymentDeadline(Guid stageId, DateTime? endTime)
+        private bool IsExceedPaymentDeadline(Guid stageId, DateTime? endTime)
         {
             var stage = _stageRepo.GetById(stageId) ?? throw new Exception("This payment stage id is not existed!");
 
