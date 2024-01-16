@@ -445,37 +445,6 @@ namespace IDBMS_API.Supporters.Utils
 
             return null;
         }
-        public static string GetValueOfCell(SpreadsheetDocument workbook, string sheetName, string cellReference)
-        {
-            WorkbookPart workbookPart = workbook.WorkbookPart;
-
-            Sheet sheet = workbookPart.Workbook.Descendants<Sheet>().FirstOrDefault(s => s.Name == sheetName);
-
-            if (sheet != null)
-            {
-                WorksheetPart worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id);
-
-                Cell cell = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellReference);
-                var cell1 = worksheetPart.Worksheet.Descendants<Cell>().ToList();
-                if (cell != null)
-                {
-                    //string value1 = cell1.InlineString.Text.Text;
-                    string value1 = cell.CellValue.InnerText;
-
-                    if (cell.DataType != null && cell.DataType == CellValues.SharedString)
-                    {
-                        int sharedStringIndex = int.Parse(value1);
-                        SharedStringTablePart sharedStringTablePart = workbookPart.SharedStringTablePart;
-                        if (sharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAtOrDefault(sharedStringIndex) is SharedStringItem sharedStringItem)
-                        {
-                            value1 = sharedStringItem.Text.Text;
-                            return value1;
-                        }
-                    }
-                }
-             }
-            return null;
-        }
         public static double FindAndReplaceCalculatorCell(SpreadsheetDocument workbook, string sheetName, string cellReference, string cellReference1, string cellReference2, Calculator calculator)
         {
             WorkbookPart workbookPart = workbook.WorkbookPart;
@@ -588,64 +557,6 @@ namespace IDBMS_API.Supporters.Utils
                 Console.WriteLine($"Sheet with name '{sheetName}' not found.");
             }
         }
-
-        private static Cell GetCell(Worksheet worksheet, string cellAddress)
-        {
-            return worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellAddress);
-        }
-        public static string FindCell(SpreadsheetDocument document, string sheetName, string valueToFind)
-        {
-            Sheet sheet = document.WorkbookPart.Workbook.Sheets.Elements<Sheet>().FirstOrDefault(s => s.Name == sheetName);
-
-            if (sheet != null)
-            {
-                WorksheetPart worksheetPart = (WorksheetPart)document.WorkbookPart.GetPartById(sheet.Id);
-
-                SheetData sheetData = worksheetPart.Worksheet.Elements<SheetData>().FirstOrDefault();
-
-                if (sheetData != null)
-                {
-                    foreach (Row row in sheetData.Elements<Row>())
-                    {
-                        foreach (Cell cell in row.Elements<Cell>())
-                        {
-                            string cellValue = GetCellValue(document, cell);
-
-                            if (cellValue == valueToFind)
-                            {
-                                return $"{GetColumnName(cell.CellReference)}{row.RowIndex}";
-                            }
-                        }
-                    }
-
-                    Console.WriteLine($"Value '{valueToFind}' not found in the sheet.");
-                }
-            }
-            else
-            {
-                Console.WriteLine($"Sheet '{sheetName}' not found in the workbook.");
-            }
-            return "";
-        }
-        public static string GetCellValue(SpreadsheetDocument document, Cell cell)
-        {
-            if (cell.DataType != null && cell.DataType.Value == CellValues.SharedString)
-            {
-                SharedStringTablePart sharedStringPart = document.WorkbookPart.SharedStringTablePart;
-                if (sharedStringPart != null)
-                {
-                    int index = int.Parse(cell.InnerText);
-                    return sharedStringPart.SharedStringTable.Elements<SharedStringItem>().ElementAt(index).InnerText;
-                }
-            }
-            else
-            {
-                return cell.InnerText;
-            }
-
-            return null;
-        }
-
         public static string GetColumnName(string cellReference)
         {
             return System.Text.RegularExpressions.Regex.Replace(cellReference.ToUpper(), "[0-9]", "");
@@ -681,15 +592,6 @@ namespace IDBMS_API.Supporters.Utils
                 Console.WriteLine($"Sheet '{sheetNameToDelete}' not found in the workbook.");
             }
         }
-        static WorksheetPart GetWorkSheetPart(WorkbookPart workbookPart, string sheetName)
-        {
-            string relId = workbookPart.Workbook.Descendants<Sheet>()
-                .Where(s => s.Name.Value.Equals(sheetName))
-                .First()
-                .Id;
-
-            return (WorksheetPart)workbookPart.GetPartById(relId);
-        }
         public static void CloneSheet(SpreadsheetDocument document, string sheetName, string newSheetName)
         {
             Sheet sourceSheet = document.WorkbookPart.Workbook.Sheets.Elements<Sheet>().Where(a => a.Name.Equals(sheetName)).FirstOrDefault();
@@ -721,20 +623,7 @@ namespace IDBMS_API.Supporters.Utils
             }
             return resultat + 1;
         }
-        private static string newId(WorkbookPart workbookPart)
-        {
-            UInt32Value resultat = 0; 
-            int max = 0;
-            foreach (Sheet sheet in workbookPart.Workbook.Descendants<Sheet>())
-            {
-                string id = sheet.Id;
-                id = id.Substring(3);
-                int num = Int32.Parse(id);
-                if (num > max)
-                    max = num;
-            }
-            return "rId" + ++max;
-        }
+
         public static void FindAndReplaceString(SpreadsheetDocument workbook, string sheetName, string cellReference, string value)
         {
             WorkbookPart workbookPart = workbook.WorkbookPart;

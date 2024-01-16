@@ -134,7 +134,7 @@ namespace API.Services
             var user = new User()
             {
                 Address = request.Address,
-                CreatedDate = DateTime.UtcNow,
+                CreatedDate = TimeHelper.GetTime(DateTime.UtcNow),
                 Language = request.Language,
                 DateOfBirth = request.DateOfBirth,
                 Id = Guid.NewGuid(),
@@ -182,7 +182,7 @@ namespace API.Services
             var user = new User()
             {
                 Address = request.Address,
-                CreatedDate = DateTime.UtcNow,
+                CreatedDate = TimeHelper.GetTime(DateTime.UtcNow),
                 Language = request.Language,
                 Id = Guid.NewGuid(),
                 Email = request.Email,

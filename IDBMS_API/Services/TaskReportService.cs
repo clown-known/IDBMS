@@ -115,15 +115,13 @@ namespace IDBMS_API.Services
 
         public async Task<TaskReport?> CreateTaskReport(Guid projectId,TaskReportRequest request)
         {
-            var timezone = TimeHelper.GetTimezone();
-
             var ctr = new TaskReport
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
                 UnitUsed = request.UnitUsed,
                 Description = request.Description,
-                CreatedTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone)),
+                CreatedTime = TimeHelper.GetTime(DateTime.UtcNow),
                 ProjectTaskId = request.ProjectTaskId,
                 IsDeleted = false,
             };
@@ -141,12 +139,10 @@ namespace IDBMS_API.Services
         public void UpdateTaskReport(Guid id, TaskReportRequest request)
         {
             var ctr = _taskReportRepo.GetById(id) ?? throw new Exception("This task report id is not existed!");
-            var timezone = TimeHelper.GetTimezone();
-
             ctr.Name = request.Name;
             ctr.UnitUsed = request.UnitUsed;
             ctr.Description = request.Description;
-            ctr.UpdatedTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+            ctr.UpdatedTime = TimeHelper.GetTime(DateTime.UtcNow);
 
             _taskReportRepo.Update(ctr);
 

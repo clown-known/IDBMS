@@ -21,27 +21,26 @@ namespace IDBMS_API.Services.Background
                 using (var scope = _serviceProvider.CreateScope())
                 {
                     var paymentStageService = scope.ServiceProvider.GetRequiredService<PaymentStageService>();
+                    var deadlineService = scope.ServiceProvider.GetRequiredService<DeadlineService>();
 
-                    var paymenOutOfDate = paymentStageService.GetOutOfDateStage();
-                    foreach (var stage in paymenOutOfDate)
+                    var paymenAbout10ToExpire = paymentStageService.GetAbout10ToExpireStage();
+                    foreach (var stage in paymenAbout10ToExpire)
                     {
                         var owner = paymentStageService.GetOwner(stage.Id);
                         string link = _configuration["Server:Frontend"] + "/project/" + stage.ProjectId.ToString() + "/stages";
-
-                        EmailSupporter.SendDeadlineEnglishEmail(owner.Email, link, stage.EndTimePayment.ToString(), stage.EndTimePayment.ToString());
+                        deadlineService.SendDeadlineEmail(owner.Email,owner.Name, link, stage.EndTimePayment.ToString(), stage.EndTimePayment.ToString(),owner.Language==0);
                     }
-                    var paymenAboutDate = paymentStageService.GetOutOfDateStage();
-                    foreach (var stage in paymenAboutDate)
+                    var paymenOutOfDateStage = paymentStageService.GetOutOfDateStage();
+                    foreach (var stage in paymenOutOfDateStage)
                     {
                         var owner = paymentStageService.GetOwner(stage.Id);
                         string link = _configuration["Server:Frontend"] + "/project/" + stage.ProjectId.ToString() + "/stages";
-
-                        EmailSupporter.SendDeadlineEnglishEmail(owner.Email, link, stage.EndTimePayment.ToString(), stage.EndTimePayment.ToString());
+                        deadlineService.SendOutDateEmail(owner.Email,owner.Name, link, stage.EndTimePayment.ToString(),owner.Language==0);
                     }
 
                 }
 
-                await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
+                await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
             }
         }
     }

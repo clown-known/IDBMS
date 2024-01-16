@@ -109,6 +109,7 @@ builder.Services.AddScoped<AdminService, AdminService>();
 builder.Services.AddScoped<AuthenticationCodeService, AuthenticationCodeService>();
 builder.Services.AddScoped<CommentService, CommentService>();
 builder.Services.AddScoped<ContractService, ContractService>();
+builder.Services.AddScoped<DeadlineService, DeadlineService>();
 builder.Services.AddScoped<ExcelService, ExcelService>();
 builder.Services.AddScoped<TaskCategoryService, TaskCategoryService>();
 builder.Services.AddScoped<ProjectTaskService, ProjectTaskService>();
