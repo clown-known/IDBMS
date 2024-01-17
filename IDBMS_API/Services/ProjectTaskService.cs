@@ -389,6 +389,7 @@ namespace IDBMS_API.Services
                 UnitUsed = 0,
                 IsIncurred = request.IsIncurred,
                 StartedDate = request.StartedDate,
+                TaskCategoryId = request.TaskCategoryId,
                 EndDate = CalculateEndDate(request.StartedDate, request.EstimateBusinessDay),
                 CreatedDate = DateTime.Now,
                 ProjectId = request.ProjectId,
@@ -530,6 +531,7 @@ namespace IDBMS_API.Services
             ct.CalculationUnit = request.CalculationUnit;
             ct.PricePerUnit = request.PricePerUnit;
             ct.UnitInContract = request.UnitInContract;
+            ct.TaskCategoryId = request.TaskCategoryId;
             ct.IsIncurred = request.IsIncurred;
             ct.UpdatedDate= TimeHelper.GetTime(DateTime.Now);
             ct.StartedDate= request.StartedDate;

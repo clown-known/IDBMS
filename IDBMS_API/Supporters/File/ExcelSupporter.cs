@@ -112,7 +112,7 @@ namespace IDBMS_API.Supporters.File
 
                     var (sum,incrs) = GenSheetTHKP(doc,"Sheet2","HTKP",projectName, listTaskName, excelResults);
 
-                    GenSheet1ForCompany(doc,"Sheet1","Tong",project,listTaskName,sum,incrs,1);
+                    GenSheet1ForCompany(doc,"Sheet1","Tong",project,listTaskName,sum,incrs);
                     for (int i = 1; i <= 10; i++)
                     {
                         ExcelUtils.RemoveSheet(doc, "Sheet" + i.ToString());
@@ -124,7 +124,7 @@ namespace IDBMS_API.Supporters.File
                 return stream.ToArray();
             }
         }
-        public static void GenSheet1ForCompany(SpreadsheetDocument doc, string templateName, string sheetName, Project project, string categoryName, ExcelResult total, ExcelResult incr, int paymentStageNO)
+        public static void GenSheet1ForCompany(SpreadsheetDocument doc, string templateName, string sheetName, Project project, string categoryName, ExcelResult total, ExcelResult incr)
         {
             ExcelUtils.RenameSheet(doc, templateName, sheetName);
 
