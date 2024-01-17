@@ -134,8 +134,8 @@ namespace IDBMS_API.Services
 
             var pCreated = _participationRepo.Save(p);
             string link = "https://idbms-user-web-client.vercel.app/vi-VN/project/" + request.ProjectId.ToString();
-            string email = _userRepo.GetById(request.UserId).Email;
-            EmailSupporter.SendInviteEnglishEmail(email, link);
+            var u = _userRepo.GetById(request.UserId);
+            EmailSupporter.SendInviteEnglishEmail(u.Email, link,u.Language== Language.English);
 
             return pCreated;
         }
@@ -152,7 +152,7 @@ namespace IDBMS_API.Services
             else
             {
                 // send email
-                EmailSupporter.SendInviteEnglishEmail(email, link);
+                EmailSupporter.SendInviteEnglishEmail(email, link,user.Language==Language.English);
             }
             var pCreated = _participationRepo.Save(new ProjectParticipation
             {

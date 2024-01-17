@@ -227,7 +227,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 if (project != null) {
                     User owner = project.ProjectParticipations.Where(u => u.Role == ParticipationRole.ProductOwner).FirstOrDefault().User;
                     string time = TimeHelper.GetTime(DateTime.Now).ToString();
-                    EmailSupporter.SendStageEmail(owner.Email, link,owner.Name,time,owner.Language==0); 
+                    EmailSupporter.SendStageEmail(owner.Email, link,owner.Name,time,owner.Language== Language.English); 
                 }
 
                 var response = new ResponseMessage()
