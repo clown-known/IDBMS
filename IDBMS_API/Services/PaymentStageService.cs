@@ -308,13 +308,20 @@ namespace IDBMS_API.Services
         public void UpdateStageNoByProjectId(Guid projectId)
         {
             var stageList = _stageRepo.GetByProjectId(projectId)
-                                .OrderBy(s => s.EndTimePayment ?? DateTime.MaxValue)
-                                    .ThenByDescending(s => DateTime.MaxValue)
+                                .OrderBy(s => s.EndTimePayment.HasValue)
+                                    .ThenByDescending(s => s.EndTimePayment) 
                                 .ToList();
+
+            var nullEndTimePaymentList = stageList.Where(s => s.EndTimePayment == null).ToList();
+            var nonNullEndTimePaymentList = stageList.Where(s => s.EndTimePayment != null).ToList();
+
+            nullEndTimePaymentList.Reverse();
+
+            var reversedStageList = nonNullEndTimePaymentList.Concat(nullEndTimePaymentList).ToList();
 
             int stageNumber = 1;
 
-            foreach (var stage in stageList)
+            foreach (var stage in reversedStageList)
             {
                 stage.StageNo = stageNumber++;
                 _stageRepo.Update(stage);
