@@ -528,6 +528,7 @@ namespace IDBMS_API.Services
             ct.CalculationUnit = request.CalculationUnit;
             ct.PricePerUnit = request.PricePerUnit;
             ct.UnitInContract = request.UnitInContract;
+            ct.TaskCategoryId = request.TaskCategoryId;
             ct.IsIncurred = request.IsIncurred;
             ct.UpdatedDate= TimeHelper.GetTime(DateTime.Now);
             ct.StartedDate= request.StartedDate;
