@@ -397,7 +397,6 @@ namespace IDBMS_API.Services
                 ParentTaskId= request.ParentTaskId,
                 Status = ProjectTaskStatus.Pending,
                 EstimateBusinessDay = request.EstimateBusinessDay,
-                TaskCategoryId = request.TaskCategoryId
             };
 
             if (request.TaskDesignId != null)
