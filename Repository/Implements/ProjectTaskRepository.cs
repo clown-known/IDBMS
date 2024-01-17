@@ -70,6 +70,7 @@ namespace Repository.Implements
                         .ThenInclude(f => f.Floor)
                     .Where(task => task.ProjectId == id)
                     .OrderByDescending(c => c.CreatedDate)
+                    .OrderBy(task => task.Status != ProjectTaskStatus.Cancelled)
                     .ToList();
             }
             catch
@@ -92,6 +93,7 @@ namespace Repository.Implements
                     .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
                     .Where(task => task.RoomId == id)
                     .OrderByDescending(c => c.CreatedDate)
+                    .OrderBy(task => task.Status != ProjectTaskStatus.Cancelled)
                     .ToList();
             }
             catch
@@ -110,6 +112,7 @@ namespace Repository.Implements
                     .Include(pt => pt.Comments.Where(cmt => cmt.IsDeleted == false))
                     .Include(pt => pt.TaskReports.Where(tr => tr.IsDeleted == false))
                     .OrderByDescending(c => c.CreatedDate)
+                    .OrderBy(task => task.Status != ProjectTaskStatus.Cancelled)
                     .ToList();
             }
             catch
