@@ -196,7 +196,12 @@ namespace IDBMS_API.Services
 
             return psCreated;
         }
-
+        public User GetOwner(Guid stageId)
+        {
+            var stage = _stageRepo.GetById(stageId);
+            var project = _projectRepo.GetById(stage.ProjectId);
+            return project.ProjectParticipations.FirstOrDefault(p => p.Role == ParticipationRole.ProductOwner).User;
+        }
         public void CreatePaymentStagesByProjectDesign(Guid projectId)
         {
             ProjectService projectService = new(_projectRepo, _roomRepo, _roomTypeRepo, _taskRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _transactionRepo, _taskDesignRepo, _taskCategoryRepo);
