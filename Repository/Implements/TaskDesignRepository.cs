@@ -18,9 +18,9 @@ namespace Repository.Implements
                 using var context = new IdtDbContext();
                 return context.TaskDesigns
                     .Include(p => p.TaskCategory)
-                    .Where(psd=> psd.IsDeleted == false)
-                    .ToList()
-                    .Reverse<TaskDesign>();
+                    .Where(psd => psd.IsDeleted == false)
+                    .OrderBy(td => td.TaskCategoryId)
+                    .ToList();
             }
             catch
             {
