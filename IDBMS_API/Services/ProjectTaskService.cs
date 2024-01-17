@@ -389,7 +389,6 @@ namespace IDBMS_API.Services
                 UnitUsed = 0,
                 IsIncurred = request.IsIncurred,
                 StartedDate = request.StartedDate,
-                TaskCategoryId = request.TaskCategoryId,
                 EndDate = CalculateEndDate(request.StartedDate, request.EstimateBusinessDay),
                 CreatedDate = DateTime.Now,
                 ProjectId = request.ProjectId,
