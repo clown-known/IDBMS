@@ -15,8 +15,7 @@ namespace IDBMS_API.Services
     {
         ProjectRepository _projectRepository;
         ProjectDocumentRepository _projectDocumentRepository;
-        FileSupporter fileSupporter;
-        DocumentTemplateRepository templateRepository;
+        DocumentTemplateRepository _templateRepository;
         byte[] _dataSample;
         byte[] _file;
         FirebaseService firebaseService;
@@ -25,7 +24,7 @@ namespace IDBMS_API.Services
             _projectDocumentRepository = new ProjectDocumentRepository();
             _projectRepository = new ProjectRepository();
             firebaseService = new FirebaseService();
-            templateRepository = new DocumentTemplateRepository();
+            _templateRepository = new DocumentTemplateRepository();
         }
         public async Task<byte[]> GenNewConstractForCompany(ContractRequest request)
         {
@@ -45,8 +44,10 @@ namespace IDBMS_API.Services
         {
             try
             {
+
                 ProjectRepository projectRepository = new ProjectRepository();
                 Project project = projectRepository.GetById(projectid);
+
                 var ownerParticipation = project.ProjectParticipations.FirstOrDefault(p => p.Role == ParticipationRole.ProductOwner);
 
                 if (ownerParticipation == null)
@@ -86,8 +87,10 @@ namespace IDBMS_API.Services
         {
             try
             {
+
                 ProjectRepository projectRepository = new ProjectRepository();
                 Project project = projectRepository.GetById(projectid);
+
                 var ownerParticipation = project.ProjectParticipations.FirstOrDefault(p => p.Role == ParticipationRole.ProductOwner);
 
                 if (ownerParticipation == null)
@@ -95,8 +98,7 @@ namespace IDBMS_API.Services
 
                 User owner = ownerParticipation.User;
                 Site site = project.Site;
-                DocumentTemplateRepository documentTemplateRepository = new DocumentTemplateRepository();
-                var doc = documentTemplateRepository.getByType(DocumentTemplateType.Contract);
+                var doc = _templateRepository.getByType(DocumentTemplateType.Contract);
                 ContractForCustomerResponse contractForCustomerResponse = new ContractForCustomerResponse
                 {
                     Address = site.Address,
@@ -135,8 +137,7 @@ namespace IDBMS_API.Services
             try
             {
                 string link = await firebaseService.UploadContract(file, projectId);
-                DocumentTemplateRepository documentTemplateRepository = new DocumentTemplateRepository();
-                var temp = documentTemplateRepository.getByType(DocumentTemplateType.Contract);
+                var temp = _templateRepository.getByType(DocumentTemplateType.Contract);
                 var currentDoc = _projectDocumentRepository.GetContractById(projectId);
                 if (currentDoc != null)
                 {

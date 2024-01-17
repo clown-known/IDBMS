@@ -9,19 +9,22 @@ using UnidecodeSharpFork;
 using IDBMS_API.Supporters.UserHelper;
 using Repository.Implements;
 using IDBMS_API.Supporters.EmailSupporter;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace IDBMS_API.Services
 {
     public class ProjectParticipationService
     {
         private readonly IProjectParticipationRepository _participationRepo;
+        private readonly IProjectRepository _projectRepository;
         private readonly ITaskAssignmentRepository _assignmentRepo;
         private readonly IUserRepository _userRepo;
-        public ProjectParticipationService(IProjectParticipationRepository participationRepo, ITaskAssignmentRepository assignmentRepo,IUserRepository userRepository)
+        public ProjectParticipationService(IProjectParticipationRepository participationRepo, ITaskAssignmentRepository assignmentRepo,IUserRepository userRepository, IProjectRepository projectRepository)
         {
             _participationRepo = participationRepo;
             _assignmentRepo = assignmentRepo;
             _userRepo = userRepository;
+            _projectRepository = projectRepository;
         }
 
         public IEnumerable<ProjectParticipation> Filter(IEnumerable<ProjectParticipation> list,
@@ -103,6 +106,23 @@ namespace IDBMS_API.Services
 
         public ProjectParticipation? CreateParticipation(ProjectParticipationRequest request)
         {
+            var project = _projectRepository.GetById(request.ProjectId);
+            if(project.BasedOnDecorProjectId!=null)
+            {
+                Project dproject = _projectRepository.GetById(project.BasedOnDecorProjectId.Value);
+                if (dproject!=null && dproject.ProjectParticipations.Where(p => p.UserId == request.UserId).FirstOrDefault() == null)
+                {
+                    var dp = new ProjectParticipation
+                    {
+                        Id = Guid.NewGuid(),
+                        UserId = request.UserId,
+                        ProjectId = dproject.Id,
+                        Role = ParticipationRole.Viewer,
+                        IsDeleted = false,
+                    };
+                    _participationRepo.Save(dp);
+                }
+            }
             var p = new ProjectParticipation
             {
                 Id = Guid.NewGuid(),
@@ -113,6 +133,10 @@ namespace IDBMS_API.Services
             };
 
             var pCreated = _participationRepo.Save(p);
+            string link = "https://idbms-user-web-client.vercel.app/vi-VN/project/" + request.ProjectId.ToString();
+            string email = _userRepo.GetById(request.UserId).Email;
+            EmailSupporter.SendInviteEnglishEmail(email, link);
+
             return pCreated;
         }
         public ProjectParticipation? AddViewer(Guid projectId,string email)
@@ -125,6 +149,11 @@ namespace IDBMS_API.Services
                 EmailSupporter.SendInviteEnglishEmail(email, link, password);
 
             }
+            else
+            {
+                // send email
+                EmailSupporter.SendInviteEnglishEmail(email, link);
+            }
             var pCreated = _participationRepo.Save(new ProjectParticipation
             {
                 IsDeleted = false,
@@ -132,8 +161,7 @@ namespace IDBMS_API.Services
                 UserId = user.Id,
                 Role = BusinessObject.Enums.ParticipationRole.Viewer
             });
-            // send email
-            EmailSupporter.SendInviteEnglishEmail(email,link);
+            
             //
             return pCreated;
         }

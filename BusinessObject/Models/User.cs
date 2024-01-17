@@ -37,9 +37,7 @@ public class User
     [Required]
     public DateTime CreatedDate { get; set; }
     public DateTime? DateOfBirth { get; set; }
-
-    [Required]
-    public DateTime UpdatedDate { get; set; }
+    public DateTime? UpdatedDate { get; set; }
 
     [Required]
     public Language Language { get; set; }
