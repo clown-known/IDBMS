@@ -70,6 +70,7 @@ namespace Repository.Implements
                         .ThenInclude(f => f.Floor)
                     .Where(task => task.ProjectId == id)
                     .OrderByDescending(c => c.CreatedDate)
+                    .OrderBy(task => task.Status != ProjectTaskStatus.Cancelled)
                     .ToList();
             }
             catch
