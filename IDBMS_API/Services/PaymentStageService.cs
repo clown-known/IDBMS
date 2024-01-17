@@ -81,13 +81,13 @@ namespace IDBMS_API.Services
         public IEnumerable<PaymentStage> GetOutOfDateStage()
         {
             
-            var list = _stageRepo.GetAll().Where(s=>s.IsPrepaid!=true && s.EndTimePayment.Value.Date <= TimeHelper.GetTime(DateTime.Now).Date);
+            var list = _stageRepo.GetAll().Where(s=>s.IsPrepaid!=true && s.EndTimePayment!=null && s.EndTimePayment.Value.Date <= TimeHelper.GetTime(DateTime.Now).Date);
             
             return list;
         }
         public IEnumerable<PaymentStage> GetAbout10ToExpireStage()
         {
-            var list = _stageRepo.GetAll().Where(s=>s.IsPrepaid!=true && s.EndTimePayment.Value.AddDays(10).Date == TimeHelper.GetTime(DateTime.Now).Date);
+            var list = _stageRepo.GetAll().Where(s=>s.IsPrepaid!=true && s.EndTimePayment!=null && s.EndTimePayment.Value.AddDays(10).Date == TimeHelper.GetTime(DateTime.Now).Date);
             
             return list;
         }
