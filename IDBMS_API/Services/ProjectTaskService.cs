@@ -398,6 +398,7 @@ namespace IDBMS_API.Services
                 ParentTaskId= request.ParentTaskId,
                 Status = ProjectTaskStatus.Pending,
                 EstimateBusinessDay = request.EstimateBusinessDay,
+                TaskCategoryId = request.TaskCategoryId
             };
 
             if (request.TaskDesignId != null)
@@ -445,6 +446,7 @@ namespace IDBMS_API.Services
                 RoomId = request.RoomId,
                 Status = ProjectTaskStatus.Pending,
                 EstimateBusinessDay = request.EstimateBusinessDay,
+                TaskCategoryId = request.TaskCategoryId
             };
 
             _taskRepo.Save(task);
