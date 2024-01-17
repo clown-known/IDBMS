@@ -22,7 +22,8 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         [Authorize(Policy = "")]
         public async Task<IActionResult> GenExcel(Guid projectId)
         {
-
+            try
+            {
                 byte[] file = await excelService.GenNewExcel(projectId);
                 //string fileName = "Contract-"+projectid.ToString()+".docx";
                 string fileName = "TemplateExcel.xlsx";
@@ -34,6 +35,16 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 };
 
                 return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+
+                return BadRequest(response);
+            }
 
         }
     }
