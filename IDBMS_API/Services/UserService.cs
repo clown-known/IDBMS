@@ -25,11 +25,13 @@ namespace API.Services
         private readonly IUserRepository _repository;
         private readonly JwtTokenSupporter jwtTokenSupporter;
         private readonly GoogleTokenVerify googleTokenVerify;
-        public UserService(IUserRepository _repository, JwtTokenSupporter jwtTokenSupporter, GoogleTokenVerify googleTokenVerify)
+        private readonly IAuthenticationCodeRepository _authenticationCodeRepository;
+        public UserService(IUserRepository _repository, JwtTokenSupporter jwtTokenSupporter, GoogleTokenVerify googleTokenVerify, IAuthenticationCodeRepository authenticationCodeRepository)
         {
             this._repository = _repository;
             this.jwtTokenSupporter = jwtTokenSupporter;
             this.googleTokenVerify = googleTokenVerify;
+            _authenticationCodeRepository = authenticationCodeRepository;
         }
 
         public IEnumerable<User> Filter(IEnumerable<User> list,
@@ -247,6 +249,17 @@ namespace API.Services
             _repository.Update(user);
         }
 
+        public void ForgotPassword(ResetPasswordRequest request)
+        {
+            var user = _repository.GetById(request.userId) ?? throw new Exception("User not existed");
+
+            PasswordUtils.CreatePasswordHash(request.newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+
+            user.PasswordSalt = passwordSalt;
+            user.PasswordHash = passwordHash;
+
+            _repository.Update(user);
+        }
         public void UpdateUserPassword(UpdatePasswordRequest request)
         {
             var user = _repository.GetById(request.userId) ?? throw new Exception("User not existed");
