@@ -87,7 +87,7 @@ namespace IDBMS_API.Services
         }
         public IEnumerable<PaymentStage> GetAbout10ToExpireStage()
         {
-            var list = _stageRepo.GetAll().Where(s=>s.IsPrepaid!=true && s.EndTimePayment!=null && s.EndTimePayment.Value.AddDays(10).Date == TimeHelper.GetTime(DateTime.Now).Date);
+            var list = _stageRepo.GetAll().Where(s=>s.IsPrepaid!=true && s.EndTimePayment!=null && s.EndTimePayment >= TimeHelper.GetTime(DateTime.Now)&& s.EndTimePayment.Value.AddDays(10) <= TimeHelper.GetTime(DateTime.Now));
             
             return list;
         }
@@ -123,8 +123,8 @@ namespace IDBMS_API.Services
                     //check if last stage or current stage is exceed deadline
                     if (isCurrentStageExceedDeadline || isPreviousStageExceedDeadline)
                     {
-                        //suspend if last stage is not paid
-                        if (previousStage != null && previousStage.Status == StageStatus.Done)
+                        //suspend if first stage or last stage is not paid
+                        if (previousStage == null ||  (previousStage != null && previousStage.Status == StageStatus.Done))
                         {
                             response.SuspendAllowed = true;
                         }
