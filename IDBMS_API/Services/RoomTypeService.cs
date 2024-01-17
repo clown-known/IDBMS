@@ -53,6 +53,7 @@ namespace IDBMS_API.Services
                 Description = roomType.Description,
                 EnglishDescription = roomType.EnglishDescription,
                 PricePerArea = roomType.PricePerArea,
+                EstimateDayPerArea = roomType.EstimateDayPerArea,
                 IsHidden = false,
             };
 
@@ -100,7 +101,8 @@ namespace IDBMS_API.Services
             rt.Description = roomType.Description;
             rt.EnglishDescription = roomType.EnglishDescription;
             rt.PricePerArea = roomType.PricePerArea;
-
+            rt.EstimateDayPerArea = roomType.EstimateDayPerArea;
+            
             _repository.Update(rt);
         }
         public void UpdateRoomTypeStatus(int id, bool isHidden)
