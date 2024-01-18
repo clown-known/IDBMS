@@ -39,11 +39,12 @@ namespace IDBMS_API.Supporters.Utils
                             value1 = sharedStringItem.Text.Text;
                         }
                     }
-
+                    if (value1!= null || !value1.Equals("")) value1 = value1.Replace(".", "");
                     bool sc = Double.TryParse(value1, out total);
                     if (!sc)
                     {
                         value1 = cell1.LastChild.FirstChild.InnerText;
+                        value1 = value1.Replace(".", "");
                         sc = Double.TryParse(value1, out total);
                     }
                     for (int i = indexStart + 1; i <= indexEnd; i++)
@@ -64,11 +65,13 @@ namespace IDBMS_API.Supporters.Utils
                             }
 
                             if (value2 == null || value2.Equals("")) continue;
+                            else value2 = value2.Replace(".", "");
                             double dvalue2 = 0;
                             sc = Double.TryParse(value2, out dvalue2);
                             if (!sc)
                             {
                                 value2 = cell2.LastChild.FirstChild.InnerText;
+                                value2 = value2.Replace(".", "");
                                 sc = Double.TryParse(value2, out dvalue2);
                             }
 
