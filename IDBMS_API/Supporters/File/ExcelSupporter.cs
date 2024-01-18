@@ -369,7 +369,7 @@ namespace IDBMS_API.Supporters.File
 
                         ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), (currentNo++).ToString());
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Name);
-                        ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), Enum.GetName(task.CalculationUnit));
+                        ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), CalculationUnitUtils.ConvertVietnamese(task.CalculationUnit));
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitInContract.ToString());
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitUsed.ToString());
                         if (task.Status == BusinessObject.Enums.ProjectTaskStatus.Done)
@@ -409,7 +409,7 @@ namespace IDBMS_API.Supporters.File
 
                     ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), (currentNo++).ToString());
                     ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Name);
-                    ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), Enum.GetName(task.CalculationUnit));
+                    ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), CalculationUnitUtils.ConvertVietnamese(task.CalculationUnit));
                     ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitInContract.ToString());
                     ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitUsed.ToString());
                     if (task.Status == BusinessObject.Enums.ProjectTaskStatus.Done)
@@ -506,7 +506,7 @@ namespace IDBMS_API.Supporters.File
 
                 ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), order++.ToString());
                 ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Name);
-                ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), Enum.GetName(task.CalculationUnit));
+                ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), CalculationUnitUtils.ConvertVietnamese(task.CalculationUnit));
                 ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitInContract.ToString());
                 ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitUsed.ToString());
                 if(task.Status == BusinessObject.Enums.ProjectTaskStatus.Done)
@@ -613,7 +613,7 @@ namespace IDBMS_API.Supporters.File
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Name);
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Description);
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Code);
-                        ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), Enum.GetName(task.CalculationUnit));
+                        ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), CalculationUnitUtils.ConvertVietnamese(task.CalculationUnit));
                         ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitInContract.ToString());
                         ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitUsed.ToString());
                         if (task.Status == BusinessObject.Enums.ProjectTaskStatus.Done)
