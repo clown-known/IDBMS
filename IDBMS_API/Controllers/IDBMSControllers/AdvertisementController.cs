@@ -54,6 +54,32 @@ namespace IDBMS_API.Controllers.IDBMSControllers
             }
         }
 
+        [EnableQuery]
+        [HttpGet("public")]
+        public IActionResult GetPublicProjects(int? pageSize, int? pageNo, int? categoryId, ProjectType? type, AdvertisementStatus? status, string? name)
+        {
+            try
+            {
+                var list = _service.GetPublicProjects(categoryId, type, status, name);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Get successfully!",
+                    Data = _projectPaginationService.PaginateList(list, pageSize, pageNo)
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
 
         [EnableQuery]
         [HttpGet("{projectId}/documents")]

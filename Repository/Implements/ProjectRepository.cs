@@ -70,6 +70,26 @@ namespace Repository.Implements
             }
         }
 
+        public IEnumerable<Project> GetPublicAdvertisementProjects()
+        {
+            try
+            {
+                using var context = new IdtDbContext();
+                return context.Projects
+                    .Include(p => p.ProjectParticipations.Where(pp => pp.IsDeleted == false))
+                    //.Include(p => p.ProjectDocuments.Where(pd => pd.IsDeleted == false))
+                    .Include(pc => pc.ProjectCategory)
+                    .Include(pc => pc.Site)
+                    .OrderByDescending(time => time.UpdatedDate ?? time.CreatedDate)
+                    .Where(p => (p.Status == ProjectStatus.Done || p.Status == ProjectStatus.WarrantyPending) && p.AdvertisementStatus == AdvertisementStatus.Public)
+                    .ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public IEnumerable<Project> GetRecentProjects()
         {
             try
