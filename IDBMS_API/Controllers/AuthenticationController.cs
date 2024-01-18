@@ -213,6 +213,29 @@ namespace API.Controllers
                 return BadRequest(response);
             }
         }
+
+        [HttpPut("admin/password")]
+        public IActionResult UpdateAdminPassword(UpdatePasswordRequest request)
+        {
+            try
+            {
+                adminService.UpdateAdminPassword(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+
         [HttpPut("setpassword")]
         [Authorize(Policy = "user")]
         public IActionResult SetPassword([FromBody]ResetPasswordRequest request)

@@ -15,7 +15,6 @@ namespace IDBMS_API.DTOs.Request.AccountRequest
         [Required]
         public string newPassword { get; set; }
 
-        [Required]
-        public string oldPassword { get; set; }
+        public string? oldPassword { get; set; }
     }
 }
