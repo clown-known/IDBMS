@@ -1,4 +1,6 @@
-﻿using BusinessObject.Models;
+﻿using Azure.Core;
+using BusinessObject.Models;
+using IDBMS_API.DTOs.Request.AccountRequest;
 using IDBMS_API.Supporters.Utils;
 using Microsoft.AspNetCore.Identity;
 using Repository.Implements;
@@ -9,13 +11,6 @@ namespace IDBMS_API.Supporters.UserHelper
 {
     public class UserHelper
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IProjectRepository _projectRepository;
-        public UserHelper(IUserRepository userRepository,IProjectRepository projectRepository)
-        {
-            _userRepository = userRepository;
-            _projectRepository = projectRepository;
-        }
         public static (User? user,string password) GennarateViewerUserForProject(Guid projectId,string email)
         {
             ProjectParticipationRepository projectParticipationRepository = new ProjectParticipationRepository();
@@ -37,6 +32,30 @@ namespace IDBMS_API.Supporters.UserHelper
             if (result == null) return (null,null);
 
             return (result,password);
+        }
+        public static (User? user,string password) GenerateUser(CreateUserRequest request)
+        {
+            string password = GennaratePassword();
+            PasswordUtils.CreatePasswordHash(GennaratePassword(), out byte[] passwordHash, out byte[] passwordSalt);
+            UserRepository userRepository = new UserRepository();
+
+            var user = new User()
+            {
+                Address = request.Address,
+                CreatedDate = TimeHelper.TimeHelper.GetTime(DateTime.UtcNow),
+                Language = request.Language,
+                Id = Guid.NewGuid(),
+                Email = request.Email,
+                Name = request.Name,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Phone = request.Phone,
+                Role = request.Role,
+            };
+
+            var userCreated = userRepository.Save(user);
+
+            return (userCreated, password);
         }
         private static string GennaratePassword()
         {

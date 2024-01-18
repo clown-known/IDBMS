@@ -19,12 +19,14 @@ namespace IDBMS_API.Services
         private readonly IProjectRepository _projectRepository;
         private readonly ITaskAssignmentRepository _assignmentRepo;
         private readonly IUserRepository _userRepo;
-        public ProjectParticipationService(IProjectParticipationRepository participationRepo, ITaskAssignmentRepository assignmentRepo,IUserRepository userRepository, IProjectRepository projectRepository)
+        private readonly IConfiguration configuration;
+        public ProjectParticipationService(IProjectParticipationRepository participationRepo, ITaskAssignmentRepository assignmentRepo,IUserRepository userRepository, IProjectRepository projectRepository, IConfiguration configuration)
         {
             _participationRepo = participationRepo;
             _assignmentRepo = assignmentRepo;
             _userRepo = userRepository;
             _projectRepository = projectRepository;
+            this.configuration = configuration;
         }
 
         public IEnumerable<ProjectParticipation> Filter(IEnumerable<ProjectParticipation> list,
@@ -133,7 +135,7 @@ namespace IDBMS_API.Services
             };
 
             var pCreated = _participationRepo.Save(p);
-            string link = "https://idbms-user-web-client.vercel.app/vi-VN/project/" + request.ProjectId.ToString();
+            string link = configuration["Server:Frontend"] + "/project/" + request.ProjectId.ToString();
             var u = _userRepo.GetById(request.UserId);
             EmailSupporter.SendInviteEnglishEmail(u.Email, link,u.Language== Language.English);
 
@@ -142,7 +144,7 @@ namespace IDBMS_API.Services
         public ProjectParticipation? AddViewer(Guid projectId,string email)
         {
             User? user = _userRepo.GetByEmail(email);
-            string link = "https://idbms-user-web-client.vercel.app/vi-VN/project/" + projectId.ToString();
+            string link = configuration["Server:Frontend"]+"/project/" + projectId.ToString();
             if (user == null)
             {
                 (user, string password) = UserHelper.GennarateViewerUserForProject(projectId,email);

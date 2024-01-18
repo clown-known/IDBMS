@@ -12,6 +12,7 @@ using DocumentFormat.OpenXml.Office2016.Excel;
 using IDBMS_API.DTOs.Request.AccountRequest;
 using IDBMS_API.DTOs.Response;
 using IDBMS_API.Supporters.EmailSupporter;
+using IDBMS_API.DTOs.Request;
 
 namespace API.Controllers
 {
@@ -210,6 +211,85 @@ namespace API.Controllers
                     Message = $"Error: {ex.Message}"
                 };
                 return BadRequest(response);
+            }
+        }
+        [HttpPut("setpassword")]
+        [Authorize(Policy = "user")]
+        public IActionResult SetPassword(ResetPasswordRequest request)
+        {
+            try
+            {
+                userService.ForgotPassword(request);
+                var response = new ResponseMessage()
+                {
+                    Message = "Update successfully!",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+                return BadRequest(response);
+            }
+        }
+        [HttpPut("forgotpassword")]
+        public IActionResult ForgotPassword(string email)
+        {
+            try
+            {
+                var code = authenticationCodeService.CreateCode(email);
+
+                if (code == null)
+                    throw new Exception("Create code fail!");
+
+                string link = configuration["Server:Frontend"] + "/authentication/forgotpassword?code=" + code + "&email=" + email;
+                EmailSupporter.SendVerifyEnglishEmail(email, link);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "Create code successfully!",
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+
+                return BadRequest(response);
+            }
+        }
+        [HttpGet("verifyauthencode")]
+        public IActionResult VerifyAuthencode(string code, string email)
+        {
+            try
+            {
+                string token = authenticationCodeService.VerifyReturnJwt(code, email);
+
+                var response = new ResponseMessage()
+                {
+                    Message = "successfully!",
+                    Data = token
+                };
+
+                if (token != null)
+                    return Ok(response);
+                else throw new Exception("fail!");
+            }
+            catch (Exception ex)
+            {
+                var response = new ResponseMessage()
+                {
+                    Message = $"Error: {ex.Message}"
+                };
+
+                return Unauthorized(response);
             }
         }
 

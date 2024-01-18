@@ -19,7 +19,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
 
         [HttpPost]
-        [Authorize(Policy = "")]
+        //[Authorize(Policy = "")]
         public async Task<IActionResult> GenExcel(Guid projectId)
         {
             try
@@ -45,7 +45,6 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
                 return BadRequest(response);
             }
-
         }
     }
 }

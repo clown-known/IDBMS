@@ -8,6 +8,7 @@ using Repository.Implements;
 using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Vml;
 using Microsoft.AspNetCore.OData.Formatter.Wrapper;
+using Microsoft.OData.Edm;
 
 namespace IDBMS_API.Supporters.File
 {
@@ -32,16 +33,35 @@ namespace IDBMS_API.Supporters.File
                 stream.Write(excelBytes, 0, excelBytes.Length);
                 using (SpreadsheetDocument doc = SpreadsheetDocument.Open(stream, true))
                 {
-                    ProjectTaskRepository projectTaskRepository = new ProjectTaskRepository();
-                    List<ProjectTask> projectTask = projectTaskRepository.GetByProjectId(projectId).Where(t => t.ParentTaskId == null).ToList();
 
                     ProjectRepository projectRepository = new ProjectRepository();
                     Project project = projectRepository.GetById(projectId);
                     if (project == null) return null;
                     string projectName = project.Name;
                     string address = project.Site.Address;
+
+
+                    ProjectTaskRepository projectTaskRepository = new ProjectTaskRepository();
+                    List<ProjectTask> projectTask = projectTaskRepository.GetByProjectId(projectId).Where(t => t.ParentTaskId == null).ToList();
                     List<TaskCategory> taskCategory = new List<TaskCategory>();
-                    foreach (var task in projectTask) if (!taskCategory.Contains(task.TaskCategory)) taskCategory.Add(task.TaskCategory);
+                    List<ProjectTask> taskListWithoutCategory = new List<ProjectTask>();
+                    List<ProjectTask> taskListInterior = new List<ProjectTask>();
+                    foreach (var task in projectTask) {
+                        if (task.TaskCategory == null)
+                        {
+                            taskListWithoutCategory.Add(task);
+                        }else if (task.TaskCategoryId == 8)
+                        {
+                            taskListInterior.Add(task);
+                        }else {
+                            bool flag = true;
+                            foreach(TaskCategory tcate in taskCategory)
+                            {
+                                if (tcate.Id == task.TaskCategory.Id) flag = false;
+                            }
+                            if (flag) taskCategory.Add(task.TaskCategory); 
+                        }
+                    }
                     taskCategory.Sort((x, y) =>
                     {
                         if (x.Id == 5) return 1;
@@ -58,36 +78,44 @@ namespace IDBMS_API.Supporters.File
                     {
                         switch (item.Id)
                         {
-                            case 1:
-                                current = GenSheetTaskBaseCategory(doc, "Sheet" + sheetCount++.ToString(), sheetCount-2, "PHA DO", projectName, address, "PHÁ DỠ", projectTask.Where(t => t.TaskCategoryId == 1 && t.ParentTaskId == null).ToList());
-                                excelResults.Add(current);
-                                break;
-                            case 2:
-                                current = GenSheetTaskBaseCategory(doc, "Sheet" + sheetCount++.ToString(), sheetCount-2, "XAY DUNG", projectName, address, "XÂY DỰNG", projectTask.Where(t => t.TaskCategoryId == 2 && t.ParentTaskId == null).ToList());
-                                excelResults.Add(current);
-                                break;
-                            case 3:
-                                current = GenSheetTaskBaseCategory(doc, "Sheet" + sheetCount++.ToString(), sheetCount-2, "DIEN CHIEU SANG", projectName, address, "ĐIỆN CHIẾU SÁNG", projectTask.Where(t => t.TaskCategoryId == 3 && t.ParentTaskId == null).ToList());
-                                excelResults.Add(current);
-                                break;
                             case 4:
-                                current = GenSheetTaskBaseCategory(doc, "Sheet" + sheetCount++.ToString(), sheetCount-2, "MANG DIEN THOAI", projectName, address, "MẠNG - ĐIỆN THOẠI", projectTask.Where(t => t.TaskCategoryId == 4 && t.ParentTaskId == null).ToList());
-                                excelResults.Add(current);
-                                break;
-                            case 6:
-                                current = GenSheetTaskBaseCategory(doc, "Sheet" + sheetCount++.ToString(), sheetCount-2, "VAN CHUYEN", projectName, address, "VẬN CHUYỂN", projectTask.Where(t => t.TaskCategoryId == 6 && t.ParentTaskId == null).ToList());
-                                excelResults.Add(current);
-                                break;
-                            case 7:
-                                current = GenSheetTaskBaseCategory(doc, "Sheet" + sheetCount++.ToString(), sheetCount-2, "CHUA PHAN LOAI", projectName, address, "CHƯA PHÂN LOẠI", projectTask.Where(t => t.TaskCategoryId == 7 && t.ParentTaskId == null).ToList());
+                                current = GenSheetTaskBaseCategory(doc, "Sheet" + sheetCount++.ToString(), sheetCount-2, "PHA DO", projectName, address, "PHÁ DỠ", 
+                                    projectTask.Where(t => t.TaskCategoryId == item.Id && t.ParentTaskId == null).ToList());
                                 excelResults.Add(current);
                                 break;
                             case 5:
-                                current = GenSheetInterior(doc, (++sheetCount - 2), projectName, address, projectTask.Where(t => t.TaskCategoryId == 5 && t.ParentTaskId == null).ToList());
+                                current = GenSheetTaskBaseCategory(doc, "Sheet" + sheetCount++.ToString(), sheetCount-2, "XAY DUNG", projectName, address, "XÂY DỰNG", 
+                                    projectTask.Where(t => t.TaskCategoryId == item.Id && t.ParentTaskId == null).ToList());
+                                excelResults.Add(current);
+                                break;
+                            case 6:
+                                current = GenSheetTaskBaseCategory(doc, "Sheet" + sheetCount++.ToString(), sheetCount-2, "DIEN CHIEU SANG", projectName, address, "ĐIỆN CHIẾU SÁNG", 
+                                    projectTask.Where(t => t.TaskCategoryId == item.Id && t.ParentTaskId == null).ToList());
+                                excelResults.Add(current);
+                                break;
+                            case 7:
+                                current = GenSheetTaskBaseCategory(doc, "Sheet" + sheetCount++.ToString(), sheetCount-2, "MANG DIEN THOAI", projectName, address, "MẠNG - ĐIỆN THOẠI", 
+                                    projectTask.Where(t => t.TaskCategoryId == item.Id && t.ParentTaskId == null).ToList());
+                                excelResults.Add(current);
+                                break;
+                            case 9:
+                                current = GenSheetTaskBaseCategory(doc, "Sheet" + sheetCount++.ToString(), sheetCount-2, "VAN CHUYEN", projectName, address, "VẬN CHUYỂN", 
+                                    projectTask.Where(t => t.TaskCategoryId == item.Id && t.ParentTaskId == null).ToList());
                                 excelResults.Add(current);
                                 break;
                         }
                         listTaskName += item.Name + " - ";
+                    }
+                    if (taskListWithoutCategory.Count > 0)
+                    {
+                        current = GenSheetTaskBaseCategory(doc, "Sheet" + sheetCount++.ToString(), sheetCount - 2, "CHUA PHAN LOAI", projectName, address, "CHƯA PHÂN LOẠI", projectTask.Where(t => t.TaskCategoryId == null && t.ParentTaskId == null).ToList());
+                        excelResults.Add(current);
+                    }
+                    if(taskListInterior.Count > 0)
+                    {
+                        current = GenSheetInterior(doc, (++sheetCount - 2), projectName, address,
+                                    projectTask.Where(t => t.TaskCategoryId == 8d && t.ParentTaskId == null).ToList());
+                        excelResults.Add(current);
                     }
                     listTaskName = listTaskName.Substring(0, listTaskName.LastIndexOf("-"));
 
@@ -96,14 +124,21 @@ namespace IDBMS_API.Supporters.File
                     List<ItemInTask> interiorItems = itemInTaskRepository.GetByProjectId(projectId).ToList();
                     List<ProjectTask> incurredTask = projectTask.Where(t => t.ParentTaskId == null && t.IsIncurred == true).ToList();
                     List<TaskCategory> taskCategoryIncurred = new List<TaskCategory>();
-                    foreach (var task in incurredTask) if (!taskCategoryIncurred.Contains(task.TaskCategory)) taskCategoryIncurred.Add(task.TaskCategory);
+                    foreach (var task in incurredTask) {
+                        bool flag = true;
+                        foreach(var c in taskCategoryIncurred)
+                        {
+                            if (task.TaskCategoryId != null && task.TaskCategoryId == c.Id) flag = false;
+                        }
+                        if (flag && task.TaskCategoryId!=null) taskCategoryIncurred.Add(task.TaskCategory); 
+                    }
                     if (incurredTask.Count > 0)
                     {
                         current = GenSheetIncurred(doc, (++sheetCount - 2), projectName, address, taskCategoryIncurred, incurredTask);
                         excelResults.Add(current);
                     }
-
-                    GenSheetInteriorInProject(doc,"Sheet11", (++sheetCount - 2), "CHUNG LOAT VAT TU",projectName,listTaskName,interiorItems);
+                    if(interiorItems.Count > 0)
+                        GenSheetInteriorInProject(doc,"Sheet11", (++sheetCount - 2), "CHUNG LOAT VAT TU",projectName,listTaskName,interiorItems);
 
                     excelResults.Sort((x, y) =>
                     {
@@ -112,8 +147,8 @@ namespace IDBMS_API.Supporters.File
 
                     var (sum,incrs) = GenSheetTHKP(doc,"Sheet2","HTKP",projectName, listTaskName, excelResults);
 
-                    GenSheet1ForCompany(doc,"Sheet1","Tong",project,listTaskName,sum,incrs);
-                    for (int i = 1; i <= 10; i++)
+                    GenSheet1ForCompany(doc,"Sheet1","BANG XĐGTHT",project,listTaskName,sum,incrs);
+                    for (int i = 1; i <= 11; i++)
                     {
                         ExcelUtils.RemoveSheet(doc, "Sheet" + i.ToString());
                     }
@@ -291,7 +326,11 @@ namespace IDBMS_API.Supporters.File
         public static ExcelResult GenSheetIncurred(SpreadsheetDocument doc, int sheetcount, string projectTitle, string address,List<TaskCategory> cateList, List<ProjectTask> taskList)
         {
             string sheetName = "Sheet10";
-
+            List<ProjectTask> projectTasksIncurred = new List<ProjectTask>();
+            foreach(var task in taskList)
+            {
+                if (task.TaskCategoryId == null) projectTasksIncurred.Add(task);
+            }
             ExcelUtils.FindAndReplaceString(doc, sheetName, "A1", "BẢNG " + sheetcount.ToString() + " : BẢNG QUYẾT TOÁN ");
             ExcelUtils.FindAndReplaceString(doc, sheetName, "A2", "CÔNG TRÌNH : " + projectTitle.ToUpper());
             ExcelUtils.FindAndReplaceString(doc, sheetName, "A3", "HẠNG MỤC : PHÁT SINH");
@@ -337,10 +376,49 @@ namespace IDBMS_API.Supporters.File
                         currentIndex++;
 
                     }
+            }
+            if (projectTasksIncurred.Count > 0)
+            {
+
+                if (currentIndex != 9) ExcelUtils.InsertRow(doc, sheetName, 9, ((uint)currentIndex), false);
+
+                ExcelUtils.FindAndReplaceString(doc, sheetName, "A" + currentIndex.ToString(), IntUtils.IntToRoman(count++));
+
+                string cateName = "PHẦN CHƯA PHÂN LOẠI";
+                ExcelUtils.FindAndReplaceString(doc, sheetName, "B" + currentIndex.ToString(), cateName);
+                currentIndex++;
+                int i = 0;
+
+
+                int currentNo = 1;
+                foreach (var task in projectTasksIncurred)
+                {
+                    char startColumn = 'A';
+                    ExcelUtils.InsertRow(doc, sheetName, (uint)currentIndex, ((uint)currentIndex), false);
+
+                    ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), (currentNo++).ToString());
+                    ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Name);
+                    ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), Enum.GetName(task.CalculationUnit));
+                    ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitInContract.ToString());
+                    ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitUsed.ToString());
+                    if (task.Status == BusinessObject.Enums.ProjectTaskStatus.Done)
+                        ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitUsed.ToString());
+                    else
+                        ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), "0");
+
+                    ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), IntUtils.ConvertStringToMoney(task.PricePerUnit));
+                    ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), IntUtils.ConvertStringToMoney(task.PricePerUnit * (decimal)task.UnitInContract));
+                    ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), IntUtils.ConvertStringToMoney(task.PricePerUnit * (decimal)task.UnitUsed));
+                    if (task.Status == BusinessObject.Enums.ProjectTaskStatus.Done)
+                        ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), IntUtils.ConvertStringToMoney(task.PricePerUnit * (decimal)task.UnitUsed));
+                    else
+                        ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), "0");
+                    currentIndex++;
+
+                }
 
 
             }
-
             if (currentIndex < 12) currentIndex = 12;
             else currentIndex+=2;
             ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, sheetName, "H" + currentIndex.ToString(), "H", 10, currentIndex - 3);
@@ -399,6 +477,7 @@ namespace IDBMS_API.Supporters.File
         }
         public static ExcelResult GenSheetTaskBaseCategory(SpreadsheetDocument doc, string templateName, int sheetcount, string sheetName, string projectTitle,string address, string categoryName , List<ProjectTask> taskList)
         {
+            if (taskList.Count == 0) return null;
             ExcelUtils.RenameSheet(doc, templateName, sheetName);
 
             ExcelUtils.FindAndReplaceString(doc, sheetName, "A1", "BẢNG "+sheetcount.ToString()+" : BẢNG QUYẾT TOÁN ");
@@ -411,7 +490,7 @@ namespace IDBMS_API.Supporters.File
             foreach(var task in taskList)
             {
                 char startColumn = 'A';
-                if( order + 2 <= taskList.Count)
+                if( order + 3 <= taskList.Count)
                 ExcelUtils.InsertRow(doc, sheetName, (uint)currentIndex+1, ((uint)currentIndex+1), false);
 
                 ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), order++.ToString());
@@ -434,7 +513,8 @@ namespace IDBMS_API.Supporters.File
                 currentIndex++;
 
             }
-            if (currentIndex < 12) currentIndex = 12; 
+            if (currentIndex < 12) currentIndex = 12;
+            //else currentIndex++;
             ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, sheetName, "H" + currentIndex.ToString(), "H", 9, currentIndex - 1);
             ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, sheetName, "I" + currentIndex.ToString(), "I", 9, currentIndex - 1);
             ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, sheetName, "J" + currentIndex.ToString(), "J", 9, currentIndex - 1);
@@ -472,10 +552,26 @@ namespace IDBMS_API.Supporters.File
             ExcelUtils.FindAndReplaceString(doc, sheetName, "A4", "ĐỊA ĐIỂM : " + address.ToUpper());
 
             List<Floor> floors = new List<Floor>();
-            foreach (var task in taskList) if (!floors.Contains(task.Room.Floor)) { floors.Add(task.Room.Floor); }
+            foreach (var task in taskList) {
+                bool flag = true;
+                foreach(var f in floors)
+                {
+                    if (task.Room.FloorId == f.Id) flag = false;
+                }
+                if (flag) floors.Add(task.Room.Floor); 
+            }
             floors = floors.OrderBy(p=>p.FloorNo).ToList();
             List<Room> rooms = new List<Room>();
-            foreach (var task in taskList) if (!rooms.Contains(task.Room)) { rooms.Add(task.Room); }
+            foreach (var task in taskList)
+            {
+                bool flag = true;
+                foreach (var r in rooms)
+                {
+                    if (task.RoomId == r.Id) flag = false;
+                }
+                if (flag) rooms.Add(task.Room);
+            }
+
             int currentIndex = 9;
             int countFloor = 1;
             foreach (var floor in floors)

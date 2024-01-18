@@ -42,6 +42,25 @@ namespace IDBMS_API.Services
             userRepository.Update(user);
             return true;
         }
+        public string VerifyReturnJwt(string code,string email)
+        {
+            var user = userRepository.GetByEmail(email);
+            if (user == null) return null;
+            AuthenticationCode authcode = authenticationCodeRepository.GetByUserId(user.Id);
+            if(authcode == null || !authcode.Code.Equals(code)) return null;
+            authcode.Status = BusinessObject.Enums.AuthenticationCodeStatus.Used;
+            authenticationCodeRepository.Update(authcode);
+            user.Status = BusinessObject.Enums.UserStatus.Active;
+            userRepository.Update(user);
+            var token = jwtTokenSupporter.CreateToken(user);
+            UpdateTokenForUser(user, token);
+            return token;
+        }
+        private void UpdateTokenForUser(User user, string token)
+        {
+            user.Token = token;
+            userRepository.Update(user);
+        }
         public string AdminVerify(string code,string email)
         {
             var user = adminRepository.GetByEmail(email);

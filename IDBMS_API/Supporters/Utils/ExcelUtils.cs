@@ -208,6 +208,10 @@ namespace IDBMS_API.Supporters.Utils
         }
         public static Row InsertRow(SpreadsheetDocument document, string sheetname, uint originalRowIndex, uint rowIndex, bool isNewLastRow = false)
         {
+            //WorkbookPart workbookPart = document.WorkbookPart;
+
+            //Sheet sheet = workbookPart.Workbook.Descendants<Sheet>().FirstOrDefault(s => s.Name == sheetname);
+            //WorksheetPart worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id);
             WorksheetPart worksheetPart = GetWorksheetPartByName(document, sheetname);
             Worksheet worksheet = worksheetPart.Worksheet;
             SheetData sheetData = worksheet.GetFirstChild<SheetData>();
@@ -436,7 +440,7 @@ namespace IDBMS_API.Supporters.Utils
         public static WorksheetPart GetWorksheetPartByName(SpreadsheetDocument document, string sheetName)
         {
             WorkbookPart workbookPart = document.WorkbookPart;
-            Sheet sheet = workbookPart.Workbook.Descendants<Sheet>().FirstOrDefault(s => s.Name.Equals(sheetName));
+            Sheet sheet = workbookPart.Workbook.Descendants<Sheet>().FirstOrDefault(s => s.Name == sheetName);
 
             if (sheet != null)
             {
@@ -444,6 +448,33 @@ namespace IDBMS_API.Supporters.Utils
             }
 
             return null;
+        }
+        public static void FindAndReplaceString(SpreadsheetDocument workbook, string sheetName, string cellReference, string value)
+        {
+            WorkbookPart workbookPart = workbook.WorkbookPart;
+
+            Sheet sheet = workbookPart.Workbook.Descendants<Sheet>().FirstOrDefault(s => s.Name == sheetName);
+
+            if (sheet != null)
+            {
+                WorksheetPart worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id);
+                Cell cell = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellReference);
+                if (cell != null)
+                {
+                    cell.InlineString = new InlineString() { Text = new Text(value) };
+                    //cell.CellValue = new CellValue(value);
+                    cell.DataType = new EnumValue<CellValues>(CellValues.InlineString);
+                    workbook.Save();
+                }
+                else
+                {
+                    Console.WriteLine($"Sheet with name '{sheetName}' not found.");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Sheet with name '{sheetName}' not found.");
+            }
         }
         public static double FindAndReplaceCalculatorCell(SpreadsheetDocument workbook, string sheetName, string cellReference, string cellReference1, string cellReference2, Calculator calculator)
         {
@@ -624,33 +655,7 @@ namespace IDBMS_API.Supporters.Utils
             return resultat + 1;
         }
 
-        public static void FindAndReplaceString(SpreadsheetDocument workbook, string sheetName, string cellReference, string value)
-        {
-            WorkbookPart workbookPart = workbook.WorkbookPart;
-
-            Sheet sheet = workbookPart.Workbook.Descendants<Sheet>().FirstOrDefault(s => s.Name == sheetName);
-
-            if (sheet != null)
-            {
-                WorksheetPart worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id);
-                Cell cell = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellReference);
-                if (cell != null)
-                {
-                    cell.InlineString = new InlineString() { Text = new Text(value) };
-                    //cell.CellValue = new CellValue(value);
-                    cell.DataType = new EnumValue<CellValues>(CellValues.InlineString);
-                    workbook.Save();
-                }
-                else
-                {
-                    Console.WriteLine($"Sheet with name '{sheetName}' not found.");
-                }
-            }
-            else
-            {
-                Console.WriteLine($"Sheet with name '{sheetName}' not found.");
-            }
-        }
+        
         public static void FindAndReplaceFormula(SpreadsheetDocument workbook, string sheetName, string cellReference, string value ,string formula)
         {
             WorkbookPart workbookPart = workbook.WorkbookPart;

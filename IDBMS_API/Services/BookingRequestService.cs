@@ -14,6 +14,8 @@ using API.Supporters.JwtAuthSupport;
 using IDBMS_API.DTOs.Request.AccountRequest;
 using IDBMS_API.Supporters.JwtAuthSupport;
 using IDBMS_API.Supporters.TimeHelper;
+using IDBMS_API.Supporters.UserHelper;
+using IDBMS_API.Supporters.EmailSupporter;
 
 namespace IDBMS_API.Services
 {
@@ -23,13 +25,15 @@ namespace IDBMS_API.Services
         private readonly IUserRepository _userRepo;
         private readonly JwtTokenSupporter jwtTokenSupporter;
         private readonly GoogleTokenVerify googleTokenVerify;
+        private readonly IConfiguration configuration;
 
-        public BookingRequestService(IBookingRequestRepository bookingRequestRepo, IUserRepository userRepo, JwtTokenSupporter jwtTokenSupporter, GoogleTokenVerify googleTokenVerify)
+        public BookingRequestService(IBookingRequestRepository bookingRequestRepo, IUserRepository userRepo, JwtTokenSupporter jwtTokenSupporter, GoogleTokenVerify googleTokenVerify, IConfiguration configuration)
         {
             _bookingRequestRepo = bookingRequestRepo;
             _userRepo = userRepo;
-            this.jwtTokenSupporter= jwtTokenSupporter;
-            this.googleTokenVerify= googleTokenVerify;
+            this.jwtTokenSupporter = jwtTokenSupporter;
+            this.googleTokenVerify = googleTokenVerify;
+            this.configuration = configuration;
         }
 
         public IEnumerable<BookingRequest> Filter(IEnumerable<BookingRequest> list,
@@ -62,8 +66,7 @@ namespace IDBMS_API.Services
         }
         public BookingRequest? CreateBookingRequest(BookingRequestRequest request)
         {
-            UserService userService = new (_userRepo, jwtTokenSupporter, googleTokenVerify);
-            var user = userService.GetByEmail(request.ContactEmail);
+            var user = _userRepo.GetByEmail(request.ContactEmail);
 
             var br = new BookingRequest
             {
@@ -127,8 +130,7 @@ namespace IDBMS_API.Services
             br.AdminReply = request.AdminReply;
             br.Status = request.Status;
 
-            UserService userService = new(_userRepo, jwtTokenSupporter, googleTokenVerify);
-            var user = userService.GetByEmail(request.ContactEmail);
+            var user = _userRepo.GetByEmail(request.ContactEmail);
 
             if (user == null)
             {
@@ -142,10 +144,10 @@ namespace IDBMS_API.Services
                     Role = CompanyRole.Customer,
                 };
 
-                var createdUser = userService.GenerateUser(newUser);
+                (var createdUser,string pass) = UserHelper.GenerateUser(newUser);
+                string link = configuration["Server:Frontend"];
 
-                //noti for createduser with result and account password
-
+                EmailSupporter.SendInviteEmail(request.ContactEmail,link,pass,request.Language == Language.English);
                 br.UserId = createdUser.Id;
             }
 
