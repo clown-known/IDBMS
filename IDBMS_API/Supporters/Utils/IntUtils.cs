@@ -83,7 +83,7 @@ namespace IDBMS_API.Supporters.Utils
                 result += "mười ";
             }
 
-            if (ones > 0 && tens != 1)
+            if (ones > 0)
             {
                 result += digitNames[ones];
             }

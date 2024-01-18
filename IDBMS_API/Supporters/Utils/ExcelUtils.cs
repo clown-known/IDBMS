@@ -562,6 +562,98 @@ namespace IDBMS_API.Supporters.Utils
             }
             return 0;
         }
+
+        public static double FindAndReplaceCalculatorCharCell(SpreadsheetDocument workbook, string sheetName, string cellReference, char charStart, char charEnd, int index, Calculator calculator)
+        {
+            WorkbookPart workbookPart = workbook.WorkbookPart;
+
+            Sheet sheet = workbookPart.Workbook.Descendants<Sheet>().FirstOrDefault(s => s.Name == sheetName);
+
+            if (sheet != null)
+            {
+
+                WorksheetPart worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id);
+                Cell cell = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellReference);
+                string cellReference1 = (Char.ToString(charStart) + index);
+                string cellReference2 = (Char.ToString(charEnd) + index);
+                Cell cell1 = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellReference1);
+                Cell cell2 = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellReference2);
+                if (cell2 != null && cell1 != null)
+                {
+                    string value1 = cell1.InlineString.InnerText;
+                    //string value1 = cell1.CellValue.InnerText;
+
+                    if (cell1.DataType != null && cell1.DataType == CellValues.SharedString)
+                    {
+                        int sharedStringIndex = int.Parse(value1);
+                        SharedStringTablePart sharedStringTablePart = workbookPart.SharedStringTablePart;
+                        if (sharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAtOrDefault(sharedStringIndex) is SharedStringItem sharedStringItem)
+                        {
+                            value1 = sharedStringItem.Text.Text;
+                        }
+                    }
+
+
+                    string value2 = cell2.InlineString.InnerText;
+
+                    if (cell2.DataType != null && cell2.DataType == CellValues.SharedString)
+                    {
+                        int sharedStringIndex = int.Parse(value2);
+                        SharedStringTablePart sharedStringTablePart = workbookPart.SharedStringTablePart;
+                        if (sharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAtOrDefault(sharedStringIndex) is SharedStringItem sharedStringItem)
+                        {
+                            value2 = sharedStringItem.Text.Text;
+                        }
+                    }
+
+                    if (value1 == null || value2 == null) return 0;
+                    else
+                    {
+                        value1 = value1.Replace(".", "");
+                        value2 = value2.Replace(".", "");
+                    }
+                    double dvalue1 = Double.Parse(value1);
+                    double dvalue2 = Double.Parse(value2);
+                    string cellFormula = "";
+                    double result = 0;
+                    switch (calculator)
+                    {
+                        case Calculator.Sum:
+                            cellFormula += cellReference1 + "+" + cellReference2;
+                            result = dvalue1 + dvalue2;
+                            break;
+                        case Calculator.Minus:
+                            cellFormula += cellReference1 + "-" + cellReference2;
+                            result = dvalue1 - dvalue2;
+                            break;
+                        case Calculator.Multiple:
+                            cellFormula += cellReference1 + "*" + cellReference2;
+                            result = dvalue1 * dvalue2;
+                            break;
+                        case Calculator.Divide:
+                            if (cellReference2 == "0") break;
+                            cellFormula += cellReference1 + "/" + cellReference2;
+                            result = dvalue1 / dvalue2;
+                            break;
+                    }
+                    cell.DataType = CellValues.Number;
+                    cell.CellFormula = new CellFormula(cellFormula);
+                    cell.CellValue = new CellValue(result);
+                    workbook.Save();
+                    return result;
+                }
+                else
+                {
+                    Console.WriteLine($"Sheet with name '{sheetName}' not found.");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Sheet with name '{sheetName}' not found.");
+            }
+            return 0;
+        }
+
         public static void FindAndReplaceNumber(SpreadsheetDocument workbook, string sheetName, string cellReference, string value)
         {
             WorkbookPart workbookPart = workbook.WorkbookPart;
