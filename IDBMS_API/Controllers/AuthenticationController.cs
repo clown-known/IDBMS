@@ -274,7 +274,7 @@ namespace API.Controllers
 
                 var response = new ResponseMessage()
                 {
-                    Message = "successfully!",
+                    Message = email,
                     Data = token
                 };
 
