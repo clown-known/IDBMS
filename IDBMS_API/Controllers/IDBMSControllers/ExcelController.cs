@@ -28,13 +28,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 //string fileName = "Contract-"+projectid.ToString()+".docx";
                 string fileName = "TemplateExcel.xlsx";
 
-                var response = new ResponseMessage()
+                if (file == null)
                 {
-                    Message = "Generate successfully!",
-                    Data = file != null ? File(file, "application/octet-stream", fileName) : null,
-                };
+                    throw new Exception("File generated null!");
+                }
 
-                return Ok(response);
+                return File(file, "application/octet-stream", fileName);
             }
             catch (Exception ex)
             {
