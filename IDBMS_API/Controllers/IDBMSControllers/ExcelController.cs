@@ -19,7 +19,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
 
         [HttpPost]
-        [Authorize(Policy = "")]
+        //[Authorize(Policy = "")]
         public async Task<IActionResult> GenExcel(Guid projectId)
         {
 
@@ -33,7 +33,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                     Data = file != null ? File(file, "application/octet-stream", fileName) : null,
                 };
 
-                return Ok(response);
+                return File(file, "application/octet-stream", fileName);
 
         }
     }
