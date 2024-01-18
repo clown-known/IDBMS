@@ -8,6 +8,7 @@ using IDBMS_API.DTOs.Request.AccountRequest;
 using System.Text.RegularExpressions;
 using UnidecodeSharpFork;
 using BusinessObject.Enums;
+using Azure.Core;
 
 namespace IDBMS_API.Services
 {
@@ -134,7 +135,11 @@ namespace IDBMS_API.Services
         public Admin? CreateAdmin(AdminRequest request)
         {
             TryValidateRequest(request);
-            if (_repository.GetByEmail(request.Email) != null) return null;
+
+            if (_repository.GetByEmail(request.Email) != null) throw new Exception("This admin email is existed!");
+
+            if (request.Password == null) throw new Exception("Password is required!");
+
             PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             var admin = new Admin
@@ -151,25 +156,36 @@ namespace IDBMS_API.Services
             var adminCreated = _repository.Save(admin);
             return adminCreated;
         }
+
         public void UpdateAdmin(Guid id, AdminRequest request)
         {
             TryValidateRequest(request);
             var admin = _repository.GetById(id) ?? throw new Exception("This admin id is not existed!");
-            PasswordUtils.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             admin.Name = request.Name;
             admin.Email = request.Email;
-            admin.PasswordHash = passwordHash;
-            admin.PasswordSalt = passwordSalt;
-            admin.CreatorId = request.CreatorId;
 
             _repository.Update(admin);
         }
+
+        public void UpdateAdminPassword(UpdatePasswordRequest request)
+        {
+            var admin = _repository.GetById(request.userId) ?? throw new Exception("This admin id is not existed!");
+
+            PasswordUtils.CreatePasswordHash(request.newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+
+            admin.PasswordHash = passwordHash;
+            admin.PasswordSalt = passwordSalt;
+
+            _repository.Update(admin);
+        }
+
         public void UpdateTokenForAdmin(Admin admin, string token)
         {
             admin.token = token;
             _repository.Update(admin);
         }
+
         public void DeleteAdmin(Guid id)
         {
             var admin = _repository.GetById(id) ?? throw new Exception("This admin id is not existed!");

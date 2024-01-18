@@ -17,8 +17,7 @@ namespace IDBMS_API.DTOs.Request
         [Required]
         public string Email { get; set; } = default!;
 
-        [Required]
-        public string Password { get; set; } = default!;
+        public string? Password { get; set; } = default!;
 
         public Guid? CreatorId { get; set; }
     }
