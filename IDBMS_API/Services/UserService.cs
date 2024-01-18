@@ -245,6 +245,7 @@ namespace API.Services
             user.CompanyName = request.CompanyName;
             user.JobPosition = request.JobPosition;
             user.Role = request.Role;
+            user.Bio = request.Bio;
 
             _repository.Update(user);
         }
@@ -264,7 +265,7 @@ namespace API.Services
         {
             var user = _repository.GetById(request.userId) ?? throw new Exception("User not existed");
 
-            if (!PasswordUtils.VerifyPasswordHash(request.oldPassword, user.PasswordHash, user.PasswordSalt))
+            if (!PasswordUtils.VerifyPasswordHash(request.oldPassword ?? "", user.PasswordHash, user.PasswordSalt))
                 throw new Exception("Password not match!");
 
             PasswordUtils.CreatePasswordHash(request.newPassword, out byte[] passwordHash, out byte[] passwordSalt);
