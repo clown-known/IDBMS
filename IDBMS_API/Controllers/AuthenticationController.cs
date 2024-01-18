@@ -215,7 +215,7 @@ namespace API.Controllers
         }
         [HttpPut("setpassword")]
         [Authorize(Policy = "user")]
-        public IActionResult SetPassword(ResetPasswordRequest request)
+        public IActionResult SetPassword([FromBody]ResetPasswordRequest request)
         {
             try
             {
@@ -274,7 +274,7 @@ namespace API.Controllers
 
                 var response = new ResponseMessage()
                 {
-                    Message = "successfully!",
+                    Message = email,
                     Data = token
                 };
 

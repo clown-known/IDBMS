@@ -5,7 +5,7 @@ namespace IDBMS_API.DTOs.Request
     public class ResetPasswordRequest
     {
         [Required]
-        public Guid userId { get; set; }
+        public string email { get; set; }
 
         [Required]
         public string newPassword { get; set; }
