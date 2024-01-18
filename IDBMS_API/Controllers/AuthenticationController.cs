@@ -235,7 +235,7 @@ namespace API.Controllers
                 return BadRequest(response);
             }
         }
-        [HttpPut("fogotpassword")]
+        [HttpPut("forgotpassword")]
         public IActionResult ForgotPassword(string email)
         {
             try
