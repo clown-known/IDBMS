@@ -97,13 +97,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
 
         [HttpPost]
         [Authorize(Policy = "ProjectManager, Architect, ConstructionManager")]
-        public IActionResult CreateTaskDocument(Guid projectId, Guid taskReportId, [FromForm][FromBody] TaskDocumentRequest request)
+        public async Task<IActionResult> CreateTaskDocument(Guid projectId, Guid taskReportId, [FromForm][FromBody] TaskDocumentRequest request)
         {
             try
             {
                 try
                 {
-                    var result = _service.CreateTaskDocument(projectId, taskReportId, request);
+                    var result = await _service.CreateTaskDocument(projectId, taskReportId, request);
                     var response = new ResponseMessage()
                     {
                         Message = "Create successfully!",
