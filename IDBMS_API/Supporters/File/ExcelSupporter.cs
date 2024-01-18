@@ -185,7 +185,8 @@ namespace IDBMS_API.Supporters.File
             else
                 ExcelUtils.FindAndReplaceString(doc, sheetName, "D13", "0");
 
-            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "E13", "", "D13+C13");
+            //ExcelUtils.FindAndReplaceFormula(doc, sheetName, "E13", "", "D13+C13");
+            ExcelUtils.FindAndReplaceCalculatorCharCell(doc, sheetName, "E13", 'D', 'C', 13, ExcelUtils.Calculator.Sum);
             string formula2 = "'" + total.sheetName + "'!" + Char.ToString((char)total.resultColumn++) + total.resultRow;
             ExcelUtils.FindAndReplaceFormula(doc, sheetName, "F13", IntUtils.ConvertStringToMoney((decimal)total.value1), formula2);
             if(project.AmountPaid != 0)
@@ -193,7 +194,8 @@ namespace IDBMS_API.Supporters.File
             else
                 ExcelUtils.FindAndReplaceString(doc, sheetName, "G13", "0");
 
-            ExcelUtils.FindAndReplaceFormula(doc, sheetName, "H13", "", "F13-G13");
+            //ExcelUtils.FindAndReplaceFormula(doc, sheetName, "H13", "", "F13-G13");
+            ExcelUtils.FindAndReplaceCalculatorCharCell(doc, sheetName, "H13", 'F', 'G', 13, ExcelUtils.Calculator.Minus);
 
             ExcelUtils.FindAndReplaceFormula(doc, sheetName, "C14", "", "C13");
             ExcelUtils.FindAndReplaceFormula(doc, sheetName, "D14", "", "D13");
@@ -282,6 +284,10 @@ namespace IDBMS_API.Supporters.File
             }
             if(currentIndex < 9)
             {
+                if (incr != null)
+                {
+                    currentIndex = currentIndex - 2;
+                }
                 ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, templateSheetName, "C9", "C", 7, currentIndex - 1);
                 ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, templateSheetName, "D9", "D", 7, currentIndex - 1);
                 valueResult = ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, templateSheetName, "E9", "E", 7, currentIndex - 1);
@@ -298,9 +304,14 @@ namespace IDBMS_API.Supporters.File
             }
             else
             {
-                ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, templateSheetName, "C" + currentIndex.ToString(), "C", 7, currentIndex - 1);
-                ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, templateSheetName, "D" + currentIndex.ToString(), "D", 7, currentIndex - 1);
-                valueResult = ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, templateSheetName, "E" + currentIndex.ToString(), "E", 7, currentIndex - 1);
+                int minusIndex = 1;
+                if (incr != null)
+                {
+                    minusIndex = minusIndex + 2;
+                }
+                ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, templateSheetName, "C" + currentIndex.ToString(), "C", 7, currentIndex - minusIndex);
+                ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, templateSheetName, "D" + currentIndex.ToString(), "D", 7, currentIndex - minusIndex);
+                valueResult = ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, templateSheetName, "E" + currentIndex.ToString(), "E", 7, currentIndex - minusIndex);
 
                 sum = new ExcelResult
                 {
@@ -358,7 +369,7 @@ namespace IDBMS_API.Supporters.File
 
                         ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), (currentNo++).ToString());
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Name);
-                        ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), Enum.GetName(task.CalculationUnit));
+                        ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), CalculationUnitUtils.ConvertVietnamese(task.CalculationUnit));
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitInContract.ToString());
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitUsed.ToString());
                         if (task.Status == BusinessObject.Enums.ProjectTaskStatus.Done)
@@ -398,7 +409,7 @@ namespace IDBMS_API.Supporters.File
 
                     ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), (currentNo++).ToString());
                     ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Name);
-                    ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), Enum.GetName(task.CalculationUnit));
+                    ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), CalculationUnitUtils.ConvertVietnamese(task.CalculationUnit));
                     ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitInContract.ToString());
                     ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitUsed.ToString());
                     if (task.Status == BusinessObject.Enums.ProjectTaskStatus.Done)
@@ -495,7 +506,7 @@ namespace IDBMS_API.Supporters.File
 
                 ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), order++.ToString());
                 ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Name);
-                ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), Enum.GetName(task.CalculationUnit));
+                ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), CalculationUnitUtils.ConvertVietnamese(task.CalculationUnit));
                 ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitInContract.ToString());
                 ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitUsed.ToString());
                 if(task.Status == BusinessObject.Enums.ProjectTaskStatus.Done)
@@ -602,7 +613,7 @@ namespace IDBMS_API.Supporters.File
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Name);
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Description);
                         ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Code);
-                        ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), Enum.GetName(task.CalculationUnit));
+                        ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), CalculationUnitUtils.ConvertVietnamese(task.CalculationUnit));
                         ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitInContract.ToString());
                         ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.UnitUsed.ToString());
                         if (task.Status == BusinessObject.Enums.ProjectTaskStatus.Done)

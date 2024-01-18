@@ -65,6 +65,13 @@ namespace IDBMS_API.Services
             return filteredList;
         }
 
+        public IEnumerable<Project> GetPublicProjects(int? categoryId, ProjectType? type, AdvertisementStatus? status, string? name)
+        {
+            var list = _projectRepo.GetPublicAdvertisementProjects();
+
+            return FilterProject(list, categoryId, type, status, name);
+        }
+
         public IEnumerable<Project> GetAllProjects(int? categoryId, ProjectType? type, AdvertisementStatus? status, string? name)
         {
             var list = _projectRepo.GetAdvertisementAllowedProjects();
