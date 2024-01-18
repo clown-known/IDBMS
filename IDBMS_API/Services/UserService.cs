@@ -251,7 +251,7 @@ namespace API.Services
 
         public void ForgotPassword(ResetPasswordRequest request)
         {
-            var user = _repository.GetById(request.userId) ?? throw new Exception("User not existed");
+            var user = _repository.GetByEmail(request.email) ?? throw new Exception("User not existed");
 
             PasswordUtils.CreatePasswordHash(request.newPassword, out byte[] passwordHash, out byte[] passwordSalt);
 
