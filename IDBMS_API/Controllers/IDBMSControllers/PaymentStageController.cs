@@ -225,7 +225,13 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 string link = _configuration["Server:Frontend"] + "/project/" + projectId.ToString() + "/stages";
                 var project = _projectService.GetById(projectId);
                 if (project != null) {
-                    User owner = project.ProjectParticipations.Where(u => u.Role == ParticipationRole.ProductOwner).FirstOrDefault().User;
+                    var ownerParti = project.ProjectParticipations.Where(u => u.Role == ParticipationRole.ProductOwner).FirstOrDefault();
+
+                    if (ownerParti == null)
+                        throw new Exception("Owner not found");
+
+                    User owner = ownerParti.User;
+
                     string time = TimeHelper.GetTime(DateTime.Now).ToString();
                     EmailSupporter.SendStageEmail(owner.Email, link,owner.Name,time,owner.Language== Language.English); 
                 }

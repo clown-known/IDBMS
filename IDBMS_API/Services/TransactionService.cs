@@ -171,6 +171,7 @@ namespace IDBMS_API.Services
             trans.UserId = request.UserId;
             trans.ProjectId = request.ProjectId;
             trans.PayerName = request.PayerName;
+            trans.Status = request.Status;
 
             _transactionRepo.Update(trans);
 
