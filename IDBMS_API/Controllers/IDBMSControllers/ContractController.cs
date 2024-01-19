@@ -74,7 +74,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         [HttpGet("{projectId}/company")]
         [Authorize(Policy = "")]
-        public async Task<IActionResult> GetDataForCompany(Guid projectId)
+        public IActionResult GetDataForCompany(Guid projectId)
         {
             try
             {
@@ -126,7 +126,7 @@ namespace IDBMS_API.Controllers.IDBMSControllers
         }
         [HttpGet("{projectId}/individual")]
         [Authorize(Policy = "")]
-        public async Task<IActionResult> GetDataForCustomer(Guid projectId)
+        public IActionResult GetDataForCustomer(Guid projectId)
         {
             try
             {

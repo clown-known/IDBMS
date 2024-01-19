@@ -164,19 +164,28 @@ namespace IDBMS_API.Supporters.File
         {
             ExcelUtils.RenameSheet(doc, templateName, sheetName);
 
-            var owner = project.ProjectParticipations.FirstOrDefault(p => p.Role == BusinessObject.Enums.ParticipationRole.ProductOwner).User;
+            User owner;
+            var ownerParti = project.ProjectParticipations.FirstOrDefault(p => p.Role == BusinessObject.Enums.ParticipationRole.ProductOwner);
+            if(ownerParti == null)
+            {
+                throw new Exception("Owner is null!");
+            }
+            owner = ownerParti.User;
+
             string A4data = "Tên gói thầu:  " + categoryName;
-            int count = 0;
+
             ExcelUtils.FindAndReplaceString(doc, sheetName, "A3", "Tên dự án:   " + project.Name.ToUpper());
 
             ExcelUtils.FindAndReplaceString(doc, sheetName, "A4", A4data);
-            ExcelUtils.FindAndReplaceString(doc, sheetName, "A6", "Chủ đầu tư: " + owner.CompanyName.ToUpper());
-
+            if(owner.CompanyName != null)
+                ExcelUtils.FindAndReplaceString(doc, sheetName, "A6", "Chủ đầu tư: " + owner.CompanyName.ToUpper());
+            else
+                ExcelUtils.FindAndReplaceString(doc, sheetName, "A6", "Chủ đầu tư: " + owner.Name.ToUpper());
             PaymentStageRepository paymentStageRepository = new PaymentStageRepository();
             List<PaymentStage> paymentStage = paymentStageRepository.GetAll().Where(p => p.ProjectId == project.Id).ToList();
 
-
-            ExcelUtils.FindAndReplaceString(doc, sheetName, "C13", IntUtils.ConvertStringToMoney(project.EstimatedPrice.Value));
+            if(project.EstimatedPrice != null)
+                ExcelUtils.FindAndReplaceString(doc, sheetName, "C13", IntUtils.ConvertStringToMoney(project.EstimatedPrice.Value));
 
             if (incr != null)
             {

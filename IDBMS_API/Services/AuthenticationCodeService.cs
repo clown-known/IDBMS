@@ -34,7 +34,7 @@ namespace IDBMS_API.Services
         {
             var user = userRepository.GetByEmail(email);
             if (user == null) return false;
-            AuthenticationCode authcode = authenticationCodeRepository.GetByUserId(user.Id);
+            AuthenticationCode? authcode = authenticationCodeRepository.GetByUserId(user.Id);
             if(authcode == null || !authcode.Code.Equals(code)) return false;
             authcode.Status = BusinessObject.Enums.AuthenticationCodeStatus.Used;
             authenticationCodeRepository.Update(authcode);
@@ -45,9 +45,9 @@ namespace IDBMS_API.Services
         public string VerifyReturnJwt(string code,string email)
         {
             var user = userRepository.GetByEmail(email);
-            if (user == null) return null;
-            AuthenticationCode authcode = authenticationCodeRepository.GetByUserId(user.Id);
-            if(authcode == null || !authcode.Code.Equals(code)) return null;
+            if (user == null) throw new Exception("User is null!");
+            AuthenticationCode? authcode = authenticationCodeRepository.GetByUserId(user.Id);
+            if(authcode == null || !authcode.Code.Equals(code)) throw new Exception("authen code is invalid");
             authcode.Status = BusinessObject.Enums.AuthenticationCodeStatus.Used;
             authenticationCodeRepository.Update(authcode);
             user.Status = BusinessObject.Enums.UserStatus.Active;
@@ -64,8 +64,8 @@ namespace IDBMS_API.Services
         public string AdminVerify(string code,string email)
         {
             var user = adminRepository.GetByEmail(email);
-            if (user == null) return null;
-            if(user.AuthenticationCode == null || !user.AuthenticationCode.Equals(code)) return null;
+            if (user == null) throw new Exception("User is null!");
+            if(user.AuthenticationCode == null || !user.AuthenticationCode.Equals(code)) throw new Exception("Authentication code is invalid!");
             user.AuthenticationCode = "";
             string token = jwtTokenSupporter.CreateTokenForAdmin(user);
             user.token = token;
@@ -92,8 +92,8 @@ namespace IDBMS_API.Services
         public string CreateCode(string email)
         {
             var user = userRepository.GetByEmail(email);
-            if (user == null) return null;
-            if (user.LockedUntil != null && user.LockedUntil > TimeHelper.GetTime(DateTime.Now)) return null;
+            if (user == null) throw new Exception("User is null!");
+            if (user.LockedUntil != null && user.LockedUntil > TimeHelper.GetTime(DateTime.Now)) throw new Exception("User is locked!");
             // gen code, update to database
             Random random = new Random();
             string rdn = "";
@@ -123,7 +123,7 @@ namespace IDBMS_API.Services
         public string CreateAdminLoginCode(string email)
         {
             var user = adminRepository.GetByEmail(email);
-            if (user == null) return null;
+            if (user == null) throw new Exception("User is null!");
             // gen code, update to database
             Random random = new Random();
             string rdn = "";
