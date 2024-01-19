@@ -33,12 +33,12 @@ namespace IDBMS_API.Supporters.UserHelper
 
             return (result,password);
         }
-        public static (User? user,string password) GenerateUser(CreateUserRequest request)
+        public static (User user,string password) GenerateUser(CreateUserRequest request)
         {
             string password = GennaratePassword();
             PasswordUtils.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
             UserRepository userRepository = new UserRepository();
-
+            if (userRepository.GetByEmail(request.Email) != null) throw new Exception("Email is existed!");
             var user = new User()
             {
                 Address = request.Address,
@@ -54,7 +54,7 @@ namespace IDBMS_API.Supporters.UserHelper
             };
 
             var userCreated = userRepository.Save(user);
-
+            if (userCreated == null) throw new Exception("Cannot create user!");
             return (userCreated, password);
         }
         private static string GennaratePassword()

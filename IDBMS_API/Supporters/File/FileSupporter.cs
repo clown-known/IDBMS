@@ -29,31 +29,31 @@ namespace IDBMS_API.Supporters.File
                     FindAndReplaceText(doc, "[CreatedDate]", time.Day.ToString());
                     FindAndReplaceText(doc, "[CreatedMonth]", time.Month.ToString());
                     FindAndReplaceText(doc, "[CreatedYear]", time.Year.ToString());
-                    FindAndReplaceText(doc, "[ACompanyName]", request.ACompanyName);
-                    FindAndReplaceText(doc, "[ACompanyAddress]", request.ACompanyAddress);
-                    FindAndReplaceText(doc, "[CompanyCode]", request.ACompanyCode);
-                    FindAndReplaceText(doc, "[ARepresentative]", request.AOwnerName);
-                    FindAndReplaceText(doc, "[APhone]", request.APhone);
-                    FindAndReplaceText(doc, "[Position]", request.APosition);
-                    FindAndReplaceText(doc, "[AEmail]", request.AEmail);
+                    FindAndReplaceText(doc, "[ACompanyName]", request.ACompanyName??"");
+                    FindAndReplaceText(doc, "[ACompanyAddress]", request.ACompanyAddress ?? "");
+                    FindAndReplaceText(doc, "[CompanyCode]", request.ACompanyCode ?? "");
+                    FindAndReplaceText(doc, "[ARepresentative]", request.AOwnerName ?? "");
+                    FindAndReplaceText(doc, "[APhone]", request.APhone ?? "");
+                    FindAndReplaceText(doc, "[Position]", request.APosition ?? "");
+                    FindAndReplaceText(doc, "[AEmail]", request.AEmail ?? "");
 
-                    FindAndReplaceText(doc, "[BName]", request.BCompanyName);
-                    FindAndReplaceText(doc, "[BAddress]", request.BCompanyAddress);
-                    FindAndReplaceText(doc, "[BCompanyCode]", request.BSwiftCode);
-                    FindAndReplaceText(doc, "[BRepresentative]", request.BRepresentedBy);
-                    FindAndReplaceText(doc, "[BPhone]",request.BCompanyPhone);
-                    FindAndReplaceText(doc, "[BPosition]", request.BPosition);
-                    FindAndReplaceText(doc, "[BEmail]",request.BEmail);
+                    FindAndReplaceText(doc, "[BName]", request.BCompanyName ?? "");
+                    FindAndReplaceText(doc, "[BAddress]", request.BCompanyAddress ?? "");
+                    FindAndReplaceText(doc, "[BCompanyCode]", request.BSwiftCode ?? "");
+                    FindAndReplaceText(doc, "[BRepresentative]", request.BRepresentedBy ?? "");
+                    FindAndReplaceText(doc, "[BPhone]",request.BCompanyPhone ?? "");
+                    FindAndReplaceText(doc, "[BPosition]", request.BPosition ?? "");
+                    FindAndReplaceText(doc, "[BEmail]",request.BEmail ?? "");
                     FindAndReplaceText(doc, "[NumOfCopies]", request.NumOfCopie.ToString());
                     FindAndReplaceText(doc, "[NumOfA]", request.NumOfA.ToString());
                     FindAndReplaceText(doc, "[NumOfB]", request.NumOfB.ToString());
                     FindAndReplaceText(doc, "[NumOfPages]", ""+ CountPages(doc));
-                    FindAndReplaceText(doc, "[ProjectName]",request.ProjectName);
-                    FindAndReplaceText(doc, "[PaymentMethod]", request.PaymentMethod);
+                    FindAndReplaceText(doc, "[ProjectName]",request.ProjectName ?? "");
+                    FindAndReplaceText(doc, "[PaymentMethod]", request.PaymentMethod ?? "");
                     FindAndReplaceText(doc, "[Value]", ""+ IntUtils.ConvertStringToMoney(request.Value));
                     FindAndReplaceText(doc, "[Money]", ""+ IntUtils.ConvertNumberToVietnamese((int)request.Value));
                     FindAndReplaceText(doc, "[StartedDate]", time.Day.ToString()+"/"+time.Month.ToString()+"/"+time.Year.ToString());
-                    FindAndReplaceText(doc, "[EstimateBusinessDay]", request.EstimateDays.ToString());
+                    FindAndReplaceText(doc, "[EstimateBusinessDay]", request.EstimateDays.ToString() ?? "");
 
                     doc.Save();
                 }
@@ -74,44 +74,45 @@ namespace IDBMS_API.Supporters.File
                     FindAndReplaceText(doc, "[CreatedDate]", time.Day.ToString());
                     FindAndReplaceText(doc, "[CreatedMonth]", time.Month.ToString());
                     FindAndReplaceText(doc, "[CreatedYear]", time.Year.ToString());
-                    FindAndReplaceText(doc, "[CustomerName]", request.CustomerName);
+                    FindAndReplaceText(doc, "[CustomerName]", request.CustomerName??"");
                     FindAndReplaceText(doc, "[YearOfBirth]", DateParse(request.DateOfBirth));
-                    FindAndReplaceText(doc, "[Address]", request.Address);
-                    FindAndReplaceText(doc, "[Phone]", request.Phone);
-                    FindAndReplaceText(doc, "[Email]", request.Email);
-                    FindAndReplaceText(doc, "[IdentityCode]", request.IdentityCode);
+                    FindAndReplaceText(doc, "[Address]", request.Address ?? "");
+                    FindAndReplaceText(doc, "[Phone]", request.Phone ?? "");
+                    FindAndReplaceText(doc, "[Email]", request.Email ?? "");
+                    FindAndReplaceText(doc, "[IdentityCode]", request.IdentityCode ?? "");
                     FindAndReplaceText(doc, "[Created]", DateParse(request.CodeCreatedDate));
-                    FindAndReplaceText(doc, "[IssuedBy]", request.IssuedBy);
-                    FindAndReplaceText(doc, "[RegisteredPlaceOfPermanentResidence]", request.RegisteredPlaceOfPermanentResidence);
+                    FindAndReplaceText(doc, "[IssuedBy]", request.IssuedBy ?? "");
+                    FindAndReplaceText(doc, "[RegisteredPlaceOfPermanentResidence]", request.RegisteredPlaceOfPermanentResidence ?? "");
 
-                    FindAndReplaceText(doc, "[BName]", request.BCompanyName);
-                    FindAndReplaceText(doc, "[BAddress]", request.BCompanyAddress);
-                    FindAndReplaceText(doc, "[BCompanyCode]", request.BSwiftCode);
-                    FindAndReplaceText(doc, "[BRepresentative]", request.BRepresentedBy);
-                    FindAndReplaceText(doc, "[BPhone]", request.BCompanyPhone);
-                    FindAndReplaceText(doc, "[BPosition]", request.BPosition);
-                    FindAndReplaceText(doc, "[BEmail]", request.BEmail);
+                    FindAndReplaceText(doc, "[BName]", request.BCompanyName ?? "");
+                    FindAndReplaceText(doc, "[BAddress]", request.BCompanyAddress ?? "");
+                    FindAndReplaceText(doc, "[BCompanyCode]", request.BSwiftCode ?? "");
+                    FindAndReplaceText(doc, "[BRepresentative]", request.BRepresentedBy ?? "");
+                    FindAndReplaceText(doc, "[BPhone]", request.BCompanyPhone ?? "");
+                    FindAndReplaceText(doc, "[BPosition]", request.BPosition ?? "");
+                    FindAndReplaceText(doc, "[BEmail]", request.BEmail ?? "");
                     FindAndReplaceText(doc, "[NumOfCopies]", request.NumOfCopie.ToString());
                     FindAndReplaceText(doc, "[NumOfA]", request.NumOfA.ToString());
                     FindAndReplaceText(doc, "[NumOfB]", request.NumOfB.ToString());
                     FindAndReplaceText(doc, "[NumOfPages]", "" + CountPages(doc));
-                    FindAndReplaceText(doc, "[ProjectName]", request.ProjectName);
-                    FindAndReplaceText(doc, "[PaymentMethod]", request.PaymentMethod);
+                    FindAndReplaceText(doc, "[ProjectName]", request.ProjectName ?? "");
+                    FindAndReplaceText(doc, "[PaymentMethod]", request.PaymentMethod ?? "");
                     FindAndReplaceText(doc, "[Value]", "" + IntUtils.ConvertStringToMoney(request.Value));
                     FindAndReplaceText(doc, "[Money]", "" + IntUtils.ConvertNumberToVietnamese((int)request.Value));
                     FindAndReplaceText(doc, "[StartedDate]", stringDate);
-                    FindAndReplaceText(doc, "[EstimateBusinessDay]", request.EstimateDays.ToString());
+                    FindAndReplaceText(doc, "[EstimateBusinessDay]", request.EstimateDays.ToString() ?? "");
                     doc.Save();
                 }
                 stream.Position = 0;
                 return stream.ToArray();
             }
         }
-        static private string DateParse(DateTime input)
+        static private string DateParse(DateTime? input)
         {
-            string day = input.Day > 10 ? input.Day.ToString() : "0" + input.Day.ToString();
-            string month = input.Month > 10 ? input.Month.ToString() : "0" + input.Month.ToString();
-            return  day + "/" + month+ "/" + input.Year.ToString();
+            if (input == null) return "";
+            string day = input.Value.Day > 10 ? input.Value.Day.ToString() : "0" + input.Value.Day.ToString();
+            string month = input.Value.Month > 10 ? input.Value.Month.ToString() : "0" + input.Value.Month.ToString();
+            return  day + "/" + month+ "/" + input.Value.Year.ToString();
         }
         static private string GetCode()
         {

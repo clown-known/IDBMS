@@ -14,7 +14,7 @@ public class Comment
 
     [Required]
     public Guid ProjectTaskId { get; set; }
-    public ProjectTask ProjectTask { get; set; }
+    public ProjectTask? ProjectTask { get; set; }
 
     [Required]
     public Guid ProjectId { get; set; }

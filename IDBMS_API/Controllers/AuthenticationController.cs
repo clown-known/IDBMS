@@ -43,7 +43,7 @@ namespace API.Controllers
             {
                 var (token, user) = userService.Login(request.Email, request.Password);
                 var response = new ResponseMessage();
-                if (token == null)
+                if (token == null || user == null)
                 {
                     response.Message = "Incorrect email or password!";
                     return BadRequest(response);
@@ -76,7 +76,7 @@ namespace API.Controllers
             {
                 var (token, user) = userService.LoginByGoogle(request);
                 var response = new ResponseMessage();
-                if (token == null)
+                if (token == null || user == null)
                 {
                     response.Message = "Incorrect email or password!";
                     return BadRequest(response);
@@ -109,7 +109,7 @@ namespace API.Controllers
             {
                 var (token, user) = adminService.Login(request.Username, request.Password);
                 var response = new ResponseMessage();
-                if (token == null)
+                if (token == null || user == null)
                 {
                     response.Message = "Incorrect username or password!";
                     return BadRequest(response);
@@ -268,7 +268,7 @@ namespace API.Controllers
                 if (code == null)
                     throw new Exception("Create code fail!");
 
-                string link = configuration["Server:Frontend"] + "/authentication/forgotpassword?code=" + code + "&email=" + email;
+                string link = configuration["Server:Frontend"] + "authentication/forgotpassword?code=" + code + "&email=" + email;
                 EmailSupporter.SendVerifyEnglishEmail(email, link);
 
                 var response = new ResponseMessage()
