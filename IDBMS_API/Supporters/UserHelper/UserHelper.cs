@@ -36,7 +36,7 @@ namespace IDBMS_API.Supporters.UserHelper
         public static (User? user,string password) GenerateUser(CreateUserRequest request)
         {
             string password = GennaratePassword();
-            PasswordUtils.CreatePasswordHash(GennaratePassword(), out byte[] passwordHash, out byte[] passwordSalt);
+            PasswordUtils.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
             UserRepository userRepository = new UserRepository();
 
             var user = new User()
@@ -62,7 +62,7 @@ namespace IDBMS_API.Supporters.UserHelper
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
             StringBuilder res = new StringBuilder();
             Random rnd = new Random();
-            while (0 <= 16)
+            while (res.Length <= 16)
             {
                 res.Append(valid[rnd.Next(valid.Length)]);
             }
