@@ -546,39 +546,53 @@ namespace IDBMS_API.Services
                                         .OrderBy(s => s.StageNo)
                                         .ToList();
 
-            decimal remainingAmount = totalPaid;
+            decimal totalNegativeIncurred = listStages
+                        .Where(stage => stage.TotalIncurredPaid != null && stage.TotalIncurredPaid < 0)
+                        .Sum(stage => Math.Abs(stage.TotalIncurredPaid.Value));
+
+            decimal remainingAmount = totalPaid + totalNegativeIncurred;
+
+            bool stopCheck = false;
 
             foreach (var stage in listStages)
             {
                 stage.IsContractAmountPaid = false;
                 stage.IsIncurredAmountPaid = false;
 
-                if (remainingAmount >= stage.TotalContractPaid)
+                if (stopCheck == false)
                 {
-                    stage.IsContractAmountPaid = true;
-                    remainingAmount -= stage.TotalContractPaid;
-                }
-                else
-                {
-                    break;
-                }
-
-                if (stage.TotalIncurredPaid == null && stage.PenaltyFee == null)
-                    stage.IsIncurredAmountPaid = true;
-                else
-                {
-                    var incurredTotal = stage.TotalIncurredPaid == null ? 0 : stage.TotalIncurredPaid;
-                    var penaltyFeeTotal = stage.PenaltyFee == null ? 0 : stage.PenaltyFee;
-
-                    if (remainingAmount >= incurredTotal + penaltyFeeTotal)
+                    if (remainingAmount >= stage.TotalContractPaid)
                     {
-                        stage.IsIncurredAmountPaid = true;
-                        remainingAmount -= incurredTotal.Value;
-                        remainingAmount -= penaltyFeeTotal.Value;
+                        stage.IsContractAmountPaid = true;
+                        remainingAmount -= stage.TotalContractPaid;
                     }
-                }
+                    else
+                    {
+                        _stageRepo.Update(stage);
+                        stopCheck= true;
+                        continue;
+                    }
 
-                _stageRepo.Update(stage);
+                    if ((stage.TotalIncurredPaid == null && stage.PenaltyFee == null) || stage.TotalIncurredPaid < 0)
+                        stage.IsIncurredAmountPaid = true;
+                    else
+                    {
+                        var incurredTotal = stage.TotalIncurredPaid == null ? 0 : stage.TotalIncurredPaid;
+                        var penaltyFeeTotal = stage.PenaltyFee == null ? 0 : stage.PenaltyFee;
+
+                        if (remainingAmount >= incurredTotal + penaltyFeeTotal)
+                        {
+                            stage.IsIncurredAmountPaid = true;
+                            remainingAmount -= incurredTotal.Value;
+                            remainingAmount -= penaltyFeeTotal.Value;
+                        }
+                    }
+
+                    _stageRepo.Update(stage);
+                }
+                else
+                    _stageRepo.Update(stage);
+
             }
         }
 

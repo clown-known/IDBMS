@@ -159,7 +159,7 @@ namespace IDBMS_API.Services
         {
             var list = _taskRepo.GetByProjectId(projectId);
 
-            return list.Any(task => task.Status == ProjectTaskStatus.Pending || task.Status == ProjectTaskStatus.Confirmed || task.Status == ProjectTaskStatus.Ongoing);
+            return !list.Any(task => task.Status == ProjectTaskStatus.Pending || task.Status == ProjectTaskStatus.Confirmed || task.Status == ProjectTaskStatus.Ongoing);
         }
 
         public IEnumerable<Guid> GetAllProjectTaskIdByFilter(Guid projectId,
