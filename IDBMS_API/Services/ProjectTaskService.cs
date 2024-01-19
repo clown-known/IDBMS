@@ -238,11 +238,11 @@ namespace IDBMS_API.Services
                 });
 
                 var soonestStartDate = tasksInProject
-                    .Where(task => task != null && task.StartedDate != null && task.Status == ProjectTaskStatus.Confirmed)
+                    .Where(task => task != null && task.StartedDate != null && task.Status != ProjectTaskStatus.Cancelled)
                     .Min(task => task.StartedDate);
 
                 var latestEndDate = tasksInProject
-                    .Where(task => task != null && task.EndDate != null && task.Status == ProjectTaskStatus.Confirmed)
+                    .Where(task => task != null && task.EndDate != null && task.Status != ProjectTaskStatus.Cancelled)
                     .Max(task => task.EndDate);
 
                 if (soonestStartDate.HasValue && latestEndDate.HasValue)
