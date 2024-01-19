@@ -38,8 +38,9 @@ namespace IDBMS_API.Supporters.File
                     Project project = projectRepository.GetById(projectId);
                     if (project == null) return null;
                     string projectName = project.Name;
+                    if (project.Site == null) throw new Exception("Site is null");
                     string address = project.Site.Address;
-
+                    
 
                     ProjectTaskRepository projectTaskRepository = new ProjectTaskRepository();
                     List<ProjectTask> projectTask = projectTaskRepository.GetByProjectId(projectId).Where(t => t.ParentTaskId == null).ToList();
@@ -337,6 +338,7 @@ namespace IDBMS_API.Supporters.File
         public static ExcelResult GenSheetIncurred(SpreadsheetDocument doc, int sheetcount, string projectTitle, string address,List<TaskCategory> cateList, List<ProjectTask> taskList)
         {
             string sheetName = "Sheet10";
+            bool cloneRow = taskList.Count > 3;
             List<ProjectTask> projectTasksIncurred = new List<ProjectTask>();
             foreach(var task in taskList)
             {
@@ -358,13 +360,13 @@ namespace IDBMS_API.Supporters.File
                 string cateName = "PHẦN "+cate.Name.ToUpper();
                 ExcelUtils.FindAndReplaceString(doc, sheetName, "B" + currentIndex.ToString(), cateName);
                 currentIndex++;
-                int i = 0;
 
 
                     int currentNo = 1;
                     foreach (var task in taskList.Where(t => t.TaskCategoryId == cate.Id).ToList())
                     {
                         char startColumn = 'A';
+                    if(cloneRow)
                         ExcelUtils.InsertRow(doc, sheetName, (uint)currentIndex, ((uint)currentIndex), false);
 
                         ExcelUtils.FindAndReplaceNumber(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), (currentNo++).ToString());
