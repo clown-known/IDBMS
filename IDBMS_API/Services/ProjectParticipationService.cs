@@ -109,20 +109,39 @@ namespace IDBMS_API.Services
         public ProjectParticipation? CreateParticipation(ProjectParticipationRequest request)
         {
             var project = _projectRepository.GetById(request.ProjectId);
-            if(project.BasedOnDecorProjectId!=null)
+
+            if (project == null)
+                throw new Exception("Project not found!");
+
+            if (project.BasedOnDecorProjectId!=null)
             {
-                Project dproject = _projectRepository.GetById(project.BasedOnDecorProjectId.Value);
-                if (dproject!=null && dproject.ProjectParticipations.Where(p => p.UserId == request.UserId).FirstOrDefault() == null)
+                var dproject = _projectRepository.GetById(project.BasedOnDecorProjectId.Value);
+
+                if (dproject == null)
+                    throw new Exception("Cannot find project based on");
+
+                bool checkUserExist = dproject.ProjectParticipations.Where(p => p.UserId == request.UserId).FirstOrDefault() == null;
+
+                if (checkUserExist)
                 {
-                    var dp = new ProjectParticipation
+                    var user = _userRepo.GetById(request.UserId);
+
+                    if (user == null)
+                        throw new Exception("User not found!");
+
+                    if (user.Role != CompanyRole.Customer)
                     {
-                        Id = Guid.NewGuid(),
-                        UserId = request.UserId,
-                        ProjectId = dproject.Id,
-                        Role = ParticipationRole.Viewer,
-                        IsDeleted = false,
-                    };
-                    _participationRepo.Save(dp);
+                        var dp = new ProjectParticipation
+                        {
+                            Id = Guid.NewGuid(),
+                            UserId = request.UserId,
+                            ProjectId = dproject.Id,
+                            Role = ParticipationRole.Viewer,
+                            IsDeleted = false,
+                        };
+
+                        _participationRepo.Save(dp);
+                    }
                 }
             }
             var p = new ProjectParticipation
