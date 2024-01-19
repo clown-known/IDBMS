@@ -142,7 +142,7 @@ namespace IDBMS_API.Services
                 if (response.Stage.Status == StageStatus.Ongoing)
                 {
                     ProjectTaskService taskService = new(_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo, _taskCategoryRepo, _taskDesignRepo);
-                    var checkStageTaskDone = taskService.CheckFinishedTaskInStage(projectId);
+                    var checkStageTaskDone = taskService.CheckFinishedTaskInStage(response.Stage.Id);
 
                     if (checkStageTaskDone)
                         response.CloseAllowed = true;

@@ -155,9 +155,9 @@ namespace IDBMS_API.Services
             return Filter(list, codeOrName, stageId, taskStatus, taskCategoryId, roomId, includeRoomIdFilter, includeStageIdFilter, participationId);
         }
 
-        public bool CheckFinishedTaskInStage(Guid projectId)
+        public bool CheckFinishedTaskInStage(Guid stageId)
         {
-            var list = _taskRepo.GetByProjectId(projectId);
+            var list = _taskRepo.GetByPaymentStageId(stageId);
 
             return !list.Any(task => task.Status == ProjectTaskStatus.Pending || task.Status == ProjectTaskStatus.Confirmed || task.Status == ProjectTaskStatus.Ongoing);
         }
