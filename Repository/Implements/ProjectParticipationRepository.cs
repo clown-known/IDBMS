@@ -192,7 +192,7 @@ public class ProjectParticipationRepository : IProjectParticipationRepository
                 .Where(u => u.UserId.Equals(id) && u.IsDeleted == false)
                 .Include(p => p.Project)
                     .ThenInclude(pc => pc.ProjectCategory)
-                .OrderByDescending(p => p.Project.UpdatedDate)
+                .OrderByDescending(p => p.Project.UpdatedDate ?? p.Project.CreatedDate)
                 .ToList();
         }
         catch
