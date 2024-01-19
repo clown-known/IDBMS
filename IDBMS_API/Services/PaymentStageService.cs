@@ -144,7 +144,9 @@ namespace IDBMS_API.Services
                     ProjectTaskService taskService = new(_taskRepo, _projectRepo, _stageRepo, _projectDesignRepo, _stageDesignRepo, _floorRepo, _roomRepo, _roomTypeRepo, _transactionRepo, _taskCategoryRepo, _taskDesignRepo);
                     var checkStageTaskDone = taskService.CheckFinishedTaskInStage(response.Stage.Id);
 
-                    if (checkStageTaskDone)
+                    var nextStage = _stageRepo.GetByStageNoByProjectId(response.Stage.StageNo + 1, projectId);
+
+                    if (checkStageTaskDone && ((nextStage != null) || (nextStage == null && response.Stage.IsContractAmountPaid == true && response.Stage.IsIncurredAmountPaid == true)))
                         response.CloseAllowed = true;
                 }
 
