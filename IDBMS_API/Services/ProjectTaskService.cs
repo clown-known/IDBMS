@@ -155,6 +155,13 @@ namespace IDBMS_API.Services
             return Filter(list, codeOrName, stageId, taskStatus, taskCategoryId, roomId, includeRoomIdFilter, includeStageIdFilter, participationId);
         }
 
+        public bool CheckFinishedTaskInStage(Guid projectId)
+        {
+            var list = _taskRepo.GetByProjectId(projectId);
+
+            return list.Any(task => task.Status == ProjectTaskStatus.Pending || task.Status == ProjectTaskStatus.Confirmed || task.Status == ProjectTaskStatus.Ongoing);
+        }
+
         public IEnumerable<Guid> GetAllProjectTaskIdByFilter(Guid projectId,
             string? codeOrName, Guid? stageId, ProjectTaskStatus? taskStatus, int? taskCategoryId, Guid? roomId, 
             bool includeRoomIdFilter, bool includeStageIdFilter, Guid? participationId)
