@@ -11,6 +11,6 @@ namespace Repository.Interfaces
     {
         public void EnableCodeOfUser(Guid userId);
         public int CheckNumOfSend(Guid userId);
-        public AuthenticationCode GetByUserId(Guid userId);
+        public AuthenticationCode? GetByUserId(Guid userId);
     }
 }

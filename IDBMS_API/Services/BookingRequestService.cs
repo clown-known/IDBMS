@@ -145,8 +145,8 @@ namespace IDBMS_API.Services
                 };
 
                 (var createdUser,string pass) = UserHelper.GenerateUser(newUser);
-                string link = configuration["Server:Frontend"];
-
+                string? link = configuration["Server:Frontend"];
+                if (link == null) throw new Exception("Cannot get the link from config!");
                 EmailSupporter.SendInviteEmail(request.ContactEmail,link,pass,request.Language == Language.English);
                 br.UserId = createdUser.Id;
             }

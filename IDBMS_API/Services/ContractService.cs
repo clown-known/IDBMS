@@ -1,6 +1,7 @@
 ﻿using BLL.Services;
 using BusinessObject.Enums;
 using BusinessObject.Models;
+using DocumentFormat.OpenXml.Office.CoverPageProps;
 using IDBMS_API.Constants;
 using IDBMS_API.DTOs.Request;
 using IDBMS_API.DTOs.Response;
@@ -44,17 +45,17 @@ namespace IDBMS_API.Services
         {
             try
             {
-
                 ProjectRepository projectRepository = new ProjectRepository();
-                Project project = projectRepository.GetById(projectid);
-
+                Project? project = projectRepository.GetById(projectid);
+                if (project == null) throw new Exception("Cannot found project!");
                 var ownerParticipation = project.ProjectParticipations.FirstOrDefault(p => p.Role == ParticipationRole.ProductOwner);
 
                 if (ownerParticipation == null)
                     throw new Exception("Project owner is not found!");
 
                 User owner = ownerParticipation.User;
-                Site site = project.Site;
+                Site? site = project.Site;
+                if (site == null) throw new Exception("Site is null");
                 DocumentTemplateRepository documentTemplateRepository = new DocumentTemplateRepository();
                 var doc = documentTemplateRepository.getByType(DocumentTemplateType.Contract);
                 ContractForCompanyResponse contractForCompanyResponse = new ContractForCompanyResponse
@@ -62,21 +63,24 @@ namespace IDBMS_API.Services
                     ACompanyAddress = site.Address,
                     AOwnerName = owner.Name,
                     APhone = site.ContactPhone,
-                    ACompanyPosition = owner.JobPosition,
-                    ACompanyCode = site.CompanyCode,
-                    ACompanyName = owner.CompanyName,
+                    ACompanyPosition = owner.JobPosition??"",
+                    ACompanyCode = site.CompanyCode??"",
+                    ACompanyName = owner.CompanyName ?? "",
                     AEmail = owner.Email,
-                    BCompanyPhone = doc.CompanyPhone,
-                    BCompanyAddress = doc.CompanyAddress,
-                    BCompanyName = doc.CompanyName,
-                    BRepresentedBy = doc.RepresentedBy,
-                    BSwiftCode = doc.SwiftCode,
-                    BEmail = doc.Email,
-                    BPosition = doc.Position,
-                    EstimateDays = project.EstimateBusinessDay.Value,
+
+                    EstimateDays = project.EstimateBusinessDay != null? project.EstimateBusinessDay.Value:0,
                     ProjectName = project.Name,
-                    Value = project.EstimatedPrice.Value
+                    Value = project.EstimatedPrice != null ? project.EstimatedPrice.Value : 0
                 };
+                if(doc != null){
+                    contractForCompanyResponse.BCompanyPhone = doc.CompanyPhone;
+                    contractForCompanyResponse.BCompanyAddress = doc.CompanyAddress;
+                    contractForCompanyResponse.BCompanyName = doc.CompanyName;
+                    contractForCompanyResponse.BRepresentedBy = doc.RepresentedBy;
+                    contractForCompanyResponse.BSwiftCode = doc.SwiftCode;
+                    contractForCompanyResponse.BEmail = doc.Email;
+                    contractForCompanyResponse.BPosition = doc.Position;
+                }
                 return contractForCompanyResponse;
             }catch(Exception e)
             {
@@ -89,34 +93,38 @@ namespace IDBMS_API.Services
             {
 
                 ProjectRepository projectRepository = new ProjectRepository();
-                Project project = projectRepository.GetById(projectid);
-
+                Project? project = projectRepository.GetById(projectid);
+                if (project == null) throw new Exception("Cannot found project!");
                 var ownerParticipation = project.ProjectParticipations.FirstOrDefault(p => p.Role == ParticipationRole.ProductOwner);
 
                 if (ownerParticipation == null)
                     throw new Exception("Project owner is not found!");
 
                 User owner = ownerParticipation.User;
-                Site site = project.Site;
+                Site? site = project.Site;
+                if (site == null) throw new Exception("Site is null!");
                 var doc = _templateRepository.getByType(DocumentTemplateType.Contract);
                 ContractForCustomerResponse contractForCustomerResponse = new ContractForCustomerResponse
                 {
                     Address = site.Address,
                     CustomerName = owner.Name,
                     Phone = site.ContactPhone,
-                    DateOfBirth = owner.DateOfBirth.Value,
+                    DateOfBirth = owner.DateOfBirth != null ? owner.DateOfBirth.Value : null,
                     Email = owner.Email,
-                    BCompanyPhone = doc.CompanyPhone,
-                    BCompanyAddress = doc.CompanyAddress,
-                    BCompanyName = doc.CompanyName,
-                    BRepresentedBy = doc.RepresentedBy,
-                    BSwiftCode = doc.SwiftCode,
-                    BEmail = doc.Email,
-                    BPosition = doc.Position,
-                    EstimateDays = project.EstimateBusinessDay.Value,
+                    EstimateDays = project.EstimateBusinessDay != null ? project.EstimateBusinessDay.Value : 0,
                     ProjectName = project.Name,
-                    Value = project.EstimatedPrice.Value
+                    Value = project.EstimatedPrice != null ? project.EstimatedPrice.Value : 0,
                 };
+                if (doc != null)
+                {
+                    contractForCustomerResponse.BCompanyPhone = doc.CompanyPhone;
+                    contractForCustomerResponse.BCompanyAddress = doc.CompanyAddress;
+                    contractForCustomerResponse.BCompanyName = doc.CompanyName;
+                    contractForCustomerResponse.BRepresentedBy = doc.RepresentedBy;
+                    contractForCustomerResponse.BSwiftCode = doc.SwiftCode;
+                    contractForCustomerResponse.BEmail = doc.Email;
+                    contractForCustomerResponse.BPosition = doc.Position;
+                }
                 return contractForCustomerResponse;
             }catch(Exception e)
             {
@@ -127,17 +135,22 @@ namespace IDBMS_API.Services
         public async Task<byte[]> DownloadContract(Guid projectid)
         {
             var project = _projectRepository.GetById(projectid);
-            ProjectDocument d = project.ProjectDocuments.Where(d => d.Category == ProjectDocumentCategory.Contract).FirstOrDefault();
+            if (project == null) throw new Exception("Cannot found project");
+            ProjectDocument? d = project.ProjectDocuments.Where(d => d.Category == ProjectDocumentCategory.Contract).FirstOrDefault();
+            if (d == null) throw new Exception("Cannot found that document!");
+            if (d.Url == null) throw new Exception("Document didn't have dowload url!");
             return await firebaseService.DownloadFileByDownloadUrl(d.Url);
         }
         public async Task<bool> UploadContract(Guid projectId, IFormFile file)
         {
             if (file == null) return false;
             var project = _projectRepository.GetById(projectId);
+            if (project == null) throw new Exception("Cannot found project!");
             try
             {
                 string link = await firebaseService.UploadContract(file, projectId);
                 var temp = _templateRepository.getByType(DocumentTemplateType.Contract);
+                if (temp == null) throw new Exception("Cannot get template");
                 var currentDoc = _projectDocumentRepository.GetContractById(projectId);
                 if (currentDoc != null)
                 {

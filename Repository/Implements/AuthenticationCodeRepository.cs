@@ -57,7 +57,7 @@ namespace Repository.Implements
             }
         }
 
-        public AuthenticationCode GetByUserId(Guid userId)
+        public AuthenticationCode? GetByUserId(Guid userId)
         {
             try
             {

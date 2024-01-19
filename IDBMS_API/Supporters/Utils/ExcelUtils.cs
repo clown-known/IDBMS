@@ -17,29 +17,31 @@ namespace IDBMS_API.Supporters.Utils
         }
         public static double FindAndReplaceCalculatorMutipleRow(SpreadsheetDocument workbook, string sheetName, string cellResult, string cellName, int indexStart, int indexEnd)
         {
-            WorkbookPart workbookPart = workbook.WorkbookPart;
-
-            Sheet sheet = workbookPart.Workbook.Descendants<Sheet>().FirstOrDefault(s => s.Name == sheetName);
+            WorkbookPart? workbookPart = workbook.WorkbookPart;
+            if (workbookPart == null) throw new Exception("Cannot found workbookpart!");
+            Sheet? sheet = workbookPart.Workbook.Descendants<Sheet>().FirstOrDefault(s => s.Name == sheetName);
             double total = 0;
             if (sheet != null)
             {
 
                 WorksheetPart worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id);
-                Cell cell = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellResult);
-                Cell cell1 = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellName + indexStart.ToString());
+                if (workbookPart == null) throw new Exception("Cannot found worksheetpart!");
+                Cell? cell = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellResult);
+                Cell? cell1 = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellName + indexStart.ToString());
                 if (cell != null && cell1 != null)
                 {
                     string value1 = cell1.InnerText;
                     if (cell1.DataType != null && cell1.DataType == CellValues.SharedString)
                     {
                         int sharedStringIndex = int.Parse(value1);
-                        SharedStringTablePart sharedStringTablePart = workbookPart.SharedStringTablePart;
+                        SharedStringTablePart? sharedStringTablePart = workbookPart.SharedStringTablePart;
+                        if (sharedStringTablePart != null)
                         if (sharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAtOrDefault(sharedStringIndex) is SharedStringItem sharedStringItem)
                         {
                             value1 = sharedStringItem.Text.Text;
                         }
                     }
-                    if (value1!= null || !value1.Equals("")) value1 = value1.Replace(".", "");
+                    if (value1 != null || !value1.Equals("")) value1 = value1.Replace(".", "");
                     bool sc = Double.TryParse(value1, out total);
                     if (!sc)
                     {
@@ -49,7 +51,8 @@ namespace IDBMS_API.Supporters.Utils
                     }
                     for (int i = indexStart + 1; i <= indexEnd; i++)
                     {
-                        Cell cell2 = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellName + i.ToString());
+                        if (worksheetPart == null) throw new Exception("Cannot found worksheetpart !");
+                        Cell? cell2 = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellName + i.ToString());
                         if (cell2 != null && cell1 != null)
                         {
                             string value2 = cell2.InnerText;
@@ -57,7 +60,8 @@ namespace IDBMS_API.Supporters.Utils
                             if (cell2.DataType != null && cell2.DataType == CellValues.SharedString)
                             {
                                 int sharedStringIndex = int.Parse(value2);
-                                SharedStringTablePart sharedStringTablePart = workbookPart.SharedStringTablePart;
+                                SharedStringTablePart? sharedStringTablePart = workbookPart.SharedStringTablePart;
+                                if(sharedStringTablePart != null)
                                 if (sharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAtOrDefault(sharedStringIndex) is SharedStringItem sharedStringItem)
                                 {
                                     value2 = sharedStringItem.Text.Text;
@@ -99,23 +103,25 @@ namespace IDBMS_API.Supporters.Utils
         }
         public static void FindAndReplaceCalculatorMutipleMoneyRow(SpreadsheetDocument workbook, string sheetName, string cellResult, string cellName, int indexStart, int indexEnd)
         {
-            WorkbookPart workbookPart = workbook.WorkbookPart;
-
-            Sheet sheet = workbookPart.Workbook.Descendants<Sheet>().FirstOrDefault(s => s.Name == sheetName);
+            WorkbookPart? workbookPart = workbook.WorkbookPart;
+            if (workbookPart == null) throw new Exception("WorkbookPart is null!");
+            Sheet? sheet = workbookPart.Workbook.Descendants<Sheet>().FirstOrDefault(s => s.Name == sheetName);
 
             if (sheet != null)
             {
 
                 WorksheetPart worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id);
-                Cell cell = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellResult);
-                Cell cell1 = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellName + indexStart.ToString());
-                string value1 = cell1.InnerText;
+                if (worksheetPart == null) throw new Exception("WorksheetPart is null");
+                Cell? cell = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellResult);
+                Cell? cell1 = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellName + indexStart.ToString());
                 if (cell != null && cell1 != null)
                 {
+                    string value1 = cell1.InnerText;
                     if (cell1.DataType != null && cell1.DataType == CellValues.SharedString)
                     {
                         int sharedStringIndex = int.Parse(value1);
-                        SharedStringTablePart sharedStringTablePart = workbookPart.SharedStringTablePart;
+                        SharedStringTablePart? sharedStringTablePart = workbookPart.SharedStringTablePart;
+                        if(sharedStringTablePart != null)
                         if (sharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAtOrDefault(sharedStringIndex) is SharedStringItem sharedStringItem)
                         {
                             value1 = sharedStringItem.Text.Text;
@@ -125,7 +131,8 @@ namespace IDBMS_API.Supporters.Utils
 
                     for (int i = indexStart + 1; i <= indexEnd; i++)
                     {
-                        Cell cell2 = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellName + i.ToString());
+                        if (worksheetPart == null) throw new Exception("WorksheetPart is null");
+                        Cell? cell2 = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellName + i.ToString());
                         if (cell2 != null && cell1 != null)
                         {
                             string value2 = cell2.InnerText;
@@ -133,7 +140,8 @@ namespace IDBMS_API.Supporters.Utils
                             if (cell2.DataType != null && cell2.DataType == CellValues.SharedString)
                             {
                                 int sharedStringIndex = int.Parse(value2);
-                                SharedStringTablePart sharedStringTablePart = workbookPart.SharedStringTablePart;
+                                SharedStringTablePart? sharedStringTablePart = workbookPart.SharedStringTablePart;
+                                if(sharedStringTablePart!= null)
                                 if (sharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAtOrDefault(sharedStringIndex) is SharedStringItem sharedStringItem)
                                 {
                                     value2 = sharedStringItem.Text.Text;
@@ -166,23 +174,26 @@ namespace IDBMS_API.Supporters.Utils
         }
         public static void FindAndReplaceCalculatorCellMultiple(SpreadsheetDocument workbook, string sheetName, string cellResult, string cellName, int percent)
         {
-            WorkbookPart workbookPart = workbook.WorkbookPart;
-
-            Sheet sheet = workbookPart.Workbook.Descendants<Sheet>().FirstOrDefault(s => s.Name == sheetName);
+            WorkbookPart? workbookPart = workbook.WorkbookPart;
+            if (workbookPart == null) throw new Exception("workbookPart is null");
+            Sheet? sheet = workbookPart.Workbook.Descendants<Sheet>().FirstOrDefault(s => s.Name == sheetName);
 
             if (sheet != null)
             {
 
                 WorksheetPart worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id);
-                Cell cell = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellResult);
-                Cell cell1 = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellName);
+                if (worksheetPart == null) throw new Exception("worksheetPart is null");
+
+                Cell? cell = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellResult);
+                Cell? cell1 = worksheetPart.Worksheet.Descendants<Cell>().FirstOrDefault(c => c.CellReference == cellName);
                 if (cell != null && cell1 != null)
                 {
                     string value1 = cell1.LastChild.InnerText;
                     if (cell1.DataType != null && cell1.DataType == CellValues.SharedString)
                     {
                         int sharedStringIndex = int.Parse(value1);
-                        SharedStringTablePart sharedStringTablePart = workbookPart.SharedStringTablePart;
+                        SharedStringTablePart? sharedStringTablePart = workbookPart.SharedStringTablePart;
+                        if(sharedStringTablePart != null)
                         if (sharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAtOrDefault(sharedStringIndex) is SharedStringItem sharedStringItem)
                         {
                             value1 = sharedStringItem.Text.Text;
@@ -217,8 +228,11 @@ namespace IDBMS_API.Supporters.Utils
             //WorksheetPart worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id);
             WorksheetPart worksheetPart = GetWorksheetPartByName(document, sheetname);
             Worksheet worksheet = worksheetPart.Worksheet;
-            SheetData sheetData = worksheet.GetFirstChild<SheetData>();
-            Row originalRow = sheetData.Elements<Row>().FirstOrDefault(r => r.RowIndex == originalRowIndex);
+            if (worksheet == null) throw new Exception("worksheet is null");
+            SheetData? sheetData = worksheet.GetFirstChild<SheetData>();
+            if (sheetData == null) throw new Exception("worksheet is null");
+            Row? originalRow = sheetData.Elements<Row>().FirstOrDefault(r => r.RowIndex == originalRowIndex);
+            if (originalRow == null) throw new Exception("originalRow is null");
             Row insertRow = CloneRow(originalRow, (int)rowIndex);
 
             Row retRow = !isNewLastRow ? sheetData.Elements<Row>().FirstOrDefault(r => r.RowIndex == rowIndex) : null;

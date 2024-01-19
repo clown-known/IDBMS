@@ -16,6 +16,7 @@ namespace API.Supporters.JwtAuthSupport
         {
             _participationRepository = new ProjectParticipationRepository();
             _taskAssignmentRepository = new TaskAssignmentRepository();
+            if (Policy == null) Policy = "";
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
