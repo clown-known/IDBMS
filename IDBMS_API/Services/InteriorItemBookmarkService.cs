@@ -1,6 +1,7 @@
 ﻿using IDBMS_API.DTOs.Request;
 using BusinessObject.Models;
 using Repository.Interfaces;
+using UnidecodeSharpFork;
 
 namespace IDBMS_API.Services
 {
@@ -12,14 +13,30 @@ namespace IDBMS_API.Services
             _repository = repository;
         }
 
+        private IEnumerable<InteriorItemBookmark> Filter(IEnumerable<InteriorItemBookmark> list, string? name)
+        {
+            IEnumerable<InteriorItemBookmark> filteredList = list;
+
+            if (name != null)
+            {
+                filteredList = filteredList.Where(item =>
+                           (item.InteriorItem.Name != null && item.InteriorItem.Name.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0)
+                           || (item.InteriorItem.EnglishName != null && item.InteriorItem.EnglishName.Unidecode().IndexOf(name.Unidecode(), StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+
+            return filteredList;
+        }
+
         public IEnumerable<InteriorItemBookmark> GetAll()
         {
             return _repository.GetAll();
         }
 
-        public IEnumerable<InteriorItemBookmark> GetByUserId(Guid userId)
+        public IEnumerable<InteriorItemBookmark> GetByUserId(Guid userId, string? name)
         {
-            return _repository.GetByUserId(userId) ?? throw new Exception("This bookmark id is not existed!");
+            var list = _repository.GetByUserId(userId);
+
+            return Filter(list, name);
         }
 
         public InteriorItemBookmark GetById(Guid id)
@@ -29,6 +46,12 @@ namespace IDBMS_API.Services
 
         public InteriorItemBookmark? CreateInteriorItemBookmark(InteriorItemBookmarkRequest request)
         {
+            bool exist = _repository.GetByUserId(request.UserId).Any(bm => bm.InteriorItemId == request.InteriorItemId);
+            if (exist)
+            {
+                return null;
+            }
+            
             var iib = new InteriorItemBookmark
             {
                 Id = Guid.NewGuid(),

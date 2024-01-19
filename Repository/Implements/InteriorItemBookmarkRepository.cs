@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,7 @@ namespace Repository.Implements
             {
                 using var context = new IdtDbContext();
                 return context.InteriorItemBookmarks
+                    .Include(bm => bm.InteriorItem)
                     .Where(iib => iib.UserId.Equals(userId))
                     .ToList()
                     .Reverse<InteriorItemBookmark>();
