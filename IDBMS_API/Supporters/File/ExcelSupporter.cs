@@ -347,7 +347,7 @@ namespace IDBMS_API.Supporters.File
         public static ExcelResult GenSheetIncurred(SpreadsheetDocument doc, int sheetcount, string projectTitle, string address,List<TaskCategory> cateList, List<ProjectTask> taskList)
         {
             string sheetName = "Sheet10";
-            bool cloneRow = taskList.Count > 3;
+            bool cloneRow = taskList.Count + cateList.Count > 3;
             List<ProjectTask> projectTasksIncurred = new List<ProjectTask>();
             foreach(var task in taskList)
             {
@@ -442,7 +442,7 @@ namespace IDBMS_API.Supporters.File
 
             }
             if (currentIndex < 12) currentIndex = 12;
-            else currentIndex+=2;
+            else if(cloneRow) currentIndex+=2;
             ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, sheetName, "H" + currentIndex.ToString(), "H", 10, currentIndex - 3);
             ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, sheetName, "I" + currentIndex.ToString(), "I", 10, currentIndex - 3);
             ExcelUtils.FindAndReplaceCalculatorMutipleRow(doc, sheetName, "J" + currentIndex.ToString(), "J", 10, currentIndex - 3);
