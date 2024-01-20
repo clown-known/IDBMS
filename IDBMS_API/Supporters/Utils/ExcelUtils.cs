@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
+using DocumentFormat.OpenXml.Vml;
 
 namespace IDBMS_API.Supporters.Utils
 {
@@ -127,7 +128,15 @@ namespace IDBMS_API.Supporters.Utils
                             value1 = sharedStringItem.Text.Text;
                         }
                     }
-                    double total = value1 == null ? 0 : Double.Parse(value1);
+                    double total = 0;
+                    if (value1 != null || !value1.Equals("")) value1 = value1.Replace(".", "");
+                    bool sc = Double.TryParse(value1, out total);
+                    if (!sc)
+                    {
+                        value1 = cell1.LastChild.FirstChild.InnerText;
+                        value1 = value1.Replace(".", "");
+                        sc = Double.TryParse(value1, out total);
+                    }
 
                     for (int i = indexStart + 1; i <= indexEnd; i++)
                     {
@@ -149,7 +158,16 @@ namespace IDBMS_API.Supporters.Utils
                             }
 
                             if (value2 == null || value2.Equals("")) continue;
-                            double dvalue2 = Double.Parse(value2);
+                            else value2 = value2.Replace(".", "");
+                            double dvalue2 = 0;
+                            sc = Double.TryParse(value2, out dvalue2);
+                            if (!sc)
+                            {
+                                value2 = cell2.LastChild.FirstChild.InnerText;
+                                value2 = value2.Replace(".", "");
+                                sc = Double.TryParse(value2, out dvalue2);
+                            }
+
                             total += dvalue2;
                         }
                     }
@@ -199,7 +217,15 @@ namespace IDBMS_API.Supporters.Utils
                             value1 = sharedStringItem.Text.Text;
                         }
                     }
-                    double total = value1 == null ? 0 : Double.Parse(value1);
+                    double total = 0;
+                    if (value1 != null || !value1.Equals("")) value1 = value1.Replace(".", "");
+                    bool sc = Double.TryParse(value1, out total);
+                    if (!sc)
+                    {
+                        value1 = cell1.LastChild.FirstChild.InnerText;
+                        value1 = value1.Replace(".", "");
+                        sc = Double.TryParse(value1, out total);
+                    }
                     total = total * (percent) / 100;
 
                     string cellFormula = "" + cellName + "*" + percent.ToString() + "%";
@@ -533,10 +559,38 @@ namespace IDBMS_API.Supporters.Utils
                             value2 = sharedStringItem.Text.Text;
                         }
                     }
+                    double dvalue1 = 0;
+                    double dvalue2 = 0;
 
-                    if (value1 == null || value2 == null) return 0;
-                    double dvalue1 = Double.Parse(value1);
-                    double dvalue2 = Double.Parse(value2);
+                    if (value1 != null || !value1.Equals("")) value1 = value1.Replace(".", "");
+                    bool sc = Double.TryParse(value1, out dvalue1);
+                    if (!sc)
+                    {
+                        try
+                        {
+                            value1 = cell1.LastChild.FirstChild.InnerText;
+                            value1 = value1.Replace(".", "");
+                            sc = Double.TryParse(value1, out dvalue1);
+                        }
+                        catch (Exception e) { 
+                            return 0; 
+                        }
+                    }
+                    if (value2 != null || !value2.Equals("")) value2 = value2.Replace(".", "");
+                    bool sc2 = Double.TryParse(value2, out dvalue2);
+                    if (!sc2)
+                    {
+                        try
+                        {
+                            value2 = cell1.LastChild.FirstChild.InnerText;
+                            value2 = value2.Replace(".", "");
+                            sc = Double.TryParse(value2, out dvalue2);
+                        }
+                        catch (Exception e) { 
+                            return 0; 
+                        }
+                    }
+
                     string cellFormula = "";
                     double result = 0;
                     switch (calculator)
@@ -626,8 +680,40 @@ namespace IDBMS_API.Supporters.Utils
                         value1 = value1.Replace(".", "");
                         value2 = value2.Replace(".", "");
                     }
-                    double dvalue1 = Double.Parse(value1);
-                    double dvalue2 = Double.Parse(value2);
+                    double dvalue1 = 0;
+                    double dvalue2 = 0;
+
+                    if (value1 != null || !value1.Equals("")) value1 = value1.Replace(".", "");
+                    bool sc = Double.TryParse(value1, out dvalue1);
+                    if (!sc)
+                    {
+                        try
+                        {
+                            value1 = cell1.LastChild.FirstChild.InnerText;
+                            value1 = value1.Replace(".", "");
+                            sc = Double.TryParse(value1, out dvalue1);
+                        }
+                        catch (Exception e)
+                        {
+                            return 0;
+                        }
+                    }
+                    if (value2 != null || !value2.Equals("")) value2 = value2.Replace(".", "");
+                    bool sc2 = Double.TryParse(value2, out dvalue2);
+                    if (!sc2)
+                    {
+                        try
+                        {
+                            value2 = cell1.LastChild.FirstChild.InnerText;
+                            value2 = value2.Replace(".", "");
+                            sc = Double.TryParse(value2, out dvalue2);
+                        }
+                        catch (Exception e)
+                        {
+                            return 0;
+                        }
+                    }
+
                     string cellFormula = "";
                     double result = 0;
                     switch (calculator)
