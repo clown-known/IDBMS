@@ -531,7 +531,10 @@ namespace IDBMS_API.Supporters.File
                     ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), IntUtils.ConvertStringToMoney(task.PricePerUnit * (decimal)task.UnitUsed));
                 else
                     ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), "0");
-
+                if(task.Room != null)
+                {
+                    ExcelUtils.FindAndReplaceString(doc, sheetName, Char.ToString((char)startColumn++) + currentIndex.ToString(), task.Room.UsePurpose);
+                }
                 currentIndex++;
 
             }
