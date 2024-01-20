@@ -268,7 +268,7 @@ namespace API.Controllers
                 if (code == null)
                     throw new Exception("Create code fail!");
 
-                string link = configuration["Server:Frontend"] + "authentication/forgotpassword?code=" + code + "&email=" + email;
+                string link = configuration["Server:Frontend"] + "/authentication/forgotpassword?code=" + code + "&email=" + email;
                 EmailSupporter.SendVerifyEnglishEmail(email, link);
 
                 var response = new ResponseMessage()
@@ -356,7 +356,7 @@ namespace API.Controllers
                 if (code == null)
                     throw new Exception("Create code fail!");
 
-                string link = configuration["Server:AdminFrontend"] + "/authentication/adminConfirmverify?code=" + code + "&email=" + email;
+                string link = configuration["Server:AdminFrontend"] + "authentication/adminConfirmverify?code=" + code + "&email=" + email;
                 EmailSupporter.SendVerifyEnglishEmail(email, link);
 
                 var response = new ResponseMessage()
