@@ -32,8 +32,12 @@ namespace IDBMS_API.Controllers.IDBMSControllers
                 {
                     throw new Exception("File generated null!");
                 }
-
-                return File(file, "application/octet-stream", fileName);
+                var response = new ResponseMessage()
+                {
+                    Message = "Success",
+                    Data = File(file, "application/octet-stream", fileName)
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
